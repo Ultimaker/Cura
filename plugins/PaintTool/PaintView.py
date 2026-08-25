@@ -262,7 +262,7 @@ class PaintView(CuraView):
                                       self._getSliceableObjectDecorator()))
 
     def _getSliceableObjectDecorator(self) -> Optional[SliceableObjectDecorator]:
-        if self._painted_object is None or self._current_paint_type != "extruder":
+        if self._painted_object is None or self._current_paint_type not in ["extruder", "support"]:
             return None
 
         return self._painted_object.getDecorator(SliceableObjectDecorator)

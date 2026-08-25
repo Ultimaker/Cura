@@ -32,7 +32,7 @@ class PaintClearCommand(PaintCommand):
             painter.fillRect(self._texture.getImage().rect(), QBrush(self._set_value))
         painter.end()
 
-        self._setPaintedExtrudersCountDirty()
+        self._setPaintedCountsDirty()
         self._texture.updateImagePart(self._bounding_rect)
 
     def mergeWith(self, command: QUndoCommand) -> bool:

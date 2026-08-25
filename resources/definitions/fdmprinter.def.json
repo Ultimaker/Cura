@@ -1208,6 +1208,20 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "wall_x_inset":
+                {
+                    "label": "Inner Wall Inset",
+                    "description": "Inset applied to the path of the inner wall(s). The infill will move along with the new boundary set by the innermost inner wall",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "minimum_value": "-wall_line_width_0 + wall_0_inset",
+                    "minimum_value_warning": "(-wall_line_width_0 + wall_0_inset) / 2",
+                    "maximum_value": "wall_line_width_x * 2",
+                    "maximum_value_warning": "wall_line_width_x",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "optimize_wall_printing_order":
                 {
                     "label": "Optimize Wall Printing Order",
@@ -1703,7 +1717,7 @@
                             "unit": "mm",
                             "default_value": 0.8,
                             "minimum_value": "0",
-                            "minimum_value_warning": "0.2 + resolveOrValue('layer_height')",
+                            "minimum_value_warning": "(resolveOrValue('layer_height') * 2)",
                             "maximum_value": "machine_height",
                             "type": "float",
                             "value": "top_bottom_thickness",
@@ -1734,7 +1748,7 @@
                             "unit": "mm",
                             "default_value": 0.6,
                             "minimum_value": "0",
-                            "minimum_value_warning": "0.2 + resolveOrValue('layer_height')",
+                            "minimum_value_warning": "min((resolveOrValue('layer_height') + layer_height_0), (resolveOrValue('layer_height') * 2))",
                             "type": "float",
                             "value": "top_bottom_thickness",
                             "maximum_value": "machine_height",
@@ -1764,7 +1778,7 @@
                                     "maximum_value": "999999",
                                     "default_value": 6,
                                     "type": "int",
-                                    "value": "bottom_layers",
+                                    "value": "max(0, int(round((bottom_thickness - layer_height_0) / resolveOrValue('layer_height'), 4) + 1))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -2541,7 +2555,7 @@
                     "default_value": 100,
                     "value": "bridge_fan_speed",
                     "type": "float",
-                    "enabled": "skin_support",
+                    "enabled": "skin_support and cool_fan_enabled",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
@@ -3845,7 +3859,7 @@
                     "type": "float",
                     "enabled": "speed_slowdown_layers > 0",
                     "default_value": 30,
-                    "value": "speed_print * 30 / 60",
+                    "value": "speed_print / 2",
                     "minimum_value": "0.1",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
@@ -5137,6 +5151,7 @@
                     "unit": "s",
                     "type": "float",
                     "default_value": 10,
+                    "enabled": "cool_fan_enabled",
                     "maximum_value_warning": "600",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -5166,6 +5181,7 @@
                     "maximum_value_warning": "10.0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
+                    "enabled": "cool_fan_enabled",
                     "children":
                     {
                         "cool_fan_full_layer":
@@ -5174,6 +5190,7 @@
                             "description": "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number.",
                             "type": "int",
                             "default_value": 2,
+                            "enabled": "cool_fan_enabled",
                             "minimum_value": "1",
                             "maximum_value_warning": "10 / resolveOrValue('layer_height')",
                             "value": "max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
@@ -5641,6 +5658,81 @@
                     "enabled": "support_enable or support_meshes_present",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_wall_thickness":
+                        {
+                            "label": "Support Wall Thickness",
+                            "description": "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                            "default_value": 0.4,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "line_width",
+                            "maximum_value_warning": "10 * line_width",
+                            "maximum_value": "999999 * line_width",
+                            "type": "float",
+                            "unit": "mm",
+                            "value": "support_wall_count * support_line_width",
+                            "enabled": "support_enable or support_meshes_present",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "support_enlarged_wall_thickness":
+                {
+                    "label": "Support Enlarged Wall Thickness",
+                    "description": "The thickness of the walls with which to surround the support infill, when adhesion with the above/below layer is very low. Using larger or extra walls in this case will improve adhesion and make the branch sturdier.",
+                    "default_value": 0.4,
+                    "minimum_value": "support_wall_thickness",
+                    "maximum_value_warning": "10 * line_width",
+                    "maximum_value": "999999 * line_width",
+                    "type": "float",
+                    "unit": "mm",
+                    "value": "support_wall_thickness",
+                    "enabled": "support_enable or support_meshes_present",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_wall_thickness_bottom_layers":
+                {
+                    "label": "Support Wall Unenlarged Bottom Layers",
+                    "description": "Number of layers, counted from the build-plate, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing).",
+                    "default_value": 40,
+                    "minimum_value": "0",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'tree'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_wall_thickness_top_layers":
+                {
+                    "label": "Support Wall Unenlarged Top Layers",
+                    "description": "Number of layers, counted from the closest tip of the branches downwards, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing).",
+                    "default_value": 40,
+                    "minimum_value": "0",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'tree'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_wall_thickness_layer_smooth":
+                {
+                    "label": "Support Wall Smooth Layer Width",
+                    "description": "Number of layers where the support wall line width transition is smoothed out over. (This may still create jumps when one area splits off from the other though.)",
+                    "default_value": 15,
+                    "minimum_value": "0",
+                    "maximum_value": "min(support_wall_thickness_bottom_layers, support_wall_thickness_top_layers)",
+                    "type": "int",
+                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'tree'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "support_infill_multiplier":
@@ -5869,8 +5961,8 @@
                 },
                 "support_brim_enable":
                 {
-                    "label": "Enable Support Brim",
-                    "description": "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate.",
+                    "label": "Enable Inner Support Base",
+                    "description": "Generate a base within the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "support_enable or support_meshes_present",
@@ -5878,10 +5970,21 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_outer_brim_enable":
+                {
+                    "label": "Enable Outer Support Base",
+                    "description": "Generate a base around the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "support_enable or support_meshes_present",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_brim_width":
                 {
-                    "label": "Support Brim Width",
-                    "description": "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material.",
+                    "label": "Support Inner Brim Width",
+                    "description": "The width of the brim to print inside the support, on the first layer. A larger brim enhances adhesion to the build plate, at the cost of some extra material.",
                     "type": "float",
                     "unit": "mm",
                     "default_value": 1.2,
@@ -5896,8 +5999,8 @@
                     {
                         "support_brim_line_count":
                         {
-                            "label": "Support Brim Line Count",
-                            "description": "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material.",
+                            "label": "Support Inner Brim Line Count",
+                            "description": "The number of lines used for the support inside brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material.",
                             "type": "int",
                             "default_value": 3,
                             "minimum_value": "0",
@@ -5918,10 +6021,150 @@
                     "type": "float",
                     "default_value": 16,
                     "value": "skirt_brim_line_width * skirt_brim_line_width * 100",
-                    "enabled": "support_brim_enable",
+                    "enabled": "(support_enable or support_meshes_present) and support_brim_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "support_base_height":
+                {
+                    "label": "Support Base Height",
+                    "description": "The height of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base.",
+                    "value": "layer_height",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "support_enable and (support_brim_enable or support_outer_brim_enable)",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_height",
+                    "limit_to_extruder": "support_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_inside_base_height":
+                        {
+                            "label": "Support Inside Base Height",
+                            "description": "The height of the inside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base.",
+                            "value": "support_base_height",
+                            "type": "float",
+                            "unit": "mm",
+                            "enabled": "support_enable and resolveOrValue('support_brim_enable')",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "maximum_value": "machine_height",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_outside_base_height":
+                        {
+                            "label": "Support Outside Base Height",
+                            "description": "The height of the outside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base.",
+                            "value": "support_base_height",
+                            "type": "float",
+                            "unit": "mm",
+                            "enabled": "support_enable and resolveOrValue('support_outer_brim_enable')",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "maximum_value": "machine_height",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "support_base_width":
+                {
+                    "label": "Support Base Width",
+                    "description": "The width of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base.",
+                    "value": "extruderValue(support_extruder_nr, 'brim_width') if resolveOrValue('support_outer_brim_enable') else extruderValue(support_extruder_nr, 'support_brim_width')",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "support_enable and (resolveOrValue('support_brim_enable') or resolveOrValue('support_outer_brim_enable'))",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "extruderValue(support_extruder_nr, 'brim_width') if (resolveOrValue('adhesion_type') == 'brim' and resolveOrValue('support_outer_brim_enable')) else None if resolveOrValue('support_outer_brim_enable') else extruderValue(support_extruder_nr, 'support_brim_width')",
+                    "limit_to_extruder": "support_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_base_inside_width":
+                        {
+                            "label": "Support Base Inside Width",
+                            "description": "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base.",
+                            "value": "min(extruderValue(support_extruder_nr, 'support_brim_width'), support_base_width)",
+                            "type": "float",
+                            "unit": "mm",
+                            "enabled": "support_enable and resolveOrValue('support_brim_enable')",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'support_brim_width')",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_base_outside_width":
+                        {
+                            "label": "Support Base Outside Width",
+                            "description": "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base.",
+                            "value": "support_base_width",
+                            "type": "float",
+                            "unit": "mm",
+                            "enabled": "support_enable and resolveOrValue('support_outer_brim_enable')",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'brim_width') if resolveOrValue('adhesion_type') == 'brim' else None",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "support_base_curve_magnitude":
+                {
+                    "label": "Support Base Slope",
+                    "description": "The magnitude factor used for the slope of the support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker.",
+                    "type": "float",
+                    "enabled": "support_enable",
+                    "default_value": 4,
+                    "minimum_value": "0",
+                    "maximum_value": "10",
+                    "limit_to_extruder": "support_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_inside_base_curve_magnitude":
+                        {
+                            "label": "Support Inside Base Slope",
+                            "description": "The magnitude factor used for the slope of the inside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker.",
+                            "value": "support_base_curve_magnitude",
+                            "type": "float",
+                            "enabled": "support_enable and resolveOrValue('support_brim_enable')",
+                            "default_value": 4,
+                            "minimum_value": "0",
+                            "maximum_value": "10",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_outside_base_curve_magnitude":
+                        {
+                            "label": "Support Outside Base Slope",
+                            "description": "The magnitude factor used for the slope of the outside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker.",
+                            "value": "support_base_curve_magnitude",
+                            "type": "float",
+                            "enabled": "support_enable and resolveOrValue('support_outer_brim_enable')",
+                            "default_value": 4,
+                            "minimum_value": "0",
+                            "maximum_value": "10",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "support_z_distance":
                 {
@@ -6516,7 +6759,7 @@
                     "description": "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "support_enable or support_meshes_present",
+                    "enabled": "(support_enable or support_meshes_present) and cool_fan_enabled",
                     "settable_per_mesh": false
                 },
                 "support_supported_skin_fan_speed":
@@ -6528,7 +6771,7 @@
                     "maximum_value": "100",
                     "default_value": 100,
                     "type": "float",
-                    "enabled": "(support_enable or support_meshes_present) and support_fan_enable",
+                    "enabled": "(support_enable or support_meshes_present) and support_fan_enable and cool_fan_enabled",
                     "settable_per_mesh": false
                 },
                 "support_use_towers":
@@ -7476,7 +7719,7 @@
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "200",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                    "value": "speed_print / 60 * 30",
+                    "value": "speed_print / 2",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr",
@@ -9218,7 +9461,7 @@
                     "maximum_value": "100",
                     "default_value": 100,
                     "type": "float",
-                    "enabled": "bridge_settings_enabled",
+                    "enabled": "bridge_settings_enabled and cool_fan_enabled",
                     "settable_per_mesh": true
                 },
                 "bridge_interlace_lines":
@@ -9288,7 +9531,7 @@
                     "maximum_value": "100",
                     "default_value": 0,
                     "type": "float",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers and cool_fan_enabled",
                     "settable_per_mesh": true
                 },
                 "bridge_skin_speed_3":
@@ -9340,7 +9583,7 @@
                     "maximum_value": "100",
                     "default_value": 0,
                     "type": "float",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers and cool_fan_enabled",
                     "settable_per_mesh": true
                 },
                 "clean_between_layers":

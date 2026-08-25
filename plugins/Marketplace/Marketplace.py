@@ -32,6 +32,7 @@ class Marketplace(Extension, QObject):
         preferences = CuraApplication.getInstance().getPreferences()
         preferences.addPreference("info/automatic_plugin_update_check", True)
         self._local_package_list = LocalPackageList(self)
+        self._local_package_list.bulkUpdateInProgressChanged.connect(self._onBulkUpdateInProgressChanged)
         if preferences.getValue("info/automatic_plugin_update_check"):
             self._local_package_list.checkForUpdates(self._package_manager.local_packages)
 
@@ -57,6 +58,7 @@ class Marketplace(Extension, QObject):
         if self._material_package_list is None:
             self._material_package_list = RemotePackageList()
             self._material_package_list.packageTypeFilter = "material"
+            self._material_package_list.bulkUpdateInProgressChanged.connect(self._onBulkUpdateInProgressChanged)
 
         return self._material_package_list
 
@@ -65,6 +67,7 @@ class Marketplace(Extension, QObject):
         if self._plugin_package_list is None:
             self._plugin_package_list = RemotePackageList()
             self._plugin_package_list.packageTypeFilter = "plugin"
+            self._plugin_package_list.bulkUpdateInProgressChanged.connect(self._onBulkUpdateInProgressChanged)
         return self._plugin_package_list
 
     @pyqtProperty(QObject, constant=True)
@@ -108,9 +111,22 @@ class Marketplace(Extension, QObject):
 
     showRestartNotificationChanged = pyqtSignal()
 
+    @pyqtSlot()
+    def _onBulkUpdateInProgressChanged(self) -> None:
+        self.showRestartNotificationChanged.emit()
+
+    def _isBulkUpdateInProgress(self) -> bool:
+        if self._local_package_list.bulkUpdateInProgress:
+            return True
+        if self._material_package_list and self._material_package_list.bulkUpdateInProgress:
+            return True
+        if self._plugin_package_list and self._plugin_package_list.bulkUpdateInProgress:
+            return True
+        return False
+
     @pyqtProperty(bool, notify = showRestartNotificationChanged)
     def showRestartNotification(self) -> bool:
-        return self._restart_needed
+        return self._restart_needed and not self._isBulkUpdateInProgress()
 
     def showInstallMissingPackageDialog(self, packages_metadata: List[Dict[str, str]], ignore_warning_callback: Callable[[], None]) -> None:
         """

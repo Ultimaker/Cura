@@ -67,8 +67,11 @@ Cura.Menu
                 height: visible ? implicitHeight: 0
             }
         }
-        onObjectAdded: function(index, object) {  base.insertMenu(index, object) }
-        onObjectRemoved: function(index, object) {  base.removeMenu(object);}
+        onObjectAdded: function(index, object) {
+            base.insertMenu(index, object);
+            if (Qt.platform.os == "osx") object.title += " ";
+        }
+        onObjectRemoved: function(index, object) { base.removeMenu(object); }
     }
 
     Cura.MenuSeparator { }

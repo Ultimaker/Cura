@@ -896,7 +896,7 @@ class AddCoolingProfile(Script):
                     temp = line.split(" ")[0]
                     try:
                         name_index = feature_name_list.index(temp)
-                    except IndexError:
+                    except (IndexError, ValueError):
                         name_index = -1
 
                     if name_index != -1:

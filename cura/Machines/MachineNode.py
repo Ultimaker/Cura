@@ -45,12 +45,61 @@ class MachineNode(ContainerNode):
         self.has_machine_quality = parseBool(my_metadata.get("has_machine_quality", "false"))
         self.quality_definition = my_metadata.get("quality_definition", container_id) if self.has_machine_quality else "fdmprinter"
         self.exclude_materials = my_metadata.get("exclude_materials", [])
-        self.preferred_variant_name = my_metadata.get("preferred_variant_name", "")
-        self.preferred_material = my_metadata.get("preferred_material", "")
+
+        preferred_variant_name_raw = my_metadata.get("preferred_variant_name", "")
+        if isinstance(preferred_variant_name_raw, list):
+            self._preferred_variant_names = preferred_variant_name_raw  # type: List[str]
+        elif preferred_variant_name_raw:
+            self._preferred_variant_names = [preferred_variant_name_raw]
+        else:
+            self._preferred_variant_names = []
+
+        preferred_material_raw = my_metadata.get("preferred_material", "")
+        if isinstance(preferred_material_raw, list):
+            self._preferred_materials = preferred_material_raw  # type: List[str]
+        elif preferred_material_raw:
+            self._preferred_materials = [preferred_material_raw]
+        else:
+            self._preferred_materials = []
+
         self.preferred_quality_type = my_metadata.get("preferred_quality_type", "")
         self.supports_abstract_color = parseBool(my_metadata.get("supports_abstract_color", "false"))
 
         self._loadAll()
+
+    @property
+    def preferred_variant_name(self) -> str:
+        """The preferred variant name for extruder 0, or empty string if none defined."""
+        return self._preferred_variant_names[0] if self._preferred_variant_names else ""
+
+    @property
+    def preferred_material(self) -> str:
+        """The preferred material for extruder 0, or empty string if none defined."""
+        return self._preferred_materials[0] if self._preferred_materials else ""
+
+    def preferredVariantName(self, position: int) -> str:
+        """Returns the preferred variant name for the given extruder position.
+
+        Falls back to position 0's preference for extruders without a specific preference defined.
+
+        :param position: The extruder position (0-based).
+        :return: The preferred variant name, or empty string if none defined.
+        """
+        if 0 < position < len(self._preferred_variant_names) and self._preferred_variant_names[position]:
+            return self._preferred_variant_names[position]
+        return self._preferred_variant_names[0] if self._preferred_variant_names else ""
+
+    def preferredMaterialName(self, position: int) -> str:
+        """Returns the preferred material name for the given extruder position.
+
+        Falls back to position 0's preference for extruders without a specific preference defined.
+
+        :param position: The extruder position (0-based).
+        :return: The preferred material base file name, or empty string if none defined.
+        """
+        if 0 < position < len(self._preferred_materials) and self._preferred_materials[position]:
+            return self._preferred_materials[position]
+        return self._preferred_materials[0] if self._preferred_materials else ""
 
     def getQualityGroups(self, variant_names: List[str], material_bases: List[str], extruder_enabled: List[bool]) -> Dict[str, QualityGroup]:
         """Get the available quality groups for this machine.

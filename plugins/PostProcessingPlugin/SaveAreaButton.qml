@@ -14,6 +14,8 @@ Item
 {
     id: base
     objectName: "postProcessingSaveAreaButton"
+
+    UM.I18nCatalog { id: catalog; name: "cura" }
     visible: manager.scriptList.length > 0
     height: UM.Theme.getSize("action_button").height
     width: height

@@ -21,6 +21,7 @@ Packages
     }
     searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/plugins?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-plugins-browser"
     showUpdateButton: true
+    showUpdateAllButton: true
     showInstallButton: true
     showDisableButton: true
     model: manager.LocalPackageList
