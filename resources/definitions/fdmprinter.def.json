@@ -9337,6 +9337,19 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "bridge_wall_max_deviation":
+                {
+                    "label": "Maximum Bridge Deviation",
+                    "description": "Bridge-walls shouldn't deviate from straight lines more than this, anything that falls outside of the area of maximum allowed deviation (defined by the aligned bounding box around the anchor points) isn't considered a bridging wall. Skin lines are already straight.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 5,
+                    "value": "line_width / 2",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
                 "bridge_wall_min_length":
                 {
                     "label": "Minimum Bridge Wall Length",
