@@ -9337,6 +9337,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "bridge_allow_support_anchor":
+                {
+                    "label": "Allow Support To Anchor Bridge",
+                    "description": "If checked, will allow bridging lines to anchor at support on the layer below.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
                 "bridge_wall_max_deviation":
                 {
                     "label": "Maximum Bridge Deviation",
