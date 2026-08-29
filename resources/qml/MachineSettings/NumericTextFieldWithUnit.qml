@@ -151,12 +151,17 @@ UM.TooltipArea
         color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
 
-        // When the textbox gets focused by TAB, select all text
+        // When the textbox gets focused by TAB, select all text.
+        // When focus is lost (including dialog close), commit any in-progress edit.
         onActiveFocusChanged:
         {
             if (activeFocus && (focusReason == Qt.TabFocusReason || focusReason == Qt.BacktabFocusReason))
             {
                 selectAll()
+            }
+            else if (!activeFocus && propertyProvider && text != propertyProvider.properties.value)
+            {
+                editingFinishedFunction()
             }
         }
 
@@ -200,8 +205,6 @@ UM.TooltipArea
         }
 
         onEditingFinished: editingFinishedFunction()
-
-        Component.onDestruction: editingFinishedFunction()
 
         property var editingFinishedFunction: defaultEditingFinishedFunction
 
