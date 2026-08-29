@@ -67,8 +67,14 @@ NumericTextFieldWithUnit
 
     editingFinishedFunction: function()
     {
-        var polygon = JSON.parse(propertyProvider.properties.value)
         var newValue = parseFloat(valueText.replace(',', '.'))
+        if (newValue === axisValue)
+        {
+            // Value unchanged; just restore the binding and skip the expensive JSON round-trip.
+            valueText = Qt.binding(function() { return axisValue })
+            return
+        }
+        var polygon = JSON.parse(propertyProvider.properties.value)
 
         if (axisName == "x")  // x min/x max
         {
