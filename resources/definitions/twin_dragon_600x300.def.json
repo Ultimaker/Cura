@@ -2,39 +2,23 @@
     "version": 2,
     "name": "Fracktal Twin Dragon 600x300",
     "inherits": "base_fracktal_idex_printer",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
+        "author": "Fracktal Works",
         "manufacturer": "Fracktal Works",
-        "preferred_quality_type": "normal",
-        "author": "Fracktal Works"
+        "preferred_quality_type": "normal"
     },
-    "overrides": {
-        "machine_depth": {
-            "default_value": 300
-        },
-        "machine_height": {
-            "default_value": 400
-        },
-        "machine_max_feedrate_x": {
-            "value": 300
-        },
-        "machine_max_feedrate_y": {
-            "value": 300
-        },
-        "machine_name": {
-            "default_value": "Twin Dragon 600 x 300"
-        },
-        "machine_width": {
-            "default_value": 600
-        },
-        "speed_print": {
-            "value": "100"
-        },
-        "speed_roofing": {
-            "value": "speed_wall"
-        },
-        "speed_travel": {
-            "value": "max(150,speed_print)"
-        }
+    "overrides":
+    {
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 400 },
+        "machine_max_feedrate_x": { "value": 300 },
+        "machine_max_feedrate_y": { "value": 300 },
+        "machine_name": { "default_value": "Twin Dragon 600 x 300" },
+        "machine_width": { "default_value": 600 },
+        "speed_print": { "value": "100" },
+        "speed_roofing": { "value": "speed_wall" },
+        "speed_travel": { "value": "max(150,speed_print)" }
     }
 }

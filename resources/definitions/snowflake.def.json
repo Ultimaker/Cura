@@ -2,43 +2,28 @@
     "version": 2,
     "name": "Fracktal Snowflake",
     "inherits": "base_fracktal_printer",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
-        "manufacturer": "Fracktal Works",
-        "author": "Fracktal Works"
+        "author": "Fracktal Works",
+        "manufacturer": "Fracktal Works"
     },
-    "overrides": {
-        "machine_depth": {
-            "default_value": 200
-        },
-        "machine_height": {
-            "default_value": 200
-        },
-        "machine_max_feedrate_x": {
-            "value": 350
-        },
-        "machine_max_feedrate_y": {
-            "value": 350
-        },
-        "machine_name": {
-            "default_value": "Snowflake"
-        },
-        "machine_width": {
-            "default_value": 200
-        },
-        "speed_print": {
-            "value": "80"
-        },
-        "speed_roofing": {
-            "value": "speed_wall"
-        },
-        "speed_travel": {
+    "overrides":
+    {
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 },
+        "machine_max_feedrate_x": { "value": 350 },
+        "machine_max_feedrate_y": { "value": 350 },
+        "machine_name": { "default_value": "Snowflake" },
+        "machine_width": { "default_value": 200 },
+        "speed_print": { "value": "80" },
+        "speed_roofing": { "value": "speed_wall" },
+        "speed_travel":
+        {
             "maximum_value": "300",
             "maximum_value_warning": "300",
             "value": "max(120,speed_print)"
         },
-        "speed_travel_layer_0": {
-            "value": "80"
-        }
+        "speed_travel_layer_0": { "value": "80" }
     }
 }
