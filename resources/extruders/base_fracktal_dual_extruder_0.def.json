@@ -1,0 +1,42 @@
+{
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "base_fracktal_printer",
+        "position": "0"
+    },
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "1"
+        },
+        "machine_extruder_end_code": {
+            "default_value": ";WIPE\nG91\nG1 X-5 F{speed_travel*60}\nG4 P2000\nG1 X10\nG1 X-10\nG1 X10\nG1 X-10\nG1 X10\nG1 X-10\nG1 X5\nG90\n"
+        },
+        "machine_extruder_end_pos_abs": {
+            "default_value": true
+        },
+        "machine_extruder_end_pos_x": {
+            "value": "prime_tower_position_x"
+        },
+        "machine_extruder_end_pos_y": {
+            "value": "prime_tower_position_y + (prime_tower_size/2)"
+        },
+        "machine_extruder_start_code": {
+            "default_value": ";WIPE\nG91\nG1 X-5 F{speed_travel*60}\nG1 X10\nG1 X-10\nG1 X10\nG1 X-10\nG1 X5\nG90\n"
+        },
+        "machine_extruder_start_pos_abs": {
+            "default_value": true
+        },
+        "machine_extruder_start_pos_x": {
+            "value": "prime_tower_position_x"
+        },
+        "machine_extruder_start_pos_y": {
+            "value": "prime_tower_position_y + (prime_tower_size/2)"
+        },
+        "material_diameter": {
+            "default_value": 1.75
+        }
+    }
+}

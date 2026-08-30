@@ -1,0 +1,50 @@
+{
+    "version": 2,
+    "name": "Fracktal Volterra 300 ALF",
+    "inherits": "base_fracktal_printer",
+    "metadata": {
+        "visible": true,
+        "manufacturer": "Fracktal Works",
+        "preferred_quality_type": "normal",
+        "author": "Fracktal Works"
+    },
+    "overrides": {
+        "build_volume_temperature": {
+            "enabled": true
+        },
+        "default_material_print_temperature": {
+            "maximum_value": "450",
+            "maximum_value_warning": "350"
+        },
+        "machine_depth": {
+            "default_value": 300
+        },
+        "machine_end_gcode": {
+            "default_value": ";End GCode\nM104 T0 S0 ;extruder heater off\nM104 T1 S0 ;extruder heater off\nM140 S0 ;heated bed heater off\nM141 S0 ;chamber heater off\nM144 ;ring heater off\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 F3000 ;move Z up a bit and retract filament even more\nG28;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nM107\nG90 ;absolute positioning\n\nM300 S0 P333\nM300 S880 P166\nM300 S880 P166\nM300 S1318 P166\nM300 S1567 P166\nM300 S0 P166\nM300 S880 P166\nM300 S0 P166\nM300 S880 P166\nM300 S0 P166\nM300 S880 P166\nM300 S0 P166\nM300 S1567 P166\nM300 S0 P166\nM300 S880 P166\n"
+        },
+        "machine_heated_build_volume": {
+            "default_value": true
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_max_feedrate_x": {
+            "value": 150
+        },
+        "machine_max_feedrate_y": {
+            "value": 150
+        },
+        "machine_name": {
+            "default_value": "Volterra 300 ALF"
+        },
+        "machine_start_gcode": {
+            "default_value": ";Machine Model: {machine_name} \n;Nozzle Size: {str(extruderValue(-1, 'machine_nozzle_size'))}\n;Sliced at: {day} {date} {time}\nG21 ;metric values\nM107\nG28\nM420 S1\nG90 ;absolute positioning\nG1 X0 Y0 Z5 F5000 ;move nozzle up 5mm for safe homing\nG29;ABL\nM500\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\n\n;Ring Heater Control\n{'M143 S' + str(int(ring_heater_power * 2.55)) + ' ;Set ring heater power' if ring_heater_enable else ';Ring heater disabled'}\n\n;Build Volume Temperature\n{'M141 S' + str(build_volume_temperature) + ' ;Set chamber temperature' if build_volume_temperature > 0 else ';Chamber heating disabled'}\n\nG1 X0 Y0 Z15.0 F5000 ;move the platform down 15mm\n\n; Extrude purge line\n\nG92 E0 ; reset extruder position\nG0 Z0.2 F500 ; purge\nG0 X15 E2.5 F500 ; purge\nG92 E0 ; reset extruder position\nG0 X25 E2.5 F650 ; purge\nG92 E0 ; reset extruder position\nG0 X35 E2.5 F800 ; purge\nG0 X{35 + 3} Z{0.05} F{8000} ; wipe, move close to the bed\nG0 X{35 + 3 * 2} Z0.2 F{8000} ; wipe, move quickly away from the bed\n\nG92 E0 ; zero the extruded length again\nM117 Printing...\n\nM300 S880 P166\nM300 S0 P166\nM300 S880 P166\nM300 S1318 P166\nM300 S1567 P166\nM300 S0 P166\n"
+        },
+        "machine_width": {
+            "default_value": 300
+        },
+        "speed_layer_0": {
+            "value": "min(25, round(speed_print * 0.3, 0))"
+        }
+    }
+}

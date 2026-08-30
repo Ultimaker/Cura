@@ -1,0 +1,568 @@
+{
+    "version": 2,
+    "name": "Base Fracktal 3D Printer Definition",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": false,
+        "author": "Fracktal Works",
+        "manufacturer": "Fracktal Works",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains": {
+            "0": "base_fracktal_extruder_0"
+        },
+        "preferred_quality_type": "normal"
+    },
+    "overrides": {
+        "acceleration_print": {
+            "default_value": 1000
+        },
+        "acceleration_travel": {
+            "value": 1000
+        },
+        "alternate_carve_order": {
+            "value": true
+        },
+        "bridge_enable_more_layers": {
+            "value": true
+        },
+        "bridge_fan_speed_2": {
+            "value": "(cool_fan_speed_max + cool_fan_speed_min) / 2"
+        },
+        "bridge_fan_speed_3": {
+            "value": "cool_fan_speed_min"
+        },
+        "bridge_settings_enabled": {
+            "value": true
+        },
+        "bridge_skin_density": {
+            "value": 100
+        },
+        "bridge_skin_density_2": {
+            "value": 100
+        },
+        "bridge_skin_density_3": {
+            "value": 100
+        },
+        "bridge_skin_material_flow": {
+            "value": "material_flow if support_enable else material_flow * 0.95"
+        },
+        "bridge_skin_material_flow_2": {
+            "value": "material_flow"
+        },
+        "bridge_skin_material_flow_3": {
+            "value": "material_flow"
+        },
+        "bridge_skin_speed": {
+            "value": "min(round(speed_topbottom * 0.75),50)"
+        },
+        "bridge_skin_speed_2": {
+            "value": "speed_topbottom"
+        },
+        "bridge_skin_speed_3": {
+            "value": "speed_topbottom"
+        },
+        "bridge_wall_coast": {
+            "value": 0
+        },
+        "bridge_wall_material_flow": {
+            "value": "material_flow if support_enable else material_flow * 0.95"
+        },
+        "bridge_wall_speed": {
+            "value": "min(round(speed_wall * 0.75),40)"
+        },
+        "brim_line_count": {
+            "value": "6"
+        },
+        "brim_replaces_support": {
+            "value": false
+        },
+        "carve_multiple_volumes": {
+            "value": true
+        },
+        "cool_fan_speed": {
+            "resolve": "min(extruderValues('cool_fan_speed'))",
+            "settable_per_extruder": false
+        },
+        "cool_fan_speed_0": {
+            "value": 0
+        },
+        "cool_fan_speed_max": {
+            "resolve": "min(extruderValues('cool_fan_speed_max'))",
+            "settable_per_extruder": false
+        },
+        "cool_min_layer_time": {
+            "value": 6
+        },
+        "cool_min_layer_time_fan_speed_max": {
+            "value": "cool_min_layer_time + 5"
+        },
+        "cool_min_speed": {
+            "value": "round(speed_wall_0 * 3 / 4) if cool_lift_head else round(speed_wall_0 / 5)"
+        },
+        "cool_min_temperature": {
+            "maximum_value": "500",
+            "value": "min([material_final_print_temperature, material_initial_print_temperature, material_print_temperature - 15])"
+        },
+        "default_material_print_temperature": {
+            "maximum_value": "500"
+        },
+        "gradual_flow_discretisation_step_size": {
+            "value": 0.2
+        },
+        "gradual_flow_enabled": {
+            "value": true
+        },
+        "gradual_support_infill_step_height": {
+            "value": "4 * layer_height"
+        },
+        "gradual_support_infill_steps": {
+            "value": "2 if support_interface_enable and support_structure != 'tree' else 0"
+        },
+        "group_outer_walls": {
+            "value": false
+        },
+        "infill_before_walls": {
+            "value": false
+        },
+        "infill_overlap": {
+            "value": 0
+        },
+        "infill_pattern": {
+            "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'"
+        },
+        "infill_sparse_density": {
+            "value": "20"
+        },
+        "infill_wipe_dist": {
+            "value": "0 if infill_before_walls == True else wall_line_width_x / 4"
+        },
+        "initial_bottom_layers": {
+            "value": "3 if bottom_layers == 4 else bottom_layers"
+        },
+        "initial_layer_line_width_factor": {
+            "value": 105
+        },
+        "jerk_print": {
+            "default_value": 10
+        },
+        "jerk_travel": {
+            "value": 10
+        },
+        "layer_start_x": {
+            "value": "machine_width/2"
+        },
+        "layer_start_y": {
+            "value": "machine_depth"
+        },
+        "line_width": {
+            "value": "round(machine_nozzle_size * 1.05, 2)"
+        },
+        "machine_acceleration": {
+            "default_value": 1000
+        },
+        "machine_end_gcode": {
+            "default_value": ";End GCode\nM104 T0 S0 ;extruder heater off\nM104 T1 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 F3000 ;move Z up a bit and retract filament even more\nG28;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nM107\nG90 ;absolute positioning\n\nM300 S0 P333\nM300 S880 P166\nM300 S880 P166\nM300 S1318 P166\nM300 S1567 P166\nM300 S0 P166\nM300 S880 P166\nM300 S0 P166\nM300 S880 P166\nM300 S0 P166\nM300 S880 P166\nM300 S0 P166\nM300 S1567 P166\nM300 S0 P166\nM300 S880 P166\n"
+        },
+        "machine_heat_zone_length": {
+            "default_value": 12
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_max_acceleration_x": {
+            "default_value": 1000
+        },
+        "machine_max_acceleration_y": {
+            "default_value": 1000
+        },
+        "machine_max_acceleration_z": {
+            "default_value": 50
+        },
+        "machine_max_feedrate_e": {
+            "default_value": 80
+        },
+        "machine_max_feedrate_x": {
+            "default_value": 500
+        },
+        "machine_max_feedrate_y": {
+            "default_value": 500
+        },
+        "machine_max_feedrate_z": {
+            "default_value": 50
+        },
+        "machine_max_jerk_e": {
+            "default_value": 20
+        },
+        "machine_max_jerk_z": {
+            "default_value": 0.8
+        },
+        "machine_min_cool_heat_time_window": {
+            "default_value": 60
+        },
+        "machine_nozzle_cool_down_speed": {
+            "default_value": 1
+        },
+        "machine_nozzle_heat_up_speed": {
+            "default_value": 0.5
+        },
+        "machine_show_variants": {
+            "default_value": true
+        },
+        "machine_start_gcode": {
+            "default_value": ";Machine Model: {machine_name} \n;Nozzle Size: {str(extruderValue(-1, 'machine_nozzle_size'))}\n;Sliced at: {day} {date} {time}\nG21 ;metric values\nM107\nG28\nM420 S1\nG90 ;absolute positioning\nG1 X0 Y0 Z5 F5000 ;move nozzle up 5mm for safe homing\nG29;ABL\nM500\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG1 X0 Y0 Z15.0 F5000 ;move the platform down 15mm\n\n; Extrude purge line\n\nG92 E0 ; reset extruder position\nG0 Z0.2 F500 ; purge\nG0 X15 E2.5 F500 ; purge\nG92 E0 ; reset extruder position\nG0 X25 E2.5 F650 ; purge\nG92 E0 ; reset extruder position\nG0 X35 E2.5 F800 ; purge\nG0 X{35 + 3} Z{0.05} F{8000} ; wipe, move close to the bed\nG0 X{35 + 3 * 2} Z0.2 F{8000} ; wipe, move quickly away from the bed\n\nG92 E0 ; zero the extruded length again\nM117 Printing...\n\nM300 S880 P166\nM300 S0 P166\nM300 S880 P166\nM300 S1318 P166\nM300 S1567 P166\nM300 S0 P166\n"
+        },
+        "material_bed_temperature_layer_0": {
+            "value": "resolveOrValue('material_bed_temperature') + 10"
+        },
+        "material_break_preparation_temperature": {
+            "maximum_value": "500"
+        },
+        "material_break_temperature": {
+            "maximum_value": "500"
+        },
+        "material_diameter": {
+            "default_value": 1.75
+        },
+        "material_extrusion_cool_down_speed": {
+            "value": "0.5"
+        },
+        "material_final_print_temperature": {
+            "maximum_value": "500"
+        },
+        "material_flow": {
+            "value": "90 if machine_nozzle_size <= 0.25 else 95"
+        },
+        "material_flow_layer_0": {
+            "value": "material_flow * 1.05"
+        },
+        "material_initial_print_temperature": {
+            "maximum_value": "500"
+        },
+        "material_print_temperature": {
+            "maximum_value": "500"
+        },
+        "material_print_temperature_layer_0": {
+            "maximum_value": "500",
+            "value": "material_print_temperature + 10"
+        },
+        "material_standby_temperature": {
+            "maximum_value": "500",
+            "value": "175"
+        },
+        "max_flow_acceleration": {
+            "value": "0.4 if machine_nozzle_size <= 0.25 else 0.8 if machine_nozzle_size <= 0.4 else 1 if machine_nozzle_size <= 0.6 else 2.0"
+        },
+        "max_skin_angle_for_expansion": {
+            "value": 45
+        },
+        "meshfix_maximum_deviation": {
+            "value": "0.02"
+        },
+        "meshfix_maximum_resolution": {
+            "value": "0.5"
+        },
+        "meshfix_union_all": {
+            "value": false
+        },
+        "min_bead_width": {
+            "value": "0.8 * machine_nozzle_size"
+        },
+        "min_feature_size": {
+            "value": "0.05"
+        },
+        "min_wall_line_width": {
+            "value": "0.8 * machine_nozzle_size"
+        },
+        "minimum_interface_area": {
+            "value": 15
+        },
+        "minimum_support_area": {
+            "value": "6 if support_structure == 'tree' else 10"
+        },
+        "optimize_wall_printing_order": {
+            "value": true
+        },
+        "raft_airgap": {
+            "value": "0.1 if machine_nozzle_size <= 0.25 else 0.2 if machine_nozzle_size <= 0.4 else 0.25 if machine_nozzle_size <= 0.6 else 0.35"
+        },
+        "raft_base_line_spacing": {
+            "value": "2*raft_base_line_width"
+        },
+        "raft_base_line_width": {
+            "value": "machine_nozzle_size *2"
+        },
+        "raft_base_speed": {
+            "value": "speed_layer_0 * 0.7"
+        },
+        "raft_base_thickness": {
+            "value": "machine_nozzle_size "
+        },
+        "raft_interface_extruder_nr": {
+            "value": "raft_surface_extruder_nr"
+        },
+        "raft_interface_layers": {
+            "value": 1
+        },
+        "raft_interface_line_width": {
+            "value": 0.7
+        },
+        "raft_interface_speed": {
+            "value": "speed_print * 0.9"
+        },
+        "raft_interface_thickness": {
+            "value": 0.3
+        },
+        "raft_interface_wall_count": {
+            "value": "raft_wall_count"
+        },
+        "raft_margin": {
+            "value": 1.2
+        },
+        "raft_surface_fan_speed": {
+            "value": "cool_fan_speed_max"
+        },
+        "raft_surface_monotonic": {
+            "value": true
+        },
+        "raft_surface_wall_count": {
+            "value": "raft_wall_count"
+        },
+        "retract_at_layer_change": {
+            "value": true
+        },
+        "retraction_amount": {
+            "value": "machine_heat_zone_length * 0.1"
+        },
+        "retraction_combing": {
+            "value": "'off'"
+        },
+        "retraction_combing_max_distance": {
+            "value": "machine_nozzle_size * 5"
+        },
+        "retraction_count_max": {
+            "value": "int(15 * retraction_extrusion_window)"
+        },
+        "retraction_enable": {
+            "value": true
+        },
+        "retraction_extra_prime_amount": {
+            "value": "0.05 if machine_nozzle_size <= 0.25 else 0.08 if machine_nozzle_size <= 0.4 else 0.12 if machine_nozzle_size <= 0.6 else 0.16"
+        },
+        "retraction_extrusion_window": {
+            "value": "retraction_amount"
+        },
+        "retraction_hop": {
+            "value": "layer_height"
+        },
+        "retraction_hop_enabled": {
+            "value": true
+        },
+        "retraction_hop_only_when_collides": {
+            "value": true
+        },
+        "retraction_min_travel": {
+            "value": "machine_nozzle_size * 5"
+        },
+        "retraction_prime_speed": {
+            "value": "retraction_speed * 0.75"
+        },
+        "retraction_speed": {
+            "value": "60"
+        },
+        "roofing_layer_count": {
+            "value": "1"
+        },
+        "seam_overhang_angle": {
+            "value": 40
+        },
+        "skin_material_flow_layer_0": {
+            "value": "material_flow_layer_0 - 5"
+        },
+        "skin_monotonic": {
+            "value": true
+        },
+        "skin_outline_count": {
+            "value": "1"
+        },
+        "skin_overlap": {
+            "value": 25
+        },
+        "skirt_brim_minimal_length": {
+            "value": 150
+        },
+        "skirt_height": {
+            "value": 1
+        },
+        "small_skin_width": {
+            "value": 4
+        },
+        "speed_layer_0": {
+            "value": "min(25, round(speed_print * 0.4, 0))"
+        },
+        "speed_print": {
+            "value": "60"
+        },
+        "speed_support": {
+            "value": "speed_print * 0.60 if support_structure == 'tree' and strengthen_tree_support == True else speed_print * 0.70 if support_structure == 'tree' and strengthen_tree_support == False else speed_print * 0.80"
+        },
+        "speed_support_bottom": {
+            "value": "speed_support * 0.9"
+        },
+        "speed_support_infill": {
+            "value": "speed_support"
+        },
+        "speed_support_interface": {
+            "value": "speed_support * 0.70"
+        },
+        "speed_topbottom": {
+            "value": "min(round(speed_print * 0.8, 0),100)"
+        },
+        "speed_travel": {
+            "value": "max(80,speed_print)"
+        },
+        "speed_travel_layer_0": {
+            "value": "60"
+        },
+        "speed_wall": {
+            "value": "min(round(speed_print * 0.75, 0),100)"
+        },
+        "speed_wall_0": {
+            "value": "min(round(speed_wall * 0.75, 0),80)"
+        },
+        "speed_wall_x": {
+            "value": "speed_wall"
+        },
+        "support_brim_enable": {
+            "value": true
+        },
+        "support_brim_line_count": {
+            "value": "10 if support_structure == 'tree' else brim_line_count"
+        },
+        "support_fan_enable": {
+            "value": true
+        },
+        "support_infill_angles": {
+            "default_value": "[0]"
+        },
+        "support_infill_rate": {
+            "value": "0 if support_structure == 'tree' else 66.6 if gradual_support_infill_steps != 0 else 15"
+        },
+        "support_initial_layer_line_distance": {
+            "minimum_value_warning": "0 if support_structure == 'tree' else support_line_width"
+        },
+        "support_interface_angles": {
+            "default_value": "[0]"
+        },
+        "support_interface_density": {
+            "value": "33.3"
+        },
+        "support_interface_enable": {
+            "value": true
+        },
+        "support_interface_height": {
+            "value": "2 * layer_height"
+        },
+        "support_interface_material_flow": {
+            "value": "0.95 * material_flow"
+        },
+        "support_interface_offset": {
+            "value": "line_width/2"
+        },
+        "support_interface_pattern": {
+            "value": "'grid'"
+        },
+        "support_interface_wall_count": {
+            "value": "1"
+        },
+        "support_material_flow": {
+            "value": "material_flow if support_structure == 'tree' else 0.95 * material_flow"
+        },
+        "support_offset": {
+            "value": "machine_nozzle_size * 2"
+        },
+        "support_pattern": {
+            "value": "'zigzag'"
+        },
+        "support_skip_some_zags": {
+            "value": "True if support_pattern== 'zigzag' else False"
+        },
+        "support_skip_zag_per_mm": {
+            "value": 10
+        },
+        "support_structure": {
+            "value": "'tree'"
+        },
+        "support_tower_diameter": {
+            "value": "5"
+        },
+        "support_tower_maximum_supported_diameter": {
+            "value": "support_tower_diameter"
+        },
+        "support_tower_roof_angle": {
+            "value": "0 if support_interface_enable else 65"
+        },
+        "support_tree_angle": {
+            "value": 30
+        },
+        "support_tree_branch_diameter": {
+            "value": 1
+        },
+        "support_tree_branch_diameter_angle": {
+            "value": 15
+        },
+        "support_tree_branch_reach_limit": {
+            "value": 35
+        },
+        "support_tree_max_diameter": {
+            "value": 50
+        },
+        "support_tree_rest_preference": {
+            "value": "buildplate"
+        },
+        "support_tree_tip_diameter": {
+            "value": 0.8
+        },
+        "support_tree_top_rate": {
+            "value": 20
+        },
+        "support_use_towers": {
+            "value": "False"
+        },
+        "support_wall_count": {
+            "value": "2 if support_structure == 'tree' and strengthen_tree_support else 1 if support_structure == 'tree' else 0"
+        },
+        "support_xy_distance": {
+            "value": "machine_nozzle_size * 1.7"
+        },
+        "support_xy_distance_overhang": {
+            "value": "machine_nozzle_size / 2"
+        },
+        "support_z_distance": {
+            "value": "min(0.2, layer_height)"
+        },
+        "support_zag_skip_count": {
+            "minimum_value": 0
+        },
+        "top_bottom_thickness": {
+            "value": "4 * layer_height if 4 * layer_height > 0.8 else 0.8"
+        },
+        "wall_0_wipe_dist": {
+            "value": "2 * line_width"
+        },
+        "wall_thickness": {
+            "value": "wall_line_width_0 + wall_line_width_x"
+        },
+        "z_seam_corner": {
+            "value": "'z_seam_corner_none'"
+        },
+        "z_seam_on_vertex": {
+            "value": true
+        },
+        "z_seam_type": {
+            "value": "'shortest'"
+        },
+        "zig_zaggify_infill": {
+            "value": true
+        }
+    }
+}

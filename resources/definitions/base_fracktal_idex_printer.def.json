@@ -1,0 +1,89 @@
+{
+    "version": 2,
+    "name": "Fracktal Works IDEX Printer Base Description",
+    "inherits": "base_fracktal_dual_printer",
+    "metadata": {
+        "visible": false,
+        "author": "Fracktal Works",
+        "manufacturer": "Fracktal Works",
+        "machine_extruder_trains": {
+            "0": "base_fracktal_idex_extruder_0",
+            "1": "base_fracktal_idex_extruder_1"
+        }
+    },
+    "overrides": {
+        "gantry_height": {
+            "value": "20"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0 T0               ;left extruder heater off\nM104 S0 T1               ;right extruder heater off\nM140 S0                  ;heated bed heater off\nG91                      ;relative positioning\nG1 Z+0.5 E-5 Y+10 F12000 ;move Z up a bit and retract filament\nG28 X0 Y0                ;move X/Y to min endstops so the head is out of the way\nM84                      ;steppers off\nG90                      ;absolute positioning\n"
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [
+                    -50,
+                    50
+                ],
+                [
+                    50,
+                    50
+                ],
+                [
+                    50,
+                    -50
+                ],
+                [
+                    -50,
+                    -50
+                ]
+            ]
+        },
+        "material_bed_temp_prepend": {
+            "value": false
+        },
+        "material_print_temp_prepend": {
+            "value": false
+        },
+        "material_print_temp_wait": {
+            "value": false
+        },
+        "prime_tower_position_x": {
+            "value": "(machine_width / 2) - (prime_tower_size / 2)"
+        },
+        "prime_tower_position_y": {
+            "value": "20"
+        },
+        "retraction_extra_prime_amount": {
+            "value": "0.025 if machine_nozzle_size <= 0.25 else 0.05 if machine_nozzle_size <= 0.4 else 0.1 if machine_nozzle_size <= 0.6 else 0.15"
+        },
+        "retraction_hop_after_extruder_switch": {
+            "value": false
+        },
+        "speed_roofing": {
+            "value": "speed_wall"
+        },
+        "speed_travel": {
+            "maximum_value": "600",
+            "maximum_value_warning": "600",
+            "value": "max(200,speed_print)"
+        },
+        "speed_travel_layer_0": {
+            "value": "100"
+        },
+        "switch_extruder_extra_prime_amount": {
+            "value": "retraction_extra_prime_amount"
+        },
+        "switch_extruder_retraction_amount": {
+            "value": "retraction_amount"
+        },
+        "machine_start_gcode": {
+            "default_value": ";Machine Model: {machine_name}\n;Sliced at: {day} {date} {time}\nM140 S{material_bed_temperature_layer_0} \t;Heat build surface\nM104 T0 S{material_print_temperature_layer_0, 0}\t;Heat extruder 0\nM104 T1 S{material_print_temperature_layer_0, 1}\t;Heat extruder 1\nM190 S{material_bed_temperature_layer_0} \t;Wait until bed temperature reached \nM109 T0 S{material_print_temperature_layer_0, 0}\t;Heat extruder 0 and wait\nM109 T1 S{material_print_temperature_layer_0, 1}\t;Heat extruder 1 and wait\nG21 \t\t;metric values \nG90 \t\t;absolute positioning \nM107 \t\t;start with the fan off \nG28 Z0 \t\t;move Z to min endstops \nG28 X0 Y0 \t;move X/Y to min endstops \nG1 X0 Y0 Z5 F5000 \t;safety Z axis movement\n\nT0\nG4 P1\nG4 P2\nG4 P3\n\nG29  \t;Auto Bed Level\nM500  \t;Save Bed Level\n\n; Extrude purge line\nG1 X0 Y0 F10000\nG92 E0 ; reset extruder position\nG0 Z0.2 F500 ; purge\nG0 X15 E2.5 F500 ; purge\nG92 E0 ; reset extruder position\nG0 X25 E2.5 F650 ; purge\nG92 E0 ; reset extruder position\nG0 X35 E2.5 F800 ; purge\nG0 X38 Z0.05 F8000 ; wipe, move close to the bed\nG0 X41 Z0.2 F8000 ; wipe, move quickly away from the bed\nG1 X0 Y0 Z3 F5000 \t;safety Z axis movement\nG92 E0 ; zero the extruded length again\n"
+        },
+        "machine_disallowed_areas": {
+            "value": "[[[-(machine_width / 2), machine_depth / 2], [-(machine_width / 2), -machine_depth / 2], [-(machine_width / 2) + abs(machine_head_with_fans_polygon[0][0]), -machine_depth / 2], [-(machine_width / 2) + abs(machine_head_with_fans_polygon[0][0]), machine_depth / 2]], [[machine_width / 2 - abs(machine_head_with_fans_polygon[2][0]), machine_depth / 2], [machine_width / 2 - abs(machine_head_with_fans_polygon[2][0]), -machine_depth / 2], [machine_width / 2, -machine_depth / 2], [machine_width / 2, machine_depth / 2]]]"
+        },
+        "prime_tower_enable": {
+            "value": "extruders_enabled_count > 1"
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "version": 2,
+    "name": "Fracktal Volterra 400",
+    "inherits": "base_fracktal_dual_printer",
+    "metadata": {
+        "visible": true,
+        "manufacturer": "Fracktal Works",
+        "preferred_quality_type": "normal",
+        "author": "Fracktal Works"
+    },
+    "overrides": {
+        "default_material_print_temperature": {
+            "maximum_value": "450",
+            "maximum_value_warning": "350"
+        },
+        "machine_depth": {
+            "default_value": 400
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_name": {
+            "default_value": "Volterra 400"
+        },
+        "machine_width": {
+            "default_value": 400
+        },
+        "machine_max_feedrate_x": {
+            "value": 150
+        },
+        "machine_max_feedrate_y": {
+            "value": 150
+        }
+    }
+}
