@@ -91,16 +91,20 @@ class SafeWorkspaceChecker:
     def _onWriteSuccess(self, device) -> None:
         """Called when any output device finishes a successful write."""
         if self._pending_workspace_save:
-            self._workspace_needs_saving = False
             self._pending_workspace_save = False
             if self._close_after_save:
-                self._close_after_save = False
-                self._application.checkAndExitApplication()
+                self._application.callLater(self._finishSaveAndClose)
+            else:
+                self._workspace_needs_saving = False
         else:
             self._slice_exported = True
             if self._close_after_export:
-                self._close_after_export = False
-                self._application.checkAndExitApplication()
+                self._application.callLater(self._application.checkAndExitApplication)
+
+    def _finishSaveAndClose(self) -> None:
+        """Deferred: clear the dirty flag then restart the exit check."""
+        self._workspace_needs_saving = False
+        self._application.checkAndExitApplication()
 
 
     def markPendingWorkspaceSave(self) -> None:
