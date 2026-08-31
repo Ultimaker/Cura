@@ -32,6 +32,7 @@ from UM.Message import Message
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.OutputDevice.OutputDeviceError import UserCanceledError, DeviceBusyError
 from UM.OutputDevice.ProjectOutputDevice import ProjectOutputDevice
 from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
@@ -125,6 +126,7 @@ from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
 from .Arranging.Nest2DArrange import Nest2DArrange
 from .AutoSave import AutoSave
+from .SafeWorkspaceChecker import SafeWorkspaceChecker
 from .Machines.Models.CompatibleMachineModel import CompatibleMachineModel
 from .Machines.Models.MachineListModel import MachineListModel
 from .Machines.Models.ActiveIntentQualitiesModel import ActiveIntentQualitiesModel
@@ -266,6 +268,7 @@ class CuraApplication(QtApplication):
 
         # Backups
         self._auto_save = None  # type: Optional[AutoSave]
+        self._safe_workspace_checker = None  # type: Optional[SafeWorkspaceChecker]
         self._enable_save = True
 
         self._container_registry_class = CuraContainerRegistry
@@ -609,6 +612,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("mesh/scale_tiny_meshes", True)
         preferences.addPreference("cura/dialog_on_project_save", True)
         preferences.addPreference("cura/asked_dialog_on_project_save", False)
+        preferences.addPreference("cura/safe_workspace_enabled", True)
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
         preferences.addPreference("cura/use_multi_build_plate", False)
@@ -721,6 +725,8 @@ class CuraApplication(QtApplication):
     def triggerNextExitCheck(self) -> None:
         self._on_exit_callback_manager.triggerNextCallback()
 
+    showSafeWorkspaceDialog = pyqtSignal(bool, bool, bool, arguments = ["workspaceNotSaved", "sliceNotExported", "isSlicing"])
+
     showConfirmExitDialog = pyqtSignal(str, arguments = ["message"])
 
     def setConfirmExitDialogCallback(self, callback: Optional[Callable[[bool], None]]) -> None:
@@ -730,6 +736,94 @@ class CuraApplication(QtApplication):
     def callConfirmExitDialogCallback(self, yes_or_no: bool) -> None:
         if self._confirm_exit_dialog_callback is not None:
             self._confirm_exit_dialog_callback(yes_or_no)
+
+    @pyqtSlot()
+    def notifyWorkspaceSaveStarted(self) -> None:
+        """Call this from QML just before triggering a workspace save so that
+        the SafeWorkspaceChecker can attribute the subsequent writeSuccess signal
+        to a workspace save rather than a slice-result export."""
+        if self._safe_workspace_checker is not None:
+            self._safe_workspace_checker.markPendingWorkspaceSave()
+
+    @pyqtSlot()
+    def saveProjectFromSafeWorkspace(self) -> None:
+        """Save the workspace to a local file and cancel the current close attempt.
+        The SafeWorkspaceDialog calls this when the user chooses \"Save Project\".
+        The application close attempt is cancelled; the user must quit again after
+        saving (at which point conditions will be re-evaluated)."""
+        self.getOnExitCallbackManager().resetCurrentState()
+        if self._safe_workspace_checker is not None:
+            self._safe_workspace_checker.markPendingWorkspaceSave()
+        self.callLater(self._saveWorkspaceToLocalFile)
+
+    def _saveWorkspaceToLocalFile(self) -> None:
+        """Trigger a local-file workspace save (shows a file picker)."""
+        device = self.getOutputDeviceManager().getOutputDevice("local_file")
+        if device is None:
+            if self._safe_workspace_checker is not None:
+                self._safe_workspace_checker.clearPendingWorkspaceSave()
+            return
+        root = self.getController().getScene().getRoot()
+        print_info = self.getPrintInformation()
+        file_name = print_info.jobName if print_info is not None else ""
+        try:
+            device.requestWrite(
+                [root],
+                file_name,
+                ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+                self.getWorkspaceFileHandler(),
+                preferred_mimetypes="application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+            )
+        except UserCanceledError:
+            if self._safe_workspace_checker is not None:
+                self._safe_workspace_checker.clearPendingWorkspaceSave()
+        except DeviceBusyError:
+            if self._safe_workspace_checker is not None:
+                self._safe_workspace_checker.clearPendingWorkspaceSave()
+
+    @pyqtSlot()
+    def exportSliceFromSafeWorkspace(self) -> None:
+        """Export the slice result to the active output device and cancel the
+        current close attempt.  The SafeWorkspaceDialog calls this when the user
+        chooses \"Export Slice Result\"."""
+        self.getOnExitCallbackManager().resetCurrentState()
+        self.callLater(self._exportSliceViaActiveDevice)
+
+    def _exportSliceViaActiveDevice(self) -> None:
+        """Trigger a slice-result export to the currently active output device."""
+        device = self.getOutputDeviceManager().getActiveDevice()
+        if device is None:
+            return
+        root = self.getController().getScene().getRoot()
+        print_info = self.getPrintInformation()
+        file_name = print_info.jobName if print_info is not None else ""
+        machine_manager = self.getMachineManager()
+        preferred_formats = ""
+        if machine_manager is not None and machine_manager.activeMachine is not None:
+            preferred_formats = machine_manager.activeMachine.preferred_output_file_formats
+        try:
+            device.requestWrite(
+                [root],
+                file_name,
+                True,
+                None,
+                preferred_mimetypes=preferred_formats,
+                filter_by_machine=True,
+            )
+        except UserCanceledError:
+            pass
+        except DeviceBusyError:
+            pass
+
+    @pyqtSlot()
+    def discardAndCloseFromSafeWorkspace(self) -> None:
+        """Discard unsaved changes and proceed with closing the application."""
+        self.triggerNextExitCheck()
+
+    @pyqtSlot()
+    def cancelExitFromSafeWorkspace(self) -> None:
+        """Cancel the pending close operation."""
+        self.getOnExitCallbackManager().resetCurrentState()
 
     showPreferencesWindow = pyqtSignal()
     """Signal to connect preferences action in QML"""
@@ -957,6 +1051,8 @@ class CuraApplication(QtApplication):
 
         self._auto_save = AutoSave(self)
         self._auto_save.initialize()
+
+        self._safe_workspace_checker = SafeWorkspaceChecker(self)
 
         self.exec()
 

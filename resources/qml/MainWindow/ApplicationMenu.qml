@@ -82,7 +82,11 @@ Item
         WorkspaceSummaryDialog
         {
             property var args
-            onAccepted: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
+            onAccepted:
+            {
+                CuraApplication.notifyWorkspaceSaveStarted()
+                UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
+            }
             selfDestroy: true
         }
     }

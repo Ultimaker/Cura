@@ -586,6 +586,25 @@ UM.MainWindow
         }
     }
 
+    Component
+    {
+        id: safeWorkspaceDialogComponent
+        SafeWorkspaceDialog { selfDestroy: true }
+    }
+
+    Connections
+    {
+        target: CuraApplication
+        function onShowSafeWorkspaceDialog(workspaceNotSaved, sliceNotExported, isSlicing)
+        {
+            var dialog = safeWorkspaceDialogComponent.createObject(base);
+            dialog.workspaceNotSaved = workspaceNotSaved;
+            dialog.sliceNotExported = sliceNotExported;
+            dialog.isSlicing = isSlicing;
+            dialog.open();
+        }
+    }
+
     Connections
     {
         target: Cura.Actions.quit

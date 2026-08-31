@@ -53,6 +53,7 @@ Cura.Menu
             }
             else
             {
+                CuraApplication.notifyWorkspaceSaveStarted()
                 UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
             }
         }

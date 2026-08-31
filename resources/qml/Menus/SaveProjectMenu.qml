@@ -40,6 +40,7 @@ Cura.Menu
                 }
                 else
                 {
+                    CuraApplication.notifyWorkspaceSaveStarted()
                     UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, args)
                 }
             }
@@ -60,7 +61,11 @@ Cura.Menu
         {
             property var args
             property var deviceId
-            onAccepted: UM.OutputDeviceManager.requestWriteToDevice(deviceId, PrintInformation.jobName, args)
+            onAccepted:
+            {
+                CuraApplication.notifyWorkspaceSaveStarted()
+                UM.OutputDeviceManager.requestWriteToDevice(deviceId, PrintInformation.jobName, args)
+            }
             selfDestroy: true
         }
     }

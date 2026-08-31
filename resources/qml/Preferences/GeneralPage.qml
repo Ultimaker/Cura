@@ -144,6 +144,9 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("local_file/use_fixed_dialog_paths")
         fixedPathsCheckbox.checked = boolCheck(UM.Preferences.getValue("local_file/use_fixed_dialog_paths"))
+
+        UM.Preferences.resetPreference("cura/safe_workspace_enabled")
+        safeWorkspaceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/safe_workspace_enabled"))
     }
 
     buttons: [
@@ -825,6 +828,21 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check", "Show summary dialog when saving project")
                     checked: boolCheck(UM.Preferences.getValue("cura/dialog_on_project_save"))
                     onCheckedChanged: UM.Preferences.setValue("cura/dialog_on_project_save", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "When enabled, Cura will show a dialog before closing if there are unsaved project changes or an un-exported slice result.")
+
+                UM.CheckBox
+                {
+                    id: safeWorkspaceCheckbox
+                    text: catalog.i18nc("@option:check", "Warn before closing with unsaved changes")
+                    checked: boolCheck(UM.Preferences.getValue("cura/safe_workspace_enabled"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/safe_workspace_enabled", checked)
                 }
             }
 
