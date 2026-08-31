@@ -8,6 +8,7 @@ import QtQuick.Layouts 1.3
 import UM 1.5 as UM
 import Cura 1.6 as Cura
 import ".."
+import "../../Settings"
 
 Item
 {
@@ -17,6 +18,72 @@ Item
     property bool multipleExtruders: extrudersModel.count > 1
 
     property var extrudersModel: CuraApplication.getExtrudersModel()
+
+    property string selectedCategoryKey:
+    {
+        if (categoryTabs.count > 0 && categoryTabs.currentIndex >= 0)
+        {
+            var item = categoryTabs.itemAt(categoryTabs.currentIndex)
+            if (item) { return item.key }
+        }
+        return "_overview"
+    }
+
+    UM.I18nCatalog { id: catalog; name: "cura" }
+
+    UM.SettingDefinitionsModel
+    {
+        id: categoriesModel
+        containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id : ""
+        showAll:       true
+        showAncestors: true
+        visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+        exclude:   ["machine_settings", "command_line_settings", "ppr"]
+        expanded:  []
+    }
+
+    TabColumn
+    {
+        id: categoryTabs
+        width: 3 * UM.Theme.getSize("default_margin").width
+        z: 1 // Render above the content rectangle so the active tab can cover its top border
+
+        anchors
+        {
+            top:        tabBar.visible ? tabBar.bottom : intent.bottom
+            topMargin:  tabBar.visible ? -(UM.Theme.getSize("default_lining").height) : UM.Theme.getSize("default_margin").height
+            bottom:     parent.bottom
+            left:       parent.left
+            leftMargin: 2 * UM.Theme.getSize("default_lining").width + UM.Theme.getSize("default_margin").width - width
+        }
+
+        TabColumnButton
+        {
+            key:        "_overview"
+            text:       catalog.i18nc("@label:category menu label", "Overview")
+            iconSource: UM.Theme.getIcon("Sliders")
+            checked:    true
+        }
+
+        TabColumnButton
+        {
+            key:        "_user"
+            text:       catalog.i18nc("@label:category menu label", "Changed settings")
+            iconSource: UM.Theme.getIcon("ArrowReset")
+        }
+
+        Repeater
+        {
+            model: categoriesModel
+
+            TabColumnButton
+            {
+                key:        model.key
+                text:       model.label
+                iconSource: UM.Theme.getIcon(model.icon)
+            }
+        }
+    }
 
     Item
     {
@@ -244,7 +311,7 @@ Item
         anchors
         {
             top: tabBar.visible ? tabBar.bottom : intent.bottom
-            topMargin: -UM.Theme.getSize("default_lining").width
+            topMargin: tabBar.visible ? -UM.Theme.getSize("default_lining").width : UM.Theme.getSize("default_margin").height
             left: parent.left
             leftMargin: parent.padding
             right: parent.right
@@ -252,9 +319,8 @@ Item
             bottom: parent.bottom
         }
         z: tabBar.z - 1
-        // Don't show the border when only one extruder
 
-        border.color: tabBar.visible ? UM.Theme.getColor("lining") : "transparent"
+        border.color: UM.Theme.getColor("border_main")
         border.width: UM.Theme.getSize("default_lining").width
 
         color: UM.Theme.getColor("main_background")
@@ -274,6 +340,7 @@ Item
                 // Compensate for the negative margin in the parent
                 bottomMargin: UM.Theme.getSize("default_lining").width
             }
+            selectedKey: customPrintSetup.selectedCategoryKey
         }
     }
 }

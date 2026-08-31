@@ -1,8 +1,8 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2026 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 2.1
+import QtQuick
+import QtQuick.Controls
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -13,191 +13,251 @@ Item
 {
     id: settingsView
 
-    property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
-    property bool findingSettings
     property bool loseFocusOnScrollPositionChange: true
+
+    UM.I18nCatalog
+    {
+        id: catalog
+        name: "cura"
+    }
+
+    readonly property var settingPreferenceVisibilityHandler: TabbedSettingsManager.getVisibilityHandler("ExtendedSettingPreference")
+    readonly property var perCategoryVisibilityHandler: TabbedSettingsManager.getVisibilityHandler("PerCategory")
+    readonly property var instanceContainerVisibilityHandler: TabbedSettingsManager.getVisibilityHandler("InstanceContainer")
+
+    property string selectedKey: "_overview"
+
+    onSelectedKeyChanged:
+    {
+        clearFilter()
+
+        // Restore overview collapse-state when entering Overview; expand everything otherwise.
+        definitionsModel.expanded = (selectedKey === "_overview") ? CuraApplication.expandedCategories : ["*"]
+
+        instanceContainerVisibilityHandler.active = (selectedKey === "_user")
+        instanceContainerVisibilityHandler.containerIndex = 0
+
+        if (selectedKey === "_overview")
+        {
+            definitionsModel.visibilityHandler = settingPreferenceVisibilityHandler
+        }
+        else if (selectedKey === "_user")
+        {
+            definitionsModel.visibilityHandler = instanceContainerVisibilityHandler
+        }
+        else
+        {
+            perCategoryVisibilityHandler.rootKey = selectedKey
+            definitionsModel.visibilityHandler = perCategoryVisibilityHandler
+        }
+    }
+
+    Component.onCompleted:
+    {
+        definitionsModel.visibilityHandler = settingPreferenceVisibilityHandler
+        definitionsModel.expanded = CuraApplication.expandedCategories
+    }
+
+    function clearFilter()
+    {
+        settingsSearchTimer.stop()
+        filter.text = ""
+        filter.editingFinished()
+    }
 
     Item
     {
-        id: filterContainer
+        id: filterRow
+
+        property bool findingSettings: false
 
         anchors
         {
             top: parent.top
             left: parent.left
-            right: settingVisibilityMenu.left
+            right: parent.right
         }
         height: UM.Theme.getSize("print_setup_big_item").height
 
-        Timer
+        Item
         {
-            id: settingsSearchTimer
-            onTriggered: filter.editingFinished()
-            interval: 500
-            running: false
-            repeat: false
-        }
+            id: filterContainer
 
-        Cura.TextField
-        {
-            id: filter
-            implicitHeight: parent.height
-            anchors.left: parent.left
-            anchors.right: parent.right
-            topPadding: height / 4
-            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
-            placeholderText: catalog.i18nc("@label:textbox", "Search settings")
-            font: UM.Theme.getFont("default_italic")
-
-            property var expandedCategories
-            property bool lastFindingSettings: false
-
-            UM.ColorImage
+            anchors
             {
-                id: searchIcon
+                top: parent.top
+                left: parent.left
+                right: settingVisibilityMenu.left
+            }
+            height: UM.Theme.getSize("print_setup_big_item").height
 
-                anchors
-                {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_margin").width
-                }
-                source: UM.Theme.getIcon("Magnifier")
-                height: UM.Theme.getSize("small_button_icon").height
-                width: height
-                color: UM.Theme.getColor("text")
+            Timer
+            {
+                id: settingsSearchTimer
+                onTriggered: filter.editingFinished()
+                interval: 500
+                running: false
+                repeat: false
             }
 
-            onTextChanged: settingsSearchTimer.restart()
-
-            onEditingFinished:
+            Cura.TextField
             {
-                definitionsModel.filter = {"i18n_label|i18n_description" : "*" + text}
-                findingSettings = (text.length > 0)
-                if (findingSettings != lastFindingSettings)
-                {
-                    updateDefinitionModel()
-                    lastFindingSettings = findingSettings
-                }
-            }
+                id: filter
+                height: parent.height
+                anchors.left: parent.left
+                anchors.right: parent.right
+                topPadding: height / 4
+                leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
+                placeholderText: catalog.i18nc("@label:textbox", "Search settings")
+                font: UM.Theme.getFont("default_italic")
 
-            Keys.onEscapePressed: filter.text = ""
+                property var  expandedCategories
+                property bool lastFindingSettings: false
 
-            function updateDefinitionModel()
-            {
-                if (findingSettings)
+                UM.ColorImage
                 {
-                    expandedCategories = definitionsModel.expanded.slice()
-                    definitionsModel.expanded = [""]  // keep categories closed while to prevent render while making settings visible one by one
-                    definitionsModel.showAncestors = true
-                    definitionsModel.showAll = true
-                    definitionsModel.expanded = ["*"]
+                    id: searchIcon
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    source: UM.Theme.getIcon("Magnifier")
+                    height: UM.Theme.getSize("small_button_icon").height
+                    width: height
+                    color: UM.Theme.getColor("text")
                 }
-                else
+
+                onTextChanged: settingsSearchTimer.restart()
+
+                onEditingFinished:
                 {
-                    if (expandedCategories)
+                    definitionsModel.filter = {"i18n_label|i18n_description" : "*" + text}
+                    filterRow.findingSettings = (text.length > 0)
+                    if (filterRow.findingSettings !== lastFindingSettings)
                     {
-                        definitionsModel.expanded = expandedCategories
+                        updateDefinitionModel()
+                        lastFindingSettings = filterRow.findingSettings
                     }
-                    definitionsModel.showAncestors = false
-                    definitionsModel.showAll = false
+                }
+
+                Keys.onEscapePressed: settingsView.clearFilter()
+
+                function updateDefinitionModel()
+                {
+                    if (filterRow.findingSettings)
+                    {
+                        expandedCategories = definitionsModel.expanded.slice()
+                        definitionsModel.expanded = [""]  // keep closed while building the list
+                        definitionsModel.showAncestors = true
+                        definitionsModel.showAll = false  // respect current tab's visibility handler
+                        definitionsModel.expanded = ["*"]
+                    }
+                    else
+                    {
+                        if (expandedCategories)
+                        {
+                            definitionsModel.expanded = expandedCategories
+                        }
+                        definitionsModel.showAncestors = false
+                        definitionsModel.showAll = false
+                    }
+                }
+            }
+
+            UM.SimpleButton
+            {
+                id: clearFilterButton
+                iconSource: UM.Theme.getIcon("Cancel")
+                visible: filterRow.findingSettings
+
+                height: Math.round(parent.height * 0.4)
+                width: visible ? height : 0
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+                color: UM.Theme.getColor("setting_control_button")
+                hoverColor: UM.Theme.getColor("setting_control_button_hover")
+
+                onClicked:
+                {
+                    settingsView.clearFilter()
+                    filter.forceActiveFocus()
                 }
             }
         }
 
-        UM.SimpleButton
+        SettingVisibilityPresetsMenu
         {
-            id: clearFilterButton
-            iconSource: UM.Theme.getIcon("Cancel")
-            visible: findingSettings
+            id: settingVisibilityPresetsMenu
+            onCollapseAllCategories:
+            {
+                settingsView.clearFilter()
+                definitionsModel.collapseAllCategories()
+            }
+        }
 
-            height: Math.round(parent.height * 0.4)
-            width: visible ? height : 0
+        UM.BurgerButton
+        {
+            id: settingVisibilityMenu
 
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenter: filterContainer.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-            color: UM.Theme.getColor("setting_control_button")
-            hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
             onClicked:
             {
-                filter.text = ""
-                filter.forceActiveFocus()
+                settingVisibilityPresetsMenu.popup(
+                    popupContainer,
+                    -settingVisibilityPresetsMenu.width + UM.Theme.getSize("default_margin").width,
+                    settingVisibilityMenu.height
+                )
             }
         }
-    }
 
-    SettingVisibilityPresetsMenu
-    {
-        id: settingVisibilityPresetsMenu
-        onCollapseAllCategories:
+        Item
         {
-            settingsSearchTimer.stop()
-            filter.text = "" // clear search field
-            filter.editingFinished()
-            definitionsModel.collapseAllCategories()
+            // Workaround: prevents the burger button from being rescaled when a popup is attached.
+            id: popupContainer
+            anchors.bottom: settingVisibilityMenu.bottom
+            anchors.right:  settingVisibilityMenu.right
         }
     }
 
-    UM.BurgerButton
-    {
-        id: settingVisibilityMenu
-
-        anchors
-        {
-            verticalCenter: filterContainer.verticalCenter
-            right: parent.right
-        }
-
-        onClicked:
-        {
-            settingVisibilityPresetsMenu.popup(
-                popupContainer,
-                -settingVisibilityPresetsMenu.width + UM.Theme.getSize("default_margin").width,
-                settingVisibilityMenu.height
-            )
-        }
-    }
-    Item
-    {
-        // Work around to prevent the buttom from being rescaled if a popup is attached
-        id: popupContainer
-        anchors.bottom: settingVisibilityMenu.bottom
-        anchors.right: settingVisibilityMenu.right
-    }
-
-    // Mouse area that gathers the scroll events to not propagate it to the main view.
     MouseArea
     {
         anchors.fill: contents
         acceptedButtons: Qt.AllButtons
-        onWheel: (wheel) => { wheel.accepted = true }
+        onWheel: function(wheel)
+        {
+            wheel.accepted = true
+        }
     }
 
     ListView
     {
         id: contents
         maximumFlickVelocity: 1000 * screenScaleFactor
+        clip: true
+        cacheBuffer: 1000000   // Cache everything to avoid reloads while scrolling.
+
         anchors
         {
-            top: filterContainer.bottom
+            top: filterRow.bottom
             topMargin: UM.Theme.getSize("default_margin").height
             bottom: parent.bottom
             right: parent.right
             left: parent.left
         }
-        clip: true
-        cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
+
         ScrollBar.vertical: UM.ScrollBar
         {
             id: scrollBar
-            onPositionChanged: {
-                // This removes focus from items when scrolling.
-                // This fixes comboboxes staying open and scrolling container
-                if (!activeFocus && !filter.activeFocus && loseFocusOnScrollPositionChange) {
-                    forceActiveFocus();
+            onPositionChanged:
+            {
+                // Remove focus from controls while scrolling so combo-box dropdowns close.
+                if (!activeFocus && !filter.activeFocus && loseFocusOnScrollPositionChange)
+                {
+                    forceActiveFocus()
                 }
             }
         }
@@ -205,16 +265,15 @@ Item
         model: UM.SettingDefinitionsModel
         {
             id: definitionsModel
-            containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id: ""
-            visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-            exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settings are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
-            expanded: CuraApplication.expandedCategories
+            containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id : ""
+            // Initial handler is the preferences (overview) handler; switched by onSelectedKeyChanged.
+            visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+            exclude: ["machine_settings", "command_line_settings", "ppr",
+                        "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"]
             onExpandedChanged:
             {
-                if (!findingSettings)
+                if (!filterRow.findingSettings && selectedKey === "_overview")
                 {
-                    // Do not change expandedCategories preference while filtering settings
-                    // because all categories are expanded while filtering
                     CuraApplication.setExpandedCategories(expanded)
                 }
             }
@@ -223,13 +282,15 @@ Item
 
         property int indexWithFocus: -1
         property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
+
         delegate: Loader
         {
             id: delegate
 
             width: contents.width - (scrollBar.width + UM.Theme.getSize("narrow_margin").width)
-            opacity: enabled ? 1 : 0
-            enabled: provider.properties.enabled === "True"
+            // In the Changed Settings tab show every changed setting, even if its parent is disabled.
+            opacity: (selectedKey === "_user" || enabled) ? 1 : 0
+            enabled: selectedKey === "_user" || provider.properties.enabled === "True"
 
             property var definition: model
             property var settingDefinitionsModel: definitionsModel
@@ -237,15 +298,23 @@ Item
             property var globalPropertyProvider: inheritStackProvider
             property bool externalResetHandler: false
 
-            //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
-            //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
-            //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+            // Disable async loading for types that break when loaded asynchronously.
             asynchronous: model.type !== "enum" && model.type !== "extruder" && model.type !== "optional_extruder"
             active: model.type !== undefined
 
+            // Reactively disable depth indentation for the flat Changed-settings list.
+            // A Binding (not onLoaded) is required so it re-applies when cached delegates are reused.
+            Binding
+            {
+                target: delegate.item
+                property: "doDepthIndentation"
+                value: selectedKey !== "_user"
+                when: delegate.status === Loader.Ready
+            }
+
             source:
             {
-                switch(model.type)
+                switch (model.type)
                 {
                     case "int":
                         return "SettingTextField.qml"
@@ -261,67 +330,53 @@ Item
                         return "SettingCheckBox.qml"
                     case "str":
                         return "SettingTextField.qml"
-                    case "category":
-                        return "SettingCategory.qml"
                     case "optional_extruder":
                         return "SettingOptionalExtruder.qml"
+                    case "category":
+                        return selectedKey === "_overview" ? "SettingCategory.qml" : "CategoryHeader.qml"
                     default:
                         return "SettingUnknown.qml"
                 }
             }
 
-            // Binding to ensure that the right containerstack ID is set for the provider.
-            // This ensures that if a setting has a limit_to_extruder id (for instance; Support speed points to the
-            // extruder that actually prints the support, as that is the setting we need to use to calculate the value)
+            // Keep containerStackId in sync with the active extruder / limit_to_extruder.
             Binding
             {
                 target: provider
                 property: "containerStackId"
-                when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0);
+                when: model.settable_per_extruder ||(inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0)
                 value:
                 {
-                    // Associate this binding with Cura.MachineManager.activeMachine.id in the beginning so this
-                    // binding will be triggered when activeMachineId is changed too.
-                    // Otherwise, if this value only depends on the extruderIds, it won't get updated when the
-                    // machine gets changed.
-
                     if (!model.settable_per_extruder)
                     {
-                        //Not settable per extruder or there only is global, so we must pick global.
                         return contents.activeMachineId
                     }
                     if (inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0)
                     {
-                        //We have limit_to_extruder, so pick that stack.
                         return Cura.ExtruderManager.extruderIds[inheritStackProvider.properties.limit_to_extruder]
                     }
                     if (Cura.ExtruderManager.activeExtruderStackId)
                     {
-                        //We're on an extruder tab. Pick the current extruder.
                         return Cura.ExtruderManager.activeExtruderStackId
                     }
-                    //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
                     return contents.activeMachineId
                 }
             }
 
-            // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
-            // so we bypass that to make a dedicated provider).
             UM.SettingPropertyProvider
             {
                 id: inheritStackProvider
                 containerStackId: contents.activeMachineId
                 key: model.key
-                watchedProperties: [ "limit_to_extruder" ]
+                watchedProperties: ["limit_to_extruder"]
             }
 
             UM.SettingPropertyProvider
             {
                 id: provider
-
                 containerStackId: contents.activeMachineId
                 key: model.key
-                watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve", "unit" ]
+                watchedProperties: ["value", "enabled", "state", "validationState", "settable_per_extruder", "resolve", "unit"]
                 storeIndex: 0
                 removeUnusedValue: model.resolve === undefined
             }
@@ -329,19 +384,26 @@ Item
             Connections
             {
                 target: item
+
                 function onContextMenuRequested()
                 {
                     contextMenu.key = model.key
-                    contextMenu.settingVisible = model.visible
+                    contextMenu.settingVisible = settingPreferenceVisibilityHandler.getSettingVisible(model.key)
                     contextMenu.provider = provider
-                    contextMenu.popup()                    //iconName: model.icon_name
+                    contextMenu.popup()
                 }
-                function onShowTooltip(text) { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
-                function onHideTooltip() { base.hideTooltip() }
+                function onShowTooltip(text)
+                {
+                    base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text)
+                }
+                function onHideTooltip()
+                {
+                    base.hideTooltip()
+                }
                 function onShowAllHiddenInheritedSettings(category_id)
                 {
                     var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
-                    for(var i = 0; i < children_with_override.length; i++)
+                    for (var i = 0; i < children_with_override.length; i++)
                     {
                         definitionsModel.setVisible(children_with_override[i], true)
                     }
@@ -357,7 +419,7 @@ Item
                     if (forward == undefined || forward)
                     {
                         contents.currentIndex = contents.indexWithFocus + 1
-                        while(contents.currentItem && contents.currentItem.height <= 0)
+                        while (contents.currentItem && contents.currentItem.height <= 0)
                         {
                             contents.currentIndex++
                         }
@@ -369,7 +431,7 @@ Item
                     else
                     {
                         contents.currentIndex = contents.indexWithFocus - 1
-                        while(contents.currentItem && contents.currentItem.height <= 0)
+                        while (contents.currentItem && contents.currentItem.height <= 0)
                         {
                             contents.currentIndex--
                         }
@@ -381,7 +443,7 @@ Item
                 }
                 function onSetScrollPositionChangeLoseFocus(lose_focus)
                 {
-                    loseFocusOnScrollPositionChange = lose_focus;
+                    settingsView.loseFocusOnScrollPositionChange = lose_focus
                 }
             }
         }
@@ -412,15 +474,12 @@ Item
                 onTriggered: Cura.MachineManager.copyAllValuesToExtruders()
             }
 
-            Cura.MenuSeparator
-            {
-                visible: machineExtruderCount.properties.value > 1
-            }
+            Cura.MenuSeparator { visible: machineExtruderCount.properties.value > 1 }
 
             Instantiator
             {
                 id: customMenuItems
-                model: Cura.SidebarCustomMenuItemsModel { }
+                model: Cura.SidebarCustomMenuItemsModel {}
                 Cura.MenuItem
                 {
                     text: model.name
@@ -429,60 +488,34 @@ Item
                         customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
                     }
                 }
-                onObjectAdded: function(index, object) {
-                    contextMenu.insertItem(index, object);
-                    if (Qt.platform.os == "osx") object.text += " ";
-                }
-                onObjectRemoved: function(index, object) { contextMenu.removeItem(object); }
-            }
-
-            Cura.MenuSeparator
-            {
-                visible: customMenuItems.count > 0
-            }
-
-            Cura.MenuItem
-            {
-                //: Settings context menu action
-                visible: !findingSettings
-                text: catalog.i18nc("@action:menu", "Hide this setting")
-                onTriggered:
+                onObjectAdded: function(index, object)
                 {
-                    definitionsModel.hide(contextMenu.key)
+                    contextMenu.insertItem(index, object)
+                    if (Qt.platform.os === "osx") object.text += " "
+                }
+                onObjectRemoved: function(index, object)
+                {
+                    contextMenu.removeItem(object)
                 }
             }
+
+            Cura.MenuSeparator { visible: customMenuItems.count > 0 }
+
             Cura.MenuItem
             {
-                //: Settings context menu action
                 text:
                 {
-                    if (contextMenu.settingVisible)
-                    {
-                        return catalog.i18nc("@action:menu", "Don't show this setting")
-                    }
-                    else
-                    {
-                        return catalog.i18nc("@action:menu", "Keep this setting visible")
-                    }
+                    return contextMenu.settingVisible ? catalog.i18nc("@action:menu", "Remove from visible settings") : catalog.i18nc("@action:menu", "Add to visible settings")
                 }
-                visible: findingSettings
                 onTriggered:
                 {
-                    if (contextMenu.settingVisible)
-                    {
-                        definitionsModel.hide(contextMenu.key)
-                    }
-                    else
-                    {
-                        definitionsModel.show(contextMenu.key)
-                    }
+                    settingPreferenceVisibilityHandler.setSettingVisible(contextMenu.key, !contextMenu.settingVisible)
                 }
             }
+
             Cura.MenuItem
             {
-                //: Settings context menu action
-                text: catalog.i18nc("@action:menu", "Configure setting visibility...")
-
+                text: catalog.i18nc("@action:menu", "Configure visible settings...")
                 onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu)
             }
         }
@@ -490,11 +523,33 @@ Item
         UM.SettingPropertyProvider
         {
             id: machineExtruderCount
-
             containerStackId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
             key: "machine_extruder_count"
-            watchedProperties: [ "value" ]
+            watchedProperties: ["value"]
             storeIndex: 0
+        }
+    }
+
+    Item
+    {
+        anchors
+        {
+            top: filterRow.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+        visible: selectedKey === "_user" && contents.count === 0
+
+        UM.Label
+        {
+            anchors.centerIn: parent
+            width: parent.width - 2 * UM.Theme.getSize("default_margin").width
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WordWrap
+            text: catalog.i18nc("@info:status", "No settings have been changed from the active profile defaults.")
+            color: UM.Theme.getColor("text_inactive")
         }
     }
 }
