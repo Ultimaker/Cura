@@ -93,17 +93,34 @@ class SafeWorkspaceChecker:
         if self._pending_workspace_save:
             self._workspace_needs_saving = False
             self._pending_workspace_save = False
+            if self._close_after_save:
+                self._close_after_save = False
+                self._application.checkAndExitApplication()
         else:
             self._slice_exported = True
+            if self._close_after_export:
+                self._close_after_export = False
+                self._application.checkAndExitApplication()
 
 
     def markPendingWorkspaceSave(self) -> None:
         """Call this just before triggering a workspace write operation."""
         self._pending_workspace_save = True
 
+    def markPendingWorkspaceSaveAndClose(self) -> None:
+        """Like markPendingWorkspaceSave, but also re-triggers the exit flow on success."""
+        self._pending_workspace_save = True
+        self._close_after_save = True
+
+    def markSliceExportAndClose(self) -> None:
+        """Call before triggering a slice export from the safe workspace dialog."""
+        self._close_after_export = True
+
     def clearPendingWorkspaceSave(self) -> None:
         """Call this if a workspace write was cancelled or failed."""
         self._pending_workspace_save = False
+        self._close_after_save = False
+        self._close_after_export = False
 
     def _checkSafeWorkspaceOnExit(self) -> None:
         """On-exit callback: show the safe-workspace dialog when needed."""

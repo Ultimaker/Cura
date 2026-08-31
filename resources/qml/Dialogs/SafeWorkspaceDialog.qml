@@ -17,9 +17,9 @@ UM.Dialog
     title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
 
     width: UM.Theme.getSize("small_popup_dialog").width
-    height: UM.Theme.getSize("small_popup_dialog").height
-    minimumWidth: width
-    minimumHeight: height
+    height: UM.Theme.getSize("card").height
+    minimumWidth: childrenRect.width + UM.Theme.getSize("default_margin").width * 2
+    minimumHeight: childrenRect.height + UM.Theme.getSize("default_margin").height * 2
     maximumWidth: width
     maximumHeight: height
 
@@ -33,7 +33,12 @@ UM.Dialog
     UM.Label
     {
         id: mainText
-        anchors.fill: parent
+        anchors
+        {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
         wrapMode: Text.WordWrap
         text:
         {
@@ -62,6 +67,26 @@ UM.Dialog
 
     rightButtons:
     [
+        Cura.SecondaryButton
+        {
+            id: cancelButton
+            text: catalog.i18nc("@action:button", "Cancel")
+            onClicked:
+            {
+                base.hide()
+                CuraApplication.cancelExitFromSafeWorkspace()
+            }
+        },
+        Cura.SecondaryButton
+        {
+            id: discardButton
+            text: catalog.i18nc("@action:button", "Discard & Close")
+            onClicked:
+            {
+                base.hide()
+                CuraApplication.discardAndCloseFromSafeWorkspace()
+            }
+        },
         Cura.PrimaryButton
         {
             id: saveProjectButton
@@ -73,7 +98,6 @@ UM.Dialog
                 CuraApplication.saveProjectFromSafeWorkspace()
             }
         },
-
         Cura.PrimaryButton
         {
             id: exportSliceButton
@@ -83,28 +107,6 @@ UM.Dialog
             {
                 base.hide()
                 CuraApplication.exportSliceFromSafeWorkspace()
-            }
-        },
-
-        Cura.SecondaryButton
-        {
-            id: discardButton
-            text: catalog.i18nc("@action:button", "Discard && Close")
-            onClicked:
-            {
-                base.hide()
-                CuraApplication.discardAndCloseFromSafeWorkspace()
-            }
-        },
-
-        Cura.TertiaryButton
-        {
-            id: cancelButton
-            text: catalog.i18nc("@action:button", "Cancel")
-            onClicked:
-            {
-                base.hide()
-                CuraApplication.cancelExitFromSafeWorkspace()
             }
         }
     ]

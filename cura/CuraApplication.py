@@ -753,7 +753,7 @@ class CuraApplication(QtApplication):
         saving (at which point conditions will be re-evaluated)."""
         self.getOnExitCallbackManager().resetCurrentState()
         if self._safe_workspace_checker is not None:
-            self._safe_workspace_checker.markPendingWorkspaceSave()
+            self._safe_workspace_checker.markPendingWorkspaceSaveAndClose()
         self.callLater(self._saveWorkspaceToLocalFile)
 
     def _saveWorkspaceToLocalFile(self) -> None:
@@ -787,6 +787,8 @@ class CuraApplication(QtApplication):
         current close attempt.  The SafeWorkspaceDialog calls this when the user
         chooses \"Export Slice Result\"."""
         self.getOnExitCallbackManager().resetCurrentState()
+        if self._safe_workspace_checker is not None:
+            self._safe_workspace_checker.markSliceExportAndClose()
         self.callLater(self._exportSliceViaActiveDevice)
 
     def _exportSliceViaActiveDevice(self) -> None:
