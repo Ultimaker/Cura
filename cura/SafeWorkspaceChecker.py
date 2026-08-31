@@ -116,9 +116,7 @@ class SafeWorkspaceChecker:
         has_models: bool = len(application.getObjectsModel().getNodes()) > 0
         workspace_not_saved: bool = has_models and self._workspace_needs_saving
 
-        backend = application.getBackend()
-        slice_done: bool = backend is not None and backend.getState() == BackendState.Done
-        slice_not_exported: bool = slice_done and not self._slice_exported
+        slice_not_exported: bool = not self._slice_exported
         is_slicing: bool = self._is_slicing
 
         if not workspace_not_saved and not slice_not_exported and not is_slicing:

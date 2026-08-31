@@ -3,7 +3,6 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.9
-import QtQuick.Layouts 1.3
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -13,6 +12,7 @@ import Cura 1.0 as Cura
 UM.Dialog
 {
     id: base
+    readonly property UM.I18nCatalog catalog: UM.I18nCatalog { name: "cura" }
 
     title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
 
@@ -29,8 +29,6 @@ UM.Dialog
     property bool workspaceNotSaved: false
     property bool sliceNotExported: false
     property bool isSlicing: false
-
-    UM.I18nCatalog { id: catalog; name: "cura" }
 
     UM.Label
     {
