@@ -11,7 +11,6 @@ Cura.Menu
 {
     id: base
     title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
-    property var fileProviderModel: CuraApplication.getFileProviderModel()
 
     Cura.MenuItem
     {
@@ -20,14 +19,17 @@ Cura.Menu
 
     Cura.MenuItem
     {
+        id: itemOpemFileFromDisk
         action: Cura.Actions.open
-        visible: base.fileProviderModel.count == 1
+        visible: !Cura.Actions.hasExtraOpenFileActions
+        enabled: visible
+        text: catalog.i18nc("@action:inmenu menubar:file", "&Open File(s)...")
     }
 
     OpenFilesMenu
     {
-        shouldBeVisible: base.fileProviderModel.count > 1
-        enabled: shouldBeVisible
+        shouldBeVisible: Cura.Actions.hasExtraOpenFileActions
+        title: itemOpemFileFromDisk.text
     }
 
     RecentFilesMenu { }
@@ -35,7 +37,6 @@ Cura.Menu
     Cura.MenuItem
     {
         id: saveWorkspaceMenu
-        shortcut: StandardKey.Save
         text: catalog.i18nc("@title:menu menubar:file", "&Save Project...")
         visible: saveProjectMenu.model.count == 1
         enabled: UM.WorkspaceFileHandler.enabled && saveProjectMenu.model.count == 1

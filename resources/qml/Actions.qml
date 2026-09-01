@@ -85,6 +85,21 @@ Item
     property alias exportProjectForSupport: exportProjectForSupportAction
     property alias showFileLocation: showFileLocationAction
 
+    property list<Action> extraOpenFileActions: []
+    property bool hasExtraOpenFileActions:
+    {
+        for(var extraOpenFileAction of extraOpenFileActions)
+        {
+            if(extraOpenFileAction.enabled)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    property list<Action> setExtruderActions: []
+
     readonly property bool copy_paste_enabled: {
         const all_enabled_packages = CuraApplication.getPackageManager().allEnabledPackages;
         return all_enabled_packages.includes("3MFReader") && all_enabled_packages.includes("3MFWriter");
@@ -513,14 +528,9 @@ Item
     Action
     {
         id: openAction
-        property var fileProviderModel: CuraApplication.getFileProviderModel()
-
-        text: catalog.i18nc("@action:inmenu menubar:file", "&Open File(s)...")
+        text: catalog.i18nc("@action:inmenu menubar:file", "From Disk")
         icon.name: "document-open"
-        // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
-        // enabled instead, and Ctrl+O is assigned to the local file provider
-        shortcut: fileProviderModel.count == 1 ? StandardKey.Open : ""
-        enabled: fileProviderModel.count == 1
+        shortcut: StandardKey.Open
     }
 
     Action

@@ -15,7 +15,7 @@ Cura.Menu
     title: catalog.i18nc("@title:menu menubar:file", "Save Project...")
     property alias model: projectOutputDevices.model
 
-    Instantiator
+    Repeater
     {
         id: projectOutputDevices
         Cura.MenuItem
@@ -43,14 +43,8 @@ Cura.Menu
                     UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, args)
                 }
             }
-            shortcut: model.shortcut
-            enabled: saveProjectMenu.shouldBeVisible
+            // shortcut: model.shortcut
         }
-        onObjectAdded: function(index, object) {
-            saveProjectMenu.insertItem(index, object);
-            if (Qt.platform.os == "osx") object.text += " ";
-        }
-        onObjectRemoved: function(index, object) {  saveProjectMenu.removeItem(object)}
     }
 
     Component

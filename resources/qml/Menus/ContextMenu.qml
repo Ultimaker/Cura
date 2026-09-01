@@ -38,16 +38,14 @@ Cura.Menu
 
     Instantiator
     {
-        model: CuraApplication.getExtrudersModel()
+        model: Cura.Actions.setExtruderActions
         Cura.MenuItem
         {
-            text: "%1: %2 - %3".arg(model.name).arg(model.material).arg(model.variant)
+            required property var modelData
+
+            action: modelData
             visible: base.shouldShowExtruders
-            enabled: UM.Selection.hasSelection && model.enabled
-            checkable: true
-            checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
-            onTriggered: CuraActions.setExtruderForSelection(model.id)
-            shortcut: "Ctrl+" + (model.index + 1)
+            enabled: UM.Selection.hasSelection && action.enabled
         }
 
         onObjectAdded: function(index, object) {

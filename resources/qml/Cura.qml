@@ -1014,4 +1014,48 @@ UM.MainWindow
         var str = obj.toString();
         return str.indexOf(class_name + "(") == 0 || str.indexOf(class_name + "_QML") == 0;
     }
+
+    Instantiator
+    {
+        model: CuraApplication.getFileProviderModel()
+        Action
+        {
+            required property var modelData
+
+            enabled: modelData.enabled
+            shortcut: modelData.shortcut
+            text: modelData.menuItemDisplayText
+
+            onTriggered: modelData.runSlot()
+        }
+
+        onObjectAdded: function(index, object)
+        {
+            Cura.Actions.extraOpenFileActions.splice(index, 0, object);
+        }
+    }
+
+    Instantiator
+    {
+        model: CuraApplication.getExtrudersModel()
+        Action
+        {
+            text: "%1: %2 - %3".arg(model.name).arg(model.material).arg(model.variant)
+            enabled: model.enabled
+            checkable: true
+            checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
+            onTriggered: CuraActions.setExtruderForSelection(model.id)
+            shortcut: "Ctrl+" + (model.index + 1)
+        }
+
+        onObjectAdded: function(index, object)
+        {
+            Cura.Actions.setExtruderActions.splice(index, 0, object)
+        }
+
+        onObjectRemoved: function(index, object)
+        {
+            Cura.Actions.setExtruderActions.splice(index, 1);
+        }
+    }
 }
