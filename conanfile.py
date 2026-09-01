@@ -388,12 +388,16 @@ class CuraConan(ConanFile):
         # the global.conf, profile, package_info (of dependency) or via the cmd line `-c user.cura:version=VERSION`
         cura_version = Version(self.conf.get("user.cura:version", default = self.version, check_type = str))
         extra_build_identifiers = []
+        is_alpha = str(cura_version.pre).startswith("alpha")
+        is_internal = bool(self.options.internal)
 
-        if self.options.internal:
+        if is_internal:
             extra_build_identifiers.append("internal")
-        if str(cura_version.pre).startswith("alpha") and self.conan_data["commit"] != "unknown":
+        if is_alpha and self.conan_data["commit"] != "unknown":
             extra_build_identifiers.append(self.conan_data["commit"][:6])
-            extra_build_identifiers.append(datetime.now().strftime("%Y%m%d%H%M%S"))
+        if is_alpha or is_internal:
+            now = datetime.now()
+            extra_build_identifiers.append(f"{now.month:02}{now.day:02}{now.hour:02}{now.minute:02}{now.second:02}")
 
         if extra_build_identifiers:
             separator = "+" if not cura_version.build else "."
