@@ -67,7 +67,7 @@
         "bridge_skin_material_flow":
         {
             "maximum_value": "250",
-            "value": "bridge_skin_material_flow"
+            "value": "bridge_wall_material_flow"
         },
         "bridge_skin_material_flow_2": { "maximum_value": "250" },
         "bridge_skin_material_flow_3": { "maximum_value": "250" },
