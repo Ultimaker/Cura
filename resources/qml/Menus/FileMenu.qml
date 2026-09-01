@@ -37,36 +37,15 @@ Cura.Menu
     Cura.MenuItem
     {
         id: saveWorkspaceMenu
-        text: catalog.i18nc("@title:menu menubar:file", "&Save Project...")
-        visible: saveProjectMenu.model.count == 1
-        enabled: UM.WorkspaceFileHandler.enabled && saveProjectMenu.model.count == 1
-        onTriggered:
-        {
-            const args = {
-                "filter_by_machine": false,
-                "file_type": "workspace",
-                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-                "limit_mimetypes":["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
-            };
-            if (UM.Preferences.getValue("cura/dialog_on_project_save"))
-            {
-                saveWorkspaceDialogComponent.createObject(base, {"args": args}).open()
-            }
-            else
-            {
-                UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
-            }
-        }
+        action: Cura.Actions.saveWorkspaceActions[0]
+        visible: !Cura.Actions.hasExtraSaveWorkspaceActions
+        text: catalog.i18nc("@action:inmenu menubar:file", "&Save Project...")
     }
-
-    UM.ProjectOutputDevicesModel { id: projectOutputDevicesModel }
 
     SaveProjectMenu
     {
-        id: saveProjectMenu
-        model: projectOutputDevicesModel
-        shouldBeVisible: model.count > 1
-        enabled: UM.WorkspaceFileHandler.enabled
+        shouldBeVisible: Cura.Actions.hasExtraSaveWorkspaceActions
+        title: saveWorkspaceMenu.text
     }
 
     Cura.MenuItem

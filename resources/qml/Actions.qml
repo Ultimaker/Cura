@@ -98,6 +98,20 @@ Item
         return false;
     }
 
+    property list<Action> saveWorkspaceActions: []
+    property bool hasExtraSaveWorkspaceActions:
+    {
+        let enabled_count = 0;
+        for(var saveWorkspaceAction of saveWorkspaceActions)
+        {
+            if(saveWorkspaceAction.enabled)
+            {
+                enabled_count++;
+            }
+        }
+        return enabled_count > 1;
+    }
+
     property list<Action> setExtruderActions: []
 
     readonly property bool copy_paste_enabled: {

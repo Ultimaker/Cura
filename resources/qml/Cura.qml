@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs
 
-import UM 1.5 as UM
+import UM 1.6 as UM
 import Cura 1.1 as Cura
 
 import "Dialogs"
@@ -633,6 +633,18 @@ UM.MainWindow
 
     Component
     {
+        id: saveWorkspaceDialogComponent
+        WorkspaceSummaryDialog
+        {
+            property var args
+            property var deviceId
+            onAccepted: UM.OutputDeviceManager.requestWriteToDevice(deviceId, PrintInformation.jobName, args)
+            selfDestroy: true
+        }
+    }
+
+    Component
+    {
         id: packageInstallDialogComponent
 
         Cura.MessageDialog
@@ -1032,6 +1044,48 @@ UM.MainWindow
         onObjectAdded: function(index, object)
         {
             Cura.Actions.extraOpenFileActions.splice(index, 0, object);
+        }
+    }
+
+    Instantiator
+    {
+        model: UM.ProjectOutputDevicesModel {}
+        Action
+        {
+            required property var modelData
+
+            enabled: modelData.enabled && UM.WorkspaceFileHandler.enabled
+            shortcut: modelData.shortcut
+            text: modelData.menuEntryText
+
+            onTriggered:
+            {
+                console.log("couocu");
+                var args = {
+                    "filter_by_machine": false,
+                    "file_type": "workspace",
+                    "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                    "limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+                };
+                if (UM.Preferences.getValue("cura/dialog_on_project_save"))
+                {
+                    saveWorkspaceDialogComponent.createObject(base, {"args": args, "deviceId": modelData.id}).open()
+                }
+                else
+                {
+                    UM.OutputDeviceManager.requestWriteToDevice(modelData.id, PrintInformation.jobName, args)
+                }
+            }
+        }
+
+        onObjectAdded: function(index, object)
+        {
+            Cura.Actions.saveWorkspaceActions.splice(index, 0, object)
+        }
+
+        onObjectRemoved: function(index, object)
+        {
+            Cura.Actions.saveWorkspaceActions.splice(index, 1);
         }
     }
 

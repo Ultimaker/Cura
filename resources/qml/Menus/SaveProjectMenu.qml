@@ -7,55 +7,21 @@ import QtQuick.Controls 2.1
 import UM 1.5 as UM
 import Cura 1.1 as Cura
 
-import "../Dialogs"
-
 Cura.Menu
 {
     id: saveProjectMenu
-    title: catalog.i18nc("@title:menu menubar:file", "Save Project...")
-    property alias model: projectOutputDevices.model
 
     Repeater
     {
         id: projectOutputDevices
+        model: Cura.Actions.saveWorkspaceActions
         Cura.MenuItem
         {
-            text: model.name
-            onTriggered:
-            {
-                if(!UM.WorkspaceFileHandler.enabled)
-                {
-                    // Prevent shortcut triggering if the item is disabled!
-                    return
-                }
-                var args = {
-                    "filter_by_machine": false,
-                    "file_type": "workspace",
-                    "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-                    "limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
-                };
-                if (UM.Preferences.getValue("cura/dialog_on_project_save"))
-                {
-                    saveWorkspaceDialogComponent.createObject(base, {"args": args, "deviceId": model.id}).open()
-                }
-                else
-                {
-                    UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, args)
-                }
-            }
-            // shortcut: model.shortcut
-        }
-    }
+            required property var modelData
 
-    Component
-    {
-        id: saveWorkspaceDialogComponent
-        WorkspaceSummaryDialog
-        {
-            property var args
-            property var deviceId
-            onAccepted: UM.OutputDeviceManager.requestWriteToDevice(deviceId, PrintInformation.jobName, args)
-            selfDestroy: true
+            action: modelData
+            visible: action.enabled
+            enabled: visible
         }
     }
 }
