@@ -393,6 +393,7 @@ class CuraConan(ConanFile):
             extra_build_identifiers.append("internal")
         if str(cura_version.pre).startswith("alpha") and self.conan_data["commit"] != "unknown":
             extra_build_identifiers.append(self.conan_data["commit"][:6])
+            extra_build_identifiers.append(datetime.now().strftime("%Y%m%d%H%M%S"))
 
         if extra_build_identifiers:
             separator = "+" if not cura_version.build else "."
