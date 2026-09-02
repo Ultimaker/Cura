@@ -1057,10 +1057,10 @@ UM.MainWindow
             enabled: modelData.enabled && UM.WorkspaceFileHandler.enabled
             shortcut: modelData.shortcut
             text: modelData.menuEntryText
+            icon.name: modelData.iconName
 
             onTriggered:
             {
-                console.log("couocu");
                 var args = {
                     "filter_by_machine": false,
                     "file_type": "workspace",
