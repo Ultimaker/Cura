@@ -55,7 +55,7 @@ Cura.Menu
                 text: catalog.i18nc("@action:inmenu", "Enable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
                 visible: (extruder === null || extruder === undefined) ? false : !extruder.isEnabled
-                enabled: visible
+                enabled: (extruder === null || extruder === undefined) ? false : !extruder.isEnabled
                 height: visible ? implicitHeight: 0
             }
 
