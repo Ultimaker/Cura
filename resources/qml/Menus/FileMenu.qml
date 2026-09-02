@@ -17,35 +17,45 @@ Cura.Menu
         action: Cura.Actions.newProject
     }
 
-    Cura.MenuItem
+    Repeater
     {
-        id: itemOpemFileFromDisk
-        action: Cura.Actions.open
-        visible: !Cura.Actions.hasExtraOpenFileActions
-        enabled: visible
-        text: catalog.i18nc("@action:inmenu menubar:file", "&Open File(s)...")
+        model: Qt.platform.os === "osx" ? 0 : 1 // MacOS ignores the menus visibility, so we need to really not create it
+        Cura.MenuItem
+        {
+            id: itemOpemFileFromDisk
+            action: Cura.Actions.open
+            visible: !Cura.Actions.hasExtraOpenFileActions
+            enabled: visible
+            text: openFileMenu.title
+        }
     }
 
     OpenFilesMenu
     {
+        id: openFileMenu
         shouldBeVisible: Cura.Actions.hasExtraOpenFileActions
-        title: itemOpemFileFromDisk.text
+        title: catalog.i18nc("@action:inmenu menubar:file", "&Open File(s)...")
     }
 
     RecentFilesMenu { }
 
-    Cura.MenuItem
+    Repeater
     {
-        id: saveWorkspaceMenu
-        action: Cura.Actions.saveWorkspaceActions[0]
-        visible: !Cura.Actions.hasExtraSaveWorkspaceActions
-        text: catalog.i18nc("@action:inmenu menubar:file", "&Save Project...")
+        model: Qt.platform.os === "osx" ? 0 : 1 // MacOS ignores the menus visibility, so we need to really not create it
+        Cura.MenuItem
+        {
+            id: saveWorkspaceMenu
+            action: Cura.Actions.saveWorkspaceActions[0]
+            visible: !Cura.Actions.hasExtraSaveWorkspaceActions
+            text: saveProjectMenu.title
+        }
     }
 
     SaveProjectMenu
     {
+        id: saveProjectMenu
         shouldBeVisible: Cura.Actions.hasExtraSaveWorkspaceActions
-        title: saveWorkspaceMenu.text
+        title: catalog.i18nc("@action:inmenu menubar:file", "&Save Project...")
     }
 
     Cura.MenuItem
