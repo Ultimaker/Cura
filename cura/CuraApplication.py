@@ -934,7 +934,7 @@ class CuraApplication(QtApplication):
         self._output_device_manager.start()
 
         # Initialize the FileProviderModel
-        self._file_provider_model.initialize(self._onFileProviderEnabledChanged)
+        self._file_provider_model.initialize()
 
         # Detect in which mode to run and execute that mode
         if self._is_headless:
@@ -1206,9 +1206,6 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result = QObject)
     def getFileProviderModel(self) -> FileProviderModel:
         return self._file_provider_model
-
-    def _onFileProviderEnabledChanged(self):
-        self._file_provider_model.update()
 
     def event(self, event):
         """Handle Qt events"""
