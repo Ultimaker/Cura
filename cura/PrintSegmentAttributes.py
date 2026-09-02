@@ -10,6 +10,6 @@ class PrintSegmentAttributes(IntFlag):
     a specific way, e.g. by using overhanging or bridging settings
     This enumeration has an equivalent in CuraEngine/include/PrintSegmentAttributes.h
     '''
-    NoAttribute = 0
-    Overhanging = 0x1
-    Bridging = 0x2
+    NoAttribute = 0b00
+    Overhanging = 0b01
+    Bridging    = 0b10
