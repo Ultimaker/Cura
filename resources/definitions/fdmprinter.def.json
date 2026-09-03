@@ -5436,6 +5436,20 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
+                "support_tree_smooth_layers":
+                {
+                    "label": "Branch Smoothing Layers",
+                    "description": "The positions of the tree support branches will be adjusted to smooth them over the specified number of layers using a rolling window average. This improves inter-layer adhesion and sturdiness, but an excessively high value may cause the structure to bend too close to the model or compromise its integrity.",
+                    "type": "int",
+                    "minimum_value": "0",
+                    "maximum_value": "200",
+                    "maximum_value_warning": "15",
+                    "default_value": 0,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_z_seam_away_from_model":
                 {
                     "label": "Support Z Seam Away from Model",
