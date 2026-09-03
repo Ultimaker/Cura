@@ -82,7 +82,12 @@ def cleanup_artifacts(dist_path: Path):
             shutil.rmtree(d, ignore_errors=True)
 
 
-def build(dist_path: Path, filename: Path):
+def require_non_empty(path: Path, description: str):
+    if not path.is_file() or path.stat().st_size == 0:
+        raise RuntimeError(f"{description} was not created or is empty: {path}")
+
+
+def build(dist_path: Path, filename: Path, architecture: str):
     dist_loc = Path(os.getcwd(), dist_path)
     work_loc = work_path(filename)
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
@@ -102,38 +107,48 @@ def build(dist_path: Path, filename: Path):
                     "-var", "var.CuraDir",
                     "-t", f"{exclude_components_loc.as_posix()}",
                     "-out", f"{heat_loc.as_posix()}"]
-    subprocess.call(heat_command)
+    subprocess.run(heat_command, check=True)
+    require_non_empty(heat_loc, "WiX heat output")
 
     build_command = ["candle",
-                     "-arch", "x64",
+                     "-arch", architecture,
                      f"-dCuraDir={dist_loc}\\",
                      "-ext", "WixFirewallExtension",
                      "-out", f"{build_loc.as_posix()}\\",
                      f"{wxs_loc.as_posix()}",
                      f"{heat_loc.as_posix()}"]
-    subprocess.call(build_command)
+    subprocess.run(build_command, check=True)
+    wxs_object = build_loc.joinpath(wxs_loc.name).with_suffix(".wixobj")
+    heat_object = build_loc.joinpath(heat_loc.name).with_suffix(".wixobj")
+    require_non_empty(wxs_object, "WiX candle application object")
+    require_non_empty(heat_object, "WiX candle heat object")
 
     link_command = ["light",
-                    f"{build_loc.joinpath(wxs_loc.name).with_suffix('.wixobj')}",
-                    f"{build_loc.joinpath(heat_loc.name).with_suffix('.wixobj')}",
+                    f"{wxs_object}",
+                    f"{heat_object}",
                     "-sw1076",  # Don't pollute logs with warnings from auto generated content
                     "-dcl:high",  # Use high compression ratio
                     "-sval",  # Disable ICE validation otherwise the CI complains
                     "-ext", "WixUIExtension",
                     "-ext", "WixFirewallExtension",
                     "-out", f"{work_loc.joinpath(filename.name)}"]
-    subprocess.call(link_command)
+    subprocess.run(link_command, check=True)
+    require_non_empty(work_loc.joinpath(filename.name), "MSI output")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create Windows msi installer of Cura.")
-    parser.add_argument("--source_path", type=Path, help="Path to Conan install Cura folder.")
-    parser.add_argument("--dist_path", type=Path, help="Path to Pyinstaller dist folder")
-    parser.add_argument("--filename", type=Path,
+    parser.add_argument("--source_path", required=True, type=Path, help="Path to Conan install Cura folder.")
+    parser.add_argument("--dist_path", required=True, type=Path, help="Path to Pyinstaller dist folder")
+    parser.add_argument("--filename", required=True, type=Path,
                         help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.msi')")
-    parser.add_argument("--name", type=str, help="App name (e.g. 'UltiMaker Cura')")
-    parser.add_argument("--version", type=str, help="The full cura version, e.g. 5.9.0-beta.1+24132")
+    parser.add_argument("--name", required=True, type=str, help="App name (e.g. 'UltiMaker Cura')")
+    parser.add_argument("--version", required=True, type=str, help="The full cura version, e.g. 5.9.0-beta.1+24132")
+    parser.add_argument("--architecture", choices=("x64", "arm64"), default="x64")
     args = parser.parse_args()
-    generate_wxs(args.source_path.resolve(), args.dist_path.resolve(), args.filename.resolve(), args.name, args.version)
-    cleanup_artifacts(args.dist_path.resolve())
-    build(args.dist_path.resolve(), args.filename)
+    source_path = args.source_path.resolve()
+    dist_path = args.dist_path.resolve()
+    filename = args.filename.resolve()
+    generate_wxs(source_path, dist_path, filename, args.name, args.version)
+    cleanup_artifacts(dist_path)
+    build(dist_path, filename, args.architecture)
