@@ -5760,7 +5760,7 @@
                     "maximum_value_warning": "support_line_distance / support_line_width",
                     "enabled": "(support_enable or support_meshes_present) and support_line_distance > 0 and support_pattern != 'zigzag'",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false
                 },
                 "support_interface_wall_count":
                 {
