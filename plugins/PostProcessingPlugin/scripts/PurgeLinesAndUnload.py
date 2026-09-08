@@ -91,7 +91,7 @@ class PurgeLinesAndUnload(Script):
                 "purge_line_location":
                 {
                     "label": "    Purge Line Location",
-                    "description": "What edge of the build plate should have the purge lines.  If the printer is 'Elliptical' then it is assumed to be an 'Origin At Center' printer and the purge lines are 90° arcs.",
+                    "description": "What edge of the build plate should have the purge lines.  If the printer is 'Elliptical' then it is assumed to be an 'Origin At Center' printer and the purge lines are 90\u00b0 arcs.",
                     "type": "enum",
                     "options": {
                         "left": "On left edge (Xmin)",

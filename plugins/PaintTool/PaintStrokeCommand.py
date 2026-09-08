@@ -43,7 +43,7 @@ class PaintStrokeCommand(PaintCommand):
         painter.drawPath(self._makePainterPath())
         painter.end()
 
-        self._setPaintedExtrudersCountDirty()
+        self._setPaintedCountsDirty()
         self._texture.updateImagePart(self._bounding_rect)
 
     def mergeWith(self, command: QUndoCommand) -> bool:

@@ -13,25 +13,19 @@ Cura.Menu
     title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
     property var fileProviderModel: CuraApplication.getFileProviderModel()
 
-
     Cura.MenuItem
     {
-        id: newProjectMenu
         action: Cura.Actions.newProject
     }
 
     Cura.MenuItem
     {
-        id: openMenu
         action: Cura.Actions.open
         visible: base.fileProviderModel.count == 1
-        enabled: base.fileProviderModel.count == 1
     }
 
     OpenFilesMenu
     {
-        id: openFilesMenu
-
         shouldBeVisible: base.fileProviderModel.count > 1
         enabled: shouldBeVisible
     }
@@ -76,48 +70,25 @@ Cura.Menu
 
     Cura.MenuItem
     {
-        id: saveUCPMenu
-        text: catalog.i18nc("@title:menu menubar:file Don't translate 'Universal Cura Project'", "&Save Universal Cura Project...")
-        enabled: UM.WorkspaceFileHandler.enabled && CuraApplication.getPackageManager().allEnabledPackages.includes("3MFWriter")
-        onTriggered: CuraApplication.exportUcp()
+        action: Cura.Actions.saveUCP
     }
 
     Cura.MenuSeparator { }
 
     Cura.MenuItem
     {
-        id: saveAsMenu
-        text: catalog.i18nc("@title:menu menubar:file", "&Export...")
-        onTriggered:
-        {
-            const args = {
-                "filter_by_machine": false,
-                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-            };
-            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args);
-        }
+        action: Cura.Actions.exportAll
     }
 
     Cura.MenuItem
     {
-        id: exportSelectionMenu
-        text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...")
-        enabled: UM.Selection.hasSelection
-        icon.name: "document-save-as"
-        onTriggered: {
-            const args = {
-                "filter_by_machine": false,
-                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-            };
-            UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, args);
-        }
+        action: Cura.Actions.exportSelection
     }
 
     Cura.MenuSeparator { }
 
     Cura.MenuItem
     {
-        id: reloadAllMenu
         action: Cura.Actions.reloadAll
     }
 

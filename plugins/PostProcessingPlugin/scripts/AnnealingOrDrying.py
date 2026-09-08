@@ -118,7 +118,7 @@ class AnnealingOrDrying(Script):
                     "description": "Enter the temperature to start at.  This is typically the bed temperature during the print but can be changed here.  This is also the temperature used when drying filament.",
                     "type": "int",
                     "value": 30,
-                    "unit": "°C/F ",
+                    "unit": "\u00b0C/F ",
                     "minimum_value": 30,
                     "maximum_value": 110,
                     "maximum_value_warning": 100,
@@ -130,7 +130,7 @@ class AnnealingOrDrying(Script):
                     "description": "Enter the lowest temperature to control the cool down.  This is the shut-off temperature for the build plate and (when applicable) the Heated Chamber.  The minimum value is 30",
                     "type": "int",
                     "default_value": 30,
-                    "unit": "°C/F ",
+                    "unit": "\u00b0C/F ",
                     "minimum_value": 30,
                     "enabled": "enable_script and cycle_type == 'anneal_cycle'"
                 },
@@ -140,7 +140,7 @@ class AnnealingOrDrying(Script):
                     "description": "Enter the temperature for the Build Volume (Heated Chamber).  This is typically the temperature during the print but can be changed here.",
                     "type": "int",
                     "value": 24,
-                    "unit": "°C/F ",
+                    "unit": "\u00b0C/F ",
                     "minimum_value": 0,
                     "maximum_value": 90,
                     "maximum_value_warning": 75,
@@ -168,7 +168,7 @@ class AnnealingOrDrying(Script):
                 "time_span":
                 {
                     "label": "Cool Down Time Span:",
-                    "description": "The total amount of time (in decimal hours) to control the cool down.  The build plate temperature will be dropped in 3° increments across this time span.  'Cool Down Time' starts at the end of the 'Hold Time' if you entered one.",
+                    "description": "The total amount of time (in decimal hours) to control the cool down.  The build plate temperature will be dropped in 3\u00b0 increments across this time span.  'Cool Down Time' starts at the end of the 'Hold Time' if you entered one.",
                     "type": "float",
                     "default_value": 1.0,
                     "unit": "Hrs ",
@@ -241,7 +241,7 @@ class AnnealingOrDrying(Script):
         # If the shutoff temp is under 30° then exit as a safety precaution so the bed doesn't stay on.
         if lowest_temp < 30:
             data[0] += ";  Anneal or Dry Filament did not run.  Shutoff Temp < 30\n"
-            Message(title = "[Anneal or Dry Filament]", text = "The script did not run because the Shutoff Temp is less than 30°.").show()
+            Message(title = "[Anneal or Dry Filament]", text = "The script did not run because the Shutoff Temp is less than 30\u00b0.").show()
             return data
         extruders = self.global_stack.extruderList
         bed_temperature = int(self.getSettingValueByKey("startout_temp"))
@@ -569,9 +569,9 @@ class AnnealingOrDrying(Script):
                 lines[index] = front_txt + str(" " * (30 - len(front_txt))) +";" +  back_txt
         drydata[1] = "\n".join(lines) + "\n"
         dry_txt = "; Drying time ............... " + str(self.getSettingValueByKey("dry_time")) + " hrs\n"
-        dry_txt += "; Drying temperature ........ " + str(bed_temperature) + "°\n"
+        dry_txt += "; Drying temperature ........ " + str(bed_temperature) + "\u00b0\n"
         if heated_chamber and heating_zone == "bed_chamber":
-            dry_txt += "; Chamber temperature ....... " + str(chamber_temp) + "°\n"
+            dry_txt += "; Chamber temperature ....... " + str(chamber_temp) + "\u00b0\n"
         Message(title = "[Dry Filament]", text = dry_txt).show()
         # UM machines require the existing 'data[0]' with some alteration
         if active_machine == "UM":

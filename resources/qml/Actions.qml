@@ -73,12 +73,17 @@ Item
 
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
+    property alias saveUCP: saveUCPAction
+    property alias exportAll: exportAllAction
+    property alias exportSelection: exportSelectionAction
+
     property alias browsePackages: browsePackagesAction
 
     property alias paste: pasteAction
     property alias copy: copyAction
     property alias cut: cutAction
     property alias exportProjectForSupport: exportProjectForSupportAction
+    property alias showFileLocation: showFileLocationAction
 
     readonly property bool copy_paste_enabled: {
         const all_enabled_packages = CuraApplication.getPackageManager().allEnabledPackages;
@@ -360,7 +365,7 @@ Item
     Action
     {
         id: deleteObjectAction
-        text: catalog.i18nc("@action:inmenu","Delete Model")
+        text: catalog.i18nc("@action:inmenu", "Delete Model")
         enabled: UM.Controller.toolsEnabled
         icon.name: "edit-delete"
     }
@@ -368,13 +373,13 @@ Item
     Action
     {
         id: centerObjectAction
-        text: catalog.i18nc("@action:inmenu","Ce&nter Model on Platform")
+        text: catalog.i18nc("@action:inmenu", "Ce&nter Model on Platform")
     }
 
     Action
     {
         id: groupObjectsAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Group Models")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "&Group Models")
         enabled: UM.Selection.selectionCount > 1 ? true: false
         icon.name: "object-group"
         shortcut: "Ctrl+G"
@@ -394,7 +399,7 @@ Item
     Action
     {
         id: unGroupObjectsAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Models")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Ungroup Models")
         enabled: UM.Selection.isGroupSelected
         icon.name: "object-ungroup"
         shortcut: "Ctrl+Shift+G"
@@ -404,7 +409,7 @@ Item
     Action
     {
         id: printObjectBeforePreviousAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Print Before") + " " + PrintOrderManager.previousNodeName
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Print Before") + " " + PrintOrderManager.previousNodeName
         enabled: PrintOrderManager.shouldEnablePrintBeforeAction
         icon.name: "print-before"
         shortcut: "PgUp"
@@ -414,7 +419,7 @@ Item
     Action
     {
         id: printObjectAfterNextAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Print After") + " " + PrintOrderManager.nextNodeName
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Print After") + " " + PrintOrderManager.nextNodeName
         enabled: PrintOrderManager.shouldEnablePrintAfterAction
         icon.name: "print-after"
         shortcut: "PgDown"
@@ -424,7 +429,7 @@ Item
     Action
     {
         id: mergeObjectsAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Models")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "&Merge Models")
         enabled: UM.Selection.selectionCount > 1 ? true: false
         icon.name: "merge"
         shortcut: "Ctrl+Alt+G"
@@ -434,14 +439,14 @@ Item
     Action
     {
         id: multiplyObjectAction
-        text: catalog.i18nc("@action:inmenu","&Multiply Model...")
+        text: catalog.i18nc("@action:inmenu", "&Multiply Model...")
         icon.name: "edit-duplicate"
     }
 
     Action
     {
         id: selectAllAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Select All Models")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Select All Models")
         enabled: UM.Controller.toolsEnabled
         icon.name: "edit-select-all"
         shortcut: "Ctrl+A"
@@ -451,7 +456,7 @@ Item
     Action
     {
         id: deleteAllAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Clear Build Plate")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Clear Build Plate")
         enabled: UM.Controller.toolsEnabled
         icon.name: "edit-delete"
         shortcut: "Ctrl+D"
@@ -461,7 +466,7 @@ Item
     Action
     {
         id: reloadAllAction
-        text: catalog.i18nc("@action:inmenu menubar:file","Reload All Models")
+        text: catalog.i18nc("@action:inmenu menubar:file", "Reload All Models")
         icon.name: "document-revert"
         shortcut: "F5"
         onTriggered: CuraApplication.reloadAll()
@@ -470,7 +475,7 @@ Item
     Action
     {
         id: arrangeAllAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Arrange All Models")
         onTriggered: Printer.arrangeAll()
         shortcut: "Ctrl+R"
     }
@@ -478,7 +483,7 @@ Item
     Action
     {
         id: arrangeAllGridAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Arrange All Models in a grid")
         onTriggered: Printer.arrangeAllInGrid()
         shortcut: "Shift+Ctrl+R"
     }
@@ -486,7 +491,7 @@ Item
     Action
     {
         id: dropAllAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Drop All Models to buildplate")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Drop All Models to buildplate")
         shortcut: "Ctrl+B"
         onTriggered: CuraApplication.setWorkplaceDropToBuildplate()
     }
@@ -494,14 +499,14 @@ Item
     Action
     {
         id: resetAllTranslationAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model Positions")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Reset All Model Positions")
         onTriggered: CuraApplication.resetAllTranslation()
     }
 
     Action
     {
         id: resetAllAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model Transformations")
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Reset All Model Transformations")
         onTriggered: CuraApplication.resetAll()
     }
 
@@ -510,11 +515,12 @@ Item
         id: openAction
         property var fileProviderModel: CuraApplication.getFileProviderModel()
 
-        text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...")
+        text: catalog.i18nc("@action:inmenu menubar:file", "&Open File(s)...")
         icon.name: "document-open"
         // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
         // enabled instead, and Ctrl+O is assigned to the local file provider
         shortcut: fileProviderModel.count == 1 ? StandardKey.Open : ""
+        enabled: fileProviderModel.count == 1
     }
 
     Action
@@ -553,6 +559,43 @@ Item
 
     Action
     {
+        id: saveUCPAction
+        text: catalog.i18nc("@title:menu menubar:file Don't translate 'Universal Cura Project'", "&Save Universal Cura Project...")
+        enabled: UM.WorkspaceFileHandler.enabled && CuraApplication.getPackageManager().allEnabledPackages.includes("3MFWriter")
+        onTriggered: CuraApplication.exportUcp()
+    }
+
+    Action
+    {
+        id: exportAllAction
+        text: catalog.i18nc("@title:menu menubar:file", "&Export...")
+        onTriggered:
+        {
+            const args = {
+                "filter_by_machine": false,
+                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+            };
+            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args);
+        }
+    }
+
+    Action
+    {
+        id: exportSelectionAction
+        text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...")
+        enabled: UM.Selection.hasSelection
+        icon.name: "document-save-as"
+        onTriggered: {
+            const args = {
+                "filter_by_machine": false,
+                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+            };
+            UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, args);
+        }
+    }
+
+    Action
+    {
         id: browsePackagesAction
         text: "&Marketplace"
         icon.name: "plugins_browse"
@@ -577,5 +620,13 @@ Item
             };
             UM.OutputDeviceManager.requestWriteToDevice("local_file", exportName, args)
         }
+    }
+
+    Action
+    {
+        id: showFileLocationAction
+        text: catalog.i18nc("@action:inmenu", "Show File Location")
+        enabled: CuraActions.canShowFileLocation
+        onTriggered: CuraActions.showFileLocation()
     }
 }

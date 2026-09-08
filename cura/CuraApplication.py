@@ -565,7 +565,9 @@ class CuraApplication(QtApplication):
 
         super().startSplashWindowPhase()
 
-        if not self.getIsHeadLess():
+        # On macOS the .app bundle's CFBundleIconFile owns the dock icon; overriding it at runtime
+        # causes the dock to show the PNG instead of the properly-sized .icns.
+        if not self.getIsHeadLess() and sys.platform != "darwin":
             try:
                 self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png" if not ApplicationMetadata.IsAlternateVersion else "cura-icon_wip.png")))
             except FileNotFoundError:
@@ -641,6 +643,8 @@ class CuraApplication(QtApplication):
             "dialog_material_path"]:
 
             preferences.addPreference("local_file/%s" % key, os.path.expanduser("~/"))
+
+        preferences.addPreference("local_file/use_fixed_dialog_paths", False)
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
@@ -1590,7 +1594,13 @@ class CuraApplication(QtApplication):
             if node.callDecoration("getBuildPlateNumber") == active_build_plate:
                 # Skip nodes that are too big
                 bounding_box = node.getBoundingBox()
-                if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
+                volume_bounding_box = self._volume.getBoundingBox()
+                if volume_bounding_box is None:
+                    Logger.warning("_arrangeAll: build volume bounding box is None — rebuild not yet triggered. Requesting rebuild and aborting arrange.")
+                    # Trigger a rebuild now and bail out; the user can retry arrange once the volume is ready.
+                    self._volume.rebuild()
+                    return
+                if bounding_box is None or bounding_box.width < volume_bounding_box.width or bounding_box.depth < volume_bounding_box.depth:
                     # Arrange only the unlocked nodes and keep the locked ones in place
                     if node.getSetting(SceneNodeSettings.LockPosition):
                         locked_nodes.append(node)

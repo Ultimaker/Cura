@@ -124,6 +124,7 @@ class RemotePackageList(PackageList):
         for package_data in response_data["data"]:
             try:
                 package = PackageModel(package_data, parent = self)
+                package._insertion_index = self.rowCount()
                 self._connectManageButtonSignals(package)
                 self.appendItem({"package": package})  # Add it to this list model.
             except RuntimeError:
@@ -131,6 +132,9 @@ class RemotePackageList(PackageList):
                 # between de-/constructing RemotePackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
                 # was deleted when it was still parsing the response
                 continue
+
+        if self._sort_by_install_status:
+            self._applyInstallStatusSort()
 
         self._request_url = response_data["links"].get("next", "")  # Use empty string to signify that there is no next page.
         self._ongoing_requests["get_packages"] = None

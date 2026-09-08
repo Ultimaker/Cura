@@ -429,8 +429,11 @@ Item
                         customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
                     }
                 }
-               onObjectAdded: contextMenu.insertItem(index, object)
-               onObjectRemoved: contextMenu.removeItem(object)
+                onObjectAdded: function(index, object) {
+                    contextMenu.insertItem(index, object);
+                    if (Qt.platform.os == "osx") object.text += " ";
+                }
+                onObjectRemoved: function(index, object) { contextMenu.removeItem(object); }
             }
 
             Cura.MenuSeparator

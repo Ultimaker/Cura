@@ -145,6 +145,8 @@ Item
             contentItem: Item
             {
                 id: popup
+                implicitWidth: openProviderColumn.width
+                implicitHeight: openProviderColumn.height
 
                 Column
                 {

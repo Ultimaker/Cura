@@ -22,8 +22,11 @@ ListView
     property var onRemoveBanner
 
     property bool showUpdateButton
+    property bool showUpdateAllButton: false
     property bool showDisableButton
     property bool showInstallButton
+    property int updatablePackagesCount: model.updatablePackagesCount
+    property string updateAllText: catalog.i18nc("@label", "Update all the packages: %1 packages have a new version available.").arg(packages.updatablePackagesCount)
 
     clip: true
 
@@ -31,6 +34,47 @@ ListView
     Component.onDestruction: model.cleanUpAPIRequest()
 
     spacing: UM.Theme.getSize("default_margin").height
+
+    header: Item
+    {
+        width: packages.width
+        height: updateAllCard.height + UM.Theme.getSize("default_margin").height
+        visible: packages.showUpdateAllButton
+
+        Rectangle
+        {
+            id: updateAllCard
+            anchors.top: parent.top
+            width: verticalScrollBar.visible
+                ? parent.width - 2 * UM.Theme.getSize("default_margin").width
+                : parent.width - UM.Theme.getSize("default_margin").width
+            height: Math.max(updateAllHeaderText.implicitHeight, updateAllButton.implicitHeight) + UM.Theme.getSize("wide_margin").height
+            color: UM.Theme.getColor("main_background")
+            radius: UM.Theme.getSize("default_radius").width
+
+            UM.Label
+            {
+                id: updateAllHeaderText
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                anchors.verticalCenter: parent.verticalCenter
+                text: packages.updateAllText
+                font: UM.Theme.getFont("large")
+            }
+
+            ManageButton
+            {
+                id: updateAllButton
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                anchors.verticalCenter: parent.verticalCenter
+                text: busy ? catalog.i18nc("@button", "Updating...") : catalog.i18nc("@button", "Update all")
+                busy: packages.model.bulkUpdateInProgress
+                enabled: packages.model.hasUpdatablePackages && !packages.model.isLoading && !packages.model.bulkUpdateInProgress
+                onClicked: packages.model.updateAllPackages()
+            }
+        }
+    }
 
     section.property: "package.sectionTitle"
     section.delegate: Rectangle

@@ -20,7 +20,6 @@ UM.Dialog
     minimumWidth: 400 * screenScaleFactor
     minimumHeight: 250 * screenScaleFactor
     backgroundColor: UM.Theme.getColor("main_background")
-    selfDestroy: true
     onVisibleChanged:
     {
         // Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
@@ -270,7 +269,10 @@ UM.Dialog
                     onTriggered: manager.addScriptToList(modelData.toString())
                 }
 
-                onObjectAdded: function(index, object) { scriptsMenu.insertItem(index, object)}
+                onObjectAdded: function(index, object) {
+                    scriptsMenu.insertItem(index, object);
+                    if (Qt.platform.os == "osx") object.text += " ";
+                }
                 onObjectRemoved: function(index, object) {  scriptsMenu.removeItem(object) }
             }
         }

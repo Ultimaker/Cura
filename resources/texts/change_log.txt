@@ -1,3 +1,31 @@
+[5.14]
+
+* New features and improvements:
+- Introduced support-painting: paint on the model to indicate where support should and shouldn't be placed
+- Experimental support for Cura on Windows ARM platforms
+- Custom GCode parts are now processed in the engine, to ensure that all the variables have the most accurate value
+- End-of-print GCode variables are now processed in the engine, to ensure that more accurate values are inserted, contributed by @wawanbreton
+- Dialogs that were previously created at application boot are now created only when necessary, which saves some boot time and memory
+- Discard top and bottom surfaces when their settings are identical to skin settings, which avoids printing them separately
+- Discard very thin infill areas that are printed within skin and disrupts the flow
+- Improve positioning of models when loading multiple models from a non-project 3MF file
+- Improved the OpenGL shaders compatibility, contributed by @hellAholic
+
+* New Settings:
+- Introduced Top/Bottom/Skin Merge Distance, which allows merging those areas together wen they are too small to be printed correctly
+- Introduced Minimum Infill Line Length, which allows removing unnecessary lines of infill added in small areas
+
+* Bug fixes:
+- Fixed the most common sources of slicing crashes (those that would have to be worked around by moving the model on the build plate)
+- Removed an unnecessary and long travel move added when printing supported floating models
+- Fixed an issue where top and bottom surfaces could be generated, although they were disabled
+- Fixed the print temperature command of the initial layer when using the 'zigzag' pattern, contributed by @hellAholic
+- Fixed an issue where the project window could be displayed at an unexpected position
+
+* Printer definitions, profiles and materials:
+- Removed hardcoded T0 in start gcode for anycubic ACE PRO enabled K3
+- Fixed multiple bugs in Elegoo Neptune 3 Pro: acceleration, retraction_combing, end gcode
+
 [5.13]
 
 * New features and improvements:
