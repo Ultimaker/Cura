@@ -41,13 +41,6 @@ Cura.Menu
         enabled: updateModels
     }
 
-    Cura.MaterialBrandsModel
-    {
-        id: brandModel
-        extruderPosition: materialMenu.extruderIndex
-        enabled: updateModels
-    }
-
     Cura.MenuItem
     {
         text: catalog.i18nc("@label:category menu label", "Favorites")
@@ -66,11 +59,14 @@ Cura.Menu
             checked: model.root_material_id === materialMenu.currentRootMaterialId
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
         }
-        onObjectAdded: function(index, object) { materialMenu.insertItem(index + 1, object) }
+        onObjectAdded: function(index, object) {
+            materialMenu.insertItem(index + 1, object);
+            if (Qt.platform.os == "osx") object.text += " ";
+        }
         onObjectRemoved: function(index, object) { materialMenu.removeItem(index) }
     }
 
-    Cura.MenuSeparator { visible: favoriteMaterialsModel.items.length > 0}
+    Cura.MenuSeparator { visible: favoriteMaterialsModel.items.length > 0 }
 
     Cura.Menu
     {
@@ -89,12 +85,22 @@ Cura.Menu
                 checked: model.root_material_id === materialMenu.currentRootMaterialId
                 onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             }
-            onObjectAdded: function(index, object) { genericMenu.insertItem(index, object)}
-            onObjectRemoved: function(index, object) {genericMenu.removeItem(index) }
+            onObjectAdded: function(index, object) {
+                genericMenu.insertItem(index, object);
+                if (Qt.platform.os == "osx") object.text += " ";
+            }
+            onObjectRemoved: function(index, object) { genericMenu.removeItem(index); }
         }
     }
 
     Cura.MenuSeparator {}
+
+    Cura.MaterialBrandsModel
+    {
+        id: brandModel
+        extruderPosition: materialMenu.extruderIndex
+        enabled: updateModels
+    }
 
     Instantiator
     {
@@ -103,8 +109,13 @@ Cura.Menu
         {
             materialTypesModel: model
         }
-        onObjectAdded: function(index, object) { materialMenu.insertItem(index + 4, object)}
-        onObjectRemoved: function(index, object) { materialMenu.removeItem(index) }
+        onObjectAdded: function(index, object) {
+            materialMenu.insertMenu(index + 4, object);
+            if (Qt.platform.os == "osx") object.title += " ";
+        }
+        onObjectRemoved: function(index, object) {
+            materialMenu.removeMenu(index);
+        }
     }
 
     Cura.MenuSeparator {}

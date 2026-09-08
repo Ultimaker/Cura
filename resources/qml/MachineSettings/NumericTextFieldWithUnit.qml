@@ -201,6 +201,8 @@ UM.TooltipArea
 
         onEditingFinished: editingFinishedFunction()
 
+        Component.onDestruction: editingFinishedFunction()
+
         property var editingFinishedFunction: defaultEditingFinishedFunction
 
         function defaultEditingFinishedFunction()

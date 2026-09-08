@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-09-22 08:45+0000\n"
+"POT-Creation-Date: 2026-03-31 08:53+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -21,6 +21,14 @@ msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
 msgstr ""
 
+msgctxt "travel_retract_before_outer_wall description"
+msgid "<html>Retraction behavior when moving to the start of an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>From infill unretracted:</b> The travel move from an infill area to an outer wall will be unretracted, others will use automatic</li></ul></html>"
+msgstr ""
+
+msgctxt "infill_pattern description"
+msgid "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>⚠ Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>"
+msgstr ""
+
 msgctxt "prime_during_travel_ratio description"
 msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
 msgstr ""
@@ -31,6 +39,10 @@ msgstr ""
 
 msgctxt "cool_during_extruder_switch description"
 msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
+msgstr ""
+
+msgctxt "infill_start_end_preference description"
+msgid "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>ℹ️ Note that this will be applied only when walls are printed just after infill.</li></ul>"
 msgstr ""
 
 msgctxt "brim_inside_margin description"
@@ -89,6 +101,10 @@ msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
 msgstr "Doporučení, jak daleko se mohou větve pohnout od bodu, který podporují. Větve mohou tuto hodnotu porušit, aby dosáhly svého cíle (podložka nebo plochá část modelu). Snížení této hodnoty učiní podporu více pevnou, ale zvýší počet větví (a společně s tím také množství použitého materiálu a dobu tisku) "
 
+msgctxt "material_delta_temperature_roofing description"
+msgid "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low."
+msgstr ""
+
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
 msgstr "Absolutní výchozí pozice extruderu"
@@ -108,10 +124,6 @@ msgstr "Velikost kroku adaptivní vrstvy"
 msgctxt "adaptive_layer_height_enabled description"
 msgid "Adaptive layers computes the layer heights depending on the shape of the model."
 msgstr "Adaptivní vrstvy vypočítávají výšky vrstev v závislosti na tvaru modelu."
-
-msgctxt "extra_infill_lines_to_support_skins description"
-msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
-msgstr ""
 
 msgctxt "infill_wall_line_count description"
 msgid ""
@@ -209,13 +221,13 @@ msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Hliník"
 
+msgctxt "travel_retract_before_outer_wall option force_retracted"
+msgid "Always"
+msgstr ""
+
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
 msgstr "Vždy Zapisovat Aktivní Nástroj"
-
-msgctxt "travel_retract_before_outer_wall description"
-msgid "Always retract when moving to start an outer wall."
-msgstr "Vždy zatáhnout filament, když se přesouvá k začátku vnější zdi."
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -268,6 +280,10 @@ msgstr "Použít offset extruderu v souřadnicovém systému. Ovlivňuje všechn
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
 msgstr "V místech, kde se modely dotýkají, budou generovány vzájemně propletené struktury. Ty zlepšují adhezi mezi modely, obzvláště u modelů tištěných z různých materiálů."
+
+msgctxt "travel_retract_before_outer_wall option automatic"
+msgid "Automatic"
+msgstr ""
 
 msgctxt "travel_avoid_other_parts label"
 msgid "Avoid Printed Parts When Traveling"
@@ -472,10 +488,6 @@ msgstr "Rychlost při tisku povrchu můstku"
 msgctxt "bridge_skin_support_threshold label"
 msgid "Bridge Skin Support Threshold"
 msgstr "Prahová hodnota podpory povrchu mostu"
-
-msgctxt "bridge_sparse_infill_max_density label"
-msgid "Bridge Sparse Infill Max Density"
-msgstr "Maximální hustota výplně mostu"
 
 msgctxt "bridge_skin_density_3 label"
 msgid "Bridge Third Skin Density"
@@ -725,6 +737,10 @@ msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
 msgstr "Převeďte každou výplňovou linii na tuto řadu řádků. Další čáry se nepřekrývají, ale vzájemně se vyhýbají. Díky tomu je výplň tužší, ale zvyšuje se doba tisku a spotřeba materiálu."
 
+msgctxt "support_infill_multiplier description"
+msgid "Convert each support infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
+msgstr ""
+
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
 msgstr "Rychlost chlazení"
@@ -829,12 +845,20 @@ msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Zjistěte mosty a upravte rychlost tisku, průtok a nastavení ventilátoru během tisku mostů."
 
+msgctxt "roofing_expansion description"
+msgid "Determines how much the top surfaces are expanded beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces."
+msgstr ""
+
 msgctxt "scarf_split_distance description"
 msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
 msgstr ""
 
 msgctxt "scarf_joint_seam_length description"
 msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr ""
+
+msgctxt "initial_layer_inset_direction description"
+msgid "Determines the order in which walls are printed on the initial layer. This allows different wall ordering specifically for the first layer to improve bed adhesion. When not changed by user, the Wall Ordering setting value is used."
 msgstr ""
 
 msgctxt "inset_direction description"
@@ -848,6 +872,14 @@ msgstr "Určuje prioritu této sítě, když se překrývá více sítí výpln�
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
 msgstr "Určuje, kdy má vrstva bleskové výplně nad sebou něco, co má podporovat. Zadává se jako úhel a řídí se tloušťkou vrstvy."
+
+msgctxt "support_lightning_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr ""
+
+msgctxt "support_lightning_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the lines above it. Measured in the angle given the thickness."
+msgstr ""
 
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
@@ -1085,6 +1117,10 @@ msgctxt "machine_end_gcode label"
 msgid "End G-code"
 msgstr "Ukončující G kód"
 
+msgctxt "infill_start_end_preference option end_close_to_seam"
+msgid "End close to seam"
+msgstr ""
+
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
 msgstr "Délka proplachu na konci vlákna"
@@ -1124,10 +1160,6 @@ msgstr "Rozsáhlé prošívání"
 msgctxt "meshfix_extensive_stitching description"
 msgid "Extensive stitching tries to stitch up open holes in the mesh by closing the hole with touching polygons. This option can introduce a lot of processing time."
 msgstr "Rozsáhlé sešívání se snaží spojit otevřené otvory v mřížce uzavřením díry dotykem mnohoúhelníků. Tato možnost může přinést spoustu času zpracování."
-
-msgctxt "extra_infill_lines_to_support_skins label"
-msgid "Extra Infill Lines To Support Skins"
-msgstr ""
 
 msgctxt "infill_wall_line_count label"
 msgid "Extra Infill Wall Count"
@@ -1349,6 +1381,10 @@ msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Pro struktury o šířce okolo jedno až dvojnásobku velikosti trysky musí být šířky čar upravovány, aby to se dodržovala správná tloušťka modelu. Toto nastavení ovládá minimální dovolenou šířku čáry pro zdi. Z minimální šířky čáry se také odvozuje maximální šířka, jelikož při určité tloušťce tvaru se přechází z N na N + 1 zdí, kdy je N zdí širokých, zatímco N + 1 zdi jsou úzké. Nejvyšší možná šířka čáry zdi je tedy dvojnásobek tohoto nastavení."
 
+msgctxt "travel_retract_before_outer_wall option force_not_retracted_from_infill"
+msgid "From infill unretracted"
+msgstr ""
+
 msgctxt "z_seam_position option front"
 msgid "Front"
 msgstr "Přední"
@@ -1559,6 +1595,18 @@ msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "Otvory a obrysy součástí s průměrem menším, než je tento, budou vytištěny pomocí funkce Rychlost malých funkcí."
 
+msgctxt "support_brim_minimum_hole_area description"
+msgid "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim"
+msgstr ""
+
+msgctxt "infill_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr ""
+
+msgctxt "support_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr ""
+
 msgctxt "xy_offset label"
 msgid "Horizontal Expansion"
 msgstr "Horizontální expanze"
@@ -1707,6 +1755,10 @@ msgctxt "infill_sparse_density label"
 msgid "Infill Density"
 msgstr "Hustota výplně"
 
+msgctxt "infill_end_move_inwards_length label"
+msgid "Infill End Move Inwards Length"
+msgstr ""
+
 msgctxt "infill_extruder_nr label"
 msgid "Infill Extruder"
 msgstr "Výplňový extrudér"
@@ -1759,9 +1811,25 @@ msgctxt "infill_pattern label"
 msgid "Infill Pattern"
 msgstr "Výplňový vzor"
 
+msgctxt "skin_support label"
+msgid "Infill Skin Support"
+msgstr ""
+
 msgctxt "speed_infill label"
 msgid "Infill Speed"
 msgstr "Rychlost tisku výplně"
+
+msgctxt "infill_start_move_inwards_length label"
+msgid "Infill Start Move Inwards Length"
+msgstr ""
+
+msgctxt "infill_move_inwards_length label"
+msgid "Infill Start/End Move Inwards Length"
+msgstr ""
+
+msgctxt "infill_start_end_preference label"
+msgid "Infill Start/End Preference"
+msgstr ""
 
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
@@ -1863,6 +1931,10 @@ msgctxt "speed_travel_layer_0 label"
 msgid "Initial Layer Travel Speed"
 msgstr "Rychlost cestování prvotní vrstvy"
 
+msgctxt "initial_layer_inset_direction label"
+msgid "Initial Layer Wall Ordering"
+msgstr ""
+
 msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
 msgstr "Počáteční překrytí vrstvy Z"
@@ -1911,6 +1983,10 @@ msgctxt "brim_location option inside"
 msgid "Inside Only"
 msgstr ""
 
+msgctxt "initial_layer_inset_direction option inside_out"
+msgid "Inside To Outside"
+msgstr ""
+
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
 msgstr "Zevnitř ven"
@@ -1926,6 +2002,14 @@ msgstr "Preferovat čáry rozhraní"
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
 msgstr "Preferovat rozhraní"
+
+msgctxt "bridge_interlace_lines label"
+msgid "Interlace Bridge Lines"
+msgstr ""
+
+msgctxt "skin_support_interlace_lines label"
+msgid "Interlace Skin Support Lines"
+msgstr ""
 
 msgctxt "prime_tower_mode option interleaved"
 msgid "Interleaved"
@@ -2023,6 +2107,10 @@ msgctxt "layer_start_y label"
 msgid "Layer Start Y"
 msgstr "Start vrstvy Y"
 
+msgctxt "layer_start_at_z_seam label"
+msgid "Layer Start at Z Seam"
+msgstr ""
+
 msgctxt "raft_base_thickness description"
 msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
 msgstr "Tloušťka vrstvy základní vrstvy raftu. Měla by to být silná vrstva, která pevně přilne k podložce tiskárny."
@@ -2050,6 +2138,10 @@ msgstr "Zvednout hlavu"
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
 msgstr "Bleskový"
+
+msgctxt "support_pattern option lightning"
+msgid "Lightning"
+msgstr ""
 
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
@@ -2357,10 +2449,6 @@ msgctxt "machine_max_acceleration_e description"
 msgid "Maximum acceleration for the motor of the filament."
 msgstr "Maximální zrychlení pro motor filamentu."
 
-msgctxt "bridge_sparse_infill_max_density description"
-msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr "Maximální hustota výplně považovaná za řídkou. Kůže nad řídkou výplní je považována za nepodporovanou, a proto ji lze považovat za můstkovou kůži."
-
 msgctxt "support_tower_maximum_supported_diameter description"
 msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
 msgstr "Maximální průměr ve směru X / Y malé plochy, která má být podepřena specializovanou podpůrnou věží."
@@ -2404,6 +2492,10 @@ msgstr "Matice rotace sítě"
 msgctxt "slicing_tolerance option middle"
 msgid "Middle"
 msgstr "Střední"
+
+msgctxt "z_seam_position option middle"
+msgid "Middle"
+msgstr ""
 
 msgctxt "support_z_seam_min_distance label"
 msgid "Min Z Seam Distance from Model"
@@ -2521,6 +2613,10 @@ msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
 msgstr "Minimální velikost plochy pro střechy podpěry. Polygony, které mají plochu menší než tato hodnota, budou vytištěny jako normální podpora."
 
+msgctxt "support_brim_minimum_hole_area label"
+msgid "Minimum hole area in brim support"
+msgstr ""
+
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "Minimální rychlost pro postupné změny průtoku pro první vrstvu"
@@ -2577,6 +2673,10 @@ msgctxt "skirt_line_count description"
 msgid "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt."
 msgstr "Více linek okraje pomáhá vytlačit vaše vytlačování lépe pro malé modely. Nastavení na 0 zakáže okraj."
 
+msgctxt "machine_time_estimation_factor description"
+msgid "Multiplier for adjusting print time estimates. 100% shows original estimate. Higher values indicate longer actual print times."
+msgstr ""
+
 msgctxt "support_infill_density_multiplier_initial_layer description"
 msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
 msgstr ""
@@ -2584,6 +2684,10 @@ msgstr ""
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
 msgstr "Násobitel šířky čáry v první vrstvě. Jejich zvýšení by mohlo zlepšit přilnavost k podložce."
+
+msgctxt "travel_retract_before_outer_wall option force_not_retracted"
+msgid "Never"
+msgstr ""
 
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
@@ -2600,10 +2704,6 @@ msgstr "Netradiční způsoby, jak tisknout vaše modely."
 msgctxt "adhesion_type option none"
 msgid "None"
 msgstr "Žádný"
-
-msgctxt "extra_infill_lines_to_support_skins option none"
-msgid "None"
-msgstr ""
 
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
@@ -2696,6 +2796,14 @@ msgstr "Kolikrát se hustota výplně sníží na polovinu, když se dostane dá
 msgctxt "gradual_support_infill_steps description"
 msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
 msgstr "Počet opakování, aby se hustota výplně podpory snížila na polovinu, když se dostaneme dále pod horní povrchy. Oblasti, které jsou blíže k vrchním povrchům, mají vyšší hustotu až do podpůrné hustoty výplně."
+
+msgctxt "infill_pattern option octagon"
+msgid "Octagon"
+msgstr ""
+
+msgctxt "support_pattern option octagon"
+msgid "Octagon"
+msgstr ""
 
 msgctxt "infill_pattern option tetrahedral"
 msgid "Octet"
@@ -2829,6 +2937,10 @@ msgctxt "brim_location option outside"
 msgid "Outside Only"
 msgstr ""
 
+msgctxt "initial_layer_inset_direction option outside_in"
+msgid "Outside To Inside"
+msgstr ""
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr "Zvenku dovnitř"
@@ -2852,6 +2964,10 @@ msgstr "Pozastavit po vytažení."
 msgctxt "bridge_fan_speed description"
 msgid "Percentage fan speed to use when printing bridge walls and skin."
 msgstr "Procentuální rychlost ventilátoru, která se použije při tisku mostních stěn a povrchu."
+
+msgctxt "skin_support_fan_speed description"
+msgid "Percentage fan speed to use when printing skin support."
+msgstr ""
 
 msgctxt "bridge_fan_speed_2 description"
 msgid "Percentage fan speed to use when printing the second bridge skin layer."
@@ -2985,8 +3101,16 @@ msgctxt "fill_outline_gaps label"
 msgid "Print Thin Walls"
 msgstr "Tisk tenkých stěn"
 
+msgctxt "machine_time_estimation_factor label"
+msgid "Print Time Estimation Factor"
+msgstr ""
+
 msgctxt "brim_location description"
 msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr ""
+
+msgctxt "skin_support description"
+msgid "Print a solid infill pattern just below skin to avoid printing the skin over air."
 msgstr ""
 
 msgctxt "prime_tower_enable description"
@@ -3297,14 +3421,6 @@ msgctxt "z_seam_type option random"
 msgid "Random"
 msgstr "Náhodné"
 
-msgctxt "infill_randomize_start_location label"
-msgid "Randomize Infill Start"
-msgstr "Náhodné spuštění výplně"
-
-msgctxt "infill_randomize_start_location description"
-msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
-msgstr "Náhodně vyberte, který výplňový řádek je vytištěn jako první. To zabraňuje tomu, aby se jeden segment stal nejsilnějším, ale činí to za cenu dalšího pohybu."
-
 msgctxt "magic_fuzzy_skin_enabled description"
 msgid "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look."
 msgstr "Při tisku na vnější stěnu náhodně chvěte tak, že povrch má drsný a rozmazaný vzhled."
@@ -3541,14 +3657,6 @@ msgctxt "machine_show_variants label"
 msgid "Show Machine Variants"
 msgstr "Zobrazit varianty zařízení"
 
-msgctxt "skin_edge_support_layers label"
-msgid "Skin Edge Support Layers"
-msgstr "Vrstvy podpory hrany povrchu"
-
-msgctxt "skin_edge_support_thickness label"
-msgid "Skin Edge Support Thickness"
-msgstr "Tloušťka podpory hrany povrchu"
-
 msgctxt "expand_skins_expand_distance label"
 msgid "Skin Expand Distance"
 msgstr "Vzdálenost rozšíření povrchu"
@@ -3564,6 +3672,22 @@ msgstr "Procentuální překrytí povrchu"
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
 msgstr "Šířka odstranění povrchu"
+
+msgctxt "skin_support_density label"
+msgid "Skin Support Density"
+msgstr ""
+
+msgctxt "skin_support_fan_speed label"
+msgid "Skin Support Fan Speed"
+msgstr ""
+
+msgctxt "skin_support_material_flow label"
+msgid "Skin Support Flow"
+msgstr ""
+
+msgctxt "skin_support_speed label"
+msgid "Skin Support Speed"
+msgstr ""
 
 msgctxt "min_skin_width_for_expansion description"
 msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
@@ -3725,6 +3849,18 @@ msgctxt "machine_start_gcode_first label"
 msgid "Start GCode must be first"
 msgstr ""
 
+msgctxt "infill_start_end_preference option start_closest"
+msgid "Start at closest"
+msgstr ""
+
+msgctxt "infill_start_end_preference option start_random"
+msgid "Start at random"
+msgstr ""
+
+msgctxt "layer_start_at_z_seam description"
+msgid "Start printing at the Z seam position."
+msgstr ""
+
 msgctxt "z_seam_type description"
 msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
 msgstr "Počáteční bod každé cesty ve vrstvě. Když cesty v po sobě jdoucích vrstvách začínají ve stejném bodě, může se na výtisku zobrazit svislý šev. Při jejich zarovnání poblíž uživatelem zadaného umístění je šev nejjednodušší odstranit. Při náhodném umístění budou nepřesnosti na začátku cest méně patrné. Při nejkratší cestě bude tisk rychlejší."
@@ -3873,6 +4009,10 @@ msgctxt "support_infill_angles label"
 msgid "Support Infill Line Directions"
 msgstr "Směry podpůrných výplní linek"
 
+msgctxt "support_infill_multiplier label"
+msgid "Support Infill Line Multiplier"
+msgstr ""
+
 msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
 msgstr "Rychlost tisku výplně podpor"
@@ -3936,6 +4076,22 @@ msgstr "Okamžitá rychlost při tisku podpor"
 msgctxt "support_join_distance label"
 msgid "Support Join Distance"
 msgstr "Vzdálenost propojení podpor"
+
+msgctxt "support_lightning_angle label"
+msgid "Support Lightning Angle"
+msgstr ""
+
+msgctxt "support_lightning_overhang_angle label"
+msgid "Support Lightning Overhang Angle"
+msgstr ""
+
+msgctxt "support_lightning_prune_angle label"
+msgid "Support Lightning Prune Angle"
+msgstr ""
+
+msgctxt "support_lightning_straightening_angle label"
+msgid "Support Lightning Straightening Angle"
+msgstr ""
 
 msgctxt "support_line_distance label"
 msgid "Support Line Distance"
@@ -4097,13 +4253,17 @@ msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
 msgstr "Zaměřte vodorovnou vzdálenost mezi dvěma sousedními vrstvami. Snížení tohoto nastavení způsobí, že se tenčí vrstvy použijí k přibližování okrajů vrstev k sobě."
 
+msgctxt "material_delta_temperature_roofing label"
+msgid "Temperature Delta Top Surface"
+msgstr ""
+
 msgctxt "layer_start_x description"
 msgid "The X coordinate of the position near where to find the part to start printing each layer."
 msgstr "Souřadnice X pozice poblíž místa, kde má být nalezen díl pro zahájení tisku každé vrstvy."
 
 msgctxt "z_seam_x description"
-msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr "Souřadnice X pozice poblíž místa, kde se má začít tisknout každá část ve vrstvě."
+msgid "The X coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
+msgstr ""
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
@@ -4114,8 +4274,8 @@ msgid "The Y coordinate of the position near where to find the part to start pri
 msgstr "Souřadnice Y pozice poblíž místa, kde má být nalezen díl pro zahájení tisku každé vrstvy."
 
 msgctxt "z_seam_y description"
-msgid "The Y coordinate of the position near where to start printing each part in a layer."
-msgstr "Souřadnice Y pozice poblíž místa, kde se má začít tisknout každá část ve vrstvě."
+msgid "The Y coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
+msgstr ""
 
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
@@ -4329,10 +4489,6 @@ msgctxt "material_brand description"
 msgid "The brand of material used."
 msgstr ""
 
-msgctxt "multi_material_paint_depth description"
-msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
-msgstr ""
-
 msgctxt "machine_acceleration description"
 msgid "The default acceleration of print head movement."
 msgstr "Výchozí zrychlení pohybu tiskové hlavy."
@@ -4361,6 +4517,10 @@ msgctxt "bridge_skin_density_2 description"
 msgid "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
 msgstr "Hustota druhé vrstvy vrstvy můstku. Hodnoty menší než 100 zvýší mezery mezi liniemi pokožky."
 
+msgctxt "skin_support_density description"
+msgid "The density of the skin support layer. Values less than 100 will increase the gaps between the lines."
+msgstr ""
+
 msgctxt "bridge_skin_density_3 description"
 msgid "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
 msgstr "Hustota třetí vrstvy vrstvy můstku. Hodnoty menší než 100 zvýší mezery mezi liniemi pokožky."
@@ -4368,6 +4528,10 @@ msgstr "Hustota třetí vrstvy vrstvy můstku. Hodnoty menší než 100 zvýší
 msgctxt "machine_depth description"
 msgid "The depth (Y-direction) of the printable area."
 msgstr "Hlouba (Isa Y) plochy k tisku."
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr ""
 
 msgctxt "support_tower_diameter description"
 msgid "The diameter of a special tower."
@@ -4464,6 +4628,10 @@ msgstr "Vzdálenost k pohybu hlavy tam a zpět přes štětec."
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
 msgstr "Koncové body čar výplně jsou zkracovány pro šetření materiálu. Toto nastavení je úhel převisu koncových bodů těchto čar."
+
+msgctxt "support_lightning_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr ""
 
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
@@ -4660,6 +4828,10 @@ msgstr ""
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr "Čáry výplně jsou vyrovnávány, aby se snížila doba tisku. Toto je maximální dovolený úhel převisu podél čáry výplně."
+
+msgctxt "support_lightning_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr ""
 
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
@@ -4985,10 +5157,6 @@ msgctxt "raft_wall_count description"
 msgid "The number of contours to print around the linear pattern of the raft."
 msgstr ""
 
-msgctxt "skin_edge_support_layers description"
-msgid "The number of infill layers that supports skin edges."
-msgstr "Počet výplňových vrstev, které podporují okraje povrchu."
-
 msgctxt "initial_bottom_layers description"
 msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr "Počet počátečních spodních vrstev od montážní desky směrem nahoru. Při výpočtu podle tloušťky dna je tato hodnota zaokrouhlena na celé číslo."
@@ -5053,10 +5221,6 @@ msgctxt "flooring_pattern description"
 msgid "The pattern of the bottom most layers."
 msgstr ""
 
-msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr "Vzor výplňového materiálu tisku. Čáry a cik-cak s každou vrstvou obracejí směr výplně, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychle, oktet, čtvrtinově krychlový, křížový a soustředný vzor jsou plně vytištěny v každé vrstvě. Vzory gyroid, krychlový, čtvrtinově krychlový a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru. Bleskový vzor se snaží minimalizovat množství výplně tím, že podporuje pouze strop objektu."
-
 msgctxt "support_pattern description"
 msgid "The pattern of the support structures of the print. The different options available result in sturdy or easy to remove support."
 msgstr "Vzor podpůrných struktur tisku. Výsledkem různých dostupných možností je robustní nebo snadno odstranitelná podpora."
@@ -5090,8 +5254,8 @@ msgid "The pattern with which the roofs of the support are printed."
 msgstr "Vzor, kterým se tisknou střechy podpěry."
 
 msgctxt "z_seam_position description"
-msgid "The position near where to start printing each part in a layer."
-msgstr "Poloha poblíž místa, kde začít tisknout každou část ve vrstvě."
+msgid "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements."
+msgstr ""
 
 msgctxt "multi_material_paint_resolution description"
 msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
@@ -5152,6 +5316,10 @@ msgstr "Rychlost tisku výplně."
 msgctxt "speed_print description"
 msgid "The speed at which printing happens."
 msgstr "Rychlost tisku."
+
+msgctxt "skin_support_speed description"
+msgid "The speed at which skin support regions are printed."
+msgstr ""
 
 msgctxt "raft_base_speed description"
 msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
@@ -5357,10 +5525,6 @@ msgctxt "bottom_thickness description"
 msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
 msgstr "Tloušťka spodních vrstev v tisku. Tato hodnota dělená výškou vrstvy definuje počet spodních vrstev."
 
-msgctxt "skin_edge_support_thickness description"
-msgid "The thickness of the extra infill that supports skin edges."
-msgstr "Tloušťka další výplně, která podporuje okraje povrchu."
-
 msgctxt "support_interface_height description"
 msgid "The thickness of the interface of the support where it touches with the model on the bottom or the top."
 msgstr "Tloušťka rozhraní podpěry, kde se dotýká modelu na spodní nebo horní straně."
@@ -5528,6 +5692,10 @@ msgstr "Horní vzdálenost rozšíření povrchu"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Horní šířka odstranění povrchu"
+
+msgctxt "roofing_expansion label"
+msgid "Top Surface Expansion"
+msgstr ""
 
 msgctxt "acceleration_wall_x_roofing label"
 msgid "Top Surface Inner Wall Acceleration"
@@ -5861,20 +6029,20 @@ msgctxt "shell label"
 msgid "Walls"
 msgstr "Stěny"
 
-msgctxt "extra_infill_lines_to_support_skins option walls"
-msgid "Walls Only"
-msgstr ""
-
-msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
-msgid "Walls and Lines"
-msgstr ""
-
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
 msgstr ""
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
+msgstr ""
+
+msgctxt "bridge_interlace_lines description"
+msgid "When enabled, bridging lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
+msgstr ""
+
+msgctxt "skin_support_interlace_lines description"
+msgid "When enabled, skin support lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
 msgstr ""
 
 msgctxt "infill_enable_travel_optimization description"
@@ -5886,8 +6054,8 @@ msgid "When enabled, the print cooling fan speed is altered for the skin regions
 msgstr "Je-li tato funkce povolena, mění se rychlost ventilátoru chlazení tisku pro oblasti kůže bezprostředně nad podporou."
 
 msgctxt "z_seam_relative description"
-msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
-msgstr "Pokud je tato možnost povolena, jsou souřadnice z švu vztaženy ke středu každé součásti. Pokud je zakázána, souřadnice definují absolutní polohu na sestavovací desce."
+msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate. This setting is critical for the 'Middle' Z Seam Position option: relative positioning places the seam at the middle of each object, while absolute positioning places it at the middle of the buildplate, resulting in completely different seam placements."
+msgstr ""
 
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
@@ -5909,6 +6077,10 @@ msgctxt "bridge_wall_material_flow description"
 msgid "When printing bridge walls, the amount of material extruded is multiplied by this value."
 msgstr "Při tisku stěn můstku je množství vytlačovaného materiálu násobeno touto hodnotou."
 
+msgctxt "skin_support_material_flow description"
+msgid "When printing skin support regions, the amount of material extruded is multiplied by this value."
+msgstr ""
+
 msgctxt "raft_interface_z_offset description"
 msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
 msgstr ""
@@ -5927,6 +6099,18 @@ msgstr "Při tisku třetí vrstvy potahu se množství vytlačovaného materiál
 
 msgctxt "keep_retracting_during_travel description"
 msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr ""
+
+msgctxt "infill_start_move_inwards_length description"
+msgid "When starting infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr ""
+
+msgctxt "infill_end_move_inwards_length description"
+msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr ""
+
+msgctxt "infill_move_inwards_length description"
+msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
 msgstr ""
 
 msgctxt "cool_lift_head description"
@@ -6305,6 +6489,14 @@ msgstr "cestování"
 #~ msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
 #~ msgstr "Umožňuje řadit seznam objektů pro ruční nastavení tiskové sekvence. První objekt ze seznamu bude vytisknut jako první."
 
+#~ msgctxt "travel_retract_before_outer_wall description"
+#~ msgid "Always retract when moving to start an outer wall."
+#~ msgstr "Vždy zatáhnout filament, když se přesouvá k začátku vnější zdi."
+
+#~ msgctxt "bridge_sparse_infill_max_density label"
+#~ msgid "Bridge Sparse Infill Max Density"
+#~ msgstr "Maximální hustota výplně mostu"
+
 #~ msgctxt "brim_inside_margin label"
 #~ msgid "Brim Inside Avoid Margin"
 #~ msgstr "Vzdálenost od límce uvnitř"
@@ -6324,6 +6516,10 @@ msgstr "cestování"
 #~ msgctxt "layer_0_z_overlap description"
 #~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
 #~ msgstr "První a druhá vrstva modelu se překrývají ve směru Z, aby se kompenzovalo vlákno ztracené ve vzduchové mezeře. Všechny modely nad první vrstvou modelu budou o tuto částku posunuty dolů."
+
+#~ msgctxt "bridge_sparse_infill_max_density description"
+#~ msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
+#~ msgstr "Maximální hustota výplně považovaná za řídkou. Kůže nad řídkou výplní je považována za nepodporovanou, a proto ji lze považovat za můstkovou kůži."
 
 #~ msgctxt "z_seam_corner option z_seam_corner_none"
 #~ msgid "None"
@@ -6349,9 +6545,33 @@ msgstr "cestování"
 #~ msgid "Overhanging walls will be printed at this percentage of their normal print speed."
 #~ msgstr "Převislé stěny budou vytištěny v procentech jejich normální rychlosti tisku."
 
+#~ msgctxt "infill_randomize_start_location label"
+#~ msgid "Randomize Infill Start"
+#~ msgstr "Náhodné spuštění výplně"
+
+#~ msgctxt "infill_randomize_start_location description"
+#~ msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
+#~ msgstr "Náhodně vyberte, který výplňový řádek je vytištěn jako první. To zabraňuje tomu, aby se jeden segment stal nejsilnějším, ale činí to za cenu dalšího pohybu."
+
+#~ msgctxt "skin_edge_support_layers label"
+#~ msgid "Skin Edge Support Layers"
+#~ msgstr "Vrstvy podpory hrany povrchu"
+
+#~ msgctxt "skin_edge_support_thickness label"
+#~ msgid "Skin Edge Support Thickness"
+#~ msgstr "Tloušťka podpory hrany povrchu"
+
 #~ msgctxt "support_interface_skip_height label"
 #~ msgid "Support Interface Resolution"
 #~ msgstr "Rozlišení rozhraní podpor"
+
+#~ msgctxt "z_seam_x description"
+#~ msgid "The X coordinate of the position near where to start printing each part in a layer."
+#~ msgstr "Souřadnice X pozice poblíž místa, kde se má začít tisknout každá část ve vrstvě."
+
+#~ msgctxt "z_seam_y description"
+#~ msgid "The Y coordinate of the position near where to start printing each part in a layer."
+#~ msgstr "Souřadnice Y pozice poblíž místa, kde se má začít tisknout každá část ve vrstvě."
 
 #~ msgctxt "machine_nozzle_head_distance description"
 #~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
@@ -6361,9 +6581,25 @@ msgstr "cestování"
 #~ msgid "The material of the build plate installed on the printer."
 #~ msgstr "Materiál podložky nainstalované na tiskárně."
 
+#~ msgctxt "skin_edge_support_layers description"
+#~ msgid "The number of infill layers that supports skin edges."
+#~ msgstr "Počet výplňových vrstev, které podporují okraje povrchu."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+#~ msgstr "Vzor výplňového materiálu tisku. Čáry a cik-cak s každou vrstvou obracejí směr výplně, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychle, oktet, čtvrtinově krychlový, křížový a soustředný vzor jsou plně vytištěny v každé vrstvě. Vzory gyroid, krychlový, čtvrtinově krychlový a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru. Bleskový vzor se snaží minimalizovat množství výplně tím, že podporuje pouze strop objektu."
+
+#~ msgctxt "z_seam_position description"
+#~ msgid "The position near where to start printing each part in a layer."
+#~ msgstr "Poloha poblíž místa, kde začít tisknout každou část ve vrstvě."
+
 #~ msgctxt "machine_head_with_fans_polygon description"
 #~ msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
 #~ msgstr "Tvar tiskové hlavy. Toto jsou souřadnice relativně k pozici tiskové hlavy, což je obvykle pozice jejího prvního extruderu. Rozměry vlevo a před tiskovou hlavou musí být negativní souřadnice."
+
+#~ msgctxt "skin_edge_support_thickness description"
+#~ msgid "The thickness of the extra infill that supports skin edges."
+#~ msgstr "Tloušťka další výplně, která podporuje okraje povrchu."
 
 #~ msgctxt "wall_overhang_angle description"
 #~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
@@ -6372,3 +6608,7 @@ msgstr "cestování"
 #~ msgctxt "support_interface_skip_height description"
 #~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
 #~ msgstr "Při kontrole, kde je model nad a pod podpěrou, proveďte kroky dané výšky. Nižší hodnoty se budou řezat pomaleji, zatímco vyšší hodnoty mohou způsobit tisk normální podpory na místech, kde mělo být rozhraní podpory."
+
+#~ msgctxt "z_seam_relative description"
+#~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
+#~ msgstr "Pokud je tato možnost povolena, jsou souřadnice z švu vztaženy ke středu každé součásti. Pokud je zakázána, souřadnice definují absolutní polohu na sestavovací desce."

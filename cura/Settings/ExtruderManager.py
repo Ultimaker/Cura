@@ -5,6 +5,7 @@ from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For comm
 
 from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
+from UM.Decorators import deprecated
 
 import cura.CuraApplication # To get the global container stack to find the current machine.
 from UM.Util import parseBool
@@ -318,6 +319,7 @@ class ExtruderManager(QObject):
         sorted_extruders = sorted(used_extruders, key=lambda extruder: extruder.getValue("extruder_nr"))
         return sorted_extruders[0]
 
+    @deprecated("This method is deprecated because it does not always return the actual initial extruder, use PrintInformation.initialExtruderNr", since="5.14.0")
     def getInitialExtruderNr(self) -> int:
         """Get the extruder that the print will start with.
 

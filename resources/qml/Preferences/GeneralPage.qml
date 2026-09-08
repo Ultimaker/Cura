@@ -3,6 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.15
+import QtQuick.Dialogs
 import QtQuick.Layouts 1.1
 
 import UM 1.5 as UM
@@ -117,7 +118,7 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("general/camera_perspective_mode")
         //var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
-//        /setDefaultCameraMode(defaultCameraMode)
+        //setDefaultCameraMode(defaultCameraMode)
 
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
         setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
@@ -140,6 +141,9 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("info/latest_update_source")
         UM.Preferences.resetPreference("info/automatic_plugin_update_check")
         pluginNotificationsUpdateCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
+
+        UM.Preferences.resetPreference("local_file/use_fixed_dialog_paths")
+        fixedPathsCheckbox.checked = boolCheck(UM.Preferences.getValue("local_file/use_fixed_dialog_paths"))
     }
 
     buttons: [
@@ -205,19 +209,12 @@ UM.PreferencesPage
                     Component.onCompleted:
                     {
                         append({ text: "English", code: "en_US" })
-                        append({ text: "Čeština", code: "cs_CZ" })
                         append({ text: "Deutsch", code: "de_DE" })
                         append({ text: "Español", code: "es_ES" })
                         append({ text: "Français", code: "fr_FR" })
                         append({ text: "Italiano", code: "it_IT" })
                         append({ text: "日本語", code: "ja_JP" })
-                        append({ text: "한국어", code: "ko_KR" })
-                        append({ text: "Nederlands", code: "nl_NL" })
                         append({ text: "Português do Brasil", code: "pt_BR" })
-                        append({ text: "Português", code: "pt_PT" })
-                        append({ text: "Русский", code: "ru_RU" })
-                        append({ text: "Türkçe", code: "tr_TR" })
-                        append({ text: "简体中文", code: "zh_CN" })
 
                         var date_object = new Date();
                         if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
@@ -227,6 +224,13 @@ UM.PreferencesPage
 
                         // incomplete and/or abandoned
                         append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
+                        append({ text: "Čeština", code: "cs_CZ" })
+                        append({ text: "한국어", code: "ko_KR" })
+                        append({ text: "Nederlands", code: "nl_NL" })
+                        append({ text: "Português", code: "pt_PT" })
+                        append({ text: "Русский", code: "ru_RU" })
+                        append({ text: "Türkçe", code: "tr_TR" })
+                        append({ text: "简体中文", code: "zh_CN" })
                         append({ text: "正體字", code: "zh_TW" })
                         append({ text: "Magyar", code: "hu_HU" })
                         append({ text: "Suomi", code: "fi_FI" })
@@ -241,7 +245,7 @@ UM.PreferencesPage
                     textRole: "text"
                     model: languageList
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
@@ -311,7 +315,7 @@ UM.PreferencesPage
                     model: themeList
                     textRole: "text"
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     currentIndex:
                     {
@@ -878,6 +882,115 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "When enabled, file open and save dialogs will always start at the specified locations below. When disabled, dialogs remember the last folder you navigated to.")
+
+                UM.CheckBox
+                {
+                    id: fixedPathsCheckbox
+                    text: catalog.i18nc("@option:check", "Always use the same default locations for opening and saving files")
+                    checked: boolCheck(UM.Preferences.getValue("local_file/use_fixed_dialog_paths"))
+                    onCheckedChanged:
+                    {
+                        UM.Preferences.setValue("local_file/use_fixed_dialog_paths", checked)
+                        if (checked)
+                        {
+                            dialogLoadPathField.text = UM.Preferences.getValue("local_file/dialog_load_path")
+                            dialogSavePathField.text = UM.Preferences.getValue("local_file/dialog_save_path")
+                        }
+                    }
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                enabled: fixedPathsCheckbox.checked
+                opacity: fixedPathsCheckbox.checked ? 1.0 : 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@info:tooltip", "The default folder to open when loading files.")
+
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default file load location:")
+                    }
+
+                    Row
+                    {
+                        spacing: UM.Theme.getSize("narrow_margin").width
+
+                        Cura.TextField
+                        {
+                            id: dialogLoadPathField
+                            selectByMouse: true
+                            text: UM.Preferences.getValue("local_file/dialog_load_path")
+                            implicitWidth: UM.Theme.getSize("combobox_wide").width
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onEditingFinished: UM.Preferences.setValue("local_file/dialog_load_path", text)
+                        }
+
+                        Cura.SecondaryButton
+                        {
+                            text: catalog.i18nc("@action:button", "Browse")
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onClicked: dialogLoadPathDialog.open()
+                        }
+                    }
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                enabled: fixedPathsCheckbox.checked
+                opacity: fixedPathsCheckbox.checked ? 1.0 : 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@info:tooltip", "The default folder to open when saving files.")
+
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default file save location:")
+                    }
+
+                    Row
+                    {
+                        spacing: UM.Theme.getSize("narrow_margin").width
+
+                        Cura.TextField
+                        {
+                            id: dialogSavePathField
+                            selectByMouse: true
+                            text: UM.Preferences.getValue("local_file/dialog_save_path")
+                            implicitWidth: UM.Theme.getSize("combobox_wide").width
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onEditingFinished: UM.Preferences.setValue("local_file/dialog_save_path", text)
+                        }
+
+                        Cura.SecondaryButton
+                        {
+                            text: catalog.i18nc("@action:button", "Browse")
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onClicked: dialogSavePathDialog.open()
+                        }
+                    }
+                }
+            }
+
             Item
             {
                 //: Spacer
@@ -1174,6 +1287,30 @@ UM.PreferencesPage
                     }
 
                     sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+                }
+            }
+
+            FolderDialog
+            {
+                id: dialogLoadPathDialog
+                title: catalog.i18nc("@title:window", "Select Default Load Folder")
+                currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
+                onAccepted:
+                {
+                    CuraApplication.setDefaultPath("dialog_load_path", selectedFolder)
+                    dialogLoadPathField.text = UM.Preferences.getValue("local_file/dialog_load_path")
+                }
+            }
+
+            FolderDialog
+            {
+                id: dialogSavePathDialog
+                title: catalog.i18nc("@title:window", "Select Default Save Folder")
+                currentFolder: CuraApplication.getDefaultPath("dialog_save_path")
+                onAccepted:
+                {
+                    CuraApplication.setDefaultPath("dialog_save_path", selectedFolder)
+                    dialogSavePathField.text = UM.Preferences.getValue("local_file/dialog_save_path")
                 }
             }
         }

@@ -3,11 +3,14 @@
 
 from dataclasses import asdict
 
-from typing import cast, Dict, TYPE_CHECKING, Any
+from typing import cast, Dict, Optional, TYPE_CHECKING, Any
 
+from UM.i18n import i18nCatalog
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.GlobalStack import GlobalStack
+
+catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -108,6 +111,43 @@ class Settings:
                 settings[f"extruder_{i}"]["all_settings"][setting] = self._retrieveValue(extruder, setting)
 
         return settings
+
+    def getSettingDisplayValue(self, setting_key: str, value, stack, i18n_catalog: Optional[i18nCatalog] = None) -> str:
+        """Convert a raw setting value to the display string shown in the UI.
+
+        :param setting_key: The key of the setting.
+        :param value: The raw value to convert.
+        :param stack: The container stack to retrieve setting properties from.
+        :param i18n_catalog: Optional machine-definition catalog for translating enum option labels.
+        :return: Human-readable display string.
+        """
+        if value is None:
+            return ""
+        setting_type = stack.getProperty(setting_key, "type")
+
+        if setting_type in ("extruder", "optional_extruder"):
+            try:
+                int_value = int(value)
+            except (ValueError, TypeError):
+                return str(value)
+            if int_value == -1:
+                return catalog.i18nc("@menuitem", "Auto")
+            global_stack = self.application.getMachineManager().activeMachine
+            if global_stack and 0 <= int_value < len(global_stack.extruderList):
+                return global_stack.extruderList[int_value].getName()
+            return str(int_value + 1)
+
+        if setting_type == "enum":
+            options = stack.getProperty(setting_key, "options")
+            if options:
+                str_value = str(value)
+                option_label = options.get(str_value)
+                if option_label:
+                    if i18n_catalog:
+                        return i18n_catalog.i18nc(f"{setting_key} option {str_value}", option_label)
+                    return option_label
+
+        return str(value)
 
     @staticmethod
     def _retrieveValue(container: InstanceContainer, setting_: str):

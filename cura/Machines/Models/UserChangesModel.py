@@ -35,6 +35,11 @@ class UserChangesModel(ListModel):
 
         self._update()
 
+    def _getDisplayValue(self, setting_key: str, value, stack) -> str:
+        return Application.getInstance().getCuraAPI().interface.settings.getSettingDisplayValue(
+            setting_key, value, stack, self._i18n_catalog
+        )
+
     @pyqtSlot()
     def forceUpdate(self):
         self._update()
@@ -57,15 +62,15 @@ class UserChangesModel(ListModel):
         definition = global_stack.getBottom()
 
         definition_suffix = ContainerRegistry.getMimeTypeForContainer(type(definition)).preferredSuffix
-        catalog = i18nCatalog(os.path.basename(definition.getId() + "." + definition_suffix))
+        definition_catalog = i18nCatalog(os.path.basename(definition.getId() + "." + definition_suffix))
 
-        if catalog.hasTranslationLoaded():
-            self._i18n_catalog = catalog
+        if definition_catalog.hasTranslationLoaded():
+            self._i18n_catalog = definition_catalog
 
         for file_name in definition.getInheritedFiles():
-            catalog = i18nCatalog(os.path.basename(file_name))
-            if catalog.hasTranslationLoaded():
-                self._i18n_catalog = catalog
+            definition_catalog = i18nCatalog(os.path.basename(file_name))
+            if definition_catalog.hasTranslationLoaded():
+                self._i18n_catalog = definition_catalog
 
         for stack in stacks:
             # Make a list of all containers in the stack.
@@ -121,8 +126,8 @@ class UserChangesModel(ListModel):
                 item_to_add = {
                     "key": setting_key,
                     "label": label,
-                    "user_value": str(user_changes.getProperty(setting_key, "value", default_value_resolve_context)),
-                    "original_value": str(original_value),
+                    "user_value": self._getDisplayValue(setting_key, user_changes.getProperty(setting_key, "value", default_value_resolve_context), stack),
+                    "original_value": self._getDisplayValue(setting_key, original_value, stack),
                     "extruder": "",
                     "category": category_label,
                 }

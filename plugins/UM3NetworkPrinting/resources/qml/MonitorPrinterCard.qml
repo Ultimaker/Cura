@@ -451,7 +451,13 @@ Item
             }
             text: catalog.i18nc("@action:button", "Details")
             visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
-            onClicked: base.enabled ? overrideConfirmationDialog.open() : {}
+            onClicked:
+            {
+                if(base.enabled)
+                {
+                    overrideConfirmationDialogComponent.createObject(base).open();
+                }
+            }
             enabled: OutputDevice.supportsPrintJobActions
         }
 
@@ -474,9 +480,13 @@ Item
         }
     }
 
-    MonitorConfigOverrideDialog
+    Component
     {
-        id: overrideConfirmationDialog
-        printer: base.printer
+        id: overrideConfirmationDialogComponent
+        MonitorConfigOverrideDialog
+        {
+            printer: base.printer
+            selfDestroy: true
+        }
     }
 }

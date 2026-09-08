@@ -32,8 +32,11 @@ Cura.Menu
             onTriggered: settingVisibilityPresetsModel.setActivePreset(modelData.presetId)
         }
 
-        onObjectAdded: function(index, object) { menu.insertItem(index, object) }
-        onObjectRemoved: function(index, object) { menu.removeItem(object)}
+        onObjectAdded: function(index, object) {
+            menu.insertItem(index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
+        }
+        onObjectRemoved: function(index, object) { menu.removeItem(object); }
     }
 
     Cura.MenuSeparator {}

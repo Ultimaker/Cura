@@ -11,6 +11,8 @@ import Cura 1.1 as Cura
 
 UM.Dialog
 {
+    property var manager
+
     id: workspaceDialog
     title: manager.isUcp? catalog.i18nc("@title:window Don't translate 'Universal Cura Project'", "Open Universal Cura Project (UCP)"): catalog.i18nc("@title:window", "Open Project")
 
@@ -75,6 +77,9 @@ UM.Dialog
             ListModel
             {
                 id: resolveStrategiesModel
+
+                signal initialized()
+
                 // Instead of directly adding the list elements, we add them afterwards.
                 // This is because it's impossible to use setting function results to be bound to listElement properties directly.
                 // See http://stackoverflow.com/questions/7659442/listelement-fields-as-properties
@@ -82,6 +87,8 @@ UM.Dialog
                 {
                     append({"key": "override", "label": catalog.i18nc("@action:ComboBox Update/override existing profile", "Update existing")});
                     append({"key": "new", "label": catalog.i18nc("@action:ComboBox Save settings in a new profile", "Create new")});
+
+                    initialized();
                 }
             }
 
@@ -120,7 +127,7 @@ UM.Dialog
 
                     comboboxTitle: catalog.i18nc("@action:label", "Open With")
                     comboboxTooltipText: catalog.i18nc("@info:tooltip", "Printer settings will be updated to match the settings saved with the project.")
-                    comboboxVisible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
+                    comboboxVisible: workspaceDialog.visible && (manager.isUcp ? manager.updatableMachinesModel.count >= 1 : manager.updatableMachinesModel.count > 1)
                     combobox: Cura.MachineSelector
                     {
                         id: machineSelector
@@ -248,10 +255,13 @@ UM.Dialog
                             radius: UM.Theme.getSize("default_radius").width
                         }
 
-                        // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
-                        currentIndex:
-                        {
-                            currentIndex = 0
+                         Connections
+                         {
+                            target: resolveStrategiesModel
+                            function onInitialized()
+                            {
+                                currentIndex = 0;
+                            }
                         }
 
                         onCurrentIndexChanged:
@@ -343,10 +353,13 @@ UM.Dialog
                             radius: UM.Theme.getSize("default_radius").width
                         }
 
-                        // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
-                        currentIndex:
-                        {
-                            currentIndex = 0
+                        Connections
+                         {
+                            target: resolveStrategiesModel
+                            function onInitialized()
+                            {
+                                currentIndex = 0;
+                            }
                         }
 
                         onCurrentIndexChanged:

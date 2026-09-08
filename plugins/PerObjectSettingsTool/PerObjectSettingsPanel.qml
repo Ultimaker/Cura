@@ -208,11 +208,11 @@ Item
                         {
                             return { settable_per_meshgroup: true }
                         }
-                        return { settable_per_meshgroup: true }
+                        return { settable_per_mesh: true }
                     }
                     exclude:
                     {
-                        const excluded_settings = ["support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh"]
+                        var excluded_settings = ["support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh"]
 
                         if (currentMeshType === "support_mesh")
                         {
@@ -422,7 +422,7 @@ Item
 
             onClicked:
             {
-                settingPickDialog.visible = true;
+                var settingPickDialog = settingPickDialogComponent.createObject(base)
                 if (currentMeshType === "support_mesh")
                 {
                     settingPickDialog.additional_excluded_settings = base.allCategoriesExceptSupport;
@@ -431,14 +431,16 @@ Item
                 {
                     settingPickDialog.additional_excluded_settings = [];
                 }
+                settingPickDialog.show();
             }
         }
 
     }
 
-    SettingPickDialog
+    Component
     {
-        id: settingPickDialog
+        id: settingPickDialogComponent
+        SettingPickDialog { selfDestroy: true; }
     }
 
     UM.SettingPropertyProvider

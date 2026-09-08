@@ -37,9 +37,28 @@ on:
       - main
       - '[0-9]+.[0-9]+'
 
+permissions:
+  contents: read
+
 jobs:
+  check_actor:
+    uses: ultimaker/cura-workflows/.github/workflows/check-actor.yml@main
+    secrets: inherit
+
+  find-ticket-packages:
+    name: Extract ticket and find packages
+    uses: ultimaker/cura-workflows/.github/workflows/extract-ticket-and-find-packages.yml@main
+    secrets: inherit
+
   testing:
     name: Run unit tests
+    needs: [check_actor, find-ticket-packages]
+    if: >-
+      always() &&
+      needs.check_actor.outputs.proceed == 'true' &&
+      needs.find-ticket-packages.result == 'success'
     uses: ultimaker/cura-workflows/.github/workflows/unit-test.yml@main
     with:
       test_use_pytest: true
+      package_overrides: ${{ needs.find-ticket-packages.outputs.package_overrides || '' }}
+    secrets: inherit

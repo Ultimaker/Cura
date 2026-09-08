@@ -14,53 +14,44 @@ import Cura 1.1 as Cura
 //
 Item
 {
-    UM.I18nCatalog { id: catalog; name: "cura" }
-
-    id: dialog
-
-    anchors.centerIn: parent
-
-    width: UM.Theme.getSize("welcome_wizard_window").width
-    height: UM.Theme.getSize("welcome_wizard_window").height
-
-    property int shadowOffset: 1 * screenScaleFactor
-
+    property alias model: wizardPanel.model
     property alias progressBarVisible: wizardPanel.progressBarVisible
-    property var model: CuraApplication.getWelcomePagesModel()
 
-    onVisibleChanged:
+    id: base
+
+    anchors.fill: parent
+    z: 100
+
+    MouseArea
     {
-        if (visible)
-        {
-            model.resetState()
-        }
+        // Prevent all mouse events from passing through.
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.AllButtons
+    }
+
+    Rectangle
+    {
+        color: UM.Theme.getColor("window_disabled_background")
+        opacity: 0.7
+        anchors.fill: parent
     }
 
     WizardPanel
     {
         id: wizardPanel
-        anchors.fill: parent
-        model: dialog.model
-    }
+        UM.I18nCatalog { id: catalog; name: "cura" }
 
-    // Drop shadow around the panel
-    // TODO: Maybe re-implement this some other way.
-    /*DropShadow
-    {
-        id: shadow
-        radius: UM.Theme.getSize("first_run_shadow_radius").width
-        anchors.fill: wizardPanel
-        source: wizardPanel
-        horizontalOffset: shadowOffset
-        verticalOffset: shadowOffset
-        color: UM.Theme.getColor("first_run_shadow")
-        transparentBorder: true
-    }*/
+        anchors.centerIn: parent
+
+        width: UM.Theme.getSize("welcome_wizard_window").width
+        height: UM.Theme.getSize("welcome_wizard_window").height
+    }
 
     // Close this dialog when there's no more page to show
     Connections
     {
         target: model
-        function onAllFinished() { dialog.visible = false }
+        function onAllFinished() { base.destroy() }
     }
 }

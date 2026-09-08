@@ -394,19 +394,22 @@ class MachineManager(QObject):
         if not self._global_container_stack:
             return
         for extruder in self._global_container_stack.extruderList:
+            extruder_position = int(extruder.getMetaDataEntry("position"))
             variant_name = extruder.variant.getName()
             variant_node = machine_node.variants.get(variant_name)
             if variant_node is None:
+                preferred_variant = machine_node.preferredVariantName(extruder_position)
                 Logger.log("w", "An extruder has an unknown variant, switching it to the preferred variant")
-                self.setVariantByName(extruder.getMetaDataEntry("position"), machine_node.preferred_variant_name)
-                variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
+                self.setVariantByName(extruder.getMetaDataEntry("position"), preferred_variant)
+                variant_node = machine_node.variants.get(preferred_variant)
 
             material_node = variant_node.materials.get(
                 extruder.material.getMetaDataEntry("base_file")) if variant_node else None
             if material_node is None:
+                preferred_material = machine_node.preferredMaterialName(extruder_position)
                 Logger.log("w", "An extruder has an unknown material, switching it to the preferred material")
-                if not self.setMaterialById(extruder.getMetaDataEntry("position"), machine_node.preferred_material):
-                    Logger.log("w", "Failed to switch to %s keeping old material instead", machine_node.preferred_material)
+                if not self.setMaterialById(extruder.getMetaDataEntry("position"), preferred_material):
+                    Logger.log("w", "Failed to switch to %s keeping old material instead", preferred_material)
 
 
     @staticmethod
@@ -837,14 +840,14 @@ class MachineManager(QObject):
         result = True
         if not self._global_container_stack:
             return result
-        if self.activeMachine.definition.id != "ultimaker_factor4":
+        if self.activeMachine.definition.id not in ("ultimaker_factor4", "ultimaker_factor4_plus"):
             return result
 
         for extruder_container in self._global_container_stack.extruderList:
-            if extruder_container.definition.id.startswith("ultimaker_factor4_extruder_right"):
+            if extruder_container.definition.id.startswith("ultimaker_factor4_extruder_right") or extruder_container.definition.id.startswith("ultimaker_factor4_plus_extruder_right"):
                 if extruder_container.material == empty_material_container:
                     return True
-                if extruder_container.variant.id.startswith("ultimaker_factor4_bb"):
+                if extruder_container.variant.id.startswith("ultimaker_factor4_bb") or extruder_container.variant.id.startswith("ultimaker_factor4_plus_bb"):
                     return False
         return True
 

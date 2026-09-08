@@ -117,6 +117,7 @@ message PathSegment {
     bytes line_width = 5; // The widths of the line segments as bytes of a float array of length 1 or N
     bytes line_thickness = 6; // The thickness of the line segments as bytes of a float array of length 1 or N
     bytes line_feedrate = 7; // The feedrate of the line segments as bytes of a float array of length 1 or N
+    repeated uint32 attributes = 8; // Print attributes of each segment, e.g. overhanging or bridging
 }
 
 
@@ -145,7 +146,15 @@ message PrintTimeMaterialEstimates { // The print time for each feature and mate
 
 message MaterialEstimates {
     int64 id = 1;
-    float material_amount = 2; // material used in the extruder
+    float material_amount = 2; // Volume material used in the extruder
+    float material_length = 3; // Length of used filament, in meters
+    float material_weight = 4; // Weight of used filament, in grams
+    float material_cost = 5;   // Cost of used filament, in whatever the money unit is
+    string material_name = 6;  // Name of used filament
+}
+
+message InitialExtruder {
+    uint32 extruder_nr = 1;
 }
 
 message SettingList {
@@ -162,10 +171,6 @@ message SettingExtruder {
     string name = 1; //The setting key.
 
     int32 extruder = 2; //From which extruder stack the setting should inherit.
-}
-
-message GCodePrefix {
-    bytes data = 2; //Header string to be prepended before the rest of the g-code sent from the engine.
 }
 
 message SliceUUID {

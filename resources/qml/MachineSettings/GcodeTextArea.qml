@@ -77,6 +77,11 @@ Item
                 }
             }
 
+            Component.onDestruction:
+            {
+                propertyProvider.setPropertyValue("value", text)
+            }
+
             background: Rectangle
             {
                 id: backgroundRectangle

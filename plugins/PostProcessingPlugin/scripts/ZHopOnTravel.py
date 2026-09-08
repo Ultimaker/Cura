@@ -190,14 +190,14 @@ class ZHopOnTravel(Script):
         # Get either the 'range_of_layers' or the 'list_of_layers' and convert them to 'layer_list' and then 'index_list'
         if list_or_range == "list_of_layers":
             layer_string = self.getSettingValueByKey("layers_of_interest")
-            layer_list = layer_string.split(",")
+            # Split the list into integers at Base0 numbering
+            layer_list = [int(x) - 1 for x in layer_string.split(",")]
             layer_list.sort()
             for layer in layer_list:
                 for num in range(2, len(data) - 1):
-                    if ";LAYER:" + str(int(layer) - 1) + "\n" in data[num]:
+                    if ";LAYER:" + str(layer) + "\n" in data[num]:
                         index_list.append(num)
             start_index = index_list[0]
-
         elif list_or_range == "range_of_layers":
             start_layer = self.getSettingValueByKey("start_layer")
             end_layer = self.getSettingValueByKey("end_layer")

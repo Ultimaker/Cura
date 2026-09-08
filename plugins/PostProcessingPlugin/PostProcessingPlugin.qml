@@ -269,7 +269,10 @@ UM.Dialog
                     onTriggered: manager.addScriptToList(modelData.toString())
                 }
 
-                onObjectAdded: function(index, object) { scriptsMenu.insertItem(index, object)}
+                onObjectAdded: function(index, object) {
+                    scriptsMenu.insertItem(index, object);
+                    if (Qt.platform.os == "osx") object.text += " ";
+                }
                 onObjectRemoved: function(index, object) {  scriptsMenu.removeItem(object) }
             }
         }
@@ -505,53 +508,5 @@ UM.Dialog
     {
         text: catalog.i18nc("@action:button", "Close")
         onClicked: dialog.accept()
-    }
-
-    Item
-    {
-        objectName: "postProcessingSaveAreaButton"
-        visible: activeScriptsList.count > 0
-        height: UM.Theme.getSize("action_button").height
-        width: height
-
-        Cura.SecondaryButton
-        {
-            height: UM.Theme.getSize("action_button").height
-            tooltip:
-            {
-                var tipText = catalog.i18nc("@info:tooltip", "Change active post-processing scripts.");
-                if (activeScriptsList.count > 0)
-                {
-                    tipText += "<br><br>" + catalog.i18ncp("@info:tooltip",
-                        "The following script is active:",
-                        "The following scripts are active:",
-                        activeScriptsList.count
-                    ) + "<ul>";
-                    for(var i = 0; i < activeScriptsList.count; i++)
-                    {
-                        tipText += "<li>" + manager.getScriptLabelByKey(manager.scriptList[i]) + "</li>";
-                    }
-                    tipText += "</ul>";
-                }
-                return tipText
-            }
-            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
-            onClicked: dialog.show()
-            iconSource: Qt.resolvedUrl("Script.svg")
-            fixedWidthMode: false
-        }
-
-        Cura.NotificationIcon
-        {
-            id: activeScriptCountIcon
-            visible: activeScriptsList.count > 0
-            anchors
-            {
-                horizontalCenter: parent.right
-                verticalCenter: parent.top
-            }
-
-            labelText: activeScriptsList.count
-        }
     }
 }

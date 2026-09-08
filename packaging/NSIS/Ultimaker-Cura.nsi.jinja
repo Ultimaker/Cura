@@ -7,15 +7,12 @@
 !define VIVERSION "{{ version_major }}.{{ version_minor }}.{{ version_patch }}.0"
 !define COPYRIGHT "Copyright (c) {{ year }} {{ company }}"
 !define DESCRIPTION "Application"
-!define LICENSE_TXT "{{ cura_license_file }}"
 !define INSTALLER_NAME "{{ destination }}"
 !define MAIN_APP_EXE "{{ main_app }}"
 !define INSTALL_TYPE "SetShellVarContext all"
 !define REG_ROOT "HKLM"
 !define REG_APP_PATH "Software\Microsoft\Windows\CurrentVersion\App Paths\${APP_NAME}-${VERSION}"
 !define UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}-${VERSION}"
-
-!define REG_START_MENU "Start Menu Shortcut"
 
 ;Require administrator access
 RequestExecutionLevel admin
@@ -53,24 +50,45 @@ InstallDir "$PROGRAMFILES64\${APP_NAME}"
 
 !insertmacro MUI_PAGE_WELCOME
 
-!ifdef LICENSE_TXT
+{% if cura_license_file %}
+!define LICENSE_TXT "{{ cura_license_file }}"
 !insertmacro MUI_PAGE_LICENSE "${LICENSE_TXT}"
-!endif
+{% endif %}
 
 !insertmacro MUI_PAGE_DIRECTORY
 
-!ifdef REG_START_MENU
-!define MUI_STARTMENUPAGE_NODISABLE
-!define MUI_STARTMENUPAGE_REGISTRY_ROOT "${REG_ROOT}"
-!define MUI_STARTMENUPAGE_REGISTRY_KEY "${UNINSTALL_PATH}"
-!define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${REG_START_MENU}"
+!define MUI_PAGE_HEADER_TEXT "File Type Associations"
+!define MUI_PAGE_HEADER_SUBTEXT "Select which file types ${APP_NAME} will open by default."
+!define MUI_COMPONENTSPAGE_TEXT_TOP "Select the file types you want ${APP_NAME} to open when double-clicked. Unchecked types will keep their current default application. This cannot override previous User-Choices through Always Open With."
+!define MUI_COMPONENTSPAGE_TEXT_COMPLIST "File type associations:"
+!define MUI_COMPONENTSPAGE_SMALLDESC
+!insertmacro MUI_PAGE_COMPONENTS
+!ifdef MUI_PAGE_HEADER_TEXT
+  !undef MUI_PAGE_HEADER_TEXT
+!endif
+!ifdef MUI_PAGE_HEADER_SUBTEXT
+  !undef MUI_PAGE_HEADER_SUBTEXT
+!endif
+!ifdef MUI_COMPONENTSPAGE_TEXT_TOP
+  !undef MUI_COMPONENTSPAGE_TEXT_TOP
+!endif
+!ifdef MUI_COMPONENTSPAGE_TEXT_COMPLIST
+  !undef MUI_COMPONENTSPAGE_TEXT_COMPLIST
+!endif
+!ifdef MUI_COMPONENTSPAGE_SMALLDESC
+  !undef MUI_COMPONENTSPAGE_SMALLDESC
 !endif
 
 !insertmacro MUI_PAGE_INSTFILES
 
-# Set up explorer to run Cura instead of directly, so it's not executed elevated (with all negative consequences that brings for an unelevated user).
+# Launch via explorer so Cura runs non-elevated.
 !define MUI_FINISHPAGE_RUN "$WINDIR\explorer.exe"
 !define MUI_FINISHPAGE_RUN_PARAMETERS "$INSTDIR\${MAIN_APP_EXE}"
+
+!define MUI_FINISHPAGE_SHOWREADME ""
+!define MUI_FINISHPAGE_SHOWREADME_TEXT "Create a desktop shortcut"
+!define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
+!define MUI_FINISHPAGE_SHOWREADME_FUNCTION createDesktopShortcut
 !insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -83,31 +101,77 @@ InstallDir "$PROGRAMFILES64\${APP_NAME}"
 
 ######################################################################
 
+Function createDesktopShortcut
+    CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
+FunctionEnd
+
+######################################################################
+
 Section -MainProgram
 ${INSTALL_TYPE}
-SetOverwrite ifnewer
+SetOverwrite try
 {% for out_path, files in mapped_out_paths.items() %}SetOutPath "{{ out_path }}"{% for file in files %}
 File "{{ file[0] }}"{% endfor %}
 {% endfor %}SectionEnd
 
 ######################################################################
 
-Section -Extension_Reg
-!insertmacro APP_ASSOCIATE "stl" "Cura.model" "Standard Tessellation Language (STL) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$INSTDIR\${MAIN_APP_EXE} $\"%1$\""
-!insertmacro APP_ASSOCIATE "3mf" "Cura.project" "3D Manufacturing Format (3MF) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$INSTDIR\${MAIN_APP_EXE} $\"%1$\""
+SectionGroup "File Associations" SEC_FILEASSOC
+{% for assoc in file_associations %}
+Section {% if assoc.optional %}/o {% endif %}"{{ assoc.section_title }}" SEC_{{ assoc.ext | upper }}
+!insertmacro APP_ASSOCIATE "{{ assoc.ext }}" "{{ assoc.prog_id }}" "{{ assoc.type_description }}" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+{% for extra in assoc.extra_exts %}
+!insertmacro APP_ASSOCIATE "{{ extra }}" "{{ assoc.prog_id }}" "{{ assoc.type_description }}" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+{% endfor %}
+SectionEnd
+{% endfor %}
+SectionGroupEnd
+
+SectionGroup "URL Protocols" SEC_URLPROTOCOL
+
+Section "cura://" SEC_URLPROTOCOL_CURA
+WriteRegStr HKCR "cura" "" "URL:cura"
+WriteRegStr HKCR "cura" "URL Protocol" ""
+WriteRegStr HKCR "cura\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
+WriteRegStr HKCR "cura\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+SectionEnd
+
+Section /o "slicer://" SEC_URLPROTOCOL_SLICER
+WriteRegStr HKCR "slicer" "" "URL:slicer"
+WriteRegStr HKCR "slicer" "URL Protocol" ""
+WriteRegStr HKCR "slicer\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
+WriteRegStr HKCR "slicer\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+SectionEnd
+
+SectionGroupEnd
+
+######################################################################
+
+Section -UpdateApplicationsRegistry
+; Update the Applications key for "Open With" to point to current version (only once)
+WriteRegStr HKCR "Applications\${MAIN_APP_EXE}\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+WriteRegStr HKCU "SOFTWARE\Classes\Applications\${MAIN_APP_EXE}\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+
+; Register capabilities so Cura appears in Windows "Default apps" / "Set Default Programs"
+!define CAPS_KEY "SOFTWARE\${COMP_NAME}\${APP_NAME}\Capabilities"
+WriteRegStr HKLM "${CAPS_KEY}" "ApplicationName" "${APP_NAME}"
+WriteRegStr HKLM "${CAPS_KEY}" "ApplicationDescription" "UltiMaker Cura is the world's most trusted 3D printing slicer."
+{% for assoc in file_associations -%}
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".{{ assoc.ext }}" "{{ assoc.prog_id }}"
+{% for extra in assoc.extra_exts -%}
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".{{ extra }}" "{{ assoc.prog_id }}"
+{% endfor %}{% endfor %}
+WriteRegStr HKLM "${CAPS_KEY}\URLAssociations"  "cura"    "cura"
+WriteRegStr HKLM "${CAPS_KEY}\URLAssociations"  "slicer"  "slicer"
+WriteRegStr HKLM "SOFTWARE\RegisteredApplications" "${APP_NAME}" "${CAPS_KEY}"
+!undef CAPS_KEY
 SectionEnd
 
 Section -Icons_Reg
 SetOutPath "$INSTDIR"
 WriteUninstaller "$INSTDIR\uninstall.exe"
 
-!ifdef REG_START_MENU
 CreateShortCut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
-!endif
-
-!ifndef REG_START_MENU
-CreateShortCut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
-!endif
 
 WriteRegStr ${REG_ROOT} "${REG_APP_PATH}" "" "$INSTDIR\${MAIN_APP_EXE}"
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayName" "${APP_NAME}"
@@ -117,25 +181,22 @@ WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayIcon" "$INSTDIR\${MAIN_APP_
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayVersion" "${VERSION}"
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "Publisher" "${COMP_NAME}"
 
+; Notify the Windows shell that file associations have changed
+!insertmacro UPDATEFILEASSOC
+
 SectionEnd
 
 ######################################################################
 
-Section UrlProtocol
+; Section descriptions
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FILEASSOC} "Associate 3D model file types with {{ app_name }}"
+{% for assoc in file_associations %}  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_{{ assoc.ext | upper }}} "{{ assoc.feature_description }}"
+{% endfor %}  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_URLPROTOCOL} "Enable opening models directly from web links via URL protocols"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_URLPROTOCOL_CURA} "Register the cura:// URL protocol"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_URLPROTOCOL_SLICER} "Register the slicer:// URL protocol"
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
 
-WriteRegStr HKCR "cura" "" "URL:cura"
-WriteRegStr HKCR "cura" "URL Protocol" ""
-WriteRegStr HKCR "cura\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
-WriteRegStr HKCR "cura\shell" "" "open"
-WriteRegStr HKCR "cura\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
-
-WriteRegStr HKCR "slicer" "" "URL:slicer"
-WriteRegStr HKCR "slicer" "URL Protocol" ""
-WriteRegStr HKCR "slicer\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
-WriteRegStr HKCR "slicer\shell" "" "open"
-WriteRegStr HKCR "slicer\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
-
-SectionEnd
 ######################################################################
 
 Section Uninstall
@@ -154,24 +215,35 @@ RmDir "$INSTDIR\share"
 
 Delete "$INSTDIR\uninstall.exe"
 
+; Safety net to ensure files have been removed
 RmDir /r /REBOOTOK "$INSTDIR"
 
-!ifdef REG_START_MENU
 Delete "$SMPROGRAMS\${APP_NAME}.lnk"
-!endif
+Delete "$DESKTOP\${APP_NAME}.lnk"
 
-!ifndef REG_START_MENU
-Delete "$SMPROGRAMS\${APP_NAME}.lnk"
-!endif
+; Unassociate all file types
+{% for assoc in file_associations -%}
+!insertmacro APP_UNASSOCIATE "{{ assoc.ext }}" "{{ assoc.prog_id }}"
+{% for extra in assoc.extra_exts -%}
+!insertmacro APP_UNASSOCIATE "{{ extra }}" "{{ assoc.prog_id }}"
+{% endfor %}{% endfor %}
 
-!insertmacro APP_UNASSOCIATE "stl" "Cura.model"
-!insertmacro APP_UNASSOCIATE "3mf" "Cura.project"
+; Clean up Applications registry entries
+DeleteRegKey HKCR "Applications\${MAIN_APP_EXE}"
+DeleteRegKey HKCU "SOFTWARE\Classes\Applications\${MAIN_APP_EXE}"
+
+; Remove RegisteredApplications / Capabilities entries
+DeleteRegValue HKLM "SOFTWARE\RegisteredApplications" "${APP_NAME}"
+DeleteRegKey HKLM "SOFTWARE\${COMP_NAME}\${APP_NAME}"
 
 ; Unassociate file associations for 'cura' protocol
 DeleteRegKey HKCR "cura"
 
 ; Unassociate file associations for 'slicer' protocol
 DeleteRegKey HKCR "slicer"
+
+; Notify the Windows shell that file associations have been removed
+!insertmacro UPDATEFILEASSOC
 
 DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
 DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2025-02-21 15:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,6 +36,10 @@ msgctxt "extruder_nr label"
 msgid "Extruder"
 msgstr "Extrusor"
 
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Duração da mudança de extrusora"
+
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
 msgstr "G-Code Final do Extrusor"
@@ -55,6 +59,10 @@ msgstr "Posição X Final do Extrusor"
 msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
 msgstr "Posição Y Final do Extrusor"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "Código-G do pré-arranque da extrusora"
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -124,6 +132,10 @@ msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "ID do Nozzle"
 
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "Comprimento do bocal"
+
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
 msgstr "Desvio X do Nozzle"
@@ -131,6 +143,10 @@ msgstr "Desvio X do Nozzle"
 msgctxt "machine_nozzle_offset_y label"
 msgid "Nozzle Y Offset"
 msgstr "Desvio Y do Nozzle"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "O código-G de pré-arranque a executar antes de mudar para esta extrusora."
 
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
@@ -151,6 +167,10 @@ msgstr "A coordenada Z da posição onde o nozzle é preparado ao iniciar a impr
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "O núcleos de extrusão utilizado para imprimir. Definição usada com múltiplos extrusores."
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "A diferença de altura entre a extremidade do bocal e a parte mais baixa da cabeça da impressão."
 
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
@@ -195,26 +215,6 @@ msgstr "A coordenada Y do desvio do nozzle."
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "A coordenada Y da posição inicial ao ligar o extrusor."
-
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr "Comprimento do bocal"
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr "A diferença de altura entre a extremidade do bocal e a parte mais baixa da cabeça da impressão."
-
-msgctxt "machine_extruder_change_duration label"
-msgid "Extruder Change duration"
-msgstr "Duração da mudança de extrusora"
-
-msgctxt "machine_extruder_prestart_code label"
-msgid "Extruder Prestart G-Code"
-msgstr "Código-G do pré-arranque da extrusora"
-
-msgctxt "machine_extruder_prestart_code description"
-msgid "Prestart g-code to execute before switching to this extruder."
-msgstr "O código-G de pré-arranque a executar antes de mudar para esta extrusora."
 
 msgctxt "machine_extruder_change_duration description"
 msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."

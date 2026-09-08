@@ -158,7 +158,7 @@ Cura.MachineAction
                     id: discoveryTip
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>").arg("https://ultimaker.com/en/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=manage-network-printer");
+                    text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>").arg("https://support.ultimaker.com/s/article/1667337573408")
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
 

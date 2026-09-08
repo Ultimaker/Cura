@@ -14,7 +14,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Download analysis results
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -40,7 +40,7 @@ jobs:
           unzip -j printer-linter-result.zip -d printer-linter-result
 
       - name: Set PR details environment variables
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const assert = require("node:assert").strict;
@@ -63,14 +63,14 @@ jobs:
                 }
             });
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           repository: ${{ env.PR_HEAD_REPO }}
           ref: ${{ env.PR_HEAD_SHA }}
           persist-credentials: false
 
       - name: Redownload analysis results
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -97,7 +97,7 @@ jobs:
 
       - name: Run PR Comments
         if: env.commentFileExists == 'true'
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@v5
         with:
           issue-number: ${{ env.PR_ID }}
           body-path: 'printer-linter-result/comment.md'
