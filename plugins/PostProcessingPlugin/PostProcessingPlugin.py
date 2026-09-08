@@ -34,7 +34,6 @@ class PostProcessingPlugin(QObject, Extension):
         Extension.__init__(self)
         self.setMenuName(i18n_catalog.i18nc("@item:inmenu", "Post Processing"))
         self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Modify G-Code"), self.showPopup)
-        self._dialog = None
 
         # Loaded scripts are all scripts that can be used
         self._loaded_scripts = {}  # type: Dict[str, Type[Script]]
@@ -371,11 +370,11 @@ class PostProcessingPlugin(QObject, Extension):
         # Create the plugin dialog component
         path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin")),
                             "PostProcessingPlugin.qml")
-        self._dialog = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
-        if self._dialog is None:
+        dialog = CuraApplication.getInstance().createQmlSubWindow(path, {"manager": self})
+        if dialog is None:
             return
 
-        self._dialog.show()
+        dialog.show()
 
     def _propertyChanged(self) -> None:
         """Property changed: trigger re-slice
