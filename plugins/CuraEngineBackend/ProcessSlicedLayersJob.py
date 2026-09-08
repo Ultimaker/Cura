@@ -15,6 +15,7 @@ from UM.Logger import Logger
 
 from UM.Math.Vector import Vector
 
+from cura.PrintSegmentAttributes import PrintSegmentAttributes
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -159,6 +160,8 @@ class ProcessSlicedLayersJob(Job):
                 line_feedrates = numpy.fromstring(polygon.line_feedrate, dtype = "f4")  # Convert bytearray to numpy array
                 line_feedrates = line_feedrates.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
+                print_attributes = [PrintSegmentAttributes(attributes) for attributes in polygon.attributes]
+
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
                 # faster.
@@ -172,7 +175,7 @@ class ProcessSlicedLayersJob(Job):
                     new_points[:, 1] = points[:, 2]
                     new_points[:, 2] = -points[:, 1]
 
-                this_poly = LayerPolygon.LayerPolygon(extruder, line_types, new_points, line_widths, line_thicknesses, line_feedrates)
+                this_poly = LayerPolygon.LayerPolygon(extruder, line_types, new_points, line_widths, line_thicknesses, line_feedrates, print_attributes)
                 this_poly.buildCache()
 
                 this_layer.polygons.append(this_poly)
