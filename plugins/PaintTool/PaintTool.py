@@ -67,6 +67,7 @@ class PaintTool(Tool):
         self._cache_dirty: bool = True
 
         self._brush_size: int = 10
+        self._face_angle: int = 30
         self._brush_color: str = "preferred"
         self._brush_extruder: int = 0
         self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.CIRCLE
@@ -81,7 +82,7 @@ class PaintTool(Tool):
                                                                                 PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
 
-        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "BrushExtruder", "State", "CanUndo", "CanRedo")
+        self.setExposedProperties("PaintType", "BrushSize", "FaceAngle", "BrushColor", "BrushShape", "BrushExtruder", "State", "CanUndo", "CanRedo")
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
@@ -151,6 +152,15 @@ class PaintTool(Tool):
         if brush_size_int != self._brush_size:
             self._brush_size = brush_size_int
             self._brush_pen = self._createBrushPen()
+            self.propertyChanged.emit()
+
+    def getFaceAngle(self) -> int:
+        return self._face_angle
+
+    def setFaceAngle(self, face_angle: float) -> None:
+        face_angle_int = int(face_angle)
+        if face_angle_int != self._face_angle:
+            self._face_angle = face_angle_int
             self.propertyChanged.emit()
 
     def getBrushColor(self) -> str:
@@ -286,7 +296,7 @@ class PaintTool(Tool):
         """Get UV polygon(s) for an entire face.
         
         In face mode, this gets all connected coplanar triangles that form a "visual face".
-        The brush size controls the angle threshold: smaller brush = stricter coplanarity check.
+        The face angle (in degrees) controls the coplanarity check: lower = stricter, higher = looser.
 
         :param face_id: the ID of the face to get UV areas for
         :return: A list of UV-mapped polygons representing the entire face
@@ -296,10 +306,7 @@ class PaintTool(Tool):
         if not mesh_data.hasUVCoordinates():
             return []
         
-        # Map brush size (1-100) to angle threshold (0.0-PI/2)
-        # Smaller brush = stricter angle (only very coplanar faces)
-        # Larger brush = looser angle (more faces included)
-        angle_threshold = (self._brush_size / 100.0) * math.pi / 2.0
+        angle_threshold = math.radians(self._face_angle)
         
         # Get all coplanar connected faces
         mesh_indices = self._mesh_transformed_cache.getIndices()
