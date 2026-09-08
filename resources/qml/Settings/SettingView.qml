@@ -21,9 +21,9 @@ Item
         name: "cura"
     }
 
-    readonly property var settingPreferenceVisibilityHandler: TabbedSettingsManager.getVisibilityHandler("ExtendedSettingPreference")
-    readonly property var perCategoryVisibilityHandler: TabbedSettingsManager.getVisibilityHandler("PerCategory")
-    readonly property var instanceContainerVisibilityHandler: TabbedSettingsManager.getVisibilityHandler("InstanceContainer")
+    readonly property var settingPreferenceVisibilityHandler: TabbedSettingsManager.getVisibilityHandler(TabbedSettingsManager.SettingPreference)
+    readonly property var perCategoryVisibilityHandler: TabbedSettingsManager.getVisibilityHandler(TabbedSettingsManager.PerCategory)
+    readonly property var instanceContainerVisibilityHandler: TabbedSettingsManager.getVisibilityHandler(TabbedSettingsManager.InstanceContainer)
 
     property string selectedKey: "_overview"
 
