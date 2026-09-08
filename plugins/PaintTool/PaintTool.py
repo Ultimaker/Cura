@@ -255,6 +255,19 @@ class PaintTool(Tool):
             return Polygon()
         return shape.translate(stroke_a[0], stroke_a[1]).unionConvexHulls(shape.translate(stroke_b[0], stroke_b[1]))
 
+    def _getUvAreas(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray, face_id: int) -> List[Polygon]:
+        """ Fetches all texture-coordinate areas according to the current selected brush
+
+        :param world_coords_a: 3D ('world') coordinates corresponding to the starting stroke point.
+        :param world_coords_b: 3D ('world') coordinates corresponding to the ending stroke point.
+        :param face_id: the ID of the face at the center of the stroke
+        :return: A list of UV-mapped polygons representing areas filled by the brush on the node's mesh surface.
+        """
+        if self._brush_shape == PaintTool.Brush.Shape.FACE:
+            return self._getUvAreasForFace(face_id)
+        else:
+            return self._getUvAreasForStroke(world_coords_a, world_coords_b, face_id)
+
     # NOTE: Currently, it's unclear how well this would work for non-convex brush-shapes.
     def _getUvAreasForStroke(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray, face_id: int) -> List[Polygon]:
         """ Fetches all texture-coordinate areas within the provided stroke on the mesh.
@@ -411,12 +424,7 @@ class PaintTool(Tool):
             event_caught = False # Propagate mouse event if only moving the cursor, not to block e.g. rotation
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
-                
-                # In face mode, paint/preview the entire face
-                if self._brush_shape == PaintTool.Brush.Shape.FACE:
-                    uv_areas_cursor = self._getUvAreasForFace(face_id)
-                else:
-                    uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
+                uv_areas_cursor = self._getUvAreas(world_coords, world_coords, face_id)
                 
                 if len(uv_areas_cursor) > 0:
                     cursor_path = self._createStrokePath(uv_areas_cursor)
@@ -425,12 +433,7 @@ class PaintTool(Tool):
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    # In face mode, paint the entire face
-                    if self._brush_shape == PaintTool.Brush.Shape.FACE:
-                        uv_areas = self._getUvAreasForFace(face_id)
-                    else:
-                        uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
-                    
+                    uv_areas = self._getUvAreas(self._last_world_coords, world_coords, face_id)
                     if len(uv_areas) == 0:
                         return False
                     event_caught = True
