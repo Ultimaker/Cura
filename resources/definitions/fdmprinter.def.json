@@ -9358,7 +9358,7 @@
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
-                    "default_value": 5,
+                    "default_value": 0.2,
                     "value": "line_width / 2",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true,
