@@ -9351,16 +9351,6 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "bridge_over_support":
-                {
-                    "label": "Allow Support To Sustain Bridge",
-                    "description": "If checked, will allow bridging lines to be sustained by support below. Bridging over supports will use the bridging pattern, but not all of the extrusion settings.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false
-                },
                 "bridge_wall_max_deviation":
                 {
                     "label": "Maximum Bridge Deviation",
