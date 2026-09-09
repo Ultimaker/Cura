@@ -771,10 +771,9 @@ class PauseAtHeight(Script):
         if pause_method == "repetier":
             if not is_retracted and self.retraction_enabled:
                 self.pause_lines_list.append(f"G1 F{self.retraction_retract_speed} E-{self.retraction_amount} ; Retract")
+            move_z = min(move_z, self._machine_height - current_z)
             if park_enabled:
                 # Move the head to the park location
-                if current_z + move_z > self._machine_height:
-                    move_z = 0
                 self.pause_lines_list.append(f"G0 F{self.speed_z_hop} Z{round(current_z + move_z, 2)} ; Move up to clear the print")
                 self.pause_lines_list.append(f"G0 F{self.speed_travel} X{park_x} Y{park_y} ; Move to park location")
                 if current_z < move_z:
@@ -788,17 +787,14 @@ class PauseAtHeight(Script):
                     self.pause_lines_list.append("G10 ; Retract")
                 else:
                     self.pause_lines_list.append(f"G1 F{self.retraction_retract_speed} E-{self.retraction_amount} ; Retract")
+            move_z = min(move_z, self._machine_height - current_z)
             if park_enabled:
                 # Move the head to the park position
-                if current_z + move_z > self._machine_height:
-                    move_z = 0
                 self.pause_lines_list.append(f"G0 F{self.speed_z_hop} Z{round(current_z + move_z, 2)} ; Move up to clear the print")
                 self.pause_lines_list.append(f"G0 F{self.speed_travel} X{park_x} Y{park_y} ; Move to park location")
                 if current_z < min_purge_clearance - move_z:
                     self.pause_lines_list.append(f"G0 F{self.speed_z_hop} Z{min_purge_clearance} ; Minimum clearance" + str(" to purge" if purge_amount != 0 and self.reason_for_pause == 'reason_filament' else "") + " - move up some more")
             else:
-                if current_z + move_z > self._machine_height:
-                    move_z = 0
                 self.pause_lines_list.append(f"G0 F{self.speed_z_hop} Z{round(current_z + move_z, 2)} ; Move up to clear the print")
 
             # 'Unload' and 'purge' are only available if there is a filament change.
