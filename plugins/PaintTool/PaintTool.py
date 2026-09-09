@@ -290,13 +290,14 @@ class PaintTool(Tool):
         if mesh_indices is None:
             mesh_indices = numpy.array([], dtype=numpy.int32)
 
+        tex_w, tex_h = self._view.getUvTexDimensions()
         res = uvula.project(stroke_poly.getPoints(),
                             self._mesh_transformed_cache.getVertices(),
                             mesh_indices,
                             self._node_cache.getMeshData().getUVCoordinates(),
                             self._node_cache.getMeshData().getFacesConnections(),
-                            self._view.getUvTexDimensions()[0],
-                            self._view.getUvTexDimensions()[1],
+                            tex_w,
+                            tex_h,
                             self._camera.getProjectToViewMatrix().getData(),
                             self._camera.isPerspective(),
                             self._camera.getViewportWidth(),
@@ -326,12 +327,13 @@ class PaintTool(Tool):
         if mesh_indices is None:
             mesh_indices = numpy.array([], dtype=numpy.int32)
 
+        tex_w, tex_h = self._view.getUvTexDimensions()
         coplanar_faces = uvula.getConnectedFaces(self._mesh_transformed_cache.getVertices(),
                                                  mesh_indices,
                                                  self._node_cache.getMeshData().getUVCoordinates(),
                                                  self._node_cache.getMeshData().getFacesConnections(),
-                                                 self._view.getUvTexDimensions()[0],
-                                                 self._view.getUvTexDimensions()[1],
+                                                 tex_w,
+                                                 tex_h,
                                                  face_id,
                                                  angle_threshold)
         uv_polygons = [Polygon(points) for points in coplanar_faces]
