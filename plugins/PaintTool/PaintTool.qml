@@ -212,7 +212,7 @@ Item
         {
             width: childrenRect.width
             height: childrenRect.height
-            text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@tooltip", "Select neighboring faces whose angle differs by no more than this value.") : ""
+            text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@tooltip", "Select neighboring faces whose angle differs by no more than this value.") : catalog.i18nc("@tooltip", "Select the size of the brush for painting.")
 
             UM.Label
             {
