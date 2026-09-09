@@ -61,7 +61,7 @@ Item
         {
             key:        "_overview"
             text:       catalog.i18nc("@label:category menu label", "Overview")
-            iconSource: UM.Theme.getIcon("Sliders")
+            iconSource: UM.Theme.getIcon("Overview")
             checked:    true
         }
 
