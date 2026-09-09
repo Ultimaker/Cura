@@ -190,8 +190,14 @@ Item
         SettingVisibilityPresetsMenu
         {
             id: settingVisibilityPresetsMenu
+            // Only allow collapsing all categories in the Overview tab, since the other tabs are already filtered to a single category.
+            canCollapseAllCategories: selectedKey === "_overview"
             onCollapseAllCategories:
             {
+                if (selectedKey !== "_overview")
+                {
+                    return
+                }
                 settingsView.clearFilter()
                 definitionsModel.collapseAllCategories()
             }
