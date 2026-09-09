@@ -4,9 +4,9 @@ import math
 
 from enum import IntEnum
 import numpy
-from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
-from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPolygonF, QPainterPath
-from typing import cast, Optional, Tuple, List
+from PyQt6.QtCore import Qt, QObject, pyqtEnum
+from PyQt6.QtGui import QPen, QPainterPath
+from typing import cast, Optional, List, Dict
 import pyUvula as uvula
 
 from UM.Application import Application
@@ -72,7 +72,7 @@ class PaintTool(Tool):
         self._mouse_held: bool = False
 
         self._last_world_coords: Optional[numpy.ndarray] = None
-        self._last_clicked_coords: Optional[numpy.ndarray] = None
+        self._last_clicked_coords: Dict[Optional[numpy.ndarray]] = {}
 
         legacy_opengl = OpenGLContext.isLegacyOpenGL()
         self._state: PaintTool.Paint.State = PaintTool.Paint.State.NOT_SUPPORTED if legacy_opengl else\
@@ -368,7 +368,8 @@ class PaintTool(Tool):
             event_caught = is_pressed # Propagate mouse event if only moving the cursor, not to block e.g. rotation
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
-                start_position = world_coords if not shift_pressed or self._last_clicked_coords is None else self._last_clicked_coords
+                last_clicked_coords = self._last_clicked_coords.get(self._view.getPaintType())
+                start_position = world_coords if not shift_pressed or last_clicked_coords is None else last_clicked_coords
                 uv_areas_cursor = self._getUvAreasForStroke(start_position, world_coords, face_id)
                 if len(uv_areas_cursor) > 0:
                     cursor_path = self._createStrokePath(uv_areas_cursor)
@@ -377,7 +378,7 @@ class PaintTool(Tool):
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    start_position = self._last_world_coords if not shift_pressed or self._last_clicked_coords is None else self._last_clicked_coords
+                    start_position = self._last_world_coords if not shift_pressed or last_clicked_coords is None else last_clicked_coords
                     uv_areas = self._getUvAreasForStroke(start_position, world_coords, face_id)
                     if len(uv_areas) == 0:
                         return False
@@ -387,7 +388,7 @@ class PaintTool(Tool):
                 Logger.logException("e", "Error when adding paint stroke")
 
             if self._mouse_held:
-                self._last_clicked_coords = world_coords
+                self._last_clicked_coords[self._view.getPaintType()] = world_coords
             self._last_world_coords = world_coords
             self._updateScene(painted_object, update_node = event_caught)
             return event_caught
