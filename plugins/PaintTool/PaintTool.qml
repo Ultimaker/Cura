@@ -193,28 +193,52 @@ Item
                     color: UM.Theme.getColor("icon")
                 }
             }
+
+            BrushShapeButton
+            {
+                id: buttonBrushFace
+                shape: Cura.PaintToolBrush.FACE
+
+                text: catalog.i18nc("@action:button", "Face")
+                toolItem: UM.ColorImage
+                {
+                    source: UM.Theme.getIcon("LayFlatOnFace")
+                    color: UM.Theme.getColor("icon")
+                }
+            }
         }
 
-        UM.Label
+        UM.TooltipArea
         {
-            text: catalog.i18nc("@label", "Brush Size")
+            width: childrenRect.width
+            height: childrenRect.height
+            text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@tooltip", "Select neighboring faces whose angle differs by no more than this value.") : ""
+
+            UM.Label
+            {
+                text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@label", "Angle Threshold") : catalog.i18nc("@label", "Brush Size")
+            }
         }
 
         UM.Slider
         {
             id: shapeSizeSlider
             width: parent.width
-            indicatorVisible: false
+            stepSize: 1
+            indicatorVisible: isFaceAngle
+            tooltipUnit: isFaceAngle ? "°" : ""
 
-            from: 1
-            to: 100
-            value: UM.Controller.properties.getValue("BrushSize")
+            readonly property bool isFaceAngle: UM.Controller.properties.getValue("BrushShape") === Cura.PaintToolBrush.FACE
+
+            from: isFaceAngle ? 0 : 1
+            to: isFaceAngle ? 90 : 100
+            value: UM.Controller.properties.getValue(isFaceAngle ? "FaceAngle" : "BrushSize")
 
             onPressedChanged: function(pressed)
             {
                 if(! pressed)
                 {
-                    UM.Controller.setProperty("BrushSize", shapeSizeSlider.value);
+                    UM.Controller.setProperty(isFaceAngle ? "FaceAngle" : "BrushSize", shapeSizeSlider.value);
                 }
             }
         }
