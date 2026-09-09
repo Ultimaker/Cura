@@ -72,7 +72,7 @@ class PaintTool(Tool):
         self._mouse_held: bool = False
 
         self._last_world_coords: Optional[numpy.ndarray] = None
-        self._last_clicked_coords: Dict[Optional[numpy.ndarray]] = {}
+        self._last_clicked_coords: Dict[numpy.ndarray] = {}
 
         legacy_opengl = OpenGLContext.isLegacyOpenGL()
         self._state: PaintTool.Paint.State = PaintTool.Paint.State.NOT_SUPPORTED if legacy_opengl else\
