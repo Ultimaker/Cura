@@ -565,7 +565,9 @@ class CuraApplication(QtApplication):
 
         super().startSplashWindowPhase()
 
-        if not self.getIsHeadLess():
+        # On macOS the .app bundle's CFBundleIconFile owns the dock icon; overriding it at runtime
+        # causes the dock to show the PNG instead of the properly-sized .icns.
+        if not self.getIsHeadLess() and sys.platform != "darwin":
             try:
                 self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png" if not ApplicationMetadata.IsAlternateVersion else "cura-icon_wip.png")))
             except FileNotFoundError:
@@ -641,6 +643,8 @@ class CuraApplication(QtApplication):
             "dialog_material_path"]:
 
             preferences.addPreference("local_file/%s" % key, os.path.expanduser("~/"))
+
+        preferences.addPreference("local_file/use_fixed_dialog_paths", False)
 
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 

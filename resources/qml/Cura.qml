@@ -618,13 +618,14 @@ UM.MainWindow
             currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
             onAccepted:
             {
-                // Because several implementations of the file dialog only update the folder
-                // when it is explicitly set.
-                var f = currentFolder;
-                currentFolder = f;
-
-                CuraApplication.setDefaultPath("dialog_load_path", currentFolder);
-
+                if (!UM.Preferences.getValue("local_file/use_fixed_dialog_paths"))
+                {
+                    // Because several implementations of the file dialog only update the folder
+                    // when it is explicitly set.
+                    var f = currentFolder;
+                    currentFolder = f;
+                    CuraApplication.setDefaultPath("dialog_load_path", currentFolder);
+                }
                 base.handleOpenFileUrls(selectedFiles);
             }
         }

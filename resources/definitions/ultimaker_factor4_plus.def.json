@@ -61,6 +61,7 @@
         "acceleration_wall_x": { "value": "acceleration_print" },
         "acceleration_wall_x_roofing": { "value": "acceleration_wall" },
         "bottom_skin_expand_distance": { "value": "expand_skins_expand_distance / 2" },
+        "bridge_interlace_lines": { "value": "True" },
         "bridge_skin_density": { "value": "70" },
         "bridge_skin_material_flow":
         {
@@ -83,6 +84,9 @@
         "cool_min_layer_time_overhang_min_segment_length": { "value": 1.5 },
         "cool_min_speed": { "value": 6 },
         "expand_skins_expand_distance": { "value": "wall_thickness * 2" },
+        "flooring_layer_count": { "value": 1 },
+        "flooring_material_flow": { "value": "material_flow" },
+        "flooring_pattern": { "value": "'lines'" },
         "gradual_flow_discretisation_step_size": { "value": 0.05 },
         "gradual_flow_enabled": { "value": "True" },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'honeycomb'" },
@@ -254,13 +258,14 @@
         "roofing_layer_count": { "value": 2 },
         "roofing_material_flow": { "value": "material_flow" },
         "roofing_pattern": { "value": "'lines'" },
-        "skin_material_flow": { "value": "material_flow * 0.97" },
+        "skin_material_flow": { "value": "material_flow * 0.95" },
         "skin_material_flow_layer_0": { "value": "material_flow_layer_0 * 0.9" },
         "skin_outline_count": { "value": 0 },
         "skin_preshrink": { "value": "wall_thickness" },
         "skin_support_density": { "value": "material_flow * 0.5" },
         "skin_support_speed": { "value": "speed_wall_0" },
         "skirt_brim_speed": { "maximum_value": 125 },
+        "small_feature_speed_factor": { "value": 100 },
         "small_hole_max_size": { "value": "machine_nozzle_size*15" },
         "small_skin_on_surface": { "value": false },
         "small_skin_width": { "value": "machine_nozzle_size*6" },
@@ -368,9 +373,11 @@
         "support_xy_distance": { "value": 1.2 },
         "support_xy_distance_overhang": { "value": 0.8 },
         "support_z_distance": { "value": "2*layer_height" },
-        "top_bottom_pattern": { "value": "'lines'" },
+        "top_bottom_pattern": { "value": "'concentric'" },
+        "top_bottom_pattern_0": { "value": "'lines'" },
         "travel_retract_before_outer_wall": { "value": "'force_not_retracted_from_infill'" },
         "wall_0_material_flow_roofing": { "value": "roofing_material_flow" },
+        "wall_0_wipe_dist": { "value": 0.1 },
         "wall_overhang_angle": { "value": 30 },
         "wall_overhang_speed_factors":
         {
@@ -381,6 +388,7 @@
                 20
             ]
         },
+        "wall_x_material_flow_flooring": { "value": "flooring_material_flow" },
         "wall_x_material_flow_roofing": { "value": "roofing_material_flow" }
     }
 }

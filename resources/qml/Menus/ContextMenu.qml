@@ -23,6 +23,9 @@ Cura.Menu
     Cura.MenuItem { action: Cura.Actions.paste; }
     Cura.MenuItem { action: Cura.Actions.multiplySelection; }
 
+    Cura.MenuSeparator {}
+    Cura.MenuItem { action: Cura.Actions.showFileLocation; }
+
     // Extruder selection - only visible if there is more than 1 extruder
     Cura.MenuSeparator { visible: base.shouldShowExtruders }
     Cura.MenuItem
