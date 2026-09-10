@@ -430,7 +430,7 @@ class PaintTool(Tool):
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
                 last_clicked_coords = self._last_clicked_coords.get(self._view.getPaintType())
                 start_position = world_coords if not shift_pressed or last_clicked_coords is None else last_clicked_coords
-                uv_areas_cursor = self._getUvAreasForStroke(start_position, world_coords, face_id)
+                uv_areas_cursor = self._getUvAreas(start_position, world_coords, face_id)
                 if len(uv_areas_cursor) > 0:
                     cursor_path = self._createStrokePath(uv_areas_cursor)
                     self._view.setCursorStroke(cursor_path, brush_color)
@@ -439,7 +439,7 @@ class PaintTool(Tool):
 
                 if self._mouse_held:
                     start_position = self._last_world_coords if not shift_pressed or last_clicked_coords is None else last_clicked_coords
-                    uv_areas = self._getUvAreasForStroke(start_position, world_coords, face_id)
+                    uv_areas = self._getUvAreas(start_position, world_coords, face_id)
                     if len(uv_areas) == 0:
                         return False
                     event_caught = True
