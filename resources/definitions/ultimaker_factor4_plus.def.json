@@ -61,12 +61,13 @@
         "acceleration_wall_x": { "value": "acceleration_print" },
         "acceleration_wall_x_roofing": { "value": "acceleration_wall" },
         "bottom_skin_expand_distance": { "value": "expand_skins_expand_distance / 2" },
+        "bridge_enable_more_layers": { "value": "False" },
         "bridge_interlace_lines": { "value": "True" },
-        "bridge_skin_density": { "value": "70" },
+        "bridge_skin_density": { "value": "100" },
         "bridge_skin_material_flow":
         {
             "maximum_value": "250",
-            "value": "(bridge_wall_material_flow + material_flow) / 2"
+            "value": "bridge_wall_material_flow"
         },
         "bridge_skin_material_flow_2": { "maximum_value": "250" },
         "bridge_skin_material_flow_3": { "maximum_value": "250" },
@@ -75,16 +76,16 @@
         "bridge_wall_material_flow":
         {
             "maximum_value": "250",
-            "value": "150"
+            "value": "material_flow"
         },
         "bridge_wall_min_length": { "value": "line_width*2" },
-        "bridge_wall_speed": { "value": "speed_wall/2" },
+        "bridge_wall_speed": { "value": 10 },
         "cool_min_layer_time": { "value": 6.5 },
         "cool_min_layer_time_overhang": { "value": 12 },
         "cool_min_layer_time_overhang_min_segment_length": { "value": 1.5 },
         "cool_min_speed": { "value": 6 },
         "expand_skins_expand_distance": { "value": "wall_thickness * 2" },
-        "flooring_layer_count": { "value": 1 },
+        "flooring_layer_count": { "value": 2 },
         "flooring_material_flow": { "value": "material_flow" },
         "flooring_pattern": { "value": "'lines'" },
         "gradual_flow_discretisation_step_size": { "value": 0.05 },
@@ -263,6 +264,8 @@
         "skin_outline_count": { "value": 0 },
         "skin_preshrink": { "value": "wall_thickness" },
         "skin_support_density": { "value": "material_flow * 0.5" },
+        "skin_support_interlace_lines": { "value": "False" },
+        "skin_support_material_flow": { "value": "material_flow" },
         "skin_support_speed": { "value": "speed_wall_0" },
         "skirt_brim_speed": { "maximum_value": 125 },
         "small_feature_speed_factor": { "value": 100 },
