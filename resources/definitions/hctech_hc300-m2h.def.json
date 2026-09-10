@@ -1,5 +1,5 @@
 {
-    "version": 2,
+    "version": 3,
     "name": "HCTECH_HC300-M2H",
     "inherits": "fdmprinter",
     "metadata":
@@ -21,7 +21,6 @@
         "adhesion_type": { "default_value": "skirt" },
         "cool_fan_speed": { "value": 75 },
         "gantry_height": { "value": "55" },
-        "infill_before_walls": { "value": false },
         "line_width": { "value": 0.38 },
         "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 300 },
@@ -40,7 +39,7 @@
         "machine_heated_bed": { "default_value": true },
         "machine_height": { "default_value": 300 },
         "machine_name": { "default_value": "HCTECH HC300-M2H" },
-        "machine_start_gcode": { "default_value": "G1 Z2 ;Raise Z\nG28 X Y ;Home XY\nT1 ;switch to right extruder\nG1 X5 Y319 F4000 ;Move to Start Position\nG92 E0 ;Reset Extruder\nG1 E20 F60 ;extrude\nM400 ;Wait move\nG92 E0 ;Reset Extruder\nG1 E-2 F2700 ;Retract\nG92 E0 ;Reset Extruder\nG1 X150 F5000 ;Clean Nozzle\nG1 X5 ;Clean Nozzle\nG1 X220 ;Repeat\nG1 X5 ;Back to start posotion\nT0 ;switch to left extruder\nG1 X5 Y319 F4000 ;Move to Start Position\nG92 E0 ;Reset Extruder\nG1 E20 F60 ;extrude\nM400 ;Wait move\nG92 E0 ;Reset Extruder\nG4 S15 ;Wait 15s\nG1 E-2 F2700; Retract\nG92 E0 ;Reset Extruder\nG1 X150 F5000 ;Clean Nozzle\nG1 X5 ;Clean nozzle\nG1 X220 ;Repeat\nG1 X5 ;Back to start position\nG28 Z ;home Z\nG29 ;Measure the bed\nM500 ;Store parameters\nG1 X0 Y300 F4000 ;Move to corner" },
+        "machine_start_gcode": { "default_value": "G1 Z2 ;Raise Z\nG28 X Y ;Home XY\nT1 ;switch to right extruder\nG1 X5 Y319 F4000 ;Move to Start Position\nG92 E0 ;Reset Extruder\nG1 E20 F60 ;extrude\nM400\nG92 E0 ;Reset Extruder\nG1 E-2 F2700 ;Retract\nG92 E0 ;Reset Extruder\nG1 X150 F5000 ;Clean Nozzle\nG1 X5 ;Back to Start Position\nG1 X220\nG1 X5\nT0 ;switch to left extruder\nG1 X5 Y319 F4000 ;Move to Start Position\nG92 E0 ;Reset Extruder\nG1 E20 F60 ;extrude\nM400\nG92 E0 ;Reset Extruder\nG4 S15\nG1 E-2 F2700 ;Retract\nG92 E0 ;Reset Extruder\nG1 X150 F5000 ;Clean Nozzle\nG1 X5 ;Back to Start Position\nG1 X220\nG1 X5\nG28 Z ;home Z\nG29 ;Measure the bed\nM500 ;Store parameters\nG1 X0 Y300 F4000 ;Move to corner" },
         "machine_width": { "default_value": 300 },
         "material_diameter": { "default_value": 1.75 },
         "retraction_amount":
@@ -48,8 +47,7 @@
             "default_value": 0.3,
             "maximum_value_warning": 2.0
         },
-        "retraction_speed": { "default_value": 35 },
-        "speed_print": { "default_value": 60.0 },
+        "retraction_speed": { "default_value": 40 },
         "travel_avoid_distance": { "value": 1 },
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true }
