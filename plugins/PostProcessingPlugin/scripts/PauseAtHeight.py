@@ -23,12 +23,13 @@ Changelog:
             ~All pause layers must be listed (use the Cura Preview layer numbers).
             ~A pause at 'Layer:5' will only result in a pause at the first layer:5 encountered whereas pauses at '15,23,67' might be in different models.
             ~Models can be skipped, or have pauses at different layers than other models, and some models could be entirely different colors or material.
-        - Added 'Flow Rate' option for 'Redo Layer'.
-            ~Redo Layer will not run if in One-at-a-Time mode.
         - Multi-extruder printers now use the Cura settings of the active tool at the pause (retraction distance, retract and prime speeds, etc.)
         - The 'Stepper Timeout' has been de-confused.
     - Obsolete:
         - The retraction option is removed.  Retractions are added if required (and if retraction is enabled).
+        - The 'Redo Layer' option has been removed.
+        - The obsolete, disabled settings kept for backward compatibility (retraction_amount, retraction_speed,
+          extrude_amount, extrude_speed, standby_wait_for_temperature_enabled) have been removed.
 """
 
 from ..Script import Script
@@ -354,42 +355,6 @@ class PauseAtHeight(Script):
                     "maximum_value": 20,
                     "enabled": "enable_pause_at_height and head_park_enabled and pause_method not in ['griffin', 'repetier']"
                 },
-                "retraction_amount":
-                {
-                    "label": "Retraction",
-                    "description": "Obsolete - Disabled. Kept for compatibility with older versions of the script.  The retraction amount is now determined by the Cura settings for the active tool at the pause.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0,
-                    "enabled": false
-                },
-                "retraction_speed":
-                {
-                    "label": "Retraction Speed",
-                    "description": "Obsolete - Disabled. Kept for compatibility with older versions of the script. The retraction speed is now determined by the Cura settings for the active tool at the pause.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default_value": 0,
-                    "enabled": false
-                },
-                "extrude_amount":
-                {
-                    "label": "Extrude Amount",
-                    "description": "Obsolete - Disabled. Kept for compatibility with older versions of the script.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0,
-                    "enabled": false
-                },
-                "extrude_speed":
-                {
-                    "label": "Extrude Speed",
-                    "description": "Obsolete - Disabled. Kept for compatibility with older versions of the script.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default_value": 0,
-                    "enabled": false
-                },
                 "min_purge_clearance":
                 {
                     "label": "     Minimum dist nozzle to plate",
@@ -399,14 +364,6 @@ class PauseAtHeight(Script):
                     "default_value": 15,
                     "minimum_value": 0,
                     "enabled": "enable_pause_at_height and head_park_enabled and pause_method not in ['griffin', 'repetier']"
-                },
-                "standby_wait_for_temperature_enabled":
-                {
-                    "label": "Use M109 for standby temperature? (M104 when false)",
-                    "description": "Obsolete - Disabled. Kept for compatibility with older versions of the script.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": false
                 },
                 "standby_temperature":
                 {
@@ -487,24 +444,6 @@ class PauseAtHeight(Script):
                     "unit": "msec   ",
                     "enabled": "enable_pause_at_height and beep_at_pause"
                 },
-                "redo_layer":
-                {
-                    "label": "Redo Layer",
-                    "description": "Redo the last layer before the pause, to get the filament flowing again after having oozed a bit during the pause.  (NOTE: Non-functional when Print Sequence is 'One At A Time').",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "enable_pause_at_height and reason_for_pause == 'reason_filament'"
-                },
-                "redo_layer_flow":
-                {
-                    "label": "     Flow Rate for Redo Layer",
-                    "description": "You can adjust the Flow Rate of the 'Redo Layer' to help keep a layer from sticking out due to over-extrusion.  The flow will be reset to 100% at the end of the redo layer.",
-                    "type": "int",
-                    "default_value": 100,
-                    "maximum_value": 150,
-                    "minimum_value": 50,
-                    "enabled": "enable_pause_at_height and redo_layer and reason_for_pause == 'reason_filament'"
-                },
                 "custom_gcode_after_pause":
                 {
                     "label": "G-code After Pause",
@@ -567,10 +506,8 @@ class PauseAtHeight(Script):
         # Set some variables
         self.extruder_count = int(self.global_stack.getProperty("machine_extruder_count", "value"))
         self.extruder_list = self.global_stack.extruderList
-        self.layer_height = float(self.global_stack.getProperty("layer_height", "value"))
         self.z_hop_enabled = bool(self.extruder_list[0].getProperty("retraction_hop_enabled", "value"))
         self.one_at_a_time = False if self.global_stack.getProperty("print_sequence", "value") == "all_at_once" else True
-        self.redo_layer = self.getSettingValueByKey("redo_layer")
 
         pause_at = self.getSettingValueByKey("pause_at")
         pause_layer_string = str(self.getSettingValueByKey("pause_layer"))
@@ -606,9 +543,6 @@ class PauseAtHeight(Script):
                 txt_msg = display_text_list[len(display_text_list) - 1]
             # Send the current pause_layer to _find_and_add_pause to create the string of commands to insert
             data = self._find_and_add_pause(data, int(pause_layer.strip()), txt_msg.strip(), pause_index)
-        # Redo Layer is not compatible with One at a Time so if both are active - message the user that Redo Layer did not run
-        if self.redo_layer and self.one_at_a_time:
-            Message(title = "[Pause At Height]", text = "'Redo Layer' did not run because the Print Sequence is 'One-at-a-Time'.").show()
         self.pause_lines_list = []
         return data
 
@@ -626,7 +560,6 @@ class PauseAtHeight(Script):
         self.reason_for_pause = self.getSettingValueByKey("reason_for_pause")
         use_tool_temperature = bool(self.getSettingValueByKey("tool_temp_override"))
         resume_print_temperature = self.getSettingValueByKey("resume_print_temperature")
-        redo_layer_flow, redo_layer_flow_reset = self.getRedoLayerFlow()
         pause_method = self.getSettingValueByKey("pause_method")
         g4_dwell_time = round(self.getSettingValueByKey("g4_dwell_time") * 60)
         pause_command = self._get_pause_command(pause_method, txt_msg, g4_dwell_time)
@@ -643,14 +576,8 @@ class PauseAtHeight(Script):
             return data
 
         # Collect the printer state from just before the pause point
-        prev_layer, prev_lines, current_e, is_retracted, return_to_x, return_to_y = \
+        current_e, is_retracted, return_to_x, return_to_y = \
             self._collect_pre_pause_state(data, pause_index)
-
-        # Optionally inject a redo of the previous layer before the pause
-        data, return_to_x, return_to_y, current_e, is_retracted = \
-            self._apply_redo_layer(data, pause_index, redo_layer_flow, redo_layer_flow_reset,
-                                              prev_layer, prev_lines, current_e, is_retracted,
-                                              return_to_x, return_to_y)
 
         # Open the pause gcode block with a header comment
         partial_str = f";TYPE:CUSTOM---------------; Pause at end of Preview Layer {pause_layer}"
@@ -673,14 +600,14 @@ class PauseAtHeight(Script):
         # Format the gcode block and insert it at the end of the previous layer
         return self._format_and_insert_pause_gcode(data, pause_index)
 
-    def _collect_pre_pause_state(self, data: list[str], pause_index: int) -> Tuple[str, list[str], Any, bool, float, float]:
+    def _collect_pre_pause_state(self, data: list[str], pause_index: int) -> Tuple[Any, bool, float, float]:
         """
         Collects the printer state from the layer just before the pause point:
         the last known E position, retraction status, and XY head position to return to after the pause.
 
         :param data: The gcode to be processed
         :param pause_index: The data index at which the pause will be inserted
-        :return: (prev_layer, prev_lines, current_e, is_retracted, return_to_x, return_to_y)
+        :return: (current_e, is_retracted, return_to_x, return_to_y)
         """
         prev_layer = data[pause_index - 1]
         prev_lines = prev_layer.split("\n")
@@ -704,46 +631,7 @@ class PauseAtHeight(Script):
                     return_to_y = self.getValue(prev_line, "Y")
                     break
 
-        return prev_layer, prev_lines, current_e, is_retracted, return_to_x, return_to_y
-
-    def _apply_redo_layer(self, data: list[str], pause_index: int,
-                                     redo_layer_flow: str, redo_layer_flow_reset: str,
-                                     prev_layer: str, prev_lines: list[str],
-                                     current_e, is_retracted: bool,
-                                     return_to_x: float, return_to_y: float
-                                     ) -> Tuple[list[str], float, float, Any, bool]:
-        """
-        If the 'Redo Layer' setting is active, prepends a copy of the previous layer to the
-        current pause layer so the filament is flowing again on resume.  Updates return_to_x/y
-        so the head moves back to the start of the redo layer instead of the end.
-
-        :return: (data, return_to_x, return_to_y, current_e, is_retracted)
-        """
-        if not (self.redo_layer and self.reason_for_pause == "reason_filament" and not self.one_at_a_time):
-            return data, return_to_x, return_to_y, current_e, is_retracted
-
-        prev_layer = data[pause_index - 1]
-        prev_layer = re.sub(";LAYER:", ";REDO_LAY:", prev_layer)
-        layer_lines = prev_layer.split("\n")
-        layer_lines[0] = layer_lines[0] + str(" " * (29 - len(layer_lines[0] + ".1"))) + "; Redo layer from 'Pause at Layer or Height'\n" + redo_layer_flow
-        prev_layer = "\n".join(layer_lines)
-        data[pause_index] = prev_layer + redo_layer_flow_reset + data[pause_index]
-
-        # Get the X Y position and the extruder's absolute position at the beginning of the redone layer.
-        return_to_x, return_to_y = self.getNextXY(data[pause_index - 2])
-        prev_lines = prev_layer.split("\n")
-        for current_line in prev_lines:
-            new_e = self.getValue(current_line, "E", current_e)
-            if new_e != current_e:
-                if re.search("G1 F(\d+\.\d+|\d+) E(-?\d+\.\d+|-?\d+)", current_line) or "G10" in current_line:
-                    if is_retracted is None:
-                        is_retracted = True
-                elif current_e is not None and is_retracted is None:
-                    is_retracted = False
-                current_e = new_e
-                break
-
-        return data, return_to_x, return_to_y, current_e, is_retracted
+        return current_e, is_retracted, return_to_x, return_to_y
 
     def _add_pre_pause_movement_gcode(self, pause_method: str, current_z: float, is_retracted: bool) -> None:
         """
@@ -905,12 +793,8 @@ class PauseAtHeight(Script):
         slow_reload_speed = purge_speed * 2
 
         # Determine the Z height to return to after the pause
-        if self.redo_layer:
-            working_z = round(current_z - (self.layer_height if not self.z_hop_enabled else 0), 2)
-            working_z_txt = "; Move down to redo layer height"
-        else:
-            working_z = current_z
-            working_z_txt = "; Move down to resume height"
+        working_z = current_z
+        working_z_txt = "; Move down to resume height"
 
         if pause_method == "repetier":
             if int(purge_amount) != 0:
@@ -983,20 +867,9 @@ class PauseAtHeight(Script):
             if extra_prime_amount != "0" and self.reason_for_pause == "reason_other":
                 self.pause_lines_list.append(f"G1 E{extra_prime_amount} F{int(self.retraction_prime_speed)} ; Extra Prime")
 
-            if not self.redo_layer:
-                self.pause_lines_list.append(f"M{extrusion_mode_numeric} ; Switch back to {extrusion_mode_string} E values")
-                # Reset extruder value to pre-pause value
-                self.pause_lines_list.append(f"G92 E{0 if relative_extrusion else current_e} ; Reset extruder location")
-
-            if self.redo_layer and self.reason_for_pause == "reason_filament":
-                # All other options reset the E value to what it was before the pause because E lines were added.
-                # If it's not yet reset, it still needs to be reset if there were any redo layers.
-                if is_retracted:
-                    self.pause_lines_list.append(f"G92 E{0 if relative_extrusion else (round(current_e - self.retraction_amount,5))} ; Reset extruder location ~ retracted")
-                    self.pause_lines_list.append(f"M{extrusion_mode_numeric} ; Switch back to {extrusion_mode_string} E values")
-                else:
-                    self.pause_lines_list.append(f"G92 E{0 if relative_extrusion else current_e} ; Reset extruder location ~ unretracted")
-                    self.pause_lines_list.append(f"M{extrusion_mode_numeric} ; Switch back to {extrusion_mode_string} E values")
+            self.pause_lines_list.append(f"M{extrusion_mode_numeric} ; Switch back to {extrusion_mode_string} E values")
+            # Reset extruder value to pre-pause value
+            self.pause_lines_list.append(f"G92 E{0 if relative_extrusion else current_e} ; Reset extruder location")
 
     def _format_and_insert_pause_gcode(self, data: list[str], pause_index: int) -> list[str]:
         """
@@ -1072,19 +945,6 @@ class PauseAtHeight(Script):
             "custom": str(custom_pause_command),
             "g_4": f"G4 S{g4_dwell_time}",
         }[pause_method]
-
-    def getNextXY(self, layer: str) -> Tuple[float, float]:
-        """
-        Get the X and Y coordinates for a 'redo' layer.
-
-        :param layer: The gcode layer to be searched
-        :return: The X and Y coords for a 'redo' layer.
-        """
-        for line in reversed(layer.split("\n")):
-            if line.startswith(("G0", "G1", "G2", "G3")):
-                if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
-                    return self.getValue(line, "X"), self.getValue(line, "Y")
-        return 0, 0
 
     def _get_tool_settings(self, tool_nr: int) -> None:
         """
@@ -1240,19 +1100,6 @@ class PauseAtHeight(Script):
                     is_retracted = False
                 break
         return current_e, is_retracted
-
-    def getRedoLayerFlow(self) -> Tuple[str, str]:
-        """
-        Returns the Gcode to set the flow rate for a redo layer and the Gcode to reset it afterward.
-
-        :return: A tuple containing the redo layer flow Gcode and the reset Gcode
-        """
-        redo_layer_flow = ""
-        redo_layer_flow_reset = ""
-        if self.redo_layer and self.reason_for_pause == "reason_filament":
-            redo_layer_flow = f"M221 S{self.getSettingValueByKey('redo_layer_flow')}".ljust(27) + "; Set Redo Layer Flow Rate"
-            redo_layer_flow_reset = "M221 S100                  ; End of Redo Layer - Reset Flow Rate\n"
-        return redo_layer_flow, redo_layer_flow_reset
 
     def _format_custom_gcode(self, setting_key: str, label: str) -> str:
         """
