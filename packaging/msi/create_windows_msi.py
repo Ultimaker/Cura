@@ -87,7 +87,7 @@ def require_non_empty(path: Path, description: str):
         raise RuntimeError(f"{description} was not created or is empty: {path}")
 
 
-def build(dist_path: Path, filename: Path, architecture: str):
+def build(dist_path: Path, filename: Path, architecture: str = "x64"):
     dist_loc = Path(os.getcwd(), dist_path)
     work_loc = work_path(filename)
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
@@ -144,7 +144,7 @@ if __name__ == "__main__":
                         help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.msi')")
     parser.add_argument("--name", required=True, type=str, help="App name (e.g. 'UltiMaker Cura')")
     parser.add_argument("--version", required=True, type=str, help="The full cura version, e.g. 5.9.0-beta.1+24132")
-    parser.add_argument("--architecture", choices=("x64", "arm64"), default="x64")
+    parser.add_argument("--architecture", "--arch", dest="architecture", choices=("x64", "arm64"), default="x64")
     args = parser.parse_args()
     source_path = args.source_path.resolve()
     dist_path = args.dist_path.resolve()

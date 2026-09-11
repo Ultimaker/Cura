@@ -208,11 +208,11 @@ Item
                         {
                             return { settable_per_meshgroup: true }
                         }
-                        return { settable_per_meshgroup: true }
+                        return { settable_per_mesh: true }
                     }
                     exclude:
                     {
-                        const excluded_settings = ["support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh"]
+                        var excluded_settings = ["support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh"]
 
                         if (currentMeshType === "support_mesh")
                         {
