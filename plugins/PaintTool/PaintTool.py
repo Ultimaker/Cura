@@ -2,18 +2,18 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import math
 
+from collections import deque
 from enum import IntEnum
 import numpy
-from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
-from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPolygonF, QPainterPath
-from typing import cast, Optional, Tuple, List
+from PyQt6.QtCore import Qt, QObject, pyqtEnum
+from PyQt6.QtGui import QPen, QPainterPath
+from typing import cast, Optional, List, Dict
 import pyUvula as uvula
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent
 from UM.Job import Job
 from UM.Logger import Logger
-from UM.Math.AxisAlignedBox2D import AxisAlignedBox2D
 from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshData import MeshData
@@ -38,6 +38,7 @@ class PaintTool(Tool):
         class Shape(IntEnum):
             SQUARE = 0
             CIRCLE = 1
+            FACE = 2
 
     class Paint(QObject):
         @pyqtEnum
@@ -65,6 +66,7 @@ class PaintTool(Tool):
         self._cache_dirty: bool = True
 
         self._brush_size: int = 10
+        self._face_angle: int = 30
         self._brush_color: str = "preferred"
         self._brush_extruder: int = 0
         self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.CIRCLE
@@ -73,13 +75,14 @@ class PaintTool(Tool):
         self._mouse_held: bool = False
 
         self._last_world_coords: Optional[numpy.ndarray] = None
+        self._last_clicked_coords: Dict[str, numpy.ndarray] = {}
 
         legacy_opengl = OpenGLContext.isLegacyOpenGL()
         self._state: PaintTool.Paint.State = PaintTool.Paint.State.NOT_SUPPORTED if legacy_opengl else\
                                                                                 PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
 
-        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "BrushExtruder", "State", "CanUndo", "CanRedo")
+        self.setExposedProperties("PaintType", "BrushSize", "FaceAngle", "BrushColor", "BrushShape", "BrushExtruder", "State", "CanUndo", "CanRedo")
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
@@ -149,6 +152,15 @@ class PaintTool(Tool):
         if brush_size_int != self._brush_size:
             self._brush_size = brush_size_int
             self._brush_pen = self._createBrushPen()
+            self.propertyChanged.emit()
+
+    def getFaceAngle(self) -> int:
+        return self._face_angle
+
+    def setFaceAngle(self, face_angle: float) -> None:
+        face_angle_int = int(face_angle)
+        if face_angle_int != self._face_angle:
+            self._face_angle = face_angle_int
             self.propertyChanged.emit()
 
     def getBrushColor(self) -> str:
@@ -243,6 +255,19 @@ class PaintTool(Tool):
             return Polygon()
         return shape.translate(stroke_a[0], stroke_a[1]).unionConvexHulls(shape.translate(stroke_b[0], stroke_b[1]))
 
+    def _getUvAreas(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray, face_id: int) -> List[Polygon]:
+        """ Fetches all texture-coordinate areas according to the current selected brush
+
+        :param world_coords_a: 3D ('world') coordinates corresponding to the starting stroke point.
+        :param world_coords_b: 3D ('world') coordinates corresponding to the ending stroke point.
+        :param face_id: the ID of the face at the center of the stroke
+        :return: A list of UV-mapped polygons representing areas filled by the brush on the node's mesh surface.
+        """
+        if self._brush_shape == PaintTool.Brush.Shape.FACE:
+            return self._getUvAreasForFace(face_id)
+        else:
+            return self._getUvAreasForStroke(world_coords_a, world_coords_b, face_id)
+
     # NOTE: Currently, it's unclear how well this would work for non-convex brush-shapes.
     def _getUvAreasForStroke(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray, face_id: int) -> List[Polygon]:
         """ Fetches all texture-coordinate areas within the provided stroke on the mesh.
@@ -265,13 +290,14 @@ class PaintTool(Tool):
         if mesh_indices is None:
             mesh_indices = numpy.array([], dtype=numpy.int32)
 
+        tex_w, tex_h = self._view.getUvTexDimensions()
         res = uvula.project(stroke_poly.getPoints(),
                             self._mesh_transformed_cache.getVertices(),
                             mesh_indices,
                             self._node_cache.getMeshData().getUVCoordinates(),
                             self._node_cache.getMeshData().getFacesConnections(),
-                            self._view.getUvTexDimensions()[0],
-                            self._view.getUvTexDimensions()[1],
+                            tex_w,
+                            tex_h,
                             self._camera.getProjectToViewMatrix().getData(),
                             self._camera.isPerspective(),
                             self._camera.getViewportWidth(),
@@ -279,6 +305,40 @@ class PaintTool(Tool):
                             self._cam_norm,
                             face_id)
         return [Polygon(points) for points in res]
+
+    def _getUvAreasForFace(self, face_id: int) -> List[Polygon]:
+        """Get UV polygon(s) for an entire face.
+        
+        In face mode, this gets all connected coplanar triangles that form a "visual face".
+        The face angle (in degrees) controls the coplanarity check: lower = stricter, higher = looser.
+
+        :param face_id: the ID of the face to get UV areas for
+        :return: A list of UV-mapped polygons representing the entire face
+        """
+        mesh_data = self._node_cache.getMeshData()
+        
+        if not mesh_data.hasUVCoordinates():
+            return []
+        
+        angle_threshold = math.radians(self._face_angle)
+        
+        # Get all coplanar connected faces
+        mesh_indices = self._mesh_transformed_cache.getIndices()
+        if mesh_indices is None:
+            mesh_indices = numpy.array([], dtype=numpy.int32)
+
+        tex_w, tex_h = self._view.getUvTexDimensions()
+        coplanar_faces = uvula.getConnectedFaces(self._mesh_transformed_cache.getVertices(),
+                                                 mesh_indices,
+                                                 self._node_cache.getMeshData().getUVCoordinates(),
+                                                 self._node_cache.getMeshData().getFacesConnections(),
+                                                 tex_w,
+                                                 tex_h,
+                                                 face_id,
+                                                 angle_threshold)
+        uv_polygons = [Polygon(points) for points in coplanar_faces]
+        
+        return uv_polygons
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -313,6 +373,8 @@ class PaintTool(Tool):
             self._last_world_coords = None
             return True
 
+        shift_modifier = Qt.KeyboardModifier.ShiftModifier
+        shift_pressed = (CuraApplication.getInstance().keyboardModifiers() & shift_modifier) == shift_modifier
         is_moved = event.type == Event.MouseMoveEvent
         is_pressed = event.type == Event.MousePressEvent
         if (is_moved or is_pressed) and self._controller.getToolsEnabled():
@@ -363,10 +425,12 @@ class PaintTool(Tool):
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
 
-            event_caught = False # Propagate mouse event if only moving the cursor, not to block e.g. rotation
+            event_caught = is_pressed # Propagate mouse event if only moving the cursor, not to block e.g. rotation
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
-                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
+                last_clicked_coords = self._last_clicked_coords.get(self._view.getPaintType())
+                start_position = world_coords if not shift_pressed or last_clicked_coords is None else last_clicked_coords
+                uv_areas_cursor = self._getUvAreas(start_position, world_coords, face_id)
                 if len(uv_areas_cursor) > 0:
                     cursor_path = self._createStrokePath(uv_areas_cursor)
                     self._view.setCursorStroke(cursor_path, brush_color)
@@ -374,7 +438,8 @@ class PaintTool(Tool):
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
+                    start_position = self._last_world_coords if not shift_pressed or last_clicked_coords is None else last_clicked_coords
+                    uv_areas = self._getUvAreas(start_position, world_coords, face_id)
                     if len(uv_areas) == 0:
                         return False
                     event_caught = True
@@ -382,6 +447,8 @@ class PaintTool(Tool):
             except:
                 Logger.logException("e", "Error when adding paint stroke")
 
+            if self._mouse_held:
+                self._last_clicked_coords[self._view.getPaintType()] = world_coords
             self._last_world_coords = world_coords
             self._updateScene(painted_object, update_node = event_caught)
             return event_caught
