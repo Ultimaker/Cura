@@ -82,18 +82,21 @@ def generate_nsi(source_path: str, dist_path: str, filename: str, version: str):
     shutil.copy(source_loc.joinpath("packaging", "NSIS", "fileassoc.nsh"), dist_loc.joinpath("fileassoc.nsh"))
 
 
-def build(dist_path: str):
+def build(dist_path: str, filename: str):
     dist_loc = Path(os.getcwd(), dist_path)
     command = ["makensis", "/V2", "/P4", str(dist_loc.joinpath("UltiMaker-Cura.nsi"))]
-    subprocess.run(command)
+    subprocess.run(command, check=True, cwd=dist_loc)
+    output = dist_loc.joinpath(filename)
+    if not output.is_file() or output.stat().st_size == 0:
+        raise RuntimeError(f"NSIS output was not created or is empty: {output}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create Windows exe installer of Cura.")
-    parser.add_argument("--source_path", type=str, help="Path to Conan install Cura folder.")
-    parser.add_argument("--dist_path", type=str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("--filename", type=str, help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.exe')")
-    parser.add_argument("--version", type=str, help="The full cura version, e.g. 5.9.0-beta.1+24132")
+    parser.add_argument("--source_path", required=True, type=str, help="Path to Conan install Cura folder.")
+    parser.add_argument("--dist_path", required=True, type=str, help="Path to Pyinstaller dist folder")
+    parser.add_argument("--filename", required=True, type=str, help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.exe')")
+    parser.add_argument("--version", required=True, type=str, help="The full cura version, e.g. 5.9.0-beta.1+24132")
     args = parser.parse_args()
     generate_nsi(args.source_path, args.dist_path, args.filename, args.version)
-    build(args.dist_path)
+    build(args.dist_path, args.filename)
