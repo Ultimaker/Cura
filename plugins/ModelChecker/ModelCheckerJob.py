@@ -1,6 +1,6 @@
 # Copyright (c) 2026 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Generator, Set, Dict
+from typing import Generator, Dict
 
 from PyQt6.QtCore import QObject, pyqtSignal
 
@@ -123,7 +123,7 @@ class ModelCheckerJob(Job):
                 continue
 
             # Actually check the model itself for any overhanging structures that'd need to be supported.
-            if OverhangChecker.checkForDownFaces(node) or OverhangChecker.checkForDownVertices(node):
+            if OverhangChecker.checkDownwardsFeatures(node):
                 warning_nodes.append(node)
 
         if len(warning_nodes) <= 0:
