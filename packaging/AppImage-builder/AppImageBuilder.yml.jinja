@@ -14,9 +14,9 @@ AppDir:
     - amd64
     allow_unauthenticated: true
     sources:
-      - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
-      - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
-      - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
+      - sourceline: deb http://archive.ubuntu.com/ubuntu/ resolute main restricted universe multiverse
+      - sourceline: deb http://archive.ubuntu.com/ubuntu/ resolute-updates main restricted universe multiverse
+      - sourceline: deb http://security.ubuntu.com/ubuntu resolute-security main restricted universe multiverse
     include:
       - xdg-desktop-portal-kde
       - libgtk-3-0
@@ -53,8 +53,8 @@ AppDir:
     path_mappings:
       - /usr/share:$APPDIR/usr/share
   test:
-    fedora-30:
-      image: appimagecrafters/tests-env:fedora-30
+    fedora-33:
+      image: appimagecrafters/tests-env:fedora-33
       command: ./AppRun
       use_host_x: True
     debian-stable:
@@ -69,8 +69,8 @@ AppDir:
       image: appimagecrafters/tests-env:centos-7
       command: ./AppRun
       use_host_x: True
-    ubuntu-xenial:
-      image: appimagecrafters/tests-env:ubuntu-xenial
+    ubuntu-focal:
+      image: appimagecrafters/tests-env:ubuntu-focal
       command: ./AppRun
       use_host_x: True
 AppImage:
