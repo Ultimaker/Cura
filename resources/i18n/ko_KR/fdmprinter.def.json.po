@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2026-03-31 08:53+0000\n"
+"POT-Creation-Date: 2026-09-16 16:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -414,6 +414,10 @@ msgctxt "support_tree_branch_diameter_angle label"
 msgid "Branch Diameter Angle"
 msgstr "브랜치 직경 각도"
 
+msgctxt "support_tree_smooth_layers label"
+msgid "Branch Smoothing Layers"
+msgstr ""
+
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
 msgstr "파단 준비 리트랙션 위치"
@@ -509,6 +513,10 @@ msgstr "브리지 벽 압출량"
 msgctxt "bridge_wall_speed label"
 msgid "Bridge Wall Speed"
 msgstr "브릿지 벽 속도"
+
+msgctxt "bridge_wall_max_deviation description"
+msgid "Bridge-walls shouldn't deviate from straight lines more than this, anything that falls outside of the area of maximum allowed deviation (defined by the aligned bounding box around the anchor points) isn't considered a bridging wall. Skin lines are already straight."
+msgstr ""
 
 msgctxt "adhesion_type option brim"
 msgid "Brim"
@@ -1018,6 +1026,10 @@ msgctxt "meshfix_fluid_motion_enabled label"
 msgid "Enable Fluid Motion"
 msgstr "플루이드 모션 활성화"
 
+msgctxt "support_brim_enable label"
+msgid "Enable Inner Support Base"
+msgstr ""
+
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
 msgstr "다림질 사용"
@@ -1033,6 +1045,10 @@ msgstr "노즐 온도 조절 활성화"
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
 msgstr "Ooze 쉴드 사용"
+
+msgctxt "support_outer_brim_enable label"
+msgid "Enable Outer Support Base"
+msgstr ""
 
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
@@ -1053,10 +1069,6 @@ msgstr "출력 과정 보고 활성화"
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
 msgstr "리트렉션 활성화"
-
-msgctxt "support_brim_enable label"
-msgid "Enable Support Brim"
-msgstr "서포트 브림 사용"
 
 msgctxt "support_bottom_enable label"
 msgid "Enable Support Floor"
@@ -1446,9 +1458,13 @@ msgctxt "support_enable label"
 msgid "Generate Support"
 msgstr "서포트 생성"
 
+msgctxt "support_outer_brim_enable description"
+msgid "Generate a base around the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
+msgstr ""
+
 msgctxt "support_brim_enable description"
-msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr "첫 번째 레이어의 서포트 내부채움 영역 내에서 브림을 생성합니다. 이 브림은 서포트 주변이 아니라 아래에 인쇄됩니다. 이 설정을 사용하면 빌드 플레이트에 대한 서포트력이 향상됩니다."
+msgid "Generate a base within the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
+msgstr ""
 
 msgctxt "support_interface_enable description"
 msgid "Generate a dense interface between the model and the support. This will create a skin at the top of the support on which the model is printed and at the bottom of the support, where it rests on the model."
@@ -1950,6 +1966,10 @@ msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
 msgstr "내벽 익스트루더"
 
+msgctxt "wall_x_inset label"
+msgid "Inner Wall Inset"
+msgstr ""
+
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
 msgstr "내벽 Jerk"
@@ -1965,6 +1985,10 @@ msgstr "내벽 압출량"
 msgctxt "wall_line_width_x label"
 msgid "Inner Wall(s) Line Width"
 msgstr "내부 벽 선 너비"
+
+msgctxt "wall_x_inset description"
+msgid "Inset applied to the path of the inner wall(s). The infill will move along with the new boundary set by the innermost inner wall"
+msgstr ""
 
 msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
@@ -2356,6 +2380,10 @@ msgctxt "support_tree_angle label"
 msgid "Maximum Branch Angle"
 msgstr "최대 브랜치 각도"
 
+msgctxt "bridge_wall_max_deviation label"
+msgid "Maximum Bridge Deviation"
+msgstr ""
+
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
 msgstr "최대 편차"
@@ -2527,6 +2555,10 @@ msgstr "모델에 대한 최소 높이"
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
 msgstr "최소 내부채움 지역"
+
+msgctxt "minimum_infill_line_length label"
+msgid "Minimum Infill Line Length"
+msgstr ""
 
 msgctxt "cool_min_layer_time label"
 msgid "Minimum Layer Time"
@@ -2776,6 +2808,18 @@ msgctxt "machine_extruder_count description"
 msgid "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle."
 msgstr "익스트루더의 수. 익스트루더는 피더, 보우 덴 튜브 및 노즐의 조합입니다."
 
+msgctxt "support_wall_thickness_layer_smooth description"
+msgid "Number of layers where the support wall line width transition is smoothed out over. (This may still create jumps when one area splits off from the other though.)"
+msgstr ""
+
+msgctxt "support_wall_thickness_bottom_layers description"
+msgid "Number of layers, counted from the build-plate, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
+msgstr ""
+
+msgctxt "support_wall_thickness_top_layers description"
+msgid "Number of layers, counted from the closest tip of the branches downwards, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
+msgstr ""
+
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
 msgstr "브러시 전체에 노즐을 이동하는 횟수입니다."
@@ -2827,6 +2871,10 @@ msgstr "가능한 경우 빌드 플레이트에"
 msgctxt "support_tree_rest_preference option graceful"
 msgid "On model if required"
 msgstr "필요한 경우 모델에"
+
+msgctxt "top_bottom_skin_merge_distance description"
+msgid "On sloped areas especially, top/bottom can become very small or narrow, while skin is nearby. This will sometimes cause walls not to print well. Merge top/bottom into skin when areas become too thin, where 'too thin' is defined by the merge distance (any thinner is merged into a neighbouring area if present)."
+msgstr ""
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -3884,6 +3932,26 @@ msgctxt "acceleration_support label"
 msgid "Support Acceleration"
 msgstr "서포트 가속도"
 
+msgctxt "support_base_height label"
+msgid "Support Base Height"
+msgstr ""
+
+msgctxt "support_base_inside_width label"
+msgid "Support Base Inside Width"
+msgstr ""
+
+msgctxt "support_base_outside_width label"
+msgid "Support Base Outside Width"
+msgstr ""
+
+msgctxt "support_base_curve_magnitude label"
+msgid "Support Base Slope"
+msgstr ""
+
+msgctxt "support_base_width label"
+msgid "Support Base Width"
+msgstr ""
+
 msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "서포트 바닥 거리"
@@ -3891,14 +3959,6 @@ msgstr "서포트 바닥 거리"
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "지지대 하단 벽 라인 수"
-
-msgctxt "support_brim_line_count label"
-msgid "Support Brim Line Count"
-msgstr "서포트 브림 라인 수"
-
-msgctxt "support_brim_width label"
-msgid "Support Brim Width"
-msgstr "서포트 브림 폭"
 
 msgctxt "support_zag_skip_count label"
 msgid "Support Chunk Line Count"
@@ -3915,6 +3975,10 @@ msgstr "서포트 밀도"
 msgctxt "support_xy_overrides_z label"
 msgid "Support Distance Priority"
 msgstr "서포트 거리 우선 순위"
+
+msgctxt "support_enlarged_wall_thickness label"
+msgid "Support Enlarged Wall Thickness"
+msgstr ""
 
 msgctxt "support_extruder_nr label"
 msgid "Support Extruder"
@@ -4008,6 +4072,22 @@ msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
 msgstr "서포트 내부채움 속도"
 
+msgctxt "support_brim_line_count label"
+msgid "Support Inner Brim Line Count"
+msgstr ""
+
+msgctxt "support_brim_width label"
+msgid "Support Inner Brim Width"
+msgstr ""
+
+msgctxt "support_inside_base_height label"
+msgid "Support Inside Base Height"
+msgstr ""
+
+msgctxt "support_inside_base_curve_magnitude label"
+msgid "Support Inside Base Slope"
+msgstr ""
+
 msgctxt "acceleration_support_interface label"
 msgid "Support Interface Acceleration"
 msgstr "서포트 인터페이스 가속도"
@@ -4096,9 +4176,21 @@ msgctxt "support_mesh label"
 msgid "Support Mesh"
 msgstr "서포트 메쉬"
 
+msgctxt "support_outside_base_height label"
+msgid "Support Outside Base Height"
+msgstr ""
+
+msgctxt "support_outside_base_curve_magnitude label"
+msgid "Support Outside Base Slope"
+msgstr ""
+
 msgctxt "support_angle label"
 msgid "Support Overhang Angle"
 msgstr "오버행 각도"
+
+msgctxt "support_paint_resolution label"
+msgid "Support Painting Precision"
+msgstr ""
 
 msgctxt "support_pattern label"
 msgid "Support Pattern"
@@ -4187,6 +4279,22 @@ msgstr "서포트 상단 거리"
 msgctxt "support_wall_count label"
 msgid "Support Wall Line Count"
 msgstr "지지대 벽 라인 카운트"
+
+msgctxt "support_wall_thickness_layer_smooth label"
+msgid "Support Wall Smooth Layer Width"
+msgstr ""
+
+msgctxt "support_wall_thickness label"
+msgid "Support Wall Thickness"
+msgstr ""
+
+msgctxt "support_wall_thickness_bottom_layers label"
+msgid "Support Wall Unenlarged Bottom Layers"
+msgstr ""
+
+msgctxt "support_wall_thickness_top_layers label"
+msgid "Support Wall Unenlarged Top Layers"
+msgstr ""
 
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
@@ -4560,13 +4668,13 @@ msgctxt "support_z_seam_min_distance description"
 msgid "The distance between the model and its support structure at the z-axis seam."
 msgstr "Z축 심에서 모델과 서포트 구조물 사이의 거리입니다."
 
-msgctxt "retraction_combing_avoid_distance description"
-msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
-msgstr "모델 내부에서 이동할 때 노즐과 이미 인쇄된 외벽 사이의 거리입니다."
-
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
 msgstr "이동 중 출력물을 피할 때 노즐과 이미 프린팅 된 부분 사이의 거리."
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and outer walls when travelling inside a model."
+msgstr ""
 
 msgctxt "raft_base_line_spacing description"
 msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
@@ -4796,6 +4904,14 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "첫번째 레이어의 높이 (mm)입니다. 첫번째 레이어를 두껍게하면 빌드 플레이트에 쉽게 부착됩니다."
 
+msgctxt "support_inside_base_height description"
+msgid "The height of the inside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
+
+msgctxt "support_outside_base_height description"
+msgid "The height of the outside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
+
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
 msgstr "프라임 타워 베이스의 높이입니다. 이 값을 늘리면 베이스가 넓어져 프라임 타워가 더 튼튼해집니다. 이 설정이 너무 낮으면 프라임 타워에 튼튼한 베이스가 형성되지 않습니다."
@@ -4803,6 +4919,10 @@ msgstr "프라임 타워 베이스의 높이입니다. 이 값을 늘리면 베�
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "모델에있는 서포트의 계단 모양 바닥의 계단 높이. 값이 낮으면 서포트를 제거하기가 어려워 서포트만 값이 너무 높으면 불안정한 서포트 구조가 생길 수 있습니다. 계단 모양의 동작을 해제하려면 0으로 설정하십시오."
+
+msgctxt "support_base_height description"
+msgid "The height of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
 
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
@@ -4878,9 +4998,21 @@ msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "리트렉션 이동 중에 수축 된 재료의 길이입니다."
 
+msgctxt "support_inside_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the inside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr ""
+
+msgctxt "support_outside_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the outside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr ""
+
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
 msgstr "프라임 타워 베이스의 경사에 사용되는 크기 계수입니다. 이 값을 늘리면 베이스가 더 얇아집니다. 줄이면 베이스가 더 두꺼워집니다."
+
+msgctxt "support_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr ""
 
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
@@ -5159,8 +5291,8 @@ msgid "The number of lines used for a brim. More brim lines enhance adhesion to 
 msgstr "브림에 사용되는 선의 수입니다. 더 많은 브림 선이 빌드 플레이트에 대한 접착력을 향상 시키지만 유효 프린트 영역도 감소시킵니다."
 
 msgctxt "support_brim_line_count description"
-msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr "서포트 브림에 사용되는 라인의 수. 브림 라인이 많아질수록 추가 재료가 소요되지만 빌드 플레이트에 대한 접착력이 향상됩니다."
+msgid "The number of lines used for the support inside brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr ""
 
 msgctxt "build_volume_fan_nr description"
 msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
@@ -5246,9 +5378,17 @@ msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements."
 msgstr ""
 
+msgctxt "support_tree_smooth_layers description"
+msgid "The positions of the tree support branches will be adjusted to smooth them over the specified number of layers using a rolling window average. This improves inter-layer adhesion and sturdiness, but an excessively high value may cause the structure to bend too close to the model or compromise its integrity."
+msgstr ""
+
 msgctxt "multi_material_paint_resolution description"
 msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
 msgstr "페인팅 데이터를 기반으로 다중 재료 형상을 생성할 때 세부 묘사의 정밀도. 정밀도가 낮으면 디테일이 상승하지만, 슬라이싱 시간과 메모리가 증가합니다."
+
+msgctxt "support_paint_resolution description"
+msgid "The precision of the details when generating support based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr ""
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
@@ -5538,6 +5678,10 @@ msgctxt "wall_thickness description"
 msgid "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls."
 msgstr "가로 방향의 벽 두께입니다. 이 값을 벽 선 너비로 나눈 값은 벽의 수 입니다."
 
+msgctxt "support_enlarged_wall_thickness description"
+msgid "The thickness of the walls with which to surround the support infill, when adhesion with the above/below layer is very low. Using larger or extra walls in this case will improve adhesion and make the branch sturdier."
+msgstr ""
+
 msgctxt "infill_sparse_thickness description"
 msgid "The thickness per layer of infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "내부채움물 층의 두께. 이 값은 항상 레이어 높이의 배수이어야 하며 반올림됩니다."
@@ -5545,6 +5689,10 @@ msgstr "내부채움물 층의 두께. 이 값은 항상 레이어 높이의 배
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "서포트 내부채의 레이어당 두께. 이 값은 항상 레이어 높이의 배수이 어야하며 그렇지 않으면 반올림됩니다."
+
+msgctxt "support_wall_thickness description"
+msgid "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr ""
 
 msgctxt "machine_buildplate_type description"
 msgid "The type of build plate installed on the printer."
@@ -5567,12 +5715,20 @@ msgid "The width (X-direction) of the printable area."
 msgstr "프린팅 가능 영역의 폭 (X 방향)."
 
 msgctxt "support_brim_width description"
-msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr "서포트 아래를 인쇄하기 위한 브림 폭. 브림이 커질수록 추가 재료가 소요되지만 빌드 플레이트에 대한 접착력이 향상됩니다."
+msgid "The width of the brim to print inside the support, on the first layer. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr ""
+
+msgctxt "support_base_inside_width description"
+msgid "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base."
+msgstr ""
 
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "연동 구조 빔의 너비입니다."
+
+msgctxt "support_base_outside_width description"
+msgid "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
@@ -5581,6 +5737,10 @@ msgstr "프라임 타워 브림/베이스의 폭입니다. 베이스가 크면 �
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "프라임 타워의 너비."
+
+msgctxt "support_base_width description"
+msgid "The width of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
 
 msgctxt "magic_fuzzy_skin_thickness description"
 msgid "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered."
@@ -5806,6 +5966,10 @@ msgctxt "top_bottom_thickness label"
 msgid "Top/Bottom Thickness"
 msgstr "상단/하단 두께"
 
+msgctxt "top_bottom_skin_merge_distance label"
+msgid "Top/Bottom/Skin Merge Distance"
+msgstr ""
+
 msgctxt "support_type option buildplate"
 msgid "Touching Buildplate"
 msgstr "빌드 플레이트 위"
@@ -6021,6 +6185,10 @@ msgstr "벽"
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
 msgstr "이 각도보다 더 돌출된 벽은 돌출 벽 설정을 사용하여 출력됩니다. 값이 90인 경우 벽은 돌출부로 간주하지 않습니다. 지지대가 지지하는 돌출부도 돌출부로 간주하지 않습니다. 또한 돌출부의 절반보다 짧은 선도 돌출부로 간주하지 않습니다."
+
+msgctxt "minimum_infill_line_length description"
+msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
+msgstr ""
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -6498,9 +6666,17 @@ msgstr "이동"
 #~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
 #~ msgstr "모델 외곽선의 모서리가 이음선의 위치에 영향을 주는지 여부를 제어합니다. 이것은 모서리가 이음선 위치에 영향을 미치지 않는다는 것을 의미하지 않습니다. 이음선 숨김은 이음선이 안쪽 모서리에서 발생할 가능성을 높입니다. 이음선 노출은 이음선이 외부 모서리에서 발생할 가능성을 높입니다. 이음선 숨김 또는 노출은 이음선이 내부나 외부 모서리에서 발생할 가능성을 높입니다. 스마트 숨김은 내외부 모서리 모두 가능하지만, 적절하다면 내부 모서리를 더욱 빈번하게 선택합니다."
 
+#~ msgctxt "support_brim_enable label"
+#~ msgid "Enable Support Brim"
+#~ msgstr "서포트 브림 사용"
+
 #~ msgctxt "extra_infill_lines_to_support_skins label"
 #~ msgid "Extra Infill Lines To Support Skins"
 #~ msgstr "스킨을 지지하는 추가 내부채움 선"
+
+#~ msgctxt "support_brim_enable description"
+#~ msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
+#~ msgstr "첫 번째 레이어의 서포트 내부채움 영역 내에서 브림을 생성합니다. 이 브림은 서포트 주변이 아니라 아래에 인쇄됩니다. 이 설정을 사용하면 빌드 플레이트에 대한 서포트력이 향상됩니다."
 
 #~ msgctxt "bridge_sparse_infill_max_density description"
 #~ msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
@@ -6550,6 +6726,14 @@ msgstr "이동"
 #~ msgid "Skin Edge Support Thickness"
 #~ msgstr "스킨 에지의 두께 지원"
 
+#~ msgctxt "support_brim_line_count label"
+#~ msgid "Support Brim Line Count"
+#~ msgstr "서포트 브림 라인 수"
+
+#~ msgctxt "support_brim_width label"
+#~ msgid "Support Brim Width"
+#~ msgstr "서포트 브림 폭"
+
 #~ msgctxt "z_seam_x description"
 #~ msgid "The X coordinate of the position near where to start printing each part in a layer."
 #~ msgstr "레이어에서 프린팅이 시작할 위치 근처의 X 좌표입니다."
@@ -6557,6 +6741,10 @@ msgstr "이동"
 #~ msgctxt "z_seam_y description"
 #~ msgid "The Y coordinate of the position near where to start printing each part in a layer."
 #~ msgstr "레이어에서 프린팅이 시작할 위치 근처의 Y 좌표입니다."
+
+#~ msgctxt "retraction_combing_avoid_distance description"
+#~ msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
+#~ msgstr "모델 내부에서 이동할 때 노즐과 이미 인쇄된 외벽 사이의 거리입니다."
 
 #~ msgctxt "machine_nozzle_head_distance description"
 #~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
@@ -6574,6 +6762,10 @@ msgstr "이동"
 #~ msgid "The number of infill layers that supports skin edges."
 #~ msgstr "스킨 에지를 지원하는 내부채움 레이어의 수."
 
+#~ msgctxt "support_brim_line_count description"
+#~ msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+#~ msgstr "서포트 브림에 사용되는 라인의 수. 브림 라인이 많아질수록 추가 재료가 소요되지만 빌드 플레이트에 대한 접착력이 향상됩니다."
+
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
 #~ msgstr "프린트 내부채움 재료의 패턴입니다. 선형과 지그재그형 내부채움이 서로 다른 레이어에서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 트라이 헥사곤 (tri-hexagon), 큐빅, 옥텟 (octet), 쿼터 큐빅, 크로스, 동심원 패턴이 레이어마다 완전히 프린트됩니다. 자이로이드 (Gyroid), 큐빅, 쿼터 큐빅, 옥텟 (octet) 내부채움이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다. 라이트닝 내부채움이 객체의 천장만 서포트하여 내부채움을 최소화합니다."
@@ -6589,6 +6781,10 @@ msgstr "이동"
 #~ msgctxt "skin_edge_support_thickness description"
 #~ msgid "The thickness of the extra infill that supports skin edges."
 #~ msgstr "스킨 에지를 지원하는 추가 내부채움의 두께."
+
+#~ msgctxt "support_brim_width description"
+#~ msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+#~ msgstr "서포트 아래를 인쇄하기 위한 브림 폭. 브림이 커질수록 추가 재료가 소요되지만 빌드 플레이트에 대한 접착력이 향상됩니다."
 
 #~ msgctxt "extra_infill_lines_to_support_skins option walls"
 #~ msgid "Walls Only"
