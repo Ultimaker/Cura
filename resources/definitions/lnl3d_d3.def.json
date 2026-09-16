@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "name": "LNL3D D3",
+    "inherits": "lnl3d_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "lnl3d_d3.stl",
+        "platform_offset": [
+            0,
+            0,
+            0
+        ]
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 350 },
+        "machine_name": { "default_value": "LNL3D D3" },
+        "machine_width": { "default_value": 300 }
+    }
+}

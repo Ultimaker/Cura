@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "name": "RatRig Printer",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": false,
+        "author": "nu-hin",
+        "manufacturer": "RatRig",
+        "file_formats": "text/x-gcode",
+        "exclude_materials": [],
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "ratrig_base_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "standard",
+        "quality_definition": "ratrig_base",
+        "supported_actions": [ "MachineSettingsAction" ]
+    }
+}

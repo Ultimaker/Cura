@@ -8,12 +8,35 @@ message ObjectList
     repeated Setting settings = 2; // meshgroup settings (for one-at-a-time printing)
 }
 
+enum SlotID {
+  SETTINGS_BROADCAST = 0;
+  SIMPLIFY_MODIFY = 100;
+  POSTPROCESS_MODIFY = 101;
+  INFILL_MODIFY = 102;
+  GCODE_PATHS_MODIFY = 103;
+  INFILL_GENERATE = 200;
+}
+
+message EnginePlugin
+{
+    SlotID id = 1;
+    string address = 2;
+    uint32 port = 3;
+    string plugin_name = 4;
+    string plugin_version = 5;
+}
+
 message Slice
 {
     repeated ObjectList object_lists = 1; // The meshgroups to be printed one after another
     SettingList global_settings = 2; // The global settings used for the whole print job
     repeated Extruder extruders = 3; // The settings sent to each extruder object
     repeated SettingExtruder limit_to_extruder = 4; // From which stack the setting would inherit if not defined per object
+    repeated EnginePlugin engine_plugins = 5;
+    string sentry_id = 6; // The anonymized Sentry user id that requested the slice
+    string cura_version = 7; // The version of Cura that requested the slice
+    optional string project_name = 8; // The name of the project that requested the slice
+    optional string user_name = 9; // The Digital Factory account name of the user that requested the slice
 }
 
 message Extruder
@@ -30,6 +53,8 @@ message Object
     bytes indices = 4; //An array of ints.
     repeated Setting settings = 5; // Setting override per object, overruling the global settings.
     string name = 6; //Mesh name
+    bytes uv_coordinates = 7; //An array of 2 floats.
+    bytes texture = 8; //PNG-encoded texture data
 }
 
 message Progress
@@ -55,10 +80,14 @@ message Polygon {
         SkirtType = 5;
         InfillType = 6;
         SupportInfillType = 7;
-        MoveCombingType = 8;
-        MoveRetractionType = 9;
+        MoveUnretracted = 8;
+        MoveRetracted = 9;
         SupportInterfaceType = 10;
         PrimeTowerType = 11;
+        MoveWhileRetracting = 12;
+        MoveWhileUnretracting = 13;
+        StationaryRetractUnretract = 14;
+        NumPrintFeatureTypes = 15;
     }
     Type type = 1; // Type of move
     bytes points = 2; // The points of the polygon, or two points if only a line segment (Currently only line segments are used)
@@ -88,6 +117,7 @@ message PathSegment {
     bytes line_width = 5; // The widths of the line segments as bytes of a float array of length 1 or N
     bytes line_thickness = 6; // The thickness of the line segments as bytes of a float array of length 1 or N
     bytes line_feedrate = 7; // The feedrate of the line segments as bytes of a float array of length 1 or N
+    repeated uint32 attributes = 8; // Print attributes of each segment, e.g. overhanging or bridging
 }
 
 
@@ -116,7 +146,15 @@ message PrintTimeMaterialEstimates { // The print time for each feature and mate
 
 message MaterialEstimates {
     int64 id = 1;
-    float material_amount = 2; // material used in the extruder
+    float material_amount = 2; // Volume material used in the extruder
+    float material_length = 3; // Length of used filament, in meters
+    float material_weight = 4; // Weight of used filament, in grams
+    float material_cost = 5;   // Cost of used filament, in whatever the money unit is
+    string material_name = 6;  // Name of used filament
+}
+
+message InitialExtruder {
+    uint32 extruder_nr = 1;
 }
 
 message SettingList {
@@ -133,10 +171,6 @@ message SettingExtruder {
     string name = 1; //The setting key.
 
     int32 extruder = 2; //From which extruder stack the setting should inherit.
-}
-
-message GCodePrefix {
-    bytes data = 2; //Header string to be prepended before the rest of the g-code sent from the engine.
 }
 
 message SliceUUID {

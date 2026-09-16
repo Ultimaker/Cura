@@ -13,7 +13,7 @@ import "."
 Item
 {
     id: base
-    height: enabled ? UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height : 0
+    height: enabled ? Math.max(UM.Theme.getSize("section").height, label.height) + UM.Theme.getSize("narrow_margin").height : 0
     anchors.left: parent.left
     anchors.right: parent.right
 
@@ -25,7 +25,7 @@ Item
     property bool showLinkedSettingIcon: true
     property bool doDepthIndentation: true
     property bool doQualityUserSettingEmphasis: true
-    property var settingKey: definition.key //Used to detect each individual setting more easily in Squish GUI tests.
+    property var settingKey: definition ? definition.key : "" //Used to detect each individual setting more easily in Squish GUI tests.
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
@@ -53,9 +53,12 @@ Item
     signal showTooltip(string text)
     signal hideTooltip()
     signal showAllHiddenInheritedSettings(string category_id)
+    signal setScrollPositionChangeLoseFocus(bool lose_focus)
 
     function createTooltipText()
     {
+        if (!definition) return ""
+        
         var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
         var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
 
@@ -77,7 +80,7 @@ Item
             }
         }
 
-        var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
+        var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition ? definition.label : "").arg(definition ? definition.description : "")
 
         if(!propertyProvider.isValueUsed)
         {
@@ -115,7 +118,16 @@ Item
 
         onExited:
         {
-            if (controlContainer.item && controlContainer.item.hovered)
+            if (controlContainer.children[0] && controlContainer.children[0].hovered)
+            {
+                return
+            }
+
+            // Don't trigger the hide if either of the nested buttons is hidden. This is caused by a bug in QT
+            // Documentation claims that nested mouse events don't trigger the onExit, but this is only true if they
+            // have a *direct* parent child relationship. In this case there are rows and other visual layouts in
+            // between which messes this up.
+            if(linkedSettingIcon.hovered || revertButton.hovered || inheritButton.hovered)
             {
                 return
             }
@@ -129,10 +141,7 @@ Item
             interval: 500
             repeat: false
 
-            onTriggered:
-            {
-                base.showTooltip(base.createTooltipText())
-            }
+            onTriggered: base.showTooltip(base.createTooltipText())
         }
 
         UM.Label
@@ -140,17 +149,17 @@ Item
             id: label
 
             anchors.left: parent.left
-            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition.depth - 1) * UM.Theme.getSize("default_margin").width)) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition ? definition.depth : 0) - 1) * UM.Theme.getSize("default_margin").width) : UM.Theme.getSize("narrow_margin").width
             anchors.right: settingControls.left
             anchors.verticalCenter: parent.verticalCenter
 
-            text: definition.label
+            text: definition ? definition.label : ""
             elide: Text.ElideMiddle
             textFormat: Text.PlainText
 
             color: UM.Theme.getColor("setting_control_text")
-            opacity: (definition.visible) ? 1 : 0.5
-            // emphasize the setting if it has a value in the user or quality profile
+            opacity: (definition && definition.visible) ? 1 : 0.5
+            // Emphasize the setting if it has a value in the user or quality profile
             font: base.doQualityUserSettingEmphasis && base.stackLevel !== undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
 
@@ -172,7 +181,7 @@ Item
             {
                 id: linkedSettingIcon;
 
-                visible: (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
+                visible: (!definition || !definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
@@ -191,7 +200,7 @@ Item
                     if ((resolve !== "None") && (stackLevel !== 0))
                     {
                         // We come here if a setting has a resolve and the setting is not manually edited.
-                        tooltipText += " " + catalog.i18nc("@label", "This setting is resolved from conflicting extruder-specific values:") + " [" + Cura.ExtruderManager.getInstanceExtruderValues(definition.key) + "]."
+                        tooltipText += " " + catalog.i18nc("@label", "This setting is resolved from conflicting extruder-specific values:") + " [" + Cura.ExtruderManager.getInstanceExtruderValues(definition ? definition.key : "") + "]."
                     }
                     base.showTooltip(tooltipText)
                 }
@@ -273,11 +282,11 @@ Item
                     // If the setting does not have a limit_to_extruder property (or is -1), use the active stack.
                     if (globalPropertyProvider.properties.limit_to_extruder === null || globalPropertyProvider.properties.limit_to_extruder === "-1")
                     {
-                        return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0
+                        return definition && Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0
                     }
 
                     // Setting does have a limit_to_extruder property, so use that one instead.
-                    if (definition.key === undefined) {
+                    if (!definition || definition.key === undefined) {
                         // Observed when loading workspace, probably when SettingItems are removed.
                         return false
                     }

@@ -110,6 +110,12 @@
             "italic": true,
             "family": "Noto Sans"
         },
+        "medium_italic": {
+            "size": 1.16,
+            "weight": 400,
+            "italic": true,
+            "family": "Noto Sans"
+        },
         "default_italic_ja_JP": {
             "size": 1.0,
             "weight": 400,
@@ -349,13 +355,16 @@
         "setting_validation_ok": "background_2",
 
         "material_compatibility_warning": [243, 166, 59, 255],
+        "core_compatibility_warning": [243, 166, 59, 255],
 
         "progressbar_background": [245, 245, 245, 255],
         "progressbar_control": [50, 130, 255, 255],
 
         "slider_groove": [223, 223, 223, 255],
         "slider_groove_fill": [8, 7, 63, 255],
+        "slider_groove_fill_disabled": [180, 180, 180, 255],
         "slider_handle": [8, 7, 63, 255],
+        "slider_handle_disabled": [180, 180, 180, 255],
         "slider_handle_active": [50, 130, 255, 255],
         "slider_text_background": [255, 255, 255, 255],
 
@@ -437,7 +446,8 @@
         "disallowed_area": [0, 0, 0, 40],
         "error_area": [255, 0, 0, 127],
 
-        "model_overhang": [255, 0, 0, 255],
+        "model_overhang": [232, 127, 0, 255],
+        "model_overhang_paint": [168, 216, 138, 255],
         "model_unslicable": [122, 122, 122, 255],
         "model_unslicable_alt": [172, 172, 127, 255],
         "model_selection_outline": [50, 130, 255, 255],
@@ -448,14 +458,21 @@
         "layerview_ghost": [31, 31, 31, 95],
         "layerview_none": [255, 255, 255, 255],
         "layerview_inset_0": [230, 0, 0, 255],
+        "layerview_inset_0_overhang": [255, 100, 100, 255],
+        "layerview_inset_0_bridge": [128, 0, 0, 255],
         "layerview_inset_x": [0, 230, 0, 255],
+        "layerview_inset_x_overhang": [100, 255, 100, 255],
+        "layerview_inset_x_bridge": [0, 128, 0, 255],
         "layerview_skin": [230, 230, 0, 255],
+        "layerview_skin_bridge": [128, 128, 0, 255],
         "layerview_support": [0, 230, 230, 127],
         "layerview_skirt": [0, 230, 230, 255],
         "layerview_infill": [230, 115, 0, 255],
         "layerview_support_infill": [0, 230, 230, 127],
         "layerview_move_combing": [0, 0, 255, 255],
         "layerview_move_retraction": [128, 127, 255, 255],
+        "layerview_move_while_retracting": [127, 255, 255, 255],
+        "layerview_move_while_unretracting": [255, 127, 255, 255],
         "layerview_support_interface": [63, 127, 255, 127],
         "layerview_prime_tower": [0, 255, 255, 255],
         "layerview_nozzle": [224, 192, 16, 64],
@@ -489,12 +506,17 @@
         "monitor_carousel_dot_current": [119, 119, 119, 255],
 
         "cloud_unavailable": [153, 153, 153, 255],
+        "cloud_inactive": [253, 209, 58, 255],
         "connection_badge_background": [255, 255, 255, 255],
         "warning_badge_background": [0, 0, 0, 255],
         "error_badge_background": [255, 255, 255, 255],
 
         "border_field_light": [180, 180, 180, 255],
-        "border_main_light": [212, 212, 212, 255]
+        "border_main_light": [212, 212, 212, 255],
+
+        "paint_normal_area": "background_3",
+        "paint_preferred_area": "um_green_5",
+        "paint_avoid_area": "um_red_5"
     },
 
     "sizes": {
@@ -542,7 +564,7 @@
         "default_lining": [0.08, 0.08],
 
         "default_arrow": [0.8, 0.8],
-        "logo": [16, 3.5],
+        "logo": [16, 2],
 
         "wide_margin": [2.0, 2.0],
         "thick_margin": [1.71, 1.43],
@@ -560,7 +582,7 @@
         "section_icon_column": [2.5, 2.5],
 
         "setting": [25.0, 1.8],
-        "setting_control": [11.0, 2.0],
+        "setting_control": [9.0, 2.0],
         "setting_control_radius": [0.15, 0.15],
         "setting_control_depth_margin": [1.4, 0.0],
         "setting_unit_margin": [0.5, 0.5],
@@ -635,11 +657,11 @@
         "monitor_preheat_temperature_control": [4.5, 2.0],
 
         "welcome_wizard_window": [46, 50],
-        "modal_window_minimum": [60.0, 45],
+        "modal_window_minimum": [60.0, 50.0],
         "wizard_progress": [10.0, 0.0],
 
         "message": [30.0, 5.0],
-        "message_close": [1, 1],
+        "message_close": [2, 2],
         "message_radius": [0.25, 0.25],
         "message_action_button": [0, 2.5],
         "message_image": [15.0, 10.0],

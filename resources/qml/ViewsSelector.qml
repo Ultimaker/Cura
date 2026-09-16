@@ -38,7 +38,7 @@ Cura.ExpandablePopup
     {
         if (activeView == null)
         {
-            UM.Controller.setActiveView(viewModel.getItem(0).id)
+            UM.Controller.activeStage.setActiveView(viewModel.getItem(0).id)
         }
     }
 
@@ -110,7 +110,7 @@ Cura.ExpandablePopup
                 onClicked:
                 {
                     toggleContent()
-                    UM.Controller.setActiveView(id)
+                    UM.Controller.activeStage.setActiveView(id)
                 }
             }
         }

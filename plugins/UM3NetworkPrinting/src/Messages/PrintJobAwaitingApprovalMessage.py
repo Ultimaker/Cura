@@ -35,4 +35,4 @@ class PrintJobPendingApprovalMessage(Message):
             case "manage_print_jobs":
                 QDesktopServices.openUrl(QUrl(f"https://digitalfactory.ultimaker.com/app/jobs/{self._cluster.cluster_id}?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"))
             case "learn_more":
-                QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/5329940078620?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"))
+                QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/s/article/1667417416362"))

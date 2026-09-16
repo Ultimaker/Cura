@@ -19,7 +19,12 @@ Cura.Menu
     // Selection-related actions.
     Cura.MenuItem { action: Cura.Actions.centerSelection; }
     Cura.MenuItem { action: Cura.Actions.deleteSelection; }
+    Cura.MenuItem { action: Cura.Actions.copy; }
+    Cura.MenuItem { action: Cura.Actions.paste; }
     Cura.MenuItem { action: Cura.Actions.multiplySelection; }
+
+    Cura.MenuSeparator {}
+    Cura.MenuItem { action: Cura.Actions.showFileLocation; }
 
     // Extruder selection - only visible if there is more than 1 extruder
     Cura.MenuSeparator { visible: base.shouldShowExtruders }
@@ -44,8 +49,20 @@ Cura.Menu
             onTriggered: CuraActions.setExtruderForSelection(model.id)
             shortcut: "Ctrl+" + (model.index + 1)
         }
-        // Add it to the fifth position (and above) as we want it to be added after the extruder header.
-        onObjectAdded: function(index, object) { base.insertItem(index + 5, object) }
+
+        onObjectAdded: function(index, object) {
+            var extruder_header_location = 5;
+            // Find the location of the extruder header and insert it below that.
+            for (var i = 0; i < base.count; i++)
+            {
+                if(base.itemAt(i) === extruderHeader)
+                {
+                    extruder_header_location = i + 1;
+                }
+            }
+            base.insertItem(extruder_header_location + index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
+        }
         onObjectRemoved: function(index, object) {  base.removeItem(object) }
     }
 
@@ -53,16 +70,31 @@ Cura.Menu
     Cura.MenuSeparator {}
     Cura.MenuItem { action: Cura.Actions.selectAll }
     Cura.MenuItem { action: Cura.Actions.arrangeAll }
+    Cura.MenuItem { action: Cura.Actions.arrangeAllGrid }
     Cura.MenuItem { action: Cura.Actions.deleteAll }
     Cura.MenuItem { action: Cura.Actions.reloadAll }
     Cura.MenuItem { action: Cura.Actions.resetAllTranslation }
     Cura.MenuItem { action: Cura.Actions.resetAll }
+    Cura.MenuItem { action: Cura.Actions.dropAll }
 
     // Group actions
     Cura.MenuSeparator {}
     Cura.MenuItem { action: Cura.Actions.groupObjects }
     Cura.MenuItem { action: Cura.Actions.mergeObjects }
     Cura.MenuItem { action: Cura.Actions.unGroupObjects }
+
+    // Edit print sequence actions
+    Cura.MenuSeparator { visible: PrintOrderManager.shouldShowEditPrintOrderActions }
+    Cura.MenuItem
+    {
+        action: Cura.Actions.printObjectBeforePrevious
+        visible: PrintOrderManager.shouldShowEditPrintOrderActions
+    }
+    Cura.MenuItem
+    {
+        action: Cura.Actions.printObjectAfterNext
+        visible: PrintOrderManager.shouldShowEditPrintOrderActions
+    }
 
     Connections
     {
@@ -73,7 +105,7 @@ Cura.Menu
     Connections
     {
         target: Cura.Actions.multiplySelection
-        function onTriggered() { multiplyDialog.open() }
+        function onTriggered() { multiplyDialogComponent.createObject(base).open() }
     }
 
     UM.SettingPropertyProvider
@@ -85,56 +117,80 @@ Cura.Menu
         watchedProperties: [ "value" ]
     }
 
-    UM.Dialog
+    Component
     {
-        id: multiplyDialog
+        id: multiplyDialogComponent
 
-        title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
-
-        width: UM.Theme.getSize("small_popup_dialog").width
-        height: UM.Theme.getSize("small_popup_dialog").height
-        minimumWidth: UM.Theme.getSize("small_popup_dialog").width
-        minimumHeight: UM.Theme.getSize("small_popup_dialog").height
-
-        onAccepted: CuraActions.multiplySelection(copiesField.value)
-
-        buttonSpacing: UM.Theme.getSize("thin_margin").width
-
-        rightButtons:
-        [
-            Cura.SecondaryButton
-            {
-                text: "Cancel"
-                onClicked: multiplyDialog.reject()
-            },
-            Cura.PrimaryButton
-            {
-                text: "Ok"
-                onClicked: multiplyDialog.accept()
-            }
-        ]
-
-        Row
+        UM.Dialog
         {
-            spacing: UM.Theme.getSize("default_margin").width
+            id: multiplyDialog
+            title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
 
-            UM.Label
-            {
-                text: catalog.i18nc("@label", "Number of Copies")
-                anchors.verticalCenter: copiesField.verticalCenter
-                width: contentWidth
-                wrapMode: Text.NoWrap
-            }
+            width: UM.Theme.getSize("small_popup_dialog").width
+            height: UM.Theme.getSize("small_popup_dialog").height
+            minimumWidth: UM.Theme.getSize("small_popup_dialog").width
+            minimumHeight: UM.Theme.getSize("small_popup_dialog").height
+            onAccepted: gridPlacementSelected.checked ? CuraActions.multiplySelectionToGrid(copiesField.value) : CuraActions.multiplySelection(copiesField.value)
+            buttonSpacing: UM.Theme.getSize("thin_margin").width
+            selfDestroy: true
 
-            Cura.SpinBox
+            rightButtons:
+                [
+                    Cura.SecondaryButton
+                    {
+                        text: "Cancel"
+                        onClicked: multiplyDialog.reject()
+                    },
+                    Cura.PrimaryButton
+                    {
+                        text: "Ok"
+                        onClicked: multiplyDialog.accept()
+                    }
+                ]
+
+            Column
             {
-                id: copiesField
-                editable: true
-                focus: true
-                from: 1
-                to: 99
-                width: 2 * UM.Theme.getSize("button").width
-                value: 1
+                spacing: UM.Theme.getSize("default_margin").height
+
+                Row
+                {
+                    spacing: UM.Theme.getSize("default_margin").width
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@label", "Number of Copies")
+                        anchors.verticalCenter: copiesField.verticalCenter
+                        width: contentWidth
+                        wrapMode: Text.NoWrap
+                    }
+
+                    Cura.SpinBox
+                    {
+                        id: copiesField
+                        editable: true
+                        focus: true
+                        from: 1
+                        to: 99
+                        width: 2 * UM.Theme.getSize("button").width
+                        value: 1
+                    }
+                }
+
+                UM.CheckBox
+                {
+                    id: gridPlacementSelected
+                    text: catalog.i18nc("@label", "Grid Placement")
+
+                    UM.ToolTip
+                    {
+                        visible: parent.hovered
+                        targetPoint: Qt.point(parent.x + Math.round(parent.width / 2), parent.y)
+                        x: 0
+                        y: parent.y + parent.height + UM.Theme.getSize("default_margin").height
+                        tooltipText: catalog.i18nc("@info", "Multiply selected item and place them in a grid of build plate.")
+                    }
+                }
+
             }
         }
     }

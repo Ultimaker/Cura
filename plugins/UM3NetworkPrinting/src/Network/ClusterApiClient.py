@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 from json import JSONDecodeError
@@ -7,7 +7,10 @@ from typing import Callable, List, Optional, Dict, Union, Any, Type, cast, TypeV
 from PyQt6.QtCore import QUrl
 from PyQt6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
+from UM import i18nCatalog
 from UM.Logger import Logger
+
+from cura.CuraApplication import CuraApplication
 
 from ..Models.BaseModel import BaseModel
 from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
@@ -15,10 +18,10 @@ from ..Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
 from ..Models.Http.ClusterMaterial import ClusterMaterial
 
+catalog = i18nCatalog("cura")
 
 ClusterApiClientModel = TypeVar("ClusterApiClientModel", bound=BaseModel)
 """The generic type variable used to document the methods below."""
-
 
 class ClusterApiClient:
     """The ClusterApiClient is responsible for all network calls to local network clusters."""
@@ -28,7 +31,7 @@ class ClusterApiClient:
     CLUSTER_API_PREFIX = "/cluster-api/v1"
 
     # In order to avoid garbage collection we keep the callbacks in this list.
-    _anti_gc_callbacks = []  # type: List[Callable[[], None]]
+    _anti_gc_callbacks: List[Callable[[], None]] = []
 
     def __init__(self, address: str, on_error: Callable) -> None:
         """Initializes a new cluster API client.
@@ -41,13 +44,19 @@ class ClusterApiClient:
         self._address = address
         self._on_error = on_error
 
+    def _setLocalValueToPrefDict(self, name: str, value: Any) -> None:
+        prefs = CuraApplication.getInstance().getPreferences()
+        values_per_address = json.loads(prefs.getValue(name))
+        values_per_address[self._address] = value
+        prefs.setValue(name, json.dumps(values_per_address))
+
     def getSystem(self, on_finished: Callable) -> None:
         """Get printer system information.
 
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/system".format(self.PRINTER_API_PREFIX)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished, PrinterSystemStatus)
 
     def getMaterials(self, on_finished: Callable[[List[ClusterMaterial]], Any]) -> None:
@@ -56,7 +65,7 @@ class ClusterApiClient:
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/materials".format(self.CLUSTER_API_PREFIX)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterMaterial)
 
     def getPrinters(self, on_finished: Callable[[List[ClusterPrinterStatus]], Any]) -> None:
@@ -65,7 +74,7 @@ class ClusterApiClient:
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/printers".format(self.CLUSTER_API_PREFIX)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrinterStatus)
 
     def getPrintJobs(self, on_finished: Callable[[List[ClusterPrintJobStatus]], Any]) -> None:
@@ -74,26 +83,29 @@ class ClusterApiClient:
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/print_jobs".format(self.CLUSTER_API_PREFIX)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrintJobStatus)
 
     def movePrintJobToTop(self, print_job_uuid: str) -> None:
         """Move a print job to the top of the queue."""
 
         url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.post(self._createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
+        reply = self._manager.post(self.createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
+        self._trackReply(reply)
 
     def forcePrintJob(self, print_job_uuid: str) -> None:
         """Override print job configuration and force it to be printed."""
 
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.put(self._createEmptyRequest(url), json.dumps({"force": True}).encode())
+        reply = self._manager.put(self.createEmptyRequest(url), json.dumps({"force": True}).encode())
+        self._trackReply(reply)
 
     def deletePrintJob(self, print_job_uuid: str) -> None:
         """Delete a print job from the queue."""
 
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.deleteResource(self._createEmptyRequest(url))
+        reply = self._manager.deleteResource(self.createEmptyRequest(url))
+        self._trackReply(reply)
 
     def setPrintJobState(self, print_job_uuid: str, state: str) -> None:
         """Set the state of a print job."""
@@ -101,20 +113,23 @@ class ClusterApiClient:
         url = "{}/print_jobs/{}/action".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
         action = "print" if state == "resume" else state
-        self._manager.put(self._createEmptyRequest(url), json.dumps({"action": action}).encode())
+        reply = self._manager.put(self.createEmptyRequest(url), json.dumps({"action": action}).encode())
+        self._trackReply(reply)
 
     def getPrintJobPreviewImage(self, print_job_uuid: str, on_finished: Callable) -> None:
         """Get the preview image data of a print job."""
 
         url = "{}/print_jobs/{}/preview_image".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished)
 
-    def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
+    def createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         """We override _createEmptyRequest in order to add the user credentials.
 
-        :param url: The URL to request
+        :param path: Part added to the base-endpoint forming the total request URL (the path from the endpoint to the requested resource).
         :param content_type: The type of the body contents.
+        :param method: The HTTP method to use, such as GET, POST, PUT, etc.
+        :param skip_auth: Skips the authentication step if set; prevents a loop on request of authentication token.
         """
         url = QUrl("http://" + self._address + path)
         request = QNetworkRequest(url)
@@ -158,6 +173,25 @@ class ClusterApiClient:
         except (JSONDecodeError, TypeError, ValueError):
             Logger.log("e", "Could not parse response from network: %s", str(response))
 
+    def _trackReply(self, reply: QNetworkReply) -> None:
+        """Track a reply to prevent garbage collection and ensure proper completion.
+        
+        Use this for fire-and-forget requests that don't need response handling.
+        :param reply: The reply that should be tracked.
+        """
+        
+        def cleanup() -> None:
+            try:
+                self._anti_gc_callbacks.remove(cleanup)
+            except ValueError:
+                return
+            
+            if reply.error() != QNetworkReply.NetworkError.NoError:
+                Logger.warning(f"Cluster API request error: {reply.errorString()}")
+        
+        self._anti_gc_callbacks.append(cleanup)
+        reply.finished.connect(cleanup)
+
     def _addCallback(self, reply: QNetworkReply, on_finished: Union[Callable[[ClusterApiClientModel], Any],
                            Callable[[List[ClusterApiClientModel]], Any]], model: Type[ClusterApiClientModel] = None,
                      ) -> None:
@@ -179,7 +213,7 @@ class ClusterApiClient:
                 return
 
             if reply.error() != QNetworkReply.NetworkError.NoError:
-                self._on_error(reply.errorString())
+                Logger.warning(f"Cluster API request error: {reply.errorString()}")
                 return
 
             # If no parse model is given, simply return the raw data in the callback.

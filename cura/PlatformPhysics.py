@@ -39,6 +39,11 @@ class PlatformPhysics:
 
         Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", False)
         Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", True)
+        self._app_all_model_drop = False
+
+    def setAppAllModelDropDown(self):
+        self._app_all_model_drop = True
+        self._onChangeTimerFinished()
 
     def _onSceneChanged(self, source):
         if not source.callDecoration("isSliceable"):
@@ -66,7 +71,7 @@ class PlatformPhysics:
         nodes = list(BreadthFirstIterator(root))
 
         # Only check nodes inside build area.
-        nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
+        nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea and not node.callDecoration("isAssignedToDisabledExtruder"))]
 
         # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
         # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
@@ -80,12 +85,12 @@ class PlatformPhysics:
             # Move it downwards if bottom is above platform
             move_vector = Vector()
 
-            if node.getSetting(SceneNodeSettings.AutoDropDown, app_automatic_drop_down) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
+            if (node.getSetting(SceneNodeSettings.AutoDropDown, app_automatic_drop_down) or self._app_all_model_drop) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root)  and node.isEnabled():
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
-                move_vector = move_vector.set(y = -bbox.bottom + z_offset)
+                move_vector = move_vector.set(y=-bbox.bottom + z_offset)
 
             # If there is no convex hull for the node, start calculating it and continue.
-            if not node.getDecorator(ConvexHullDecorator) and not node.callDecoration("isNonPrintingMesh"):
+            if not node.getDecorator(ConvexHullDecorator) and not node.callDecoration("isNonPrintingMesh") and node.callDecoration("getLayerData") is None:
                 node.addDecorator(ConvexHullDecorator())
 
             # only push away objects if this node is a printing mesh
@@ -168,6 +173,8 @@ class PlatformPhysics:
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 
+        # setting this drop to model same as app_automatic_drop_down
+        self._app_all_model_drop = False
         # After moving, we have to evaluate the boundary checks for nodes
         build_volume.updateNodeBoundaryCheck()
 

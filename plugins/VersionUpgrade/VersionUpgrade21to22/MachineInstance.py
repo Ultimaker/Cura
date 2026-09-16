@@ -1,16 +1,16 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #To read config files.
-import io #To write config files to strings as if they were files.
-import os.path #To get the path to write new user profiles to.
+import configparser # To read config files.
+import io # To write config files to strings as if they were files.
+import os.path # To get the path to write new user profiles to.
 from typing import Dict, List, Optional, Set, Tuple
-import urllib #To serialise the user container file name properly.
+import urllib # To serialise the user container file name properly.
 import urllib.parse
 
-import UM.VersionUpgrade #To indicate that a file is of incorrect format.
-import UM.VersionUpgradeManager #To schedule more files to be upgraded.
-from UM.Resources import Resources #To get the config storage path.
+import UM.VersionUpgrade # To indicate that a file is of incorrect format.
+import UM.VersionUpgradeManager # To schedule more files to be upgraded.
+from UM.Resources import Resources # To get the config storage path.
 
 ##  Creates a new machine instance instance by parsing a serialised machine
 #   instance in version 1 of the file format.

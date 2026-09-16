@@ -22,10 +22,4 @@ UM.ToolbarButton
         font: extruderNumberFont
         property int index: extruder.index
     }
-
-    onClicked:
-    {
-        forceActiveFocus() //First grab focus, so all the text fields are updated
-        CuraActions.setExtruderForSelection(extruder.id)
-    }
 }

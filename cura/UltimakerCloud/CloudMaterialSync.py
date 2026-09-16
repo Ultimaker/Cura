@@ -98,7 +98,7 @@ class CloudMaterialSync(QObject):
             self.openSyncAllWindow()
             sync_message.hide()
         elif sync_message_action == "learn_more":
-            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
+            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/s/article/1667337567839"))
 
     @pyqtSlot(result = QUrl)
     def getPreferredExportAllPath(self) -> QUrl:
@@ -147,6 +147,9 @@ class CloudMaterialSync(QObject):
             if metadata["base_file"] != metadata["id"]:  # Only process base files.
                 continue
             if metadata["id"] == "empty_material":  # Don't export the empty material.
+                continue
+            # Ignore materials that are marked as not visible for whatever reason
+            if not bool(metadata.get("visible", True)):
                 continue
             material = registry.findContainers(id = metadata["id"])[0]
             suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix

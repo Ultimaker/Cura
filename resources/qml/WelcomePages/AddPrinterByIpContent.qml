@@ -192,12 +192,12 @@ Item
                     {
                         if (addPrinterByIpScreen.hasRequestFinished)
                         {
-                            return catalog.i18nc("@label", "Could not connect to device.") + "<br /><br /><a href=\"https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer-error\">"
+                            return catalog.i18nc("@label", "Could not connect to device.") + "<br /><br /><a href=\"https://support.ultimaker.com/s/article/1667337573408\">"
                                 + catalog.i18nc("@label", "Can't connect to your UltiMaker printer?") + "</a>";
                         }
                         else
                         {
-                            return catalog.i18nc("@label", "The printer at this address has not responded yet.") + "<br /><br /><a href=\"https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer-error\">"
+                            return catalog.i18nc("@label", "The printer at this address has not responded yet.") + "<br /><br /><a href=\"https://support.ultimaker.com/s/article/1667337573408\">"
                                 + catalog.i18nc("@label", "Can't connect to your UltiMaker printer?") + "</a>";
                         }
                     }

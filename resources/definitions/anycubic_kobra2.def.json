@@ -1,0 +1,90 @@
+{
+    "version": 2,
+    "name": "Anycubic Kobra 2",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "ThatGuyZim",
+        "manufacturer": "Anycubic",
+        "file_formats": "text/x-gcode",
+        "platform": "anycubic_kobra2_platform.stl",
+        "machine_extruder_trains": { "0": "anycubic_kobra2_extruder_0" }
+    },
+    "overrides":
+    {
+        "acceleration_enabled": { "value": true },
+        "acceleration_print": { "value": 2500 },
+        "acceleration_travel": { "value": 3000 },
+        "acceleration_travel_layer_0": { "value": "acceleration_travel" },
+        "gantry_height": { "value": "0" },
+        "infill_before_walls": { "value": false },
+        "jerk_enabled": { "value": true },
+        "jerk_print": { "value": 8 },
+        "jerk_travel": { "value": 10 },
+        "jerk_travel_layer_0": { "value": "jerk_travel" },
+        "layer_height": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 220 },
+        "machine_end_gcode": { "default_value": "M104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nM107 ; fan off\nG91 ;relative positioning\nG1 E-2 F3000 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 F3000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 F3000 ;move X/Y to min endstops, so the head is out of the way\nG1 Y210 F3000\nM84 ;steppers off\nG90\nM300 S1318 P266" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 250 },
+        "machine_max_acceleration_e": { "value": 2500 },
+        "machine_max_acceleration_x": { "value": 2500 },
+        "machine_max_acceleration_y": { "value": 2500 },
+        "machine_max_acceleration_z": { "value": 800 },
+        "machine_max_feedrate_e": { "default_value": 100 },
+        "machine_max_feedrate_x": { "default_value": 300 },
+        "machine_max_feedrate_y": { "default_value": 250 },
+        "machine_max_feedrate_z": { "default_value": 40 },
+        "machine_max_jerk_e": { "value": 10 },
+        "machine_max_jerk_xy": { "value": 10 },
+        "machine_max_jerk_z": { "value": 2 },
+        "machine_name": { "default_value": "Anycubic Kobra 2" },
+        "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ; use absolute coordinates\nM82 ; use absolute distances for extrusion\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG28 ; home all axes\nM300 S1318 P266\nG1 Z5 F5000 ; lift nozzle\nG1 X5 Y0  F3000\nG1 Z0.3 ; set nozzle height\nG92 E0\nG1 X50 Y0 E20 F500 ; Extrude 20mm of filament in a 5cm line \nG92 E0 ; zero the extruded length again \nG1 E-4.5 F4800 ; Retract a little \nG92 E0\nG1 X120 F4000 ; Quickly wipe away from the filament line\nM117 ; Printing\u2026\nG5" },
+        "machine_width": { "default_value": 220 },
+        "material_bed_temperature": { "maximum_value_warning": 110 },
+        "material_bed_temperature_layer_0": { "maximum_value_warning": 110 },
+        "material_diameter": { "default_value": 1.75 },
+        "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_initial_print_temperature":
+        {
+            "maximum_value_warning": 260,
+            "value": "material_print_temperature + 5"
+        },
+        "material_print_temperature": { "maximum_value_warning": 260 },
+        "material_print_temperature_layer_0":
+        {
+            "maximum_value_warning": 260,
+            "value": "material_print_temperature + 5"
+        },
+        "retraction_amount": { "value": 2 },
+        "retraction_combing": { "value": "'off'" },
+        "retraction_combing_max_distance": { "value": 30 },
+        "retraction_min_travel": { "value": 1 },
+        "retraction_prime_speed": { "maximum_value_warning": 100 },
+        "retraction_retract_speed": { "maximum_value_warning": 100 },
+        "retraction_speed":
+        {
+            "maximum_value_warning": 100,
+            "value": 80
+        },
+        "speed_print": { "value": 80 },
+        "speed_support": { "value": "speed_wall_0" },
+        "speed_support_interface": { "value": "speed_topbottom" },
+        "speed_travel":
+        {
+            "maximum_value": 200.0,
+            "maximum_value_warning": 175.0,
+            "value": 125
+        },
+        "speed_travel_layer_0": { "value": "speed_travel" },
+        "speed_wall_x": { "value": "speed_wall" },
+        "top_bottom_pattern": { "default_value": "zigzag" },
+        "travel_avoid_supports": { "value": true },
+        "travel_retract_before_outer_wall": { "value": true },
+        "wall_line_count": { "value": 3 },
+        "wall_thickness": { "value": 1.2 }
+    }
+}

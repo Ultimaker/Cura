@@ -11,10 +11,10 @@ Cura.RoundedRectangle
     width: parent.width
     height: projectImage.height + 2 * UM.Theme.getSize("default_margin").width
     cornerSide: Cura.RoundedRectangle.Direction.All
-    border.color: UM.Theme.getColor("lining")
+    border.color: enabled ? UM.Theme.getColor("lining") : UM.Theme.getColor("action_button_disabled_border")
     border.width: UM.Theme.getSize("default_lining").width
     radius: UM.Theme.getSize("default_radius").width
-    color: UM.Theme.getColor("main_background")
+    color: getBackgroundColor()
     signal clicked()
     property alias imageSource: projectImage.source
     property alias projectNameText: displayNameLabel.text
@@ -22,17 +22,18 @@ Cura.RoundedRectangle
     property alias projectLastUpdatedText: lastUpdatedLabel.text
     property alias cardMouseAreaEnabled: cardMouseArea.enabled
 
-    onVisibleChanged: color = UM.Theme.getColor("main_background")
+    onVisibleChanged: color = getBackgroundColor()
 
     MouseArea
     {
         id: cardMouseArea
         anchors.fill: parent
-        hoverEnabled: true
-        onEntered: base.color = UM.Theme.getColor("action_button_hovered")
-        onExited: base.color = UM.Theme.getColor("main_background")
+        hoverEnabled: base.enabled
+        onEntered: color = getBackgroundColor()
+        onExited: color = getBackgroundColor()
         onClicked: base.clicked()
     }
+
     Row
     {
         id: projectInformationRow
@@ -73,7 +74,7 @@ Cura.RoundedRectangle
                 width: parent.width
                 height: Math.round(parent.height / 3)
                 elide: Text.ElideRight
-                color: UM.Theme.getColor("small_button_text")
+                color: base.enabled ? UM.Theme.getColor("small_button_text") : UM.Theme.getColor("text_disabled")
             }
 
             UM.Label
@@ -82,8 +83,27 @@ Cura.RoundedRectangle
                 width: parent.width
                 height: Math.round(parent.height / 3)
                 elide: Text.ElideRight
-                color: UM.Theme.getColor("small_button_text")
+                color: base.enabled ? UM.Theme.getColor("small_button_text") : UM.Theme.getColor("text_disabled")
             }
+        }
+    }
+
+    function getBackgroundColor()
+    {
+        if(enabled)
+        {
+            if(cardMouseArea.containsMouse)
+            {
+                return UM.Theme.getColor("action_button_hovered")
+            }
+            else
+            {
+                return UM.Theme.getColor("main_background")
+            }
+        }
+        else
+        {
+            return UM.Theme.getColor("action_button_disabled")
         }
     }
 }

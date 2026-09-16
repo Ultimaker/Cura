@@ -16,8 +16,6 @@ if TYPE_CHECKING:
 import sys
 from UM.Platform import Platform
 if Platform.isWindows():
-    if hasattr(sys, "frozen"):
-        import win32timezone
     from keyring.backends.Windows import WinVaultKeyring
     keyring.set_keyring(WinVaultKeyring())
 if Platform.isOSX():

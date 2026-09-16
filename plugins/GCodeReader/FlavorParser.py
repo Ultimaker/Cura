@@ -32,6 +32,7 @@ class FlavorParser:
     """This parser is intended to interpret the common firmware codes among all the different flavors"""
 
     MAX_EXTRUDER_COUNT = 16
+    DEFAULT_FILAMENT_DIAMETER = 2.85
 
     def __init__(self) -> None:
         CuraApplication.getInstance().hideMessageSignal.connect(self._onHideMessage)
@@ -48,7 +49,7 @@ class FlavorParser:
         self._is_layers_in_file = False  # Does the Gcode have the layers comment?
         self._extruder_offsets = {}  # type: Dict[int, List[float]] # Offsets for multi extruders. key is index, value is [x-offset, y-offset]
         self._current_layer_thickness = 0.2  # default
-        self._filament_diameter = 2.85       # default
+        self._current_filament_diameter = 2.85       # default
         self._previous_extrusion_value = 0.0  # keep track of the filament retractions
 
         CuraApplication.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
@@ -132,7 +133,10 @@ class FlavorParser:
             if i > 0:
                 line_feedrates[i - 1] = point[3]
                 line_types[i - 1] = point[5]
-                if point[5] in [LayerPolygon.MoveCombingType, LayerPolygon.MoveRetractionType]:
+                if point[5] in [LayerPolygon.MoveUnretractedType,
+                                LayerPolygon.MoveRetractedType,
+                                LayerPolygon.MoveWhileRetractingType,
+                                LayerPolygon.MoveWhileUnretractingType]:
                     line_widths[i - 1] = 0.1
                     line_thicknesses[i - 1] = 0.0 # Travels are set as zero thickness lines
                 else:
@@ -152,7 +156,7 @@ class FlavorParser:
 
     def _calculateLineWidth(self, current_point: Position, previous_point: Position, current_extrusion: float, previous_extrusion: float, layer_thickness: float) -> float:
         # Area of the filament
-        Af = (self._filament_diameter / 2) ** 2 * numpy.pi
+        Af = (self._current_filament_diameter / 2) ** 2 * numpy.pi
         # Length of the extruded filament
         de = current_extrusion - previous_extrusion
         # Volume of the extruded filament
@@ -195,7 +199,7 @@ class FlavorParser:
                 path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], self._layer_type])  # extrusion
                 self._previous_extrusion_value = new_extrusion_value
             else:
-                path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])  # retraction
+                path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractedType])  # retraction
             e[self._extruder_number] = new_extrusion_value
 
             # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
@@ -204,9 +208,9 @@ class FlavorParser:
                 self._current_layer_thickness = z - self._previous_z # allow a tiny overlap
                 self._previous_z = z
         elif self._previous_extrusion_value > e[self._extruder_number]:
-            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])
+            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractedType])
         else:
-            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveCombingType])
+            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveUnretractedType])
         return self._position(x, y, z, f, e)
 
 
@@ -287,14 +291,24 @@ class FlavorParser:
 
     def processTCode(self, global_stack, T: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
         self._extruder_number = T
-        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        try:
+            self._current_filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        except IndexError:
+            self._current_filament_diameter = self.DEFAULT_FILAMENT_DIAMETER
+
         if self._extruder_number + 1 > len(position.e):
             self._extrusion_length_offset.extend([0] * (self._extruder_number - len(position.e) + 1))
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
         return position
 
-    def processMCode(self, M: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
-        pass
+    def processMCode(self, M: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> None:
+        # Set extrusion mode
+        if M == 82:
+            # Set absolute extrusion mode
+            self._is_absolute_extrusion = True
+        elif M == 83:
+            # Set relative extrusion mode
+            self._is_absolute_extrusion = False
 
     _type_keyword = ";TYPE:"
     _layer_keyword = ";LAYER:"
@@ -323,7 +337,11 @@ class FlavorParser:
         if not global_stack:
             return None
 
-        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        try:
+            self._current_filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        except IndexError:
+            # There can be a mismatch between the number of extruders in the G-Code file and the number of extruders in the current machine.
+            self._current_filament_diameter = self.DEFAULT_FILAMENT_DIAMETER
 
         scene_node = CuraSceneNode()
 
@@ -404,7 +422,7 @@ class FlavorParser:
                     self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                     current_path.clear()
                     # Start the new layer at the end position of the last layer
-                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
+                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveUnretractedType])
 
                     # When using a raft, the raft layers are stored as layers < 0, it mimics the same behavior
                     # as in ProcessSlicedLayersJob
@@ -446,9 +464,9 @@ class FlavorParser:
 
                     # When changing tool, store the end point of the previous path, then process the code and finally
                     # add another point with the new position of the head.
-                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
+                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveUnretractedType])
                     current_position = self.processTCode(global_stack, T, line, current_position, current_path)
-                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
+                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveUnretractedType])
 
             if line.startswith("M"):
                 M = self._getInt(line, "M")
@@ -509,6 +527,6 @@ class FlavorParser:
 
         # The "save/print" button's state is bound to the backend state.
         backend = CuraApplication.getInstance().getBackend()
-        backend.backendStateChange.emit(Backend.BackendState.Disabled)
+        backend.setState(Backend.BackendState.Disabled)
 
         return scene_node

@@ -16,9 +16,9 @@ from .MeshFormatHandler import MeshFormatHandler
 class ExportFileJob(WriteFileJob):
     """Job that exports the build plate to the correct file format for the target cluster."""
 
-    def __init__(self, file_handler: Optional[FileHandler], nodes: List[SceneNode], firmware_version: str) -> None:
-
-        self._mesh_format_handler = MeshFormatHandler(file_handler, firmware_version)
+    def __init__(self, file_handler: Optional[FileHandler], nodes: List[SceneNode], firmware_version: str,
+                 print_type: str) -> None:
+        self._mesh_format_handler = MeshFormatHandler(file_handler, firmware_version, print_type)
         if not self._mesh_format_handler.is_valid:
             Logger.log("e", "Missing file or mesh writer!")
             return
@@ -28,7 +28,7 @@ class ExportFileJob(WriteFileJob):
 
         # Determine the filename.
         job_name = CuraApplication.getInstance().getPrintInformation().jobName
-        job_name = re.sub("[^\w\-. ()]", "-", job_name)
+        job_name = re.sub(r"[^\w\-. ()]", "-", job_name)
         extension = self._mesh_format_handler.preferred_format.get("extension", "")
         self.setFileName("{}.{}".format(job_name, extension))
 

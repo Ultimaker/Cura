@@ -32,7 +32,7 @@
         "gantry_height": { "value": "200" },
         "gradual_infill_step_height": { "value": "1" },
         "gradual_support_infill_step_height": { "value": "0.2" },
-        "gradual_support_infill_steps": { "value": "1" },
+        "gradual_support_infill_steps": { "value": "1 if support_structure != 'tree' else 0" },
         "infill_overlap": { "value": "0" },
         "initial_layer_line_width_factor": { "value": "120" },
         "jerk_enabled": { "value": "True" },
@@ -50,7 +50,7 @@
         "machine_depth": { "default_value": 108 },
         "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG92 E2\nG1 E0 F200\nG28 X0 Y0\nM84 X Y E" },
         "machine_extruder_count": { "default_value": 1 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [

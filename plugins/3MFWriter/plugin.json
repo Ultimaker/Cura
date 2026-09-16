@@ -2,7 +2,7 @@
     "name": "3MF Writer",
     "author": "Ultimaker B.V.",
     "version": "1.0.1",
-    "description": "Provides support for writing 3MF files.",
+    "description": "Provides support for writing 3MF and UCP files.",
     "api": 8,
     "i18n-catalog": "cura"
 }

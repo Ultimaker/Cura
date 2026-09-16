@@ -1,7 +1,16 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING
+from dataclasses import asdict
+
+from typing import cast, Dict, Optional, TYPE_CHECKING, Any
+
+from UM.i18n import i18nCatalog
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingFunction import SettingFunction
+from cura.Settings.GlobalStack import GlobalStack
+
+catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -47,3 +56,104 @@ class Settings:
         """
 
         return self.application.getSidebarCustomMenuItems()
+
+    def getAllGlobalSettings(self) -> Dict[str, Any]:
+        global_stack = cast(GlobalStack, self.application.getGlobalContainerStack())
+
+        all_settings = {}
+        for setting in global_stack.getAllKeys():
+            all_settings[setting] = self._retrieveValue(global_stack, setting)
+
+        return all_settings
+
+    def getSliceMetadata(self) -> Dict[str, Dict[str, Dict[str, str]]]:
+        """Get all changed settings and all settings. For each extruder and the global stack"""
+        print_information = self.application.getPrintInformation()
+        machine_manager = self.application.getMachineManager()
+        settings = {
+            "material": {
+                "length": print_information.materialLengths,
+                "weight": print_information.materialWeights,
+                "cost": print_information.materialCosts,
+            },
+            "global": {
+                "changes": {},
+                "all_settings": {},
+            },
+            "quality": asdict(machine_manager.activeQualityDisplayNameMap()),
+        }
+
+        global_stack = cast(GlobalStack, self.application.getGlobalContainerStack())
+
+        # Add global user or quality changes
+        global_flattened_changes = InstanceContainer.createMergedInstanceContainer(global_stack.userChanges, global_stack.qualityChanges)
+        for setting in global_flattened_changes.getAllKeys():
+            settings["global"]["changes"][setting] = self._retrieveValue(global_flattened_changes, setting)
+
+        # Get global all settings values without user or quality changes
+        for setting in global_stack.getAllKeys():
+            settings["global"]["all_settings"][setting] = self._retrieveValue(global_stack, setting)
+
+        for i, extruder in enumerate(global_stack.extruderList):
+            # Add extruder fields to settings dictionary
+            settings[f"extruder_{i}"] = {
+                "changes": {},
+                "all_settings": {},
+            }
+
+            # Add extruder user or quality changes
+            extruder_flattened_changes = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder.qualityChanges)
+            for setting in extruder_flattened_changes.getAllKeys():
+                settings[f"extruder_{i}"]["changes"][setting] = self._retrieveValue(extruder_flattened_changes, setting)
+
+            # Get extruder all settings values without user or quality changes
+            for setting in extruder.getAllKeys():
+                settings[f"extruder_{i}"]["all_settings"][setting] = self._retrieveValue(extruder, setting)
+
+        return settings
+
+    def getSettingDisplayValue(self, setting_key: str, value, stack, i18n_catalog: Optional[i18nCatalog] = None) -> str:
+        """Convert a raw setting value to the display string shown in the UI.
+
+        :param setting_key: The key of the setting.
+        :param value: The raw value to convert.
+        :param stack: The container stack to retrieve setting properties from.
+        :param i18n_catalog: Optional machine-definition catalog for translating enum option labels.
+        :return: Human-readable display string.
+        """
+        if value is None:
+            return ""
+        setting_type = stack.getProperty(setting_key, "type")
+
+        if setting_type in ("extruder", "optional_extruder"):
+            try:
+                int_value = int(value)
+            except (ValueError, TypeError):
+                return str(value)
+            if int_value == -1:
+                return catalog.i18nc("@menuitem", "Auto")
+            global_stack = self.application.getMachineManager().activeMachine
+            if global_stack and 0 <= int_value < len(global_stack.extruderList):
+                return global_stack.extruderList[int_value].getName()
+            return str(int_value + 1)
+
+        if setting_type == "enum":
+            options = stack.getProperty(setting_key, "options")
+            if options:
+                str_value = str(value)
+                option_label = options.get(str_value)
+                if option_label:
+                    if i18n_catalog:
+                        return i18n_catalog.i18nc(f"{setting_key} option {str_value}", option_label)
+                    return option_label
+
+        return str(value)
+
+    @staticmethod
+    def _retrieveValue(container: InstanceContainer, setting_: str):
+        value_ = container.getProperty(setting_, "value")
+        for _ in range(0, 1024):  # Prevent possibly endless loop by not using a limit.
+            if not isinstance(value_, SettingFunction):
+                return value_  # Success!
+            value_ = value_(container)
+        return 0  # Fallback value after breaking possibly endless loop.

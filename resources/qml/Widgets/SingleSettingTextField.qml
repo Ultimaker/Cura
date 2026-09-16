@@ -20,7 +20,7 @@ UM.TextField
     // The displayed value will be read from the extruder with index "defaultExtruderIndex" instead of the machine.
     property bool updateAllExtruders: false
     // This is only used if updateAllExtruders == true
-    property int defaultExtruderIndex: 0
+    property int defaultExtruderIndex: Cura.ExtruderManager.activeExtruderIndex
 
     // Resolving the value in the textField.
     Binding
@@ -53,6 +53,7 @@ UM.TextField
     {
         id: propertyProvider
         watchedProperties: ["value", "validationState",  "resolve"]
+        removeUnusedValue: false
         containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
     }
 

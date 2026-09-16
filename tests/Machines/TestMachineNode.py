@@ -18,12 +18,30 @@ metadata_dict = {
     "preferred_quality_type": "beautiful_quality_type"
 }
 
+metadata_dict_list = {
+    "has_materials": "false",
+    "has_variants": "true",
+    "has_machine_quality": "true",
+    "quality_definition": "test_quality_definition",
+    "exclude_materials": ["excluded_material_1", "excluded_material_2"],
+    "preferred_variant_name": ["beautiful_nozzle_0", "beautiful_nozzle_1"],
+    "preferred_material": ["beautiful_material_0", "beautiful_material_1"],
+    "preferred_quality_type": "beautiful_quality_type"
+}
+
 
 @pytest.fixture
 def container_registry():
     result = MagicMock()
     result.findInstanceContainersMetadata = MagicMock(return_value = [{"id": "variant_1", "name": "Variant One", "quality_type": "normal"}, {"id": "variant_2", "name": "Variant Two", "quality_type": "great"}])
     result.findContainersMetadata = MagicMock(return_value = [metadata_dict])
+    return result
+
+@pytest.fixture
+def container_registry_list():
+    result = MagicMock()
+    result.findInstanceContainersMetadata = MagicMock(return_value = [{"id": "variant_1", "name": "Variant One", "quality_type": "normal"}, {"id": "variant_2", "name": "Variant Two", "quality_type": "great"}])
+    result.findContainersMetadata = MagicMock(return_value = [metadata_dict_list])
     return result
 
 @pytest.fixture
@@ -78,6 +96,50 @@ def test_metadataProperties(container_registry):
     assert node.preferred_variant_name == metadata_dict["preferred_variant_name"]
     assert node.preferred_material == metadata_dict["preferred_material"]
     assert node.preferred_quality_type == metadata_dict["preferred_quality_type"]
+
+
+def test_metadataPropertiesListPreferredVariantName(container_registry_list):
+    """Tests that preferred_variant_name accepts a list, with index mapping to extruder position."""
+    node = createMachineNode("machine_1", container_registry_list)
+
+    assert node.preferred_variant_name == "beautiful_nozzle_0", "The property should return the first list item for backwards compatibility."
+    assert node.preferredVariantName(0) == "beautiful_nozzle_0"
+    assert node.preferredVariantName(1) == "beautiful_nozzle_1"
+    assert node.preferredVariantName(2) == "beautiful_nozzle_0", "Position beyond list length should fall back to index 0."
+
+
+def test_metadataPropertiesListPreferredMaterial(container_registry_list):
+    """Tests that preferred_material accepts a list, with index mapping to extruder position."""
+    node = createMachineNode("machine_1", container_registry_list)
+
+    assert node.preferred_material == "beautiful_material_0", "The property should return the first list item for backwards compatibility."
+    assert node.preferredMaterialName(0) == "beautiful_material_0"
+    assert node.preferredMaterialName(1) == "beautiful_material_1"
+    assert node.preferredMaterialName(2) == "beautiful_material_0", "Position beyond list length should fall back to index 0."
+
+
+def test_preferredVariantNameByPositionFallback(container_registry):
+    """Tests that preferredVariantName falls back to extruder 0 when the list is shorter than the requested position.
+
+    A single string value in the definition produces a 1-element list, so any position > 0 falls back to [0].
+    """
+    node = createMachineNode("machine_1", container_registry)
+
+    assert node.preferredVariantName(0) == metadata_dict["preferred_variant_name"]
+    assert node.preferredVariantName(1) == metadata_dict["preferred_variant_name"], "Single-item list should fall back to index 0 for any position."
+    assert node.preferredVariantName(5) == metadata_dict["preferred_variant_name"], "Single-item list should fall back to index 0 for any position."
+
+
+def test_preferredMaterialNameByPositionFallback(container_registry):
+    """Tests that preferredMaterialName falls back to extruder 0 when the list is shorter than the requested position.
+
+    A single string value in the definition produces a 1-element list, so any position > 0 falls back to [0].
+    """
+    node = createMachineNode("machine_1", container_registry)
+
+    assert node.preferredMaterialName(0) == metadata_dict["preferred_material"]
+    assert node.preferredMaterialName(1) == metadata_dict["preferred_material"], "Single-item list should fall back to index 0 for any position."
+    assert node.preferredMaterialName(5) == metadata_dict["preferred_material"], "Single-item list should fall back to index 0 for any position."
 
 
 def test_getQualityGroupsBothExtrudersAvailable(empty_machine_node):

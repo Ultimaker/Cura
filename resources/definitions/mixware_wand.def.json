@@ -1,0 +1,147 @@
+{
+    "version": 2,
+    "name": "Wand",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Mixware",
+        "manufacturer": "Mixware",
+        "file_formats": "text/x-gcode",
+        "platform": "mixware_wand_platform.stl",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": false,
+        "machine_extruder_trains": { "0": "mixware_wand_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality": "coarse"
+    },
+    "overrides":
+    {
+        "acceleration_enabled": { "default_value": true },
+        "acceleration_print": { "default_value": 500 },
+        "acceleration_travel": { "value": 500 },
+        "adhesion_type": { "default_value": "raft" },
+        "brim_width":
+        {
+            "default_value": 3,
+            "maximum_warning_value": "3",
+            "minimum_warning_value": "0"
+        },
+        "infill_before_walls": { "default_value": false },
+        "layer_height":
+        {
+            "maximum_warning_value": "0.2",
+            "minimum_warning_value": "0.05"
+        },
+        "machine_depth": { "default_value": 102 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E3 F300\nG1 F1500 Z100\nG28 X0 Y0\nM25\nM84" },
+        "machine_height": { "default_value": 102 },
+        "machine_name": { "default_value": "Wand" },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "machine_start_gcode": { "default_value": "G28 ;Home\n;Prime the extruder\nM117 Print\nG92 E0\nG1 F1500 X-2 Y0 Z0.28\nG1 F2400 X-2 Y70 Z0.28 E8\nG1 F1500 X-1.7 Y70 Z0.28\nG1 F2400 X-1.7 Y0 Z0.28 E16\nG92 E0\nG92 E0\nG1 Z0.18 F2400 ;Move Z Axis up" },
+        "machine_width": { "default_value": 102 },
+        "material_bed_temperature": { "value": 0 },
+        "material_print_temperature":
+        {
+            "maximum_warning_value": "220",
+            "minimum_warning_value": "180",
+            "value": 200
+        },
+        "optimize_wall_printing_order": { "default_value": true },
+        "raft_airgap":
+        {
+            "default_value": 0.23,
+            "maximum_warning_value": "0.3",
+            "minimum_warning_value": "0.2"
+        },
+        "raft_base_line_spacing": { "value": 1.0 },
+        "raft_base_thickness": { "value": 0.36 },
+        "raft_margin":
+        {
+            "default_value": 1,
+            "minimum_warning_value": "0",
+            "minimum_warning_value_warning": "0.01"
+        },
+        "retraction_amount":
+        {
+            "default_value": 4,
+            "maximum_warning_value": "5.5",
+            "minimum_warning_value": "2"
+        },
+        "retraction_extrusion_window":
+        {
+            "maximum_warning_value": "5.5",
+            "minimum_warning_value": "2",
+            "value": 3
+        },
+        "retraction_prime_speed":
+        {
+            "maximum_warning_value": "55",
+            "minimum_warning_value": "40",
+            "value": 40
+        },
+        "retraction_retract_speed":
+        {
+            "maximum_warning_value": "55",
+            "minimum_warning_value": "40",
+            "value": 40
+        },
+        "retraction_speed":
+        {
+            "default_value": 40,
+            "maximum_warning_value": "55",
+            "minimum_warning_value": "40"
+        },
+        "skirt_gap":
+        {
+            "default_value": 2,
+            "maximum_warning_value": "2",
+            "minimum_warning_value": "0"
+        },
+        "speed_print":
+        {
+            "default_value": 40,
+            "maximum_warning_value": "71",
+            "minimum_warning_value": "20"
+        },
+        "speed_travel":
+        {
+            "maximum_warning_value": "120",
+            "minimum_warning_value": "80",
+            "value": 80
+        },
+        "support_angle": { "default_value": 60 },
+        "support_enable": { "default_value": true },
+        "support_infill_rate": { "value": 20 },
+        "support_interface_enable": { "default_value": true },
+        "support_offset": { "value": 0.2 },
+        "support_roof_enable": { "value": true },
+        "support_top_distance":
+        {
+            "maximum_warning_value": "0.25",
+            "minimum_warning_value": "0.15",
+            "value": 0.25
+        },
+        "support_z_distance":
+        {
+            "default_value": 0.25,
+            "maximum_warning_value": "0.25",
+            "minimum_warning_value": "0.15"
+        },
+        "top_bottom_thickness":
+        {
+            "default_value": 1.0,
+            "maximum_warning_value": "2"
+        },
+        "travel_avoid_other_parts": { "default_value": false },
+        "travel_retract_before_outer_wall": { "value": true },
+        "wall_thickness":
+        {
+            "maximum_warning_value": "1.6",
+            "minimum_warning_value": "0.4"
+        },
+        "z_seam_type": { "default_value": "back" },
+        "z_seam_y": { "value": 99 }
+    }
+}

@@ -1,15 +1,18 @@
-# Copyright (c) 2019 Ultimaker B.V.
-# The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
-
-import math
+# Copyright (c) 2023 UltiMaker B.V.
+# The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 
 from ..Script import Script
+
+from UM.Application import Application  # To get current absolute/relative setting.
+from UM.Math.Vector import Vector
+
+from typing import List, Tuple
 
 
 class RetractContinue(Script):
     """Continues retracting during all travel moves."""
 
-    def getSettingDataString(self):
+    def getSettingDataString(self) -> str:
         return """{
             "name": "Retract Continue",
             "key": "RetractContinue",
@@ -27,56 +30,88 @@ class RetractContinue(Script):
             }
         }"""
 
-    def execute(self, data):
-        current_e = 0
-        current_x = 0
-        current_y = 0
-        current_z = 0
+    def _getTravelMove(self, travel_move: str, default_pos: Vector) -> Tuple[Vector, float]:
+        travel = Vector(
+            self.getValue(travel_move, "X", default_pos.x),
+            self.getValue(travel_move, "Y", default_pos.y),
+            self.getValue(travel_move, "Z", default_pos.z)
+        )
+        f = self.getValue(travel_move, "F", -1.0)
+        return travel, f
+
+    def _travelMoveString(self, travel: Vector, f: float, e: float) -> str:
+        # Note that only G1 moves are written, since extrusion is included.
+        if f <= 0.0:
+            return f"G1 X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{e:.5f}"
+        else:
+            return f"G1 F{f:.5f} X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{e:.5f}"
+
+    def execute(self, data: List[str]) -> List[str]:
+        current_e = 0.0
+        to_compensate = 0  # Used when extrusion mode is relative.
+        is_active = False  # Whether retract-continue is in effect.
+
+        current_pos = Vector(0.0, 0.0, 0.0)
+        last_pos = Vector(0.0, 0.0, 0.0)
+
         extra_retraction_speed = self.getSettingValueByKey("extra_retraction_speed")
+        relative_extrusion = Application.getInstance().getGlobalContainerStack().getProperty(
+            "relative_extrusion", "value"
+        )
 
         for layer_number, layer in enumerate(data):
             lines = layer.split("\n")
             for line_number, line in enumerate(lines):
-                if self.getValue(line, "G") in {0, 1}:  # Track X,Y,Z location.
-                    current_x = self.getValue(line, "X", current_x)
-                    current_y = self.getValue(line, "Y", current_y)
-                    current_z = self.getValue(line, "Z", current_z)
-                if self.getValue(line, "G") == 1:
-                    if not self.getValue(line, "E"):  # Either None or 0: Not a retraction then.
-                        continue
-                    new_e = self.getValue(line, "E")
-                    if new_e - current_e >= -0.0001:  # Not a retraction. Account for floating point rounding errors.
-                        current_e = new_e
-                        continue
-                    # A retracted travel move may consist of multiple commands, due to combing.
-                    # This continues retracting over all of these moves and only unretracts at the end.
-                    delta_line = 1
-                    dx = current_x  # Track the difference in X for this move only to compute the length of the travel.
-                    dy = current_y
-                    dz = current_z
-                    while line_number + delta_line < len(lines) and self.getValue(lines[line_number + delta_line], "G") != 1:
-                        travel_move = lines[line_number + delta_line]
-                        if self.getValue(travel_move, "G") != 0:
-                            delta_line += 1
-                            continue
-                        travel_x = self.getValue(travel_move, "X", dx)
-                        travel_y = self.getValue(travel_move, "Y", dy)
-                        travel_z = self.getValue(travel_move, "Z", dz)
-                        f = self.getValue(travel_move, "F", "no f")
-                        length = math.sqrt((travel_x - dx) * (travel_x - dx) + (travel_y - dy) * (travel_y - dy) + (travel_z - dz) * (travel_z - dz))  # Length of the travel move.
-                        new_e -= length * extra_retraction_speed  # New retraction is by ratio of this travel move.
-                        if f == "no f":
-                            new_travel_move = "G1 X{travel_x} Y{travel_y} Z{travel_z} E{new_e}".format(travel_x = travel_x, travel_y = travel_y, travel_z = travel_z, new_e = new_e)
-                        else:
-                            new_travel_move = "G1 F{f} X{travel_x} Y{travel_y} Z{travel_z} E{new_e}".format(f = f, travel_x = travel_x, travel_y = travel_y, travel_z = travel_z, new_e = new_e)
-                        lines[line_number + delta_line] = new_travel_move
 
-                        delta_line += 1
-                        dx = travel_x
-                        dy = travel_y
-                        dz = travel_z
+                # Focus on move-type lines.
+                code_g = self.getValue(line, "G")
+                if code_g not in [0, 1]:
+                    continue
 
-                    current_e = new_e
+                # Track X,Y,Z location.
+                last_pos = last_pos.set(current_pos.x, current_pos.y, current_pos.z)
+                current_pos = current_pos.set(
+                    self.getValue(line, "X", current_pos.x),
+                    self.getValue(line, "Y", current_pos.y),
+                    self.getValue(line, "Z", current_pos.z)
+                )
+
+                # Track extrusion 'axis' position.
+                last_e = current_e
+                e_value = self.getValue(line, "E")
+                if e_value:
+                    current_e = (current_e if relative_extrusion else 0) + e_value
+
+                # Handle lines: Detect retractions and compensate relative if G1, potential retract-continue if G0.
+                if code_g == 1:
+                    if last_e > (current_e + 0.0001):  # Account for floating point inaccuracies.
+
+                        # There is a retraction, each following G0 command needs to continue the retraction.
+                        is_active = True
+                        continue
+
+                    elif relative_extrusion and is_active:
+
+                        # If 'relative', the first G1 command after the total retraction will have to compensate more.
+                        travel, f = self._getTravelMove(lines[line_number], current_pos)
+                        lines[line_number] = self._travelMoveString(travel, f, to_compensate + e_value)
+                        to_compensate = 0.0
+
+                    # There is no retraction (see continue in the retract-clause) and everything else has been handled.
+                    is_active = False
+
+                elif code_g == 0:
+                    if not is_active:
+                        continue
+
+                    # The retract-continue is active, so each G0 until the next extrusion needs to continue retraction.
+                    travel, f = self._getTravelMove(lines[line_number], current_pos)
+                    travel_length = (current_pos - last_pos).length()
+                    extra_retract = travel_length * extra_retraction_speed
+                    new_e = (0 if relative_extrusion else current_e) - extra_retract
+                    to_compensate += extra_retract
+                    current_e -= extra_retract
+                    lines[line_number] = self._travelMoveString(travel, f, new_e)
 
             new_layer = "\n".join(lines)
             data[layer_number] = new_layer

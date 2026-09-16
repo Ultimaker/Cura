@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker
+// Copyright (c) 2026 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -53,19 +53,20 @@ RecommendedSettingSection
         {
             settingName: catalog.i18nc("@action:label", "Infill Pattern")
             tooltipText: catalog.i18nc("@label",
-            "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lighting infill.\n\nFor functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid.")
+            "<html>The pattern of the infill material of the print:<ul><li>For quick prints of non-functional models, choose Line, Zig Zag or Lightning infill.</li><li>For functional parts not subjected to a lot of stress we recommend Grid, Triangle, or Tri-Hexagon.</li><li>For functional 3D prints requiring high strength in multiple directions use Honeycomb, Cubic, Cubic Subdivision, Quarter Cubic, Octet, Gyroid, and Octagon.</li></ul>⚠ Grid, Triangle, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.</html>")
 
             settingControl: Cura.SingleSettingComboBox
             {
                 width: parent.width
                 settingName: "infill_pattern"
                 updateAllExtruders: true
+                hideOptions: ["ultimaker_factor4"].includes(Cura.MachineManager.activeMachine.definition.id) ? ["grid", "triangles", "cubic"] : []
             }
         },
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Shell Thickness")
-            tooltipText: catalog.i18nc("@label", "Defines the tickness of your part side walls, roof and floor.")
+            tooltipText: catalog.i18nc("@label", "Defines the thickness of your part side walls, roof and floor.")
 
             settingControl: RowLayout
             {

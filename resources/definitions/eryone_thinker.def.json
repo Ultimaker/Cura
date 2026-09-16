@@ -115,7 +115,6 @@
         "support_interface_enable": { "value": true },
         "support_pattern": { "value": "'triangles'" },
         "support_roof_enable": { "value": true },
-        "support_use_towers": { "value": false },
         "support_z_distance": { "value": 0.3 },
         "top_layers": { "value": 6 },
         "top_thickness": { "value": "layer_height * top_layers" },

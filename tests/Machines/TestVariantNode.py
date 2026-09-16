@@ -46,6 +46,7 @@ def getInstanceContainerSideEffect(*args, **kwargs):
 def machine_node():
     mocked_machine_node = MagicMock()
     mocked_machine_node.container_id = "machine_1"
+    mocked_machine_node.isExcludedMaterialBaseFile = MagicMock(return_value=False)
     mocked_machine_node.preferred_material = "preferred_material"
     return mocked_machine_node
 
@@ -95,6 +96,7 @@ def test_variantNodeInit(container_registry, machine_node):
 
 def test_variantNodeInit_excludedMaterial(container_registry, machine_node):
     machine_node.exclude_materials = ["material_1"]
+    machine_node.isExcludedMaterialBaseFile = MagicMock(side_effect=lambda material: material == "material_1")
     node = createVariantNode("variant_1", machine_node, container_registry)
 
     assert "material_1" not in node.materials
@@ -197,3 +199,22 @@ def test_preferredMaterialDiameterPreference(empty_variant_node):
     empty_variant_node.materials["not_preferred_but_correct_diameter"] = MagicMock(getMetaDataEntry = lambda x: 3)  # Matches diameter but not ID.
 
     assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["not_preferred_but_correct_diameter"], "It should match on the correct diameter even if it's not the preferred one."
+
+
+def test_preferredMaterialPerExtruder(empty_variant_node):
+    """Tests that preferredMaterial returns the correct material when called with an explicit
+    per-extruder preferred material.
+
+    When MachineNode has a list-based preferred_material, callers obtain the per-extruder
+    preference via machine.preferredMaterialName(extruder_position) and pass it explicitly.
+    This test verifies that VariantNode correctly resolves distinct materials for each extruder.
+    """
+    empty_variant_node.materials = {
+        "material_extruder_0": MagicMock(getMetaDataEntry = lambda x: 3),
+        "material_extruder_1": MagicMock(getMetaDataEntry = lambda x: 3),
+    }
+
+    assert empty_variant_node.preferredMaterial(approximate_diameter = 3, preferred_material = "material_extruder_0") == empty_variant_node.materials["material_extruder_0"], \
+        "Should find the correct material for extruder 0 when passed explicitly."
+    assert empty_variant_node.preferredMaterial(approximate_diameter = 3, preferred_material = "material_extruder_1") == empty_variant_node.materials["material_extruder_1"], \
+        "Should find the correct material for extruder 1 when passed explicitly."

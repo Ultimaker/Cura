@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Dict, Optional, Tuple, TYPE_CHECKING
@@ -22,7 +22,10 @@ class BackupsManager:
     def __init__(self, application: "CuraApplication") -> None:
         self._application = application
 
-    def createBackup(self) -> Tuple[Optional[bytes], Optional[Dict[str, str]]]:
+    def shouldReinstallDownloadablePlugins(self) -> bool:
+        return True
+
+    def createBackup(self, available_remote_plugins: frozenset[str] = frozenset()) -> Tuple[Optional[bytes], Optional[Dict[str, str]]]:
         """
         Get a back-up of the current configuration.
 
@@ -31,17 +34,18 @@ class BackupsManager:
 
         self._disableAutoSave()
         backup = Backup(self._application)
-        backup.makeFromCurrent()
+        backup.makeFromCurrent(available_remote_plugins if self.shouldReinstallDownloadablePlugins() else frozenset())
         self._enableAutoSave()
         # We don't return a Backup here because we want plugins only to interact with our API and not full objects.
         return backup.zip_file, backup.meta_data
 
-    def restoreBackup(self, zip_file: bytes, meta_data: Dict[str, str]) -> None:
+    def restoreBackup(self, zip_file: bytes, meta_data: Dict[str, str], auto_close: bool = True) -> None:
         """
         Restore a back-up from a given ZipFile.
 
         :param zip_file: A bytes object containing the actual back-up.
         :param meta_data: A dict containing some metadata that is needed to restore the back-up correctly.
+        :param auto_close: Normally, Cura will need to close immediately after restoring the back-up.
         """
 
         if not meta_data.get("cura_release", None):
@@ -54,7 +58,7 @@ class BackupsManager:
         backup = Backup(self._application, zip_file = zip_file, meta_data = meta_data)
         restored = backup.restore()
 
-        if restored:
+        if restored and auto_close:
             # At this point, Cura will need to restart for the changes to take effect.
             # We don't want to store the data at this point as that would override the just-restored backup.
             self._application.windowClosed(save_data = False)

@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "name": "LNL3D D6",
+    "inherits": "lnl3d_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "lnl3d_d6.3mf",
+        "platform_offset": [
+            5,
+            296.5,
+            -162.5
+        ]
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 600 },
+        "machine_height": { "default_value": 600 },
+        "machine_name": { "default_value": "LNL3D D6" },
+        "machine_width": { "default_value": 600 }
+    }
+}

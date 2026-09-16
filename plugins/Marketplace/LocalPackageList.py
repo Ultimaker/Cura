@@ -12,7 +12,7 @@ from UM.Logger import Logger
 
 from .PackageList import PackageList
 from .PackageModel import PackageModel
-from .Constants import PACKAGE_UPDATES_URL
+from .Constants import PACKAGE_UPDATES_URL, PACKAGE_TYPE_PLUGIN
 
 if TYPE_CHECKING:
     from PyQt6.QtCore import QObject
@@ -43,8 +43,15 @@ class LocalPackageList(PackageList):
         self._package_manager.packageUninstalled.connect(self._removePackageModel)
 
     def _sortSectionsOnUpdate(self) -> None:
-        section_order = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
-        self.sort(lambda model: (section_order[model.sectionTitle], not model.canUpdate, model.displayName.lower()), key = "package")
+        """
+        Sort the list of packages based on the following criteria:
+            1. Bundled packages are sorted to the bottom of the list.
+            2. Plugins before materials/other future packageTypes within each group.
+            3. Packages that can be updated are sorted to the top of the list. (not canUpdate = False → sorts first = lower value).
+            4. Packages are sorted alphabetically by their display name as tie breaker.
+        """
+
+        self.sort(lambda model: (model.isBundled, model.packageType != PACKAGE_TYPE_PLUGIN, not model.canUpdate, model.displayName.lower()), key = "package")
 
     def _removePackageModel(self, package_id: str) -> None:
         """

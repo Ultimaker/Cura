@@ -1,0 +1,15 @@
+name: Update translations
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Specific branch to update translations on'
+        required: false
+        type: string
+
+jobs:
+  update-translations:
+    uses: ultimaker/cura-workflows/.github/workflows/update-translations.yml@main
+    with:
+      branch: ${{ inputs.branch }}

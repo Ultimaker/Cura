@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.15
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
@@ -29,7 +29,10 @@ Cura.Menu
             }
             onTriggered: CuraApplication.readLocalFile(modelData)
         }
-        onObjectAdded: (index, object) => menu.insertItem(index, object)
-        onObjectRemoved: (object) => menu.removeItem(object)
+        onObjectAdded: function(index, object) {
+            menu.insertItem(index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
+        }
+        onObjectRemoved: function(index, object) { menu.removeItem(object); }
     }
 }

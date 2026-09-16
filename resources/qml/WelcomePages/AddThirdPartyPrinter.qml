@@ -3,6 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
+import QtQuick.Layouts 2.3
 
 import UM 1.5 as UM
 import Cura 1.1 as Cura
@@ -17,79 +18,84 @@ Item
 
     property var goToUltimakerPrinter
 
-    DropDownWidget
+    ColumnLayout
     {
-        id: addNetworkPrinterDropDown
-
         anchors.top: parent.top
+        anchors.topMargin: UM.Theme.getSize("wide_margin").height
+        anchors.bottom: backButton.top
+        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.topMargin: UM.Theme.getSize("wide_margin").height
 
-        title: catalog.i18nc("@label", "Add a networked printer")
-        contentShown: true  // by default expand the network printer list
+        spacing: UM.Theme.getSize("default_margin").height
 
-        onClicked:
+        DropDownWidget
         {
-            addLocalPrinterDropDown.contentShown = !contentShown
-        }
+            id: addNetworkPrinterDropDown
 
-        contentComponent: networkPrinterListComponent
-        Component
-        {
-            id: networkPrinterListComponent
-            AddNetworkPrinterScrollView
+            Layout.fillWidth: true
+            Layout.fillHeight: contentShown
+
+            title: catalog.i18nc("@label", "Add a networked printer")
+            contentShown: true  // by default expand the network printer list
+
+            onClicked:
             {
-                id: networkPrinterScrollView
+                addLocalPrinterDropDown.contentShown = !contentShown
+            }
 
-                maxItemCountAtOnce: 9  // show at max 9 items at once, otherwise you need to scroll.
-
-                onRefreshButtonClicked:
+            contentComponent: networkPrinterListComponent
+            Component
+            {
+                id: networkPrinterListComponent
+                AddNetworkPrinterScrollView
                 {
-                    UM.OutputDeviceManager.startDiscovery()
-                }
+                    id: networkPrinterScrollView
 
-                onAddByIpButtonClicked:
-                {
-                    base.goToPage("add_printer_by_ip")
-                }
-
-                onAddCloudPrinterButtonClicked:
-                {
-                    base.goToPage("add_cloud_printers")
-                    if (!Cura.API.account.isLoggedIn)
+                    onRefreshButtonClicked:
                     {
-                        Cura.API.account.login()
+                        UM.OutputDeviceManager.startDiscovery()
+                    }
+
+                    onAddByIpButtonClicked:
+                    {
+                        base.goToPage("add_printer_by_ip")
+                    }
+
+                    onAddCloudPrinterButtonClicked:
+                    {
+                        base.goToPage("add_cloud_printers")
+                        if (!Cura.API.account.isLoggedIn)
+                        {
+                            Cura.API.account.login()
+                        }
                     }
                 }
             }
         }
-    }
 
-    DropDownWidget
-    {
-        id: addLocalPrinterDropDown
-
-        anchors.top: addNetworkPrinterDropDown.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-
-        title: catalog.i18nc("@label", "Add a non-networked printer")
-
-        onClicked:
+        DropDownWidget
         {
-            addNetworkPrinterDropDown.contentShown = !contentShown
-        }
+            id: addLocalPrinterDropDown
 
-        contentComponent: localPrinterListComponent
-        Component
-        {
-            id: localPrinterListComponent
-            AddLocalPrinterScrollView
+            Layout.fillWidth: true
+            Layout.fillHeight: contentShown
+
+            title: catalog.i18nc("@label", "Add a non-networked printer")
+
+            onClicked:
             {
-                id: localPrinterView
-                height: backButton.y - addLocalPrinterDropDown.y - UM.Theme.getSize("expandable_component_content_header").height - UM.Theme.getSize("default_margin").height
+                addNetworkPrinterDropDown.contentShown = !contentShown
+            }
+
+            contentComponent: localPrinterListComponent
+            Component
+            {
+                id: localPrinterListComponent
+                AddLocalPrinterScrollView
+                {
+                    id: localPrinterView
+                }
             }
         }
     }

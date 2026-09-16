@@ -72,7 +72,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal to indicate that the configuration of one of the printers has changed.
     uniqueConfigurationsChanged = pyqtSignal()
 
-    def __init__(self, device_id: str, connection_type: "ConnectionType" = ConnectionType.NotConnected, parent: QObject = None) -> None:
+    # Signal to indicate that the printer has become active or inactive
+    activeChanged = pyqtSignal()
+
+    def __init__(self, device_id: str, connection_type: "ConnectionType" = ConnectionType.NotConnected, parent: QObject = None, active: bool = True) -> None:
         super().__init__(device_id = device_id, parent = parent) # type: ignore  # MyPy complains with the multiple inheritance
 
         self._printers = []  # type: List[PrinterOutputModel]
@@ -87,6 +90,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._control_item = None  # type: Optional[QObject]
 
         self._accepts_commands = False  # type: bool
+
+        self._active: bool = active
 
         self._update_timer = QTimer()  # type: QTimer
         self._update_timer.setInterval(2000)  # TODO; Add preference for update interval
@@ -295,3 +300,17 @@ class PrinterOutputDevice(QObject, OutputDevice):
             return
 
         self._firmware_updater.updateFirmware(firmware_file)
+
+    @pyqtProperty(bool, notify = activeChanged)
+    def active(self) -> bool:
+        """
+        Indicates whether the printer is active, which is not the same as "being the active printer". In this case,
+        active means that the printer can be used. An example of an inactive printer is one that cannot be used because
+        the user doesn't have enough seats on Digital Factory.
+        """
+        return self._active
+
+    def _setActive(self, active: bool) -> None:
+        if active != self._active:
+            self._active = active
+            self.activeChanged.emit()

@@ -1,12 +1,13 @@
-#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Copyright (c) 2024 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
+import uuid
 
 import numpy
-from string import Formatter
 from enum import IntEnum
 import time
-from typing import Any, cast, Dict, List, Optional, Set
+from typing import Any, cast, Dict, List, Optional, Set, Tuple
 import re
+import json
 import pyArcus as Arcus  # For typing.
 from PyQt6.QtCore import QCoreApplication
 
@@ -28,6 +29,7 @@ from cura.CuraApplication import CuraApplication
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.CuraVersion import CuraVersion
 
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
@@ -44,64 +46,26 @@ class StartJobResult(IntEnum):
     ObjectsWithDisabledExtruder = 8
 
 
-class GcodeStartEndFormatter(Formatter):
-    """Formatter class that handles token expansion in start/end gcode"""
-
-    def __init__(self, default_extruder_nr: int = -1) -> None:
-        super().__init__()
-        self._default_extruder_nr = default_extruder_nr
-
-    def get_value(self, key: str, args: str, kwargs: dict) -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
-        # The kwargs dictionary contains a dictionary for each stack (with a string of the extruder_nr as their key),
-        # and a default_extruder_nr to use when no extruder_nr is specified
-
-        extruder_nr = self._default_extruder_nr
-
-        key_fragments = [fragment.strip() for fragment in key.split(",")]
-        if len(key_fragments) == 2:
-            try:
-                extruder_nr = int(key_fragments[1])
-            except ValueError:
-                try:
-                    extruder_nr = int(kwargs["-1"][key_fragments[1]]) # get extruder_nr values from the global stack #TODO: How can you ever provide the '-1' kwarg?
-                except (KeyError, ValueError):
-                    # either the key does not exist, or the value is not an int
-                    Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end g-code, using global stack", key_fragments[1], key_fragments[0])
-        elif len(key_fragments) != 1:
-            Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end g-code", key)
-            return "{" + key + "}"
-
-        key = key_fragments[0]
-
-        default_value_str = "{" + key + "}"
-        value = default_value_str
-        # "-1" is global stack, and if the setting value exists in the global stack, use it as the fallback value.
-        if key in kwargs["-1"]:
-            value = kwargs["-1"][key]
-        if str(extruder_nr) in kwargs and key in kwargs[str(extruder_nr)]:
-            value = kwargs[str(extruder_nr)][key]
-
-        if value == default_value_str:
-            Logger.log("w", "Unable to replace '%s' placeholder in start/end g-code", key)
-
-        return value
-
-
 class StartSliceJob(Job):
     """Job class that builds up the message of scene data to send to CuraEngine."""
 
     def __init__(self, slice_message: Arcus.PythonMessage) -> None:
         super().__init__()
 
-        self._scene = CuraApplication.getInstance().getController().getScene() #type: Scene
+        self._scene: Scene = CuraApplication.getInstance().getController().getScene()
         self._slice_message: Arcus.PythonMessage = slice_message
-        self._is_cancelled = False #type: bool
-        self._build_plate_number = None #type: Optional[int]
+        self._is_cancelled: bool = False
+        self._build_plate_number: Optional[int] = None
+        self._associated_disabled_extruders: List[int] = []
 
-        self._all_extruders_settings = None #type: Optional[Dict[str, Any]] # cache for all setting values from all stacks (global & extruder) for the current machine
+        # cache for all setting values from all stacks (global & extruder) for the current machine
+        self._all_extruders_settings: Optional[Dict[str, Any]] = None
 
     def getSliceMessage(self) -> Arcus.PythonMessage:
         return self._slice_message
+
+    def getAssociatedDisabledExtruders(self) -> List[int]:
+        return self._associated_disabled_extruders
 
     def setBuildPlate(self, build_plate_number: int) -> None:
         self._build_plate_number = build_plate_number
@@ -154,11 +118,6 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.Error)
             return
 
-        # Don't slice if there is a setting with an error value.
-        if CuraApplication.getInstance().getMachineManager().stacksHaveErrors:
-            self.setResult(StartJobResult.SettingError)
-            return
-
         if CuraApplication.getInstance().getBuildVolume().hasErrors():
             self.setResult(StartJobResult.BuildPlateError)
             return
@@ -167,6 +126,7 @@ class StartSliceJob(Job):
         while CuraApplication.getInstance().getMachineErrorChecker().needToWaitForResult:
             time.sleep(0.1)
 
+        # Don't slice if there is a setting with an error value.
         if CuraApplication.getInstance().getMachineErrorChecker().hasError:
             self.setResult(StartJobResult.SettingError)
             return
@@ -271,20 +231,23 @@ class StartSliceJob(Job):
             stack = global_stack
             skip_group = False
             for node in group:
-                # Only check if the printing extruder is enabled for printing meshes
-                is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
-                extruder_position = int(node.callDecoration("getActiveExtruderPosition"))
-                if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
-                    skip_group = True
-                    has_model_with_disabled_extruders = True
-                    associated_disabled_extruders.add(extruder_position)
+                # Anti-overhang meshes don't use any extruder, so skip the extruder check for them
+                is_anti_overhang_mesh = node.callDecoration("isAntiOverhangMesh")
+                if not is_anti_overhang_mesh:
+                    for used_extruder in StartSliceJob._getMainExtruders(node):
+                        if used_extruder >= len(extruders_enabled):
+                            continue
+
+                        if not extruders_enabled[used_extruder]:
+                            skip_group = True
+                            has_model_with_disabled_extruders = True
+                            associated_disabled_extruders.add(used_extruder)
             if not skip_group:
                 filtered_object_groups.append(group)
 
         if has_model_with_disabled_extruders:
             self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-            associated_disabled_extruders = {p + 1 for p in associated_disabled_extruders}
-            self.setMessage(", ".join(map(str, sorted(associated_disabled_extruders))))
+            self._associated_disabled_extruders = sorted(list(associated_disabled_extruders))
             return
 
         # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
@@ -297,9 +260,42 @@ class StartSliceJob(Job):
         self._buildGlobalSettingsMessage(stack)
         self._buildGlobalInheritsStackMessage(stack)
 
+        user_id = uuid.getnode()  # On all of Cura's supported platforms, this returns the MAC address which is pseudonymical information (!= anonymous).
+        user_id %= 2 ** 16  # So to make it anonymous, apply a bitmask selecting only the last 16 bits. This prevents it from being traceable to a specific user but still gives somewhat of an idea of whether it's just the same user hitting the same crash over and over again, or if it's widespread.
+        self._slice_message.sentry_id = f"{user_id}"
+        self._slice_message.cura_version = CuraVersion
+
+        # Add the project name to the message if the user allows for non-anonymous crash data collection.
+        account = CuraApplication.getInstance().getCuraAPI().account
+        if account and account.isLoggedIn and not CuraApplication.getInstance().getPreferences().getValue("info/anonymous_engine_crash_report"):
+            self._slice_message.project_name = CuraApplication.getInstance().getPrintInformation().baseName
+            self._slice_message.user_name = account.userName
+
         # Build messages for extruder stacks
         for extruder_stack in global_stack.extruderList:
             self._buildExtruderMessage(extruder_stack)
+
+        backend_plugins = CuraApplication.getInstance().getBackendPlugins()
+
+        # Sort backend plugins by name. Not a very good strategy, but at least it is repeatable. This will be improved later.
+        backend_plugins = sorted(backend_plugins, key=lambda backend_plugin: backend_plugin.getId())
+
+        for plugin in backend_plugins:
+            if not plugin.usePlugin():
+                continue
+            for slot in plugin.getSupportedSlots():
+                # Right now we just send the message for every slot that we support. A single plugin can support
+                # multiple slots
+                # In the future the frontend will need to decide what slots that a plugin actually supports should
+                # also be used. For instance, if you have two plugins and each of them support a_generate and b_generate
+                # only one of each can actually be used (eg; plugin 1 does both, plugin 1 does a_generate and 2 does
+                # b_generate, etc).
+                plugin_message = self._slice_message.addRepeatedMessage("engine_plugins")
+                plugin_message.id = slot
+                plugin_message.address = plugin.getAddress()
+                plugin_message.port = plugin.getPort()
+                plugin_message.plugin_name = plugin.getPluginId()
+                plugin_message.plugin_version = plugin.getVersion()
 
         for group in filtered_object_groups:
             group_message = self._slice_message.addRepeatedMessage("object_lists")
@@ -334,6 +330,14 @@ class StartSliceJob(Job):
 
                 obj.vertices = flat_verts
 
+                uv_coordinates = mesh_data.getUVCoordinates()
+                if uv_coordinates is not None:
+                    obj.uv_coordinates = uv_coordinates.flatten()
+
+                packed_texture = object.callDecoration("packTexture")
+                if packed_texture is not None:
+                    obj.texture = packed_texture
+
                 self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
 
                 Job.yieldThread()
@@ -363,25 +367,73 @@ class StartSliceJob(Job):
             result[key] = stack.getProperty(key, "value")
             Job.yieldThread()
 
-        # Material identification in addition to non-human-readable GUID
-        result["material_id"] = stack.material.getMetaDataEntry("base_file", "")
-        result["material_type"] = stack.material.getMetaDataEntry("material", "")
-        result["material_name"] = stack.material.getMetaDataEntry("name", "")
-        result["material_brand"] = stack.material.getMetaDataEntry("brand", "")
+        return result
+
+    def _buildReplacementTokensGlobalStack(self, stack: ContainerStack) -> Dict[str, Any]:
+        """Creates a dictionary of tokens to replace in g-code pieces.
+
+        This indicates what should be replaced in the start and end g-codes.
+        :param stack: The stack to get the settings from to replace the tokens with.
+        :return: A dictionary of replacement tokens to the values they should be replaced with.
+        """
+
+        result = self._buildReplacementTokens(stack)
 
         result["quality_name"] = stack.quality.getMetaDataEntry("name", "")
         result["quality_changes_name"] = stack.qualityChanges.getMetaDataEntry("name")
 
         # Renamed settings.
         result["print_bed_temperature"] = result["material_bed_temperature"]
-        result["print_temperature"] = result["material_print_temperature"]
-        result["travel_speed"] = result["speed_travel"]
 
         #Some extra settings.
         result["time"] = time.strftime("%H:%M:%S")
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
-        result["initial_extruder_nr"] = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
+        result["jobname"] = f"{CuraApplication.getInstance().getPrintInformation().jobName}"
+
+        # If adding or changing a setting here, please update the associated wiki page
+        # https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code
+
+        return result
+
+    def _buildReplacementTokensExtruderStack(self, stack: ContainerStack, material_preference_values: Dict[str, Any]) -> Dict[str, Any]:
+        """Creates a dictionary of tokens to replace in g-code pieces.
+
+        This indicates what should be replaced in the start and end g-codes.
+        :param stack: The stack to get the settings from to replace the tokens with.
+        :return: A dictionary of replacement tokens to the values they should be replaced with.
+        """
+
+        result = self._buildReplacementTokens(stack)
+
+        # Material identification in addition to non-human-readable GUID
+        material_guid = stack.material.getMetaDataEntry("GUID", "")
+        result["material_guid"] = material_guid
+        result["material_id"] = stack.material.getMetaDataEntry("base_file", "")
+        result["material_type"] = stack.material.getMetaDataEntry("material", "")
+        result["material_name"] = stack.material.getMetaDataEntry("name", "")
+        result["material_brand"] = stack.material.getMetaDataEntry("brand", "")
+        result["material_density"] = stack.getMetaDataEntry("properties", {}).get("density", 0)
+
+        material_spool_weight = stack.getMetaDataEntry("properties", {}).get("weight", 0)
+        material_spool_cost = 0.0
+        if material_guid in material_preference_values:
+            material_values = material_preference_values[material_guid]
+            if material_values:
+                if "spool_weight" in material_values:
+                    material_spool_weight = material_values["spool_weight"]
+                if "spool_cost" in material_values:
+                    material_spool_cost = material_values["spool_cost"]
+
+        result["material_spool_weight"] = material_spool_weight
+        result["material_spool_cost"] = material_spool_cost
+
+        # Renamed settings.
+        result["print_temperature"] = result["material_print_temperature"]
+        result["travel_speed"] = result["speed_travel"]
+
+        # If adding or changing a setting here, please update the associated wiki page
+        # https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code
 
         return result
 
@@ -390,34 +442,20 @@ class StartSliceJob(Job):
 
         # NB: keys must be strings for the string formatter
         self._all_extruders_settings = {
-            "-1": self._buildReplacementTokens(global_stack)
+            "-1": self._buildReplacementTokensGlobalStack(global_stack)
         }
         QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
-        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
-            extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
-            self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
-            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
-
-    def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
-        """Replace setting tokens in a piece of g-code.
-
-        :param value: A piece of g-code to replace tokens in.
-        :param default_extruder_nr: Stack nr to use when no stack nr is specified, defaults to the global stack
-        """
-        if not self._all_extruders_settings:
-            self._cacheAllExtruderSettings()
 
         try:
-            # any setting can be used as a token
-            fmt = GcodeStartEndFormatter(default_extruder_nr = default_extruder_nr)
-            if self._all_extruders_settings is None:
-                return ""
-            settings = self._all_extruders_settings.copy()
-            settings["default_extruder_nr"] = default_extruder_nr
-            return str(fmt.format(value, **settings))
-        except:
-            Logger.logException("w", "Unable to do token replacement on start/end g-code")
-            return str(value)
+            material_preference_values = json.loads(CuraApplication.getInstance().getPreferences().getValue("cura/material_settings"))
+        except json.JSONDecodeError:
+            Logger.warning("Material preference values are corrupt. Will revert to defaults!")
+            material_preference_values = {}
+
+        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+            extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
+            self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokensExtruderStack(extruder_stack, material_preference_values)
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
     def _buildExtruderMessage(self, stack: ContainerStack) -> None:
         """Create extruder message from stack"""
@@ -433,23 +471,21 @@ class StartSliceJob(Job):
         extruder_nr = stack.getProperty("extruder_nr", "value")
         settings = self._all_extruders_settings[str(extruder_nr)].copy()
 
-        # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
-        settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
-
-        # Replace the setting tokens in start and end g-code.
-        extruder_nr = stack.getProperty("extruder_nr", "value")
-        settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], extruder_nr)
-        settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], extruder_nr)
-
         global_definition = cast(ContainerInterface, cast(ContainerStack, stack.getNextStack()).getBottom())
         own_definition = cast(ContainerInterface, stack.getBottom())
 
         for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
             # Since these can only be set in definition files, we only have to ask there.
-            if not global_definition.getProperty(key, "settable_per_extruder") and \
-                    not own_definition.getProperty(key, "settable_per_extruder"):
-                    continue
+            # Settings that have no definition are those added manually, so include them.
+
+            settable_per_extruder_global = global_definition.getProperty(key, "settable_per_extruder")
+            settable_per_extruder_own = own_definition.getProperty(key, "settable_per_extruder")
+
+            if (settable_per_extruder_global is not None or settable_per_extruder_own is not None) and not settable_per_extruder_global and \
+                not settable_per_extruder_own:
+                continue
+
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
             setting.value = str(value).encode("utf-8")
@@ -474,18 +510,16 @@ class StartSliceJob(Job):
         start_gcode = settings["machine_start_gcode"]
         # Remove all the comments from the start g-code
         start_gcode = re.sub(r";.+?(\n|$)", "\n", start_gcode)
-        bed_temperature_settings = ["material_bed_temperature", "material_bed_temperature_layer_0"]
-        pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(bed_temperature_settings) # match {setting} as well as {setting, extruder_nr}
-        settings["material_bed_temp_prepend"] = re.search(pattern, start_gcode) == None
-        print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature", "print_temperature"]
-        pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(print_temperature_settings) # match {setting} as well as {setting, extruder_nr}
-        settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) is None
 
-        # Replace the setting tokens in start and end g-code.
-        # Use values from the first used extruder by default so we get the expected temperatures
-        initial_extruder_nr = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
-        settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], initial_extruder_nr)
-        settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], initial_extruder_nr)
+        if settings["material_bed_temp_prepend"]:
+            bed_temperature_settings = ["material_bed_temperature", "material_bed_temperature_layer_0"]
+            pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(bed_temperature_settings) # match {setting} as well as {setting, extruder_nr}
+            settings["material_bed_temp_prepend"] = re.search(pattern, start_gcode) == None
+
+        if settings["material_print_temp_prepend"]:
+            print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature", "print_temperature"]
+            pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(print_temperature_settings) # match {setting} as well as {setting, extruder_nr}
+            settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) is None
 
         # Manually add 'nozzle offsetting', since that is a metadata-entry instead for some reason.
         # NOTE: This probably needs to be an actual setting at some point.
@@ -571,3 +605,13 @@ class StartSliceJob(Job):
 
             relations_set.add(relation.target.key)
             self._addRelations(relations_set, relation.target.relations)
+
+    @staticmethod
+    def _getMainExtruders(node: SceneNode) -> List[int]:
+        used_extruders = node.callDecoration("getPaintedExtruders")
+
+        # There is no relevant painting data, just take the extruder associated to the model
+        if not used_extruders:
+            used_extruders = [int(node.callDecoration("getActiveExtruderPosition"))]
+
+        return used_extruders

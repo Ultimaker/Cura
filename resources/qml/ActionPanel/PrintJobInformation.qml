@@ -117,7 +117,7 @@ Column
             property var printMaterialWeights: PrintInformation.materialWeights
             property var printMaterialCosts: PrintInformation.materialCosts
             property var printMaterialNames: PrintInformation.materialNames
-            property var columnWidthMultipliers: [ 0.46, 0.18, 0.18, 0.18 ]
+            property var columnWidthMultipliers: [ 0.26, 0.28, 0.18, 0.28 ]
             property var columnHorizontalAligns: [ Text.AlignLeft, Text.AlignHCenter, Text.AlignHCenter, Text.AlignRight ]
 
             function getMaterialTable()

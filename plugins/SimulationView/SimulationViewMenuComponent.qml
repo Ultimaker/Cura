@@ -53,16 +53,39 @@ Cura.ExpandableComponent
 
         UM.Label
         {
+            id: schemeTypeLabel
             text: layerTypeCombobox.currentText
-            anchors
-            {
-                left: colorSchemeLabel.right
-                leftMargin: UM.Theme.getSize("default_margin").width
-                right: parent.right
-            }
+            anchors.left: colorSchemeLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             height: parent.height
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
+        }
+
+        UM.ColorImage
+        {
+            id: warningIcon
+            anchors
+            {
+                left: schemeTypeLabel.right
+                leftMargin: UM.Theme.getSize("narrow_margin").width
+                verticalCenter: parent.verticalCenter
+            }
+            width: UM.Theme.getSize("section_icon").width
+            height: UM.Theme.getSize("section_icon").height
+            source: UM.Theme.getIcon("Warning")
+            color: UM.Theme.getColor("warning")
+            visible: {
+                // Check if any enabled extruder is unchecked
+                var extrudersModel = CuraApplication.getExtrudersModel();
+                for (var i = 0; i < extrudersModel.count; i++) {
+                    var extruder = extrudersModel.getItem(i);
+                    if (extruder.enabled && viewSettings.extruder_opacities[i] <= 0.5 && viewSettings.extruder_opacities[i] !== undefined && viewSettings.extruder_opacities[i] !== "") {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
     }
 
@@ -212,10 +235,26 @@ Cura.ExpandableComponent
                     {
                         verticalCenter: parent.verticalCenter
                         left: extrudersModelCheckBox.left
-                        right: extrudersModelCheckBox.right
+                        right: extruderWarningIcon.visible ? extruderWarningIcon.left : swatch.left
                         leftMargin: UM.Theme.getSize("checkbox").width + Math.round(UM.Theme.getSize("default_margin").width / 2)
-                        rightMargin: UM.Theme.getSize("default_margin").width * 2
+                        rightMargin: UM.Theme.getSize("narrow_margin").width
                     }
+                }
+
+                UM.ColorImage
+                {
+                    id: extruderWarningIcon
+                    anchors
+                    {
+                        verticalCenter: parent.verticalCenter
+                        right: swatch.left
+                        rightMargin: UM.Theme.getSize("narrow_margin").width
+                    }
+                    width: UM.Theme.getSize("section_icon").width
+                    height: UM.Theme.getSize("section_icon").height
+                    source: UM.Theme.getIcon("Warning")
+                    color: UM.Theme.getColor("warning")
+                    visible: model.enabled && !extrudersModelCheckBox.checked
                 }
             }
         }
@@ -227,29 +266,106 @@ Cura.ExpandableComponent
                 id: typesLegendModel
                 Component.onCompleted:
                 {
+                    const travelsTypesModel = [
+                        {
+                            label: catalog.i18nc("@label", "Not retracted"),
+                            colorId: "layerview_move_combing"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Retracted"),
+                            colorId: "layerview_move_retraction"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Retracting"),
+                            colorId: "layerview_move_while_retracting"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Priming"),
+                            colorId: "layerview_move_while_unretracting"
+                        }
+                    ];
+
+                    const shellTypesModel = [
+                        {
+                            label: catalog.i18nc("@label", "Outer wall"),
+                            colorId: "layerview_inset_0"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Outer wall - Overhanging"),
+                            colorId: "layerview_inset_0_overhang"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Outer wall - Bridging"),
+                            colorId: "layerview_inset_0_bridge"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Inner wall"),
+                            colorId: "layerview_inset_x"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Inner wall - Overhanging"),
+                            colorId: "layerview_inset_x_overhang"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Inner wall - Bridging"),
+                            colorId: "layerview_inset_x_bridge"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Top / Bottom"),
+                            colorId: "layerview_skin"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Top / Bottom - Bridging"),
+                            colorId: "layerview_skin_bridge"
+                        }
+                    ]
+
+                    const helpersTypesModel = [
+                        {
+                            label: catalog.i18nc("@label", "Support"),
+                            colorId: "layerview_support"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Support interface"),
+                            colorId: "layerview_support_interface"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Skirt / Brim"),
+                            colorId: "layerview_skirt"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Prime tower"),
+                            colorId: "layerview_prime_tower"
+                        }
+                    ];
+
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Travels"),
                         initialValue: viewSettings.show_travel_moves,
                         preference: "layerview/show_travel_moves",
-                        colorId:  "layerview_move_combing"
+                        colorId:  "layerview_move_combing",
+                        subTypesModel: travelsTypesModel
                     });
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Helpers"),
                         initialValue: viewSettings.show_helpers,
                         preference: "layerview/show_helpers",
-                        colorId:  "layerview_support"
+                        colorId:  "layerview_support",
+                        subTypesModel: helpersTypesModel
                     });
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Shell"),
                         initialValue: viewSettings.show_skin,
                         preference: "layerview/show_skin",
-                        colorId:  "layerview_inset_0"
+                        colorId:  "layerview_inset_0",
+                        subTypesModel: shellTypesModel
                     });
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Infill"),
                         initialValue: viewSettings.show_infill,
                         preference: "layerview/show_infill",
-                        colorId:  "layerview_infill"
+                        colorId:  "layerview_infill",
+                        subTypesModel: []
                     });
                     if (! UM.SimulationView.compatibilityMode)
                     {
@@ -257,7 +373,8 @@ Cura.ExpandableComponent
                             label: catalog.i18nc("@label", "Starts"),
                             initialValue: viewSettings.show_starts,
                             preference: "layerview/show_starts",
-                            colorId:  "layerview_starts"
+                            colorId:  "layerview_starts",
+                            subTypesModel: []
                         });
                     }
                 }
@@ -273,6 +390,7 @@ Cura.ExpandableComponent
 
                 Rectangle
                 {
+                    id: rectangleColor
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: legendModelCheckBox.right
                     width: UM.Theme.getSize("layerview_legend_size").width
@@ -281,6 +399,58 @@ Cura.ExpandableComponent
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: UM.Theme.getColor("lining")
                     visible: viewSettings.show_legend
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        acceptedButtons: Qt.NoButton
+                        enabled: subTypesModel.count > 0
+
+                        onEntered: tooltip.show()
+                        onExited: tooltip.hide()
+
+                        UM.ToolTip
+                        {
+                            id: tooltip
+                            delay: 0
+                            width: subTypesColumn.implicitWidth + 2 * UM.Theme.getSize("thin_margin").width
+                            height: subTypesColumn.implicitHeight + 2 * UM.Theme.getSize("thin_margin").width
+
+                            contentItem: Column
+                            {
+                                id: subTypesColumn
+                                padding: 0
+                                spacing: UM.Theme.getSize("layerview_row_spacing").height
+
+                                Repeater
+                                {
+                                    model: subTypesModel
+                                    UM.Label
+                                    {
+                                        text: label
+
+                                        height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
+                                        width: UM.Theme.getSize("layerview_menu_size").width
+                                        color: UM.Theme.getColor("tooltip_text")
+                                        Rectangle
+                                        {
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            anchors.right: parent.right
+
+                                            width: UM.Theme.getSize("layerview_legend_size").width
+                                            height: UM.Theme.getSize("layerview_legend_size").height
+
+                                            color: UM.Theme.getColor(model.colorId)
+
+                                            border.width: UM.Theme.getSize("default_lining").width
+                                            border.color: UM.Theme.getColor("lining")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 UM.Label
@@ -313,49 +483,6 @@ Cura.ExpandableComponent
             text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
             width: parent.width
             visible: UM.SimulationView.compatibilityMode
-        }
-
-        Repeater
-        {
-            model: ListModel
-            {
-                id: typesLegendModelNoCheck
-                Component.onCompleted:
-                {
-                    typesLegendModelNoCheck.append({
-                        label: catalog.i18nc("@label", "Top / Bottom"),
-                        colorId: "layerview_skin",
-                    });
-                    typesLegendModelNoCheck.append({
-                        label: catalog.i18nc("@label", "Inner Wall"),
-                        colorId: "layerview_inset_x",
-                    });
-                }
-            }
-
-            UM.Label
-            {
-                text: label
-                visible: viewSettings.show_legend
-                id: typesLegendModelLabel
-
-                height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
-                width: parent.width
-                color: UM.Theme.getColor("setting_control_text")
-                Rectangle
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: typesLegendModelLabel.right
-
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-
-                    color: UM.Theme.getColor(model.colorId)
-
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                }
-            }
         }
 
         // Text for the minimum, maximum and units for the feedrates and layer thickness

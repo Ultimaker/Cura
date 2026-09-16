@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "name": "ELEGOO NEPTUNE 4 Pro",
+    "inherits": "elegoo_neptune_4",
+    "metadata":
+    {
+        "visible": true,
+        "author": "mastercaution",
+        "quality_definition": "elegoo_neptune_4"
+    },
+    "overrides":
+    {
+        "machine_name": { "default_value": "ELEGOO NEPTUNE 4 Pro" }
+    }
+}

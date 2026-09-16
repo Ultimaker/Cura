@@ -11,7 +11,6 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from cura.Machines.ContainerTree import ContainerTree
 
 from UM.i18n import i18nCatalog
-from cura.Settings.CuraStackBuilder import CuraStackBuilder
 
 catalog = i18nCatalog("cura")
 
@@ -57,7 +56,7 @@ class GCodeWriter(MeshWriter):
 
         self._application = Application.getInstance()
 
-    def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode):
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode, **kwargs):
         """Writes the g-code for the entire scene to a stream.
 
         Note that even though the function accepts a collection of nodes, the

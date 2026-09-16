@@ -16,6 +16,7 @@ Cura.Menu
     title: catalog.i18nc("@action:inmenu", "Visible Settings")
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
+    property bool canCollapseAllCategories: true
 
     signal collapseAllCategories()
 
@@ -32,14 +33,18 @@ Cura.Menu
             onTriggered: settingVisibilityPresetsModel.setActivePreset(modelData.presetId)
         }
 
-        onObjectAdded: function(index, object) { menu.insertItem(index, object) }
-        onObjectRemoved: function(index, object) { menu.removeItem(object)}
+        onObjectAdded: function(index, object) {
+            menu.insertItem(index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
+        }
+        onObjectRemoved: function(index, object) { menu.removeItem(object); }
     }
 
     Cura.MenuSeparator {}
     Cura.MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Collapse All Categories")
+        enabled: menu.canCollapseAllCategories
         onTriggered:
         {
             collapseAllCategories();

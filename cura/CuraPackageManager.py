@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import glob
 import os
@@ -10,6 +10,7 @@ from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication  # To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 from UM.PackageManager import PackageManager  # The class we're extending.
 from UM.Resources import Resources  # To find storage paths for some resource types.
@@ -55,7 +56,9 @@ class CuraPackageManager(PackageManager):
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
-        self._installation_dirs_dict["variants"] = Resources.getStoragePath(CuraApplication.ResourceTypes.VariantInstanceContainer)
+        self._installation_dirs_dict["variants"] = Resources.getStoragePath(
+            CuraApplication.ResourceTypes.VariantInstanceContainer)
+        self._installation_dirs_dict["images"] = Resources.getStoragePath(CuraApplication.ResourceTypes.ImageFiles)
 
         # Due to a bug in Cura 5.1.0 we needed to change the directory structure of the curapackage on the server side (See SD-3871).
         # Although the material intent profiles will be installed in the `intent` folder, the curapackage from the server side will
@@ -121,8 +124,7 @@ class CuraPackageManager(PackageManager):
         """
 
         ids = self.getPackageContainerIds(package_id)
-        container_stacks = self._application.getContainerRegistry().findContainerStacks()
-        global_stacks = [container_stack for container_stack in container_stacks if isinstance(container_stack, GlobalStack)]
+        global_stacks = CuraContainerRegistry.getInstance().findGlobalStacks()
         machine_with_materials = []
         machine_with_qualities = []
         for container_id in ids:

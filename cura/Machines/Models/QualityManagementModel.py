@@ -14,7 +14,7 @@ from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_quality_changes_container
 from cura.Settings.IntentManager import IntentManager
 from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
-from cura.Machines.Models.IntentTranslations import intent_translations
+from cura.Machines.Models.IntentTranslations import IntentTranslations
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -127,13 +127,12 @@ class QualityManagementModel(ListModel):
         # have no container for the global stack, because "my_profile" just got renamed to "my_new_profile". This results
         # in crashes because the rest of the system assumes that all data in a QualityChangesGroup will be correct.
         #
-        # Renaming the container for the global stack in the end seems to be ok, because the assumption is mostly based
-        # on the quality changes container for the global stack.
+        # This is why we use the "supress_signals" flag for the set name. This basically makes the change silent.
         for metadata in quality_changes_group.metadata_per_extruder.values():
             extruder_container = cast(InstanceContainer, container_registry.findContainers(id = metadata["id"])[0])
-            extruder_container.setName(new_name)
+            extruder_container.setName(new_name, supress_signals=True)
         global_container = cast(InstanceContainer, container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])[0])
-        global_container.setName(new_name)
+        global_container.setName(new_name, supress_signals=True)
 
         quality_changes_group.name = new_name
 
@@ -344,7 +343,7 @@ class QualityManagementModel(ListModel):
                     "quality_type": quality_group.quality_type,
                     "quality_changes_group": None,
                     "intent_category": "default",
-                    "section_name": catalog.i18nc("@label", "Default"),
+                    "section_name": IntentTranslations.getInstance().getLabel("default"),
                     "layer_height": layer_height,  # layer_height is only used for sorting
                     }
             item_list.append(item)
@@ -359,7 +358,12 @@ class QualityManagementModel(ListModel):
         for intent_category, quality_type in available_intent_list:
             if not quality_group_dict[quality_type].is_available:
                 continue
-            
+
+            try:
+                intent_label = IntentTranslations.getInstance().getLabel(intent_category)
+            except KeyError:
+                intent_label = catalog.i18nc("@label", intent_category.title())
+
             result.append({
                 "name": quality_group_dict[quality_type].name,  # Use the quality name as the display name
                 "is_read_only": True,
@@ -367,15 +371,13 @@ class QualityManagementModel(ListModel):
                 "quality_type": quality_type,
                 "quality_changes_group": None,
                 "intent_category": intent_category,
-                "section_name": catalog.i18nc("@label", intent_translations.get(intent_category, {}).get("name", catalog.i18nc("@label", intent_category.title()))),
+                "section_name": intent_label,
             })
 
         # Sort by quality_type for each intent category
-        intent_translations_list = list(intent_translations)
-
         def getIntentWeight(intent_category):
             try:
-                return intent_translations_list.index(intent_category)
+                return IntentTranslations.getInstance().index(intent_category)
             except ValueError:
                 return 99
 

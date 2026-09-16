@@ -21,7 +21,6 @@ class Marketplace(Extension, QObject):
     def __init__(self, parent: Optional[QObject] = None) -> None:
         QObject.__init__(self, parent)
         Extension.__init__(self)
-        self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
         self._package_manager = CuraApplication.getInstance().getPackageManager()
 
         self._material_package_list: Optional[RemotePackageList] = None
@@ -33,6 +32,7 @@ class Marketplace(Extension, QObject):
         preferences = CuraApplication.getInstance().getPreferences()
         preferences.addPreference("info/automatic_plugin_update_check", True)
         self._local_package_list = LocalPackageList(self)
+        self._local_package_list.bulkUpdateInProgressChanged.connect(self._onBulkUpdateInProgressChanged)
         if preferences.getValue("info/automatic_plugin_update_check"):
             self._local_package_list.checkForUpdates(self._package_manager.local_packages)
 
@@ -58,6 +58,7 @@ class Marketplace(Extension, QObject):
         if self._material_package_list is None:
             self._material_package_list = RemotePackageList()
             self._material_package_list.packageTypeFilter = "material"
+            self._material_package_list.bulkUpdateInProgressChanged.connect(self._onBulkUpdateInProgressChanged)
 
         return self._material_package_list
 
@@ -66,6 +67,7 @@ class Marketplace(Extension, QObject):
         if self._plugin_package_list is None:
             self._plugin_package_list = RemotePackageList()
             self._plugin_package_list.packageTypeFilter = "plugin"
+            self._plugin_package_list.bulkUpdateInProgressChanged.connect(self._onBulkUpdateInProgressChanged)
         return self._plugin_package_list
 
     @pyqtProperty(QObject, constant=True)
@@ -79,20 +81,17 @@ class Marketplace(Extension, QObject):
 
         If the window hadn't been loaded yet into Qt, it will be created lazily.
         """
-        if self._window is None:
-            plugin_registry = PluginRegistry.getInstance()
-            plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
-            plugin_path = plugin_registry.getPluginPath(self.getPluginId())
-            if plugin_path is None:
-                plugin_path = os.path.dirname(__file__)
-            path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
-            self._window = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
-        if self._window is None:  # Still None? Failed to load the QML then.
-            return
-        if not self._window.isVisible():
-            self.setTabShown(0)
-        self._window.show()
-        self._window.requestActivate()  # Bring window into focus, if it was already open in the background.
+
+        plugin_registry = PluginRegistry.getInstance()
+        plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
+        plugin_path = plugin_registry.getPluginPath(self.getPluginId())
+        if plugin_path is None:
+            plugin_path = os.path.dirname(__file__)
+        path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
+        window = CuraApplication.getInstance().createQmlSubWindow(path, {"manager": self})
+
+        if window is not None:  # Still None? Failed to load the QML then.
+            window.show()
 
     @pyqtSlot()
     def setVisibleTabToMaterials(self) -> None:
@@ -103,9 +102,6 @@ class Marketplace(Extension, QObject):
         self.setTabShown(1)
 
     def checkIfRestartNeeded(self) -> None:
-        if self._window is None:
-            return
-
         if self._package_manager.hasPackagesToRemoveOrInstall or \
                 PluginRegistry.getInstance().getCurrentSessionActivationChangedPlugins():
             self._restart_needed = True
@@ -115,9 +111,22 @@ class Marketplace(Extension, QObject):
 
     showRestartNotificationChanged = pyqtSignal()
 
+    @pyqtSlot()
+    def _onBulkUpdateInProgressChanged(self) -> None:
+        self.showRestartNotificationChanged.emit()
+
+    def _isBulkUpdateInProgress(self) -> bool:
+        if self._local_package_list.bulkUpdateInProgress:
+            return True
+        if self._material_package_list and self._material_package_list.bulkUpdateInProgress:
+            return True
+        if self._plugin_package_list and self._plugin_package_list.bulkUpdateInProgress:
+            return True
+        return False
+
     @pyqtProperty(bool, notify = showRestartNotificationChanged)
     def showRestartNotification(self) -> bool:
-        return self._restart_needed
+        return self._restart_needed and not self._isBulkUpdateInProgress()
 
     def showInstallMissingPackageDialog(self, packages_metadata: List[Dict[str, str]], ignore_warning_callback: Callable[[], None]) -> None:
         """

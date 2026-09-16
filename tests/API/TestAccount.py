@@ -80,12 +80,12 @@ def test_errorLoginState(application):
     with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
         account._onLoginStateChanged(True, "BLARG!")
     # Even though we said that the login worked, it had an error message, so the login failed.
-    account.loginStateChanged.emit.called_with(False)
+    account.loginStateChanged.emit.assert_called_with(False)
 
     with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):
         account._onLoginStateChanged(True)
         account._onLoginStateChanged(False, "OMGZOMG!")
-    account.loginStateChanged.emit.called_with(False)
+    account.loginStateChanged.emit.assert_called_with(False)
 
 def test_sync_success():
     account = Account(MagicMock())

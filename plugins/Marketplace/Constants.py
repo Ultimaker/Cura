@@ -10,3 +10,6 @@ ROOT_USER_URL = f"{ROOT_URL}/user"
 PACKAGES_URL = f"{ROOT_CURA_URL}/packages"  # URL to use for requesting the list of packages.
 PACKAGE_UPDATES_URL = f"{PACKAGES_URL}/package-updates"  # URL to use for requesting the list of packages that can be updated.
 USER_PACKAGES_URL = f"{ROOT_USER_URL}/packages"
+
+PACKAGE_TYPE_PLUGIN = "plugin"    # Package type identifier for plugins, as returned by the Marketplace API.
+PACKAGE_TYPE_MATERIAL = "material"  # Package type identifier for materials, as returned by the Marketplace API.

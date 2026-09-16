@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "name": "Longer LK4 X",
+    "inherits": "longer_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "longer_235mm_platform.stl",
+        "platform_offset": [
+            -117.5,
+            -3,
+            117.5
+        ],
+        "quality_definition": "longer_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 35 },
+        "machine_depth": { "default_value": 220 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-55, 20],
+                [-55, -36],
+                [35, -36],
+                [35, 20]
+            ]
+        },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "LONGER LK4 X" },
+        "machine_start_gcode": { "default_value": "; -- LONGER BL-TOUCH Start G-code --\nG21 ; metric values\nG90 ; absolute positioning\nM82 ; set extruder to absolute mode\nM107 ; start with the fan off\n\n; confirm BL-touch safety\nM280 P0 S160 ; BL-Touch Alarm release\nG4 P100 ; Delay for BL-Touch\n\n; homing\nG28 X0 Y0 ; move X/Y to min endstops\nG28 Z0 ; move Z to min endstops\n\n; reconfirm BL-touch safety\nM280 P0 S160 ; BL-Touch Alarm realease\nG4 P100 ; Delay for BL-Touch\n\n; bed leveling\nG29; Auto leveling\nM420 Z5 ; set LEVELING_FADE_HEIGHT\nM500 ; save data of G29 and M420\nM420 S1 ; enable bed leveling\n\n; prepare hot-end\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y150.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y150.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish\n; -- end of LONGER BL-TOUCH Start G-code --" },
+        "machine_width": { "default_value": 220 },
+        "retraction_amount": { "value": 2.0 },
+        "retraction_combing": { "value": "'noskin'" },
+        "speed_travel": { "value": 65 },
+        "z_seam_type": { "value": "'shortest'" }
+    }
+}

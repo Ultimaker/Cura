@@ -208,12 +208,21 @@ Item
         anchors.rightMargin: UM.Theme.getSize("thin_margin").height
 
         enabled: UM.Backend.state == UM.Backend.Done
-        currentIndex: UM.Backend.state == UM.Backend.Done ? 0 : 1
+
+        // Pre-select the correct index, depending on the situation (see the model-property below):
+        // - Don't select any post-slice-file-format when the engine isn't done.
+        // - Choose either the S-series or the Makerbot-series of printers' format otherwise, depending on the active printer.
+        // This way, the user can just click 'save' without having to worry about wether or not the format is right.
+        property int isMakerbotFormat: Cura.MachineManager.activeMachine.getOutputFileFormats.includes("application/x-makerbot") || Cura.MachineManager.activeMachine.getOutputFileFormats.includes("application/x-makerbot-sketch")
+        property int isBackendDone: UM.Backend.state == UM.Backend.Done
+        currentIndex: isBackendDone ? (isMakerbotFormat ? 1 : 0) : 2
+
         textRole: "text"
         valueRole: "value"
 
         model: [
-            { text: catalog.i18nc("@option", "Save Cura project and print file"), key: "3mf_ufp", value: ["3mf", "ufp"] },
+            { text: catalog.i18nc("@option", "Save Cura project and .ufp print file"), key: "3mf_ufp", value: ["3mf", "ufp"] },
+            { text: catalog.i18nc("@option", "Save Cura project and .makerbot print file"), key: "3mf_makerbot", value: ["3mf", "makerbot"] },
             { text: catalog.i18nc("@option", "Save Cura project"), key: "3mf", value: ["3mf"] },
         ]
     }

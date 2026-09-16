@@ -1,8 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #To read config files.
-import io #To write config files to strings as if they were files.
+import configparser # To read config files.
+import io # To write config files to strings as if they were files.
 from typing import Dict, List, Optional, Tuple
 
 import UM.VersionUpgrade

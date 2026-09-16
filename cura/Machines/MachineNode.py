@@ -1,8 +1,9 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Dict, List
 
+from UM.Decorators import deprecated
 from UM.Logger import Logger
 from UM.Signal import Signal
 from UM.Util import parseBool
@@ -14,6 +15,7 @@ from cura.Machines.QualityChangesGroup import QualityChangesGroup  # To construc
 from cura.Machines.QualityGroup import QualityGroup  # To construct groups of quality profiles that belong together.
 from cura.Machines.QualityNode import QualityNode
 from cura.Machines.VariantNode import VariantNode
+from cura.Machines.MaterialNode import MaterialNode
 import UM.FlameProfiler
 
 
@@ -43,11 +45,61 @@ class MachineNode(ContainerNode):
         self.has_machine_quality = parseBool(my_metadata.get("has_machine_quality", "false"))
         self.quality_definition = my_metadata.get("quality_definition", container_id) if self.has_machine_quality else "fdmprinter"
         self.exclude_materials = my_metadata.get("exclude_materials", [])
-        self.preferred_variant_name = my_metadata.get("preferred_variant_name", "")
-        self.preferred_material = my_metadata.get("preferred_material", "")
+
+        preferred_variant_name_raw = my_metadata.get("preferred_variant_name", "")
+        if isinstance(preferred_variant_name_raw, list):
+            self._preferred_variant_names = preferred_variant_name_raw  # type: List[str]
+        elif preferred_variant_name_raw:
+            self._preferred_variant_names = [preferred_variant_name_raw]
+        else:
+            self._preferred_variant_names = []
+
+        preferred_material_raw = my_metadata.get("preferred_material", "")
+        if isinstance(preferred_material_raw, list):
+            self._preferred_materials = preferred_material_raw  # type: List[str]
+        elif preferred_material_raw:
+            self._preferred_materials = [preferred_material_raw]
+        else:
+            self._preferred_materials = []
+
         self.preferred_quality_type = my_metadata.get("preferred_quality_type", "")
+        self.supports_abstract_color = parseBool(my_metadata.get("supports_abstract_color", "false"))
 
         self._loadAll()
+
+    @property
+    def preferred_variant_name(self) -> str:
+        """The preferred variant name for extruder 0, or empty string if none defined."""
+        return self._preferred_variant_names[0] if self._preferred_variant_names else ""
+
+    @property
+    def preferred_material(self) -> str:
+        """The preferred material for extruder 0, or empty string if none defined."""
+        return self._preferred_materials[0] if self._preferred_materials else ""
+
+    def preferredVariantName(self, position: int) -> str:
+        """Returns the preferred variant name for the given extruder position.
+
+        Falls back to position 0's preference for extruders without a specific preference defined.
+
+        :param position: The extruder position (0-based).
+        :return: The preferred variant name, or empty string if none defined.
+        """
+        if 0 < position < len(self._preferred_variant_names) and self._preferred_variant_names[position]:
+            return self._preferred_variant_names[position]
+        return self._preferred_variant_names[0] if self._preferred_variant_names else ""
+
+    def preferredMaterialName(self, position: int) -> str:
+        """Returns the preferred material name for the given extruder position.
+
+        Falls back to position 0's preference for extruders without a specific preference defined.
+
+        :param position: The extruder position (0-based).
+        :return: The preferred material base file name, or empty string if none defined.
+        """
+        if 0 < position < len(self._preferred_materials) and self._preferred_materials[position]:
+            return self._preferred_materials[position]
+        return self._preferred_materials[0] if self._preferred_materials else ""
 
     def getQualityGroups(self, variant_names: List[str], material_bases: List[str], extruder_enabled: List[bool]) -> Dict[str, QualityGroup]:
         """Get the available quality groups for this machine.
@@ -167,13 +219,25 @@ class MachineNode(ContainerNode):
 
         return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
+    def isExcludedMaterialBaseFile(self, material_base_file: str) -> bool:
+        """Returns whether the material should be excluded from the list of materials."""
+        for exclude_material in self.exclude_materials:
+            if exclude_material in material_base_file:
+                return True
+        return False
+
+    @deprecated("Use isExcludedMaterialBaseFile instead.", since = "5.9.0")
+    def isExcludedMaterial(self, material: MaterialNode) -> bool:
+        """Returns whether the material should be excluded from the list of materials."""
+        return self.isExcludedMaterialBaseFile(material.base_file)
+
     @UM.FlameProfiler.profile
     def _loadAll(self) -> None:
         """(Re)loads all variants under this printer."""
 
         container_registry = ContainerRegistry.getInstance()
         if not self.has_variants:
-            self.variants["empty"] = VariantNode("empty_variant", machine = self)
+            self.variants["empty"] = VariantNode("empty_variant", machine=self)
             self.variants["empty"].materialsChanged.connect(self.materialsChanged)
         else:
             # Find all the variants for this definition ID.

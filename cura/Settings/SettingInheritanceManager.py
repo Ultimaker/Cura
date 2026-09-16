@@ -1,6 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import List, Optional, TYPE_CHECKING
+from typing import List, Optional, Set, TYPE_CHECKING
 
 from PyQt6.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
@@ -168,36 +168,25 @@ class SettingInheritanceManager(QObject):
     def settingsWithInheritanceWarning(self) -> List[str]:
         return self._settings_with_inheritance_warning
 
-    def _settingIsOverwritingInheritance(self, key: str, stack: ContainerStack = None) -> bool:
-        """Check if a setting has an inheritance function that is overwritten"""
+    def _userSettingIsOverwritingInheritance(self, key: str, stack: ContainerStack, all_keys: Set[str] = set()) -> bool:
+        """Check if a setting known as having a User state has an inheritance function that is overwritten"""
 
         has_setting_function = False
-        if not stack:
-            stack = self._active_container_stack
-        if not stack:  # No active container stack yet!
-            return False
-
-        if self._active_container_stack is None:
-            return False
-        all_keys = self._active_container_stack.getAllKeys()
 
         containers = []  # type: List[ContainerInterface]
-
-        has_user_state = stack.getProperty(key, "state") == InstanceState.User
-        """Check if the setting has a user state. If not, it is never overwritten."""
-
-        if not has_user_state:
-            return False
 
         # If a setting is not enabled, don't label it as overwritten (It's never visible anyway).
         if not stack.getProperty(key, "enabled"):
             return False
 
         user_container = stack.getTop()
-        """Also check if the top container is not a setting function (this happens if the inheritance is restored)."""
+        # Also check if the top container is not a setting function (this happens if the inheritance is restored).
 
         if user_container and isinstance(user_container.getProperty(key, "value"), SettingFunction):
             return False
+
+        if not all_keys:
+            all_keys = self._active_container_stack.getAllKeys()
 
         ##  Mash all containers for all the stacks together.
         while stack:
@@ -229,17 +218,35 @@ class SettingInheritanceManager(QObject):
                 break  # There is a setting function somewhere, stop looking deeper.
         return has_setting_function and has_non_function_value
 
+    def _settingIsOverwritingInheritance(self, key: str, stack: ContainerStack = None) -> bool:
+        """Check if a setting has an inheritance function that is overwritten"""
+
+        if not stack:
+            stack = self._active_container_stack
+        if not stack:  # No active container stack yet!
+            return False
+
+        if self._active_container_stack is None:
+            return False
+
+        has_user_state = stack.getProperty(key, "state") == InstanceState.User
+
+        if not has_user_state:
+            return False
+
+        return self._userSettingIsOverwritingInheritance(key, stack)
+
     def _update(self) -> None:
         self._settings_with_inheritance_warning = []  # Reset previous data.
 
         # Make sure that the GlobalStack is not None. sometimes the globalContainerChanged signal gets here late.
-        if self._global_container_stack is None:
+        if self._global_container_stack is None or self._active_container_stack is None:
             return
 
-        # Check all setting keys that we know of and see if they are overridden.
-        for setting_key in self._global_container_stack.getAllKeys():
-            override = self._settingIsOverwritingInheritance(setting_key)
-            if override:
+        # Check all user setting keys that we know of and see if they are overridden.
+        all_keys = self._active_container_stack.getAllKeys()
+        for setting_key in self._active_container_stack.getAllKeysWithUserState():
+            if self._userSettingIsOverwritingInheritance(setting_key, self._active_container_stack, all_keys):
                 self._settings_with_inheritance_warning.append(setting_key)
 
         # Check all the categories if any of their children have their inheritance overwritten.

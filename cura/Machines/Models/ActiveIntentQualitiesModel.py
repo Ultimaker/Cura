@@ -54,10 +54,7 @@ class ActiveIntentQualitiesModel(ListModel):
             self._updateDelayed()
 
     def _update(self):
-        active_extruder_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeStack
-        if active_extruder_stack:
-            self._intent_category = active_extruder_stack.intent.getMetaDataEntry("intent_category", "")
-
+        self._intent_category = IntentManager.getInstance().currentIntentCategory
         new_items: List[Dict[str, Any]] = []
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
@@ -74,6 +71,13 @@ class ActiveIntentQualitiesModel(ListModel):
                 if intent["quality_type"] not in added_quality_type_set:
                     new_items.append(intent)
                     added_quality_type_set.add(intent["quality_type"])
+
+        # If there aren't any possibilities when the Intent is kept the same, attempt to set it 'back' to default.
+        current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
+        if len(new_items) == 0 and self._intent_category != "default" and current_quality_type != "not_supported":
+            IntentManager.getInstance().selectIntent("default", current_quality_type)
+            self._update()
+            return
 
         new_items = sorted(new_items, key=lambda x: x["layer_height"])
         self.setItems(new_items)

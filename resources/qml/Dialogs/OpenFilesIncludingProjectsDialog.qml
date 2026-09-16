@@ -22,25 +22,10 @@ UM.Dialog
     minimumHeight: height
     minimumWidth: width
 
-    modality: Qt.WindowModal
+    modality: Qt.ApplicationModal
 
     property var fileUrls: []
     property var addToRecent: true
-
-    function loadProjectFile(projectFile)
-    {
-        UM.WorkspaceFileHandler.readLocalFile(projectFile, base.addToRecent);
-    }
-
-    function loadModelFiles(fileUrls)
-    {
-        for (var i in fileUrls)
-        {
-            CuraApplication.readLocalFile(fileUrls[i], "open_as_model", base.addToRecent);
-        }
-    }
-
-    onAccepted: loadModelFiles(base.selectedFiles)
 
     UM.Label
     {

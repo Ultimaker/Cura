@@ -147,7 +147,10 @@ class SendMaterialJob(Job):
 
         # FIXME: move form posting to API client
         self.device.postFormWithParts(target = "/cluster-api/v1/materials/", parts = parts,
-                                      on_finished = self._sendingFinished)
+                                      on_finished = self._sendingFinished,
+                                      request=self.device.getApiClient().createEmptyRequest(
+                                          "/cluster-api/v1/materials/",
+                                          content_type=None))
 
     def _sendingFinished(self, reply: QNetworkReply) -> None:
         """Check a reply from an upload to the printer and log an error when the call failed"""
@@ -173,7 +176,7 @@ class SendMaterialJob(Job):
 
         result = {}  # type: Dict[str, LocalMaterial]
         all_materials = CuraApplication.getInstance().getContainerRegistry().findInstanceContainersMetadata(type = "material")
-        all_base_files = [material for material in all_materials if material["id"] == material.get("base_file")]  # Don't send materials without base_file: The empty material doesn't need to be sent.
+        all_base_files = [material for material in all_materials if material["id"] == material.get("base_file") and material.get("visible", True)]  # Don't send materials without base_file: The empty material doesn't need to be sent.
 
         # Find the latest version of all material containers in the registry.
         for material_metadata in all_base_files:

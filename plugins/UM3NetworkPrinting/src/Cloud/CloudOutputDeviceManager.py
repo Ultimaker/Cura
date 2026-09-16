@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import QMessageBox
 
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.
+from UM.Message import Message
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 from UM.Util import parseBool
@@ -25,7 +26,7 @@ from .CloudOutputDevice import CloudOutputDevice
 from ..Messages.RemovedPrintersMessage import RemovedPrintersMessage
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Messages.NewPrinterDetectedMessage import NewPrinterDetectedMessage
-
+catalog = i18nCatalog("cura")
 
 class CloudOutputDeviceManager:
     """The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
@@ -178,6 +179,13 @@ class CloudOutputDeviceManager:
                 remote.requestWrite(nodes)
                 return
         Logger.log("e", f"Failed writing to specific cloud printer: {unique_id} not in remote clusters.")
+
+        # This message is added so that user knows when the print job was not sent to cloud printer
+        message = Message(catalog.i18nc("@info:status",
+                                    "Failed writing to specific cloud printer: {0} not in remote clusters.").format(unique_id),
+                      title=catalog.i18nc("@info:title", "Error"),
+                      message_type=Message.MessageType.ERROR)
+        message.show()
 
     def _createMachineStacksForDiscoveredClusters(self, discovered_clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices

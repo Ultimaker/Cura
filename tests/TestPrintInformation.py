@@ -26,6 +26,7 @@ def getPrintInformation(printer_name) -> PrintInformation:
 
     global_container_stack = MagicMock()
     global_container_stack.definition.getName = MagicMock(return_value = printer_name)
+    global_container_stack.getProperty = MagicMock(return_value = None)
     mock_application.getGlobalContainerStack = MagicMock(return_value = global_container_stack)
     mock_application.getPreferences = MagicMock(return_value = mocked_preferences)
 
@@ -75,7 +76,7 @@ def test_duration():
     assert int(feature_print_times["Travel"]) == 0
 
     # Fake a print duration message
-    print_information._onPrintDurationMessage(0, {"travel": 20}, [10])
+    print_information._onPrintDurationMessage(0, {"travel": 20}, [10], [10], [100], [9.99], ["PLA"])
 
     # We only set a single time, so the total time must be of the same value.
     assert int(print_information.currentPrintTime) == 20

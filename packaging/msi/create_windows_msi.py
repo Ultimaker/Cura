@@ -1,4 +1,4 @@
-# Copyright (c) 2022 UltiMaker
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 
@@ -7,6 +7,7 @@ import os
 import shutil
 import subprocess
 import uuid
+import semver
 from datetime import datetime
 from pathlib import Path
 
@@ -20,11 +21,26 @@ def work_path(filename: Path) -> Path:
         return filename.parent
 
 
-def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: str):
+def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: str, version: str):
     source_loc = Path(os.getcwd(), source_path)
     dist_loc = Path(os.getcwd(), dist_path)
     work_loc = work_path(filename)
     work_loc.mkdir(parents=True, exist_ok=True)
+    parsed_version = semver.Version.parse(version)
+
+    file_associations = [
+        {"ext": "stl",   "prog_id": "Cura.model",       "type_description": "Standard Tessellation Language (STL) files",  "section_title": "*.STL files",      "feature_description": "Associate .STL (Standard Tessellation Language) files",     "optional": False,  "extra_exts": []},
+        {"ext": "3mf",   "prog_id": "Cura.project",     "type_description": "3D Manufacturing Format (3MF) files",         "section_title": "*.3MF files",      "feature_description": "Associate .3MF (3D Manufacturing Format) project files",    "optional": False,  "extra_exts": []},
+        {"ext": "obj",   "prog_id": "Cura.obj",         "type_description": "Wavefront OBJ files",                         "section_title": "*.OBJ files",      "feature_description": "Associate .OBJ (Wavefront Object) files",                   "optional": True,   "extra_exts": []},
+        {"ext": "ply",   "prog_id": "Cura.ply",         "type_description": "Stanford Triangle Format (PLY) files",        "section_title": "*.PLY files",      "feature_description": "Associate .PLY (Stanford Triangle Format) files",           "optional": True,   "extra_exts": []},
+        {"ext": "dae",   "prog_id": "Cura.dae",         "type_description": "COLLADA (DAE) files",                         "section_title": "*.DAE files",      "feature_description": "Associate .DAE (COLLADA) files",                            "optional": True,   "extra_exts": []},
+        {"ext": "gltf",  "prog_id": "Cura.gltf",        "type_description": "glTF JSON files",                             "section_title": "*.GLTF files",     "feature_description": "Associate .GLTF (GL Transmission Format) files",            "optional": True,   "extra_exts": []},
+        {"ext": "glb",   "prog_id": "Cura.glb",         "type_description": "glTF Binary files",                           "section_title": "*.GLB files",      "feature_description": "Associate .GLB (GL Transmission Format Binary) files",      "optional": True,   "extra_exts": []},
+        {"ext": "amf",   "prog_id": "Cura.amf",         "type_description": "Additive Manufacturing Format (AMF) files",   "section_title": "*.AMF files",      "feature_description": "Associate .AMF (Additive Manufacturing Format) files",      "optional": True,   "extra_exts": []},
+        {"ext": "x3d",   "prog_id": "Cura.x3d",         "type_description": "X3D files",                                   "section_title": "*.X3D files",      "feature_description": "Associate .X3D (Extensible 3D) files",                      "optional": True,   "extra_exts": []},
+        {"ext": "ufp",   "prog_id": "Cura.ufp",         "type_description": "UltiMaker Format Package (UFP) files",        "section_title": "*.UFP files",      "feature_description": "Associate .UFP (UltiMaker Format Package) files",           "optional": False,  "extra_exts": []},
+        {"ext": "gcode", "prog_id": "Cura.gcode",       "type_description": "G-code files",                                "section_title": "*.GCODE files",    "feature_description": "Associate .GCODE and .G (G-code) files",                    "optional": True,   "extra_exts": ["g"]},
+    ]
 
     jinja_template_path = Path(source_loc.joinpath("packaging", "msi", "UltiMaker-Cura.wxs.jinja"))
     with open(jinja_template_path, "r") as f:
@@ -33,18 +49,18 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
     wxs_content = template.render(
         app_name=f"{app_name}",
         main_app="UltiMaker-Cura.exe",
-        version=os.getenv('CURA_VERSION_FULL'),
-        version_major=os.environ.get("CURA_VERSION_MAJOR"),
-        version_minor=os.environ.get("CURA_VERSION_MINOR"),
-        version_patch=os.environ.get("CURA_VERSION_PATCH"),
+        version=version,
+        version_major=str(parsed_version.major),
+        version_minor=str(parsed_version.minor),
+        version_patch=str(parsed_version.patch),
         company="UltiMaker",
-        web_site="https://ultimaker.com",
         year=datetime.now().year,
         upgrade_code=str(uuid.uuid5(uuid.NAMESPACE_DNS, app_name)),
         cura_license_file=str(source_loc.joinpath("packaging", "msi", "cura_license.rtf")),
         cura_banner_top=str(source_loc.joinpath("packaging", "msi", "banner_top.bmp")),
         cura_banner_side=str(source_loc.joinpath("packaging", "msi", "banner_side.bmp")),
         cura_icon=str(source_loc.joinpath("packaging", "icons", "Cura.ico")),
+        file_associations=file_associations,
     )
 
     with open(work_loc.joinpath("UltiMaker-Cura.wxs"), "w") as f:
@@ -66,7 +82,7 @@ def cleanup_artifacts(dist_path: Path):
             shutil.rmtree(d, ignore_errors=True)
 
 
-def build(dist_path: Path, filename: Path):
+def build(dist_path: Path, filename: Path, arch: str = "x64"):
     dist_loc = Path(os.getcwd(), dist_path)
     work_loc = work_path(filename)
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
@@ -89,7 +105,7 @@ def build(dist_path: Path, filename: Path):
     subprocess.call(heat_command)
 
     build_command = ["candle",
-                     "-arch", "x64",
+                     "-arch", arch,
                      f"-dCuraDir={dist_loc}\\",
                      "-ext", "WixFirewallExtension",
                      "-out", f"{build_loc.as_posix()}\\",
@@ -111,12 +127,14 @@ def build(dist_path: Path, filename: Path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create Windows msi installer of Cura.")
-    parser.add_argument("source_path", type=Path, help="Path to Conan install Cura folder.")
-    parser.add_argument("dist_path", type=Path, help="Path to Pyinstaller dist folder")
-    parser.add_argument("filename", type=Path,
+    parser.add_argument("--source_path", type=Path, help="Path to Conan install Cura folder.")
+    parser.add_argument("--dist_path", type=Path, help="Path to Pyinstaller dist folder")
+    parser.add_argument("--filename", type=Path,
                         help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.msi')")
-    parser.add_argument("name", type=str, help="App name (e.g. 'UltiMaker Cura')")
+    parser.add_argument("--name", type=str, help="App name (e.g. 'UltiMaker Cura')")
+    parser.add_argument("--version", type=str, help="The full cura version, e.g. 5.9.0-beta.1+24132")
+    parser.add_argument("--arch", type=str, default="x64", choices=["x64", "arm64"], help="Target architecture (default: x64)")
     args = parser.parse_args()
-    generate_wxs(args.source_path.resolve(), args.dist_path.resolve(), args.filename.resolve(), args.name)
+    generate_wxs(args.source_path.resolve(), args.dist_path.resolve(), args.filename.resolve(), args.name, args.version)
     cleanup_artifacts(args.dist_path.resolve())
-    build(args.dist_path.resolve(), args.filename)
+    build(args.dist_path.resolve(), args.filename, args.arch)

@@ -92,6 +92,8 @@ SettingItem
 
         UM.Label
         {
+            id: unitLabel
+
             anchors
             {
                 left: parent.left
@@ -101,11 +103,21 @@ SettingItem
                 verticalCenter: parent.verticalCenter
             }
 
-            text: definition.unit
+            text: definition ? definition.unit : ""
             //However the setting value is aligned, align the unit opposite. That way it stays readable with right-to-left languages.
             horizontalAlignment: (input.effectiveHorizontalAlignment == Text.AlignLeft) ? Text.AlignRight : Text.AlignLeft
             textFormat: Text.PlainText
             color: UM.Theme.getColor("setting_unit")
+
+            Binding
+            {
+                target: unitLabel
+                property: "text"
+                value:
+                {
+                    return propertyProvider.properties.unit;
+                }
+            }
         }
 
         TextInput
@@ -148,6 +160,11 @@ SettingItem
                 if(activeFocus)
                 {
                     base.focusReceived();
+                    setScrollPositionChangeLoseFocus(false);
+                }
+                else
+                {
+                    setScrollPositionChangeLoseFocus(true);
                 }
                 base.focusGainedByClick = false;
             }
@@ -158,16 +175,18 @@ SettingItem
             selectionColor: UM.Theme.getColor("text_selection")
             selectByMouse: true
 
-            maximumLength: (definition.type == "str" || definition.type == "[int]") ? -1 : 12
+            maximumLength: (definition && (definition.type == "str" || definition.type == "[int]")) ? -1 : 12
 
             // Since [int] & str don't have a max length, they need to be clipped (since clipping is expensive, this
             // should be done as little as possible)
-            clip: definition.type == "str" || definition.type == "[int]"
+            clip: definition && (definition.type == "str" || definition.type == "[int]")
 
             validator: RegularExpressionValidator
             {
                 regularExpression:
                 {
+                    if (!definition) return /.*/  // Allow anything if definition is null
+                    
                     switch (definition.type)
                     {
                         case "[int]":
@@ -223,7 +242,7 @@ SettingItem
 
                 cursorShape: Qt.IBeamCursor
 
-                onPressed: {
+                onPressed:(mouse)=> {
                     if (!input.activeFocus)
                     {
                         base.focusGainedByClick = true

@@ -10,14 +10,16 @@ Packages
     bannerVisible:  UM.Preferences.getValue("cura/market_place_show_material_banner")
     bannerIcon: UM.Theme.getIcon("Spool")
     bannerText: catalog.i18nc("@text", "Select and install material profiles optimised for your UltiMaker 3D printers.")
-    bannerReadMoreUrl: "https://support.ultimaker.com/hc/en-us/articles/360011968360/?utm_source=cura&utm_medium=software&utm_campaign=marketplace-learn-materials"
+    bannerReadMoreUrl: "https://support.ultimaker.com/s/article/1667411313594"
     onRemoveBanner: function() {
         UM.Preferences.setValue("cura/market_place_show_material_banner", false);
         bannerVisible = false;
     }
     searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/materials?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-materials-browser"
     showUpdateButton: true
+    showUpdateAllButton: true
     showInstallButton: true
+    updateAllText: catalog.i18nc("@label", "Update all the Materials: %1 materials have a new version available.").arg(updatablePackagesCount)
 
     model: manager.MaterialPackageList
 }

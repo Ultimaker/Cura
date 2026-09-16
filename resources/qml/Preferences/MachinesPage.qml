@@ -58,10 +58,11 @@ UM.ManagementPage
         anchors.fill: parent
         spacing: UM.Theme.getSize("default_margin").height
 
+
         Repeater
         {
             id: machineActionRepeater
-            model: base.currentItem ? Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
+            model: base.currentItem ? CuraApplication.getSupportedActionMachineList(base.currentItem.id) : null
 
             Item
             {
@@ -74,12 +75,18 @@ UM.ManagementPage
                     onClicked:
                     {
                         var currentItem = machineActionRepeater.model[index]
-                        if (currentItem.shouldOpenAsDialog) {
-                            actionDialog.loader.manager = currentItem
-                            actionDialog.loader.source = currentItem.qmlPath
-                            actionDialog.title = currentItem.label
+                        if (currentItem.shouldOpenAsDialog)
+                        {
+                            var actionDialog = actionDialogComponent.createObject(base,
+                                {
+                                    "title": currentItem.label,
+                                    "loader.manager": currentItem,
+                                    "loader.source": currentItem.qmlPath
+                                });
                             actionDialog.show()
-                        } else {
+                        }
+                        else
+                        {
                             currentItem.execute()
                         }
                     }
@@ -90,52 +97,61 @@ UM.ManagementPage
 
     Item
     {
-        UM.Dialog
+        Component
         {
-            id: actionDialog
-            minimumWidth: UM.Theme.getSize("modal_window_minimum").width
-            minimumHeight: UM.Theme.getSize("modal_window_minimum").height
-            maximumWidth: minimumWidth * 3
-            maximumHeight: minimumHeight * 3
-            backgroundColor: UM.Theme.getColor("main_background")
-            onVisibleChanged:
+            id: actionDialogComponent
+
+            UM.Dialog
             {
-                if(!visible)
+                id: actionDialog
+                minimumWidth: UM.Theme.getSize("modal_window_minimum").width
+                minimumHeight: UM.Theme.getSize("modal_window_minimum").height
+                maximumWidth: minimumWidth * 3
+                maximumHeight: minimumHeight * 3
+                backgroundColor: UM.Theme.getColor("main_background")
+                selfDestroy: true
+            }
+        }
+
+        Component
+        {
+            id: confirmDialogComponent
+
+            UM.ConfirmRemoveDialog
+            {
+                object: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
+                text: base.currentItem ? base.currentItem.removalWarning : ""
+                selfDestroy: true
+
+                onAccepted:
                 {
-                    actionDialog.loader.item.focus = true
+                    Cura.MachineManager.removeMachine(base.currentItem.id)
+                    if (!base.currentItem) {
+                        objectList.currentIndex = activeMachineIndex()
+                    }
+                    //Force updating currentItem and the details panel
+                    objectList.onCurrentIndexChanged()
                 }
             }
         }
 
-        UM.ConfirmRemoveDialog
+        Component
         {
-            id: confirmDialog
-            object: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
-            text: base.currentItem ? base.currentItem.removalWarning : ""
+            id: renameDialogComponent
 
-            onAccepted:
+            Cura.RenameDialog
             {
-                Cura.MachineManager.removeMachine(base.currentItem.id)
-                if(!base.currentItem)
+                object: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
+                property var machine_name_validator: Cura.MachineNameValidator {}
+                validName: renameDialog.newName.match(renameDialog.machine_name_validator.machineNameRegex) != null
+                selfDestroy: true
+
+                onAccepted:
                 {
-                    objectList.currentIndex = activeMachineIndex()
+                    Cura.MachineManager.renameMachine(base.currentItem.id, newName.trim())
+                    //Force updating currentItem and the details panel
+                    objectList.onCurrentIndexChanged()
                 }
-                //Force updating currentItem and the details panel
-                objectList.onCurrentIndexChanged()
-            }
-        }
-
-        Cura.RenameDialog
-        {
-            id: renameDialog
-            object: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
-            property var machine_name_validator: Cura.MachineNameValidator { }
-            validName: renameDialog.newName.match(renameDialog.machine_name_validator.machineNameRegex) != null
-            onAccepted:
-            {
-                Cura.MachineManager.renameMachine(base.currentItem.id, newName.trim())
-                //Force updating currentItem and the details panel
-                objectList.onCurrentIndexChanged()
             }
         }
 
@@ -152,13 +168,13 @@ UM.ManagementPage
             {
                 text: catalog.i18nc("@action:button", "Remove")
                 enabled: base.currentItem != null && model.count > 1
-                onTriggered: confirmDialog.open()
+                onTriggered: confirmDialogComponent.createObject(base).open()
             }
             Cura.MenuItem
             {
                 text: catalog.i18nc("@action:button", "Rename")
                 enabled: base.currentItem != null && base.currentItem.metadata.group_name == null
-                onTriggered:  renameDialog.open()
+                onTriggered: renameDialogComponent.createObject(base).open()
             }
        }
 

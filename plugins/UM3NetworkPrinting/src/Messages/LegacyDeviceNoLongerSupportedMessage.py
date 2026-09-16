@@ -16,7 +16,7 @@ class LegacyDeviceNoLongerSupportedMessage(Message):
     def __init__(self) -> None:
         super().__init__(
             text = I18N_CATALOG.i18nc("@info:status", "You are attempting to connect to a printer that is not "
-                                                      "running Ultimaker Connect. Please update the printer to the "
+                                                      "running UltiMaker Connect. Please update the printer to the "
                                                       "latest firmware."),
             title = I18N_CATALOG.i18nc("@info:title", "Update your printer"),
             lifetime = 10,

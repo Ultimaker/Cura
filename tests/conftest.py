@@ -21,6 +21,12 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 @pytest.fixture()
 def application() -> CuraApplication:
     app = MagicMock()
+    app.getInstance = MagicMock(return_value=app)
+    machine_manager = MagicMock()
+    extruder_changed_signal = MagicMock()
+    extruder_changed_signal.connect = MagicMock()
+    machine_manager.extruderChanged = extruder_changed_signal
+    app.getMachineManager = MagicMock(return_value=machine_manager)
     return app
 
 @pytest.fixture()

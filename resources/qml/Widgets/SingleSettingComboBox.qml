@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker
+// Copyright (c) 2026 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -12,22 +12,41 @@ import Cura 1.7 as Cura
 // All of the setting updating logic is handled by this component.
 // This uses the "options" value of a setting to populate the drop down. This will only work for settings with "options"
 // If the setting is limited to a single extruder or is settable with different values per extruder use "updateAllExtruders: true"
-Cura.ComboBox {
+Cura.ComboBox
+{
     textRole: "text"
     property alias settingName: propertyProvider.key
+    property alias propertyRemoveUnusedValue: propertyProvider.removeUnusedValue
 
     // If true, all extruders will have "settingName" property updated.
     // The displayed value will be read from the extruder with index "defaultExtruderIndex" instead of the machine.
     property bool updateAllExtruders: false
     // This is only used if updateAllExtruders == true
-    property int defaultExtruderIndex: 0
+    property int defaultExtruderIndex: Cura.ExtruderManager.activeExtruderIndex
+
+    // For dropdown boxes, settings included in this property are hidden from the user on _selection_ (not show).
+    property list<string> hideOptions: []
+
+    UM.I18nCatalog { id: settings_catalog; name: "fdmprinter.def.json" }
+
+    Text
+    {
+        // Used if a hidden option ends up selected anyway.
+        text: propertyProvider.properties.options ? propertyProvider.properties.options[propertyProvider.properties.value] : ""
+        visible: currentIndex < 0
+        color: UM.Theme.getColor("text")
+        anchors.fill: parent
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignLeft
+        leftPadding: UM.Theme.getSize("narrow_margin").width
+    }
 
     model:  ListModel
     {
         id: comboboxModel
 
         // The propertyProvider has not loaded the setting when this components onComplete triggers. Populating the model
-        // is defered until propertyProvider signals "onIsValueUsedChanged". The defered upate is triggered with this function.
+        // is deferred until propertyProvider signals "onIsValueUsedChanged". The deferred update is triggered with this function.
         function updateModel()
         {
             clear()
@@ -40,7 +59,12 @@ Cura.ComboBox {
             for (var i = 0; i < propertyProvider.properties["options"].keys().length; i++)
             {
                 var key = propertyProvider.properties["options"].keys()[i]
+                if (hideOptions.includes(key))
+                {
+                    continue;
+                }
                 var value = propertyProvider.properties["options"][key]
+                value = settings_catalog.i18nc(settingName + " option " + key, value)
                 comboboxModel.append({ text: value, code: key})
 
                 if (propertyProvider.properties.value === key)
@@ -67,7 +91,8 @@ Cura.ComboBox {
     {
         id: propertyProvider
         containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
-        watchedProperties: ["value" , "options"]
+        removeUnusedValue: false
+        watchedProperties: ["value", "validationState",  "resolve", "options"]
     }
 
     Connections
@@ -86,6 +111,10 @@ Cura.ComboBox {
             updateSetting(comboboxModel.get(currentIndex).code)
         }
 
+    }
+    function forceUpdateSettings()
+    {
+        comboboxModel.updateModel();
     }
 
     function updateSetting(value)

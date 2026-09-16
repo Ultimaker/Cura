@@ -27,30 +27,25 @@ Cura.Menu
         {
             text: model.hotend_name
             checkable: true
-            property var activeMachine: Cura.MachineManager.activeMachine
             checked:
             {
-                if (activeMachine === null)
-                {
-                    return false
-                }
-                var extruder = activeMachine.extruderList[extruderIndex]
-                return (extruder === undefined) ? false : (extruder.variant.name == model.hotend_name)
+                const extruder = Cura.MachineManager.activeMachineExtruders[extruderIndex];
+                if (!extruder) return false;
+                return extruder.variant.name == model.hotend_name;
             }
             enabled:
             {
-                if (activeMachine === null)
-                {
-                    return false
-                }
-                var extruder = activeMachine.extruderList[extruderIndex]
-                return (extruder === undefined) ? false : extruder.isEnabled
+                const extruder = Cura.MachineManager.activeMachineExtruders[extruderIndex];
+                if (!extruder) return false;
+                return extruder.isEnabled;
             }
             onTriggered: Cura.MachineManager.setVariant(nozzleMenu.extruderIndex, model.container_node)
         }
 
-        onObjectAdded: function(index, object) { nozzleMenu.insertItem(index, object) }
-        onObjectRemoved: function(index, object) {nozzleMenu.removeItem(object)}
+        onObjectAdded: function(index, object) {
+            nozzleMenu.insertItem(index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
+        }
+        onObjectRemoved: function(index, object) { nozzleMenu.removeItem(object); }
     }
-
 }

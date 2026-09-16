@@ -34,8 +34,11 @@ Cura.Menu
             }
             shortcut: model.shortcut
         }
-        onObjectAdded: function(index, object) { openFilesMenu.insertItem(index, object)}
 
+        onObjectAdded: function(index, object) {
+            openFilesMenu.insertItem(index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
+        }
         onObjectRemoved: function(index, object) { openFilesMenu.removeItem(object) }
     }
 }

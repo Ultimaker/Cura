@@ -77,7 +77,7 @@ Control
 
                     Repeater {
                         model: [
-                            catalog.i18nc("@info", "Sign in into UltiMaker Digilal Factory"),
+                            catalog.i18nc("@info", "Sign in into UltiMaker Digital Factory"),
                             catalog.i18nc("@info", "Follow the procedure to add a new printer"),
                             catalog.i18nc("@info", "Your new printer will automatically appear in Cura"),
                         ]
@@ -101,7 +101,7 @@ Control
                     iconSource: UM.Theme.getIcon("LinkExternal")
                     isIconOnRightSide: true
                     textFont: UM.Theme.getFont("small")
-                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=onboarding-add-printer")
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667410775048")
                 }
             }
         }
@@ -129,11 +129,10 @@ Control
                     text: catalog.i18nc("@button", "Sign in to Digital Factory")
                     onClicked: function()
                     {
-                        Qt.openUrlExternally("https://digitalfactory.ultimaker.com/app/printers?add_printer=true&utm_source=cura&utm_medium=software&utm_campaign=onboarding-add-printer")
                         text = catalog.i18nc("@button", "Waiting for new printers")
                         busy = true;
                         enabled = false;
-                        Cura.API.account.login();
+                        Cura.API.account.isLoggedIn? Cura.API.account.sync():Cura.API.account.login();
                     }
                 }
             }

@@ -1,22 +1,19 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, Dict, TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import pyqtProperty, pyqtSignal
 
-from UM.Decorators import override
+from UM.Decorators import CachedMemberFunctions, override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, PropertyEvaluationContext
 from UM.Util import parseBool
 
-import cura.CuraApplication
-
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack, _ContainerIndexes
-from .ExtruderManager import ExtruderManager
 
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
@@ -86,6 +83,7 @@ class ExtruderStack(CuraContainerStack):
     def setCompatibleMaterialDiameter(self, value: float) -> None:
         old_approximate_diameter = self.getApproximateMaterialDiameter()
         if self.getCompatibleMaterialDiameter() != value:
+            CachedMemberFunctions.clearInstanceCache(self)
             self.definitionChanges.setProperty("material_diameter", "value", value)
             self.compatibleMaterialDiameterChanged.emit()
 
@@ -140,7 +138,11 @@ class ExtruderStack(CuraContainerStack):
                 context.popContainer()
             return result
 
-        limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
+        if not context:
+            context = PropertyEvaluationContext(self)
+        if "extruder_position" not in context.context:
+            context.context["extruder_position"] = super().getProperty(key, "limit_to_extruder", context)
+        limit_to_extruder = context.context["extruder_position"]
         if limit_to_extruder is not None:
             limit_to_extruder = str(limit_to_extruder)
 

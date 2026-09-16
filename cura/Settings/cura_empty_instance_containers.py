@@ -28,6 +28,7 @@ empty_material_container.setMetaDataEntry("type", "material")
 empty_material_container.setMetaDataEntry("base_file", "empty_material")
 empty_material_container.setMetaDataEntry("GUID", "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")
 empty_material_container.setMetaDataEntry("material", "empty")
+empty_material_container.setMetaDataEntry("brand", "empty_brand")
 
 # Empty quality
 EMPTY_QUALITY_CONTAINER_ID = "empty_quality"

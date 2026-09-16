@@ -1,42 +1,133 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+import os
+import platform
+import subprocess
+from typing import List, Optional, cast
 
-from PyQt6.QtCore import QObject, QUrl
+from UM.i18n import i18nCatalog
+from UM.Message import Message
+
+i18n_catalog = i18nCatalog("cura")
+
+from PyQt6.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
 from PyQt6.QtGui import QDesktopServices
-from typing import List, cast
+from PyQt6.QtWidgets import QApplication
 
+from UM.Application import Application
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
 import cura.CuraApplication
 from cura.Operations.SetParentOperation import SetParentOperation
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
+
+from cura.Arranging.GridArrange import GridArrange
+from cura.Arranging.Nest2DArrange import Nest2DArrange
+
 
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 
-
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
+
+        self._operation_stack = Application.getInstance().getOperationStack()
+        self._operation_stack.changed.connect(self._onUndoStackChanged)
+
+        Selection.selectionChanged.connect(self._onSelectionChanged)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
+
+    undoStackChanged = pyqtSignal()
+    showFileLocationEnabledChanged = pyqtSignal()
+
+    def _onSelectionChanged(self) -> None:
+        self.showFileLocationEnabledChanged.emit()
+
+    def _onSceneChanged(self, _source: SceneNode) -> None:
+        self.showFileLocationEnabledChanged.emit()
+
+    def _getSelectedNodeFilePath(self) -> Optional[str]:
+        """Returns the source file path of the selected node if the selection is valid, or None."""
+        selected = Selection.getAllSelectedObjects()
+        if len(selected) != 1:
+            return None
+        node = selected[0]
+        if not isinstance(node, CuraSceneNode) or node.callDecoration("isGroup"):
+            return None
+        mesh_data = node.getMeshData()
+        if mesh_data is None:
+            return None
+        return mesh_data.getFileName() or None
+
+    @pyqtProperty(bool, notify = showFileLocationEnabledChanged)
+    def canShowFileLocation(self) -> bool:
+        """Returns True when exactly one model is selected and its source file is accessible."""
+        file_path = self._getSelectedNodeFilePath()
+        return file_path is not None and os.path.exists(file_path)
+
+    @pyqtSlot()
+    def showFileLocation(self) -> None:
+        """Reveal the source file of the selected model in the OS file manager."""
+        file_path = self._getSelectedNodeFilePath()
+        if file_path is None:
+            return
+        if not os.path.exists(file_path):
+            Logger.warning(f"Cannot show file location: file no longer exists: {file_path}")
+            Message(
+                i18n_catalog.i18nc("@info:status", "The source file could not be found. It may have been moved or deleted."),
+                title=i18n_catalog.i18nc("@info:title", "File Not Found"),
+                message_type=Message.MessageType.ERROR,
+            ).show()
+            return
+
+        system = platform.system()
+        if system == "Windows":
+            subprocess.Popen(f'explorer /select,"{os.path.normpath(file_path)}"', shell = False)
+        elif system == "Darwin":
+            subprocess.Popen(["open", "-R", file_path])
+        else:
+            QDesktopServices.openUrl(QUrl.fromLocalFile(os.path.dirname(file_path)))
 
     @pyqtSlot()
     def openDocumentation(self) -> None:
         # Starting a web browser from a signal handler connected to a menu will crash on windows.
         # So instead, defer the call to the next run of the event loop, since that does work.
         # Note that weirdly enough, only signal handlers that open a web browser fail like that.
-        event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software?utm_source=cura&utm_medium=software&utm_campaign=dropdown-documentation")], {})
+        event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
+
+    @pyqtProperty(bool, notify=undoStackChanged)
+    def canUndo(self):
+        return self._operation_stack.canUndo()
+
+    @pyqtProperty(bool, notify=undoStackChanged)
+    def canRedo(self):
+        return self._operation_stack.canRedo()
+
+    @pyqtSlot()
+    def undo(self):
+        self._operation_stack.undo()
+
+    @pyqtSlot()
+    def redo(self):
+        self._operation_stack.redo()
+
+    def _onUndoStackChanged(self):
+        self.undoStackChanged.emit()
 
     @pyqtSlot()
     def openBugReportPage(self) -> None:
@@ -78,16 +169,25 @@ class CuraActions(QObject):
             center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
             operation.addOperation(center_operation)
         operation.push()
-
     @pyqtSlot(int)
     def multiplySelection(self, count: int) -> None:
+        """Multiply all objects in the selection
+        :param count: The number of times to multiply the selection.
+        """
+        min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job.start()
+
+    @pyqtSlot(int)
+    def multiplySelectionToGrid(self, count: int) -> None:
         """Multiply all objects in the selection
 
         :param count: The number of times to multiply the selection.
         """
 
         min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset=max(min_offset, 8),
+                                 grid_arrange=True)
         job.start()
 
     @pyqtSlot()
@@ -180,6 +280,65 @@ class CuraActions(QObject):
         operation.push()
 
         Selection.clear()
+
+    @pyqtSlot()
+    def cut(self) -> None:
+        self.copy()
+        self.deleteSelection()
+
+    @pyqtSlot()
+    def copy(self) -> None:
+        mesh_writer = cura.CuraApplication.CuraApplication.getInstance().getMeshFileHandler().getWriter("3MFWriter")
+        if not mesh_writer:
+            Logger.log("e", "No 3MF writer found, unable to copy.")
+            return
+
+        # Get the selected nodes
+        selected_objects = Selection.getAllSelectedObjects()
+        # Serialize the nodes to a string
+        scene_string = mesh_writer.sceneNodesToString(selected_objects)
+        # Put the string on the clipboard
+        QApplication.clipboard().setText(scene_string)
+
+    @pyqtSlot()
+    def paste(self) -> None:
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        mesh_reader = application.getMeshFileHandler().getReaderForFile(".3mf")
+        if not mesh_reader:
+            Logger.log("e", "No 3MF reader found, unable to paste.")
+            return
+
+        # Parse the scene from the clipboard
+        scene_string = QApplication.clipboard().text()
+
+        nodes = mesh_reader.stringToSceneNodes(scene_string)
+
+        if not nodes:
+            # Nothing to paste
+            return
+
+        # Find all fixed nodes, these are the nodes that should be avoided when arranging
+        fixed_nodes = []
+        root = application.getController().getScene().getRoot()
+        for node in DepthFirstIterator(root):
+            # Only count sliceable objects
+            if node.callDecoration("isSliceable"):
+                fixed_nodes.append(node)
+        # Add the new nodes to the scene, and arrange them
+
+        arranger = GridArrange(nodes, application.getBuildVolume(), fixed_nodes)
+        group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene = True)
+        group_operation.push()
+
+        # deselect currently selected nodes, and select the new nodes
+        for node in Selection.getAllSelectedObjects():
+            Selection.remove(node)
+
+        numberOfFixedNodes = len(fixed_nodes)
+        for node in nodes:
+            numberOfFixedNodes += 1
+            node.printOrder = numberOfFixedNodes
+            Selection.add(node)
 
     def _openUrl(self, url: QUrl) -> None:
         QDesktopServices.openUrl(url)

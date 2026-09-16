@@ -1,6 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Optional
+
 from PyQt6.QtCore import pyqtProperty, QUrl
 
 from UM.Stage import Stage
@@ -13,8 +15,8 @@ from UM.Stage import Stage
 # * The MainComponent is the component that will be drawn starting from the bottom of the stageBar and fills the rest
 #   of the screen.
 class CuraStage(Stage):
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, parent = None, active_view: Optional[str] = "SolidView") -> None:
+        super().__init__(parent, active_view = active_view)
 
     @pyqtProperty(str, constant = True)
     def stageId(self) -> str:

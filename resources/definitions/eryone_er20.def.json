@@ -95,7 +95,6 @@
         "support_pattern": { "value": "'triangles'" },
         "support_roof_enable": { "value": true },
         "support_type": { "value": "'everywhere'" },
-        "support_use_towers": { "value": false },
         "support_xy_distance": { "value": 0.7 },
         "support_xy_distance_overhang": { "value": 0.2 },
         "support_z_distance": { "value": 0.3 },

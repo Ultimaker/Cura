@@ -1,10 +1,11 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
 
 from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
+from UM.Decorators import deprecated
 
 import cura.CuraApplication # To get the global container stack to find the current machine.
 from UM.Util import parseBool
@@ -15,6 +16,7 @@ from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
 from cura.Machines.ContainerTree import ContainerTree
+from cura.Settings.ExtruderStack import ExtruderStack
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
@@ -247,16 +249,25 @@ class ExtruderManager(QObject):
                 stack_to_use = container_registry.findContainerStacks(id = extruder_stack_id)[0]
 
             if not support_enabled:
-                support_enabled |= stack_to_use.getProperty("support_enable", "value")
+                support_enabled |= parseBool(stack_to_use.getProperty("support_enable", "value"))
             if not support_bottom_enabled:
-                support_bottom_enabled |= stack_to_use.getProperty("support_bottom_enable", "value")
+                support_bottom_enabled |= parseBool(stack_to_use.getProperty("support_bottom_enable", "value"))
             if not support_roof_enabled:
-                support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
+                support_roof_enabled |= parseBool(stack_to_use.getProperty("support_roof_enable", "value"))
+
+            painted_extruders = node.callDecoration("getPaintedExtruders")
+            if painted_extruders is not None:
+                for extruder_nr in painted_extruders:
+                    try:
+                        used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
+                    except KeyError:
+                        pass
 
         # Check limit to extruders
         limit_to_extruder_feature_list = ["wall_0_extruder_nr",
                                           "wall_x_extruder_nr",
                                           "roofing_extruder_nr",
+                                          "flooring_extruder_nr",
                                           "top_bottom_extruder_nr",
                                           "infill_extruder_nr",
                                           ]
@@ -303,6 +314,12 @@ class ExtruderManager(QObject):
             Logger.log("e", "Unable to find one or more of the extruders in %s", used_extruder_stack_ids)
             return []
 
+    def getFirstUsedExtruderStack(self)-> ExtruderStack:
+        used_extruders = self.getUsedExtruderStacks()
+        sorted_extruders = sorted(used_extruders, key=lambda extruder: extruder.getValue("extruder_nr"))
+        return sorted_extruders[0]
+
+    @deprecated("This method is deprecated because it does not always return the actual initial extruder, use PrintInformation.initialExtruderNr", since="5.14.0")
     def getInitialExtruderNr(self) -> int:
         """Get the extruder that the print will start with.
 
@@ -316,7 +333,12 @@ class ExtruderManager(QObject):
         # Starts with the adhesion extruder.
         adhesion_type = global_stack.getProperty("adhesion_type", "value")
         if adhesion_type in {"skirt", "brim"}:
-            return max(0, int(global_stack.getProperty("skirt_brim_extruder_nr", "value")))  # optional skirt/brim extruder defaults to zero
+            skirt_brim_extruder_nr = global_stack.getProperty("skirt_brim_extruder_nr", "value")
+            # if the skirt_brim_extruder_nr is -1, then we use the first used extruder
+            if skirt_brim_extruder_nr == -1:
+                return self.getFirstUsedExtruderStack().getValue("extruder_nr")
+            else:
+                return skirt_brim_extruder_nr
         if adhesion_type == "raft":
             return global_stack.getProperty("raft_base_extruder_nr", "value")
 
@@ -325,7 +347,7 @@ class ExtruderManager(QObject):
             return global_stack.getProperty("support_infill_extruder_nr", "value")
 
         # REALLY no adhesion? Use the first used extruder.
-        return self.getUsedExtruderStacks()[0].getProperty("extruder_nr", "value")
+        return self.getFirstUsedExtruderStack().getValue("extruder_nr")
 
     def removeMachineExtruders(self, machine_id: str) -> None:
         """Removes the container stack and user profile for the extruders for a specific machine.
@@ -465,7 +487,6 @@ class ExtruderManager(QObject):
         if not active_material_node_qualities:
             return False
         return list(active_material_node_qualities.keys())[0] != "empty_quality"
-
 
     @pyqtSlot(str, result="QVariant")
     def getInstanceExtruderValues(self, key: str) -> List:

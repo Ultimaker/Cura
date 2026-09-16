@@ -1,12 +1,15 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import math
 import numpy
 
-from typing import Optional, cast
+from typing import Optional, cast, List, Tuple
 
 from UM.Qt.Bindings.Theme import Theme
 from UM.Qt.QtApplication import QtApplication
 from UM.Logger import Logger
+
+from cura.PrintSegmentAttributes import PrintSegmentAttributes
 
 
 class LayerPolygon:
@@ -18,18 +21,26 @@ class LayerPolygon:
     SkirtType = 5
     InfillType = 6
     SupportInfillType = 7
-    MoveCombingType = 8
-    MoveRetractionType = 9
+    MoveUnretractedType = 8
+    MoveRetractedType = 9
     SupportInterfaceType = 10
     PrimeTowerType = 11
-    __number_of_types = 12
+    MoveWhileRetractingType = 12
+    MoveWhileUnretractingType = 13
+    StationaryRetractUnretract = 14
+    __number_of_types = 15
 
-    __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType,
-                                                   numpy.arange(__number_of_types) == MoveCombingType),
-                                                   numpy.arange(__number_of_types) == MoveRetractionType)
+    __jump_map = numpy.logical_or(numpy.logical_or(numpy.logical_or(
+                                                   numpy.arange(__number_of_types) == NoneType,
+                                                   numpy.arange(__number_of_types) == MoveUnretractedType),
+                                                   numpy.logical_or(
+                                                   numpy.arange(__number_of_types) == MoveRetractedType,
+                                                   numpy.arange(__number_of_types) == MoveWhileRetractingType)),
+                                                   numpy.arange(__number_of_types) == MoveWhileUnretractingType)
 
     def __init__(self, extruder: int, line_types: numpy.ndarray, data: numpy.ndarray,
-                 line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray) -> None:
+                 line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray,
+                 print_attributes: List["PrintSegmentAttributes"]) -> None:
         """LayerPolygon, used in ProcessSlicedLayersJob
 
         :param extruder: The position of the extruder
@@ -38,6 +49,7 @@ class LayerPolygon:
         :param line_widths: array with line widths
         :param line_thicknesses: array with type as index and thickness as value
         :param line_feedrates: array with line feedrates
+        :parm print_attributes: array with the print attributes of each segment, e.g. overhanging or bridging
         """
 
         self._extruder = extruder
@@ -66,7 +78,22 @@ class LayerPolygon:
         # Buffering the colors shouldn't be necessary as it is not
         # re-used and can save a lot of memory usage.
         self._color_map = LayerPolygon.getColorMap()
-        self._colors = self._color_map[self._types]  # type: numpy.ndarray
+
+        raw_colors = []
+        for idx in range(min(len(self._types), len(print_attributes))):
+            line_type = self._types[idx][0]
+            line_attributes = print_attributes[idx]
+            color_index = 0
+            if line_type == LayerPolygon.Inset0Type or line_type == LayerPolygon.InsetXType:
+                if PrintSegmentAttributes.Bridging in line_attributes:
+                    color_index = 2
+                elif PrintSegmentAttributes.Overhanging in line_attributes:
+                    color_index = 1
+            elif line_type == LayerPolygon.SkinType and PrintSegmentAttributes.Bridging in line_attributes:
+                color_index = 1
+            raw_colors.append(self._color_map[line_type][color_index])
+
+        self._colors: numpy.ndarray = numpy.array(raw_colors)
 
         # When type is used as index returns true if type == LayerPolygon.InfillType
         # or type == LayerPolygon.SkinType
@@ -74,8 +101,8 @@ class LayerPolygon:
         # Should be generated in better way, not hardcoded.
         self._is_infill_or_skin_type_map = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype=bool)
 
-        self._build_cache_line_mesh_mask = None  # type: Optional[numpy.ndarray]
-        self._build_cache_needed_points = None  # type: Optional[numpy.ndarray]
+        self._build_cache_line_mesh_mask: Optional[numpy.ndarray] = None
+        self._build_cache_needed_points: Optional[numpy.ndarray] = None
 
     def buildCache(self) -> None:
         # For the line mesh we do not draw Infill or Jumps. Therefore those lines are filtered out.
@@ -167,7 +194,7 @@ class LayerPolygon:
         return self._colors
 
     def mapLineTypeToColor(self, line_types: numpy.ndarray) -> numpy.ndarray:
-        return self._color_map[line_types]
+        return self._color_map[line_types][0]
 
     def isInfillOrSkinType(self, line_types: numpy.ndarray) -> numpy.ndarray:
         return self._is_infill_or_skin_type_map[line_types]
@@ -185,6 +212,11 @@ class LayerPolygon:
     @property
     def types(self):
         return self._types
+
+    @property
+    def lineLengths(self):
+        data_array = numpy.array(self._data)
+        return numpy.linalg.norm(data_array[1:] - data_array[:-1], axis=1)
 
     @property
     def data(self):
@@ -249,24 +281,32 @@ class LayerPolygon:
     __color_map = None  # type: numpy.ndarray
 
     @classmethod
-    def getColorMap(cls) -> numpy.ndarray:
+    def getColorMap(cls) -> List[List[Tuple[float, float, float, float]]]:
         """Gets the instance of the VersionUpgradeManager, or creates one."""
 
         if cls.__color_map is None:
             theme = cast(Theme, QtApplication.getInstance().getTheme())
-            cls.__color_map = numpy.array([
-                theme.getColor("layerview_none").getRgbF(),  # NoneType
-                theme.getColor("layerview_inset_0").getRgbF(),  # Inset0Type
-                theme.getColor("layerview_inset_x").getRgbF(),  # InsetXType
-                theme.getColor("layerview_skin").getRgbF(),  # SkinType
-                theme.getColor("layerview_support").getRgbF(),  # SupportType
-                theme.getColor("layerview_skirt").getRgbF(),  # SkirtType
-                theme.getColor("layerview_infill").getRgbF(),  # InfillType
-                theme.getColor("layerview_support_infill").getRgbF(),  # SupportInfillType
-                theme.getColor("layerview_move_combing").getRgbF(),  # MoveCombingType
-                theme.getColor("layerview_move_retraction").getRgbF(),  # MoveRetractionType
-                theme.getColor("layerview_support_interface").getRgbF(),   # SupportInterfaceType
-                theme.getColor("layerview_prime_tower").getRgbF()   # PrimeTowerType
-            ])
+            cls.__color_map = [
+                [theme.getColor("layerview_none").getRgbF()],  # NoneType
+                [theme.getColor("layerview_inset_0").getRgbF(),  # Inset0Type
+                 theme.getColor("layerview_inset_0_overhang").getRgbF(), # Inset0Type + overhang attribute
+                 theme.getColor("layerview_inset_0_bridge").getRgbF()], # Inset0Type + bridge attribute
+                [theme.getColor("layerview_inset_x").getRgbF(),  # InsetXType
+                 theme.getColor("layerview_inset_x_overhang").getRgbF(),  # InsetXType + overhang attribute
+                 theme.getColor("layerview_inset_x_bridge").getRgbF()],  # InsetXType + bridge attribute
+                [theme.getColor("layerview_skin").getRgbF(),  # SkinType
+                 theme.getColor("layerview_skin_bridge").getRgbF()],  # SkinType + bridge attribute
+                [theme.getColor("layerview_support").getRgbF()],  # SupportType
+                [theme.getColor("layerview_skirt").getRgbF()],  # SkirtType
+                [theme.getColor("layerview_infill").getRgbF()],  # InfillType
+                [theme.getColor("layerview_support_infill").getRgbF()],  # SupportInfillType
+                [theme.getColor("layerview_move_combing").getRgbF()],  # MoveUnretractedType
+                [theme.getColor("layerview_move_retraction").getRgbF()],  # MoveRetractedType
+                [theme.getColor("layerview_support_interface").getRgbF()],   # SupportInterfaceType
+                [theme.getColor("layerview_prime_tower").getRgbF()],   # PrimeTowerType
+                [theme.getColor("layerview_move_while_retracting").getRgbF()],  # MoveWhileRetracting
+                [theme.getColor("layerview_move_while_unretracting").getRgbF()],  # MoveWhileUnretracting
+                [theme.getColor("layerview_move_retraction").getRgbF()],  # StationaryRetractUnretract
+            ]
 
         return cls.__color_map

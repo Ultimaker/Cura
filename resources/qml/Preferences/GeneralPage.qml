@@ -3,6 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.15
+import QtQuick.Dialogs
 import QtQuick.Layouts 1.1
 
 import UM 1.5 as UM
@@ -73,6 +74,9 @@ UM.PreferencesPage
         var defaultTheme = UM.Preferences.getValue("general/theme")
         setDefaultTheme(defaultTheme)
 
+        UM.Preferences.resetPreference("usb_printing/enabled")
+        usbPrintCheckbox.checked = boolCheck(UM.Preferences.getValue("usb_printing/enabled"))
+
         UM.Preferences.resetPreference("general/use_tray_icon")
         trayIconCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/use_tray_icon"))
 
@@ -101,6 +105,7 @@ UM.PreferencesPage
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/invert_zoom");
         invertZoomCheckbox.checked = boolCheck(UM.Preferences.getValue("view/invert_zoom"))
+        UM.Preferences.resetPreference("view/navigation_style");
         UM.Preferences.resetPreference("view/zoom_to_mouse");
         zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
         //UM.Preferences.resetPreference("view/top_layer_count");
@@ -108,9 +113,12 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("general/restore_window_geometry")
         restoreWindowPositionCheckbox.checked = boolCheck(UM.Preferences.getValue("general/restore_window_geometry"))
 
+        UM.Preferences.resetPreference("tool/flip_y_axis_tool_handle")
+        flipToolhandleYCheckbox.checked = boolcheck(UM.Preferences.getValue("tool/flip_y_axis_tool_handle"))
+
         UM.Preferences.resetPreference("general/camera_perspective_mode")
         //var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
-//        /setDefaultCameraMode(defaultCameraMode)
+        //setDefaultCameraMode(defaultCameraMode)
 
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
         setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
@@ -120,12 +128,22 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("info/send_slice_info")
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+
+        UM.Preferences.resetPreference("info/send_engine_crash")
+        sendEngineCrashCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_engine_crash"))
+
+        UM.Preferences.resetPreference("info/anonymous_engine_crash_report")
+        sendEngineCrashCheckboxAnonymous.checked = boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report"))
+
         UM.Preferences.resetPreference("info/automatic_update_check")
         checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
 
         UM.Preferences.resetPreference("info/latest_update_source")
         UM.Preferences.resetPreference("info/automatic_plugin_update_check")
         pluginNotificationsUpdateCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
+
+        UM.Preferences.resetPreference("local_file/use_fixed_dialog_paths")
+        fixedPathsCheckbox.checked = boolCheck(UM.Preferences.getValue("local_file/use_fixed_dialog_paths"))
     }
 
     buttons: [
@@ -191,19 +209,12 @@ UM.PreferencesPage
                     Component.onCompleted:
                     {
                         append({ text: "English", code: "en_US" })
-                        append({ text: "Čeština", code: "cs_CZ" })
                         append({ text: "Deutsch", code: "de_DE" })
                         append({ text: "Español", code: "es_ES" })
                         append({ text: "Français", code: "fr_FR" })
                         append({ text: "Italiano", code: "it_IT" })
                         append({ text: "日本語", code: "ja_JP" })
-                        append({ text: "한국어", code: "ko_KR" })
-                        append({ text: "Nederlands", code: "nl_NL" })
                         append({ text: "Português do Brasil", code: "pt_BR" })
-                        append({ text: "Português", code: "pt_PT" })
-                        append({ text: "Русский", code: "ru_RU" })
-                        append({ text: "Türkçe", code: "tr_TR" })
-                        append({ text: "简体中文", code: "zh_CN" })
 
                         var date_object = new Date();
                         if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
@@ -213,6 +224,13 @@ UM.PreferencesPage
 
                         // incomplete and/or abandoned
                         append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
+                        append({ text: "Čeština", code: "cs_CZ" })
+                        append({ text: "한국어", code: "ko_KR" })
+                        append({ text: "Nederlands", code: "nl_NL" })
+                        append({ text: "Português", code: "pt_PT" })
+                        append({ text: "Русский", code: "ru_RU" })
+                        append({ text: "Türkçe", code: "tr_TR" })
+                        append({ text: "简体中文", code: "zh_CN" })
                         append({ text: "正體字", code: "zh_TW" })
                         append({ text: "Magyar", code: "hu_HU" })
                         append({ text: "Suomi", code: "fi_FI" })
@@ -227,7 +245,7 @@ UM.PreferencesPage
                     textRole: "text"
                     model: languageList
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
@@ -274,7 +292,7 @@ UM.PreferencesPage
                 UM.Label
                 {
                     id: themeLabel
-                    text: catalog.i18nc("@label: Please keep the asterix, it's to indicate that a restart is needed.", "Theme*:")
+                    text: catalog.i18nc("@label: Please keep the asterix, it's to indicate that a restart is needed.", "Theme (* restart required):")
                 }
 
                 ListModel
@@ -297,7 +315,7 @@ UM.PreferencesPage
                     model: themeList
                     textRole: "text"
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     currentIndex:
                     {
@@ -345,19 +363,38 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("general/use_tray_icon"))
                     onClicked: UM.Preferences.setValue("general/use_tray_icon", checked)
 
-                    text: catalog.i18nc("@option:check", "Add icon to system tray *");
+                    text: catalog.i18nc("@option:check", "Add icon to system tray (* restart required)");
                 }
+            }
+
+            Item
+            {
+                //: Spacer
+                height: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("default_margin").width
             }
 
             UM.Label
             {
-                id: languageCaption
+                font: UM.Theme.getFont("medium_bold")
+                text: catalog.i18nc("@label", "Connection and Control")
+            }
 
-                //: Language change warning
-                text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
-                wrapMode: Text.WordWrap
-                font.italic: true
+            UM.TooltipArea
+            {
+                width: childrenRect.width;
+                height: childrenRect.height;
 
+                text: catalog.i18nc("@info:tooltip", "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't.")
+
+                UM.CheckBox
+                {
+                    id: usbPrintCheckbox
+                    checked: boolCheck(UM.Preferences.getValue("usb_printing/enabled"))
+                    onClicked: UM.Preferences.setValue("usb_printing/enabled", checked)
+
+                    text: catalog.i18nc("@option:check", "Enable USB-cable printing (* restart required)")
+                }
             }
 
             Item
@@ -502,10 +539,12 @@ UM.PreferencesPage
                     id: dropDownCheckbox
                     text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
                     checked: boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
-                    onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                    onCheckedChanged:
+                    {
+                        UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                    }
                 }
             }
-
 
             UM.TooltipArea
             {
@@ -534,7 +573,7 @@ UM.PreferencesPage
                 UM.CheckBox
                 {
                     id: forceLayerViewCompatibilityModeCheckbox
-                    text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
+                    text: catalog.i18nc("@option:check", "Force layer view compatibility mode (* restart required)")
                     checked: boolCheck(UM.Preferences.getValue("view/force_layer_view_compatibility_mode"))
                     onCheckedChanged: UM.Preferences.setValue("view/force_layer_view_compatibility_mode", checked)
                 }
@@ -604,6 +643,70 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "What type of camera navigation should be used?")
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", "Camera navigation:")
+                    }
+                    ListModel
+                    {
+                        id: navigationStylesList 
+                        Component.onCompleted:
+                        {
+                            append({ text: "Cura", code: "cura" })
+                            append({ text: catalog.i18n("FreeCAD trackpad"), code: "freecad_trackpad" })
+                        }
+                    }
+
+                    Cura.ComboBox
+                    {
+                        id: cameraNavigationComboBox
+
+                        model: navigationStylesList 
+                        textRole: "text"
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
+
+                        currentIndex:
+                        {
+                            var code = UM.Preferences.getValue("view/navigation_style");
+                            for(var i = 0; i < comboBoxList.count; ++i)
+                            {
+                                if(model.get(i).code == code)
+                                {
+                                    return i
+                                }
+                            }
+                            return 0
+                        }
+                        onActivated: UM.Preferences.setValue("view/navigation_style", model.get(index).code)
+                    }
+                }
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before.")
+
+                UM.CheckBox
+                {
+                    id: flipToolhandleYCheckbox
+                    text: catalog.i18nc("@option:check", "Flip model's toolhandle Y axis (* restart required)")
+                    checked: boolCheck(UM.Preferences.getValue("tool/flip_y_axis_tool_handle"))
+                    onCheckedChanged: UM.Preferences.setValue("tool/flip_y_axis_tool_handle", checked)
+                }
+            }
+
+
             Item
             {
                 //: Spacer
@@ -620,13 +723,15 @@ UM.PreferencesPage
             UM.TooltipArea
             {
                 width: childrenRect.width
+                // Mac only allows applications to run as a single instance, so providing the option for this os doesn't make much sense
+                visible: Qt.platform.os !== "osx"
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should opening files from the desktop or external applications open in the same instance of Cura?")
 
                 UM.CheckBox
                 {
                     id: singleInstanceCheckbox
-                    text: catalog.i18nc("@option:check","Use a single instance of Cura")
+                    text: catalog.i18nc("@option:check","Use a single instance of Cura (* restart required)")
 
                     checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
                     onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
@@ -777,6 +882,115 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "When enabled, file open and save dialogs will always start at the specified locations below. When disabled, dialogs remember the last folder you navigated to.")
+
+                UM.CheckBox
+                {
+                    id: fixedPathsCheckbox
+                    text: catalog.i18nc("@option:check", "Always use the same default locations for opening and saving files")
+                    checked: boolCheck(UM.Preferences.getValue("local_file/use_fixed_dialog_paths"))
+                    onCheckedChanged:
+                    {
+                        UM.Preferences.setValue("local_file/use_fixed_dialog_paths", checked)
+                        if (checked)
+                        {
+                            dialogLoadPathField.text = UM.Preferences.getValue("local_file/dialog_load_path")
+                            dialogSavePathField.text = UM.Preferences.getValue("local_file/dialog_save_path")
+                        }
+                    }
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                enabled: fixedPathsCheckbox.checked
+                opacity: fixedPathsCheckbox.checked ? 1.0 : 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@info:tooltip", "The default folder to open when loading files.")
+
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default file load location:")
+                    }
+
+                    Row
+                    {
+                        spacing: UM.Theme.getSize("narrow_margin").width
+
+                        Cura.TextField
+                        {
+                            id: dialogLoadPathField
+                            selectByMouse: true
+                            text: UM.Preferences.getValue("local_file/dialog_load_path")
+                            implicitWidth: UM.Theme.getSize("combobox_wide").width
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onEditingFinished: UM.Preferences.setValue("local_file/dialog_load_path", text)
+                        }
+
+                        Cura.SecondaryButton
+                        {
+                            text: catalog.i18nc("@action:button", "Browse")
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onClicked: dialogLoadPathDialog.open()
+                        }
+                    }
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                enabled: fixedPathsCheckbox.checked
+                opacity: fixedPathsCheckbox.checked ? 1.0 : 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@info:tooltip", "The default folder to open when saving files.")
+
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default file save location:")
+                    }
+
+                    Row
+                    {
+                        spacing: UM.Theme.getSize("narrow_margin").width
+
+                        Cura.TextField
+                        {
+                            id: dialogSavePathField
+                            selectByMouse: true
+                            text: UM.Preferences.getValue("local_file/dialog_save_path")
+                            implicitWidth: UM.Theme.getSize("combobox_wide").width
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onEditingFinished: UM.Preferences.setValue("local_file/dialog_save_path", text)
+                        }
+
+                        Cura.SecondaryButton
+                        {
+                            text: catalog.i18nc("@action:button", "Browse")
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onClicked: dialogSavePathDialog.open()
+                        }
+                    }
+                }
+            }
+
             Item
             {
                 //: Spacer
@@ -855,6 +1069,63 @@ UM.PreferencesPage
                 font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Privacy")
             }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission.")
+
+                UM.CheckBox
+                {
+                    id: sendEngineCrashCheckbox
+                    text: catalog.i18nc("@option:check","Send engine crash reports")
+                    checked: boolCheck(UM.Preferences.getValue("info/send_engine_crash"))
+                    onCheckedChanged: UM.Preferences.setValue("info/send_engine_crash", checked)
+                }
+            }
+
+            ButtonGroup
+            {
+                id: curaCrashGroup
+                buttons: [sendEngineCrashCheckboxAnonymous, sendEngineCrashCheckboxUser]
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Send crash reports without any personally identifiable information or models data to UltiMaker.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                Cura.RadioButton
+                {
+                    id: sendEngineCrashCheckboxAnonymous
+                    text: catalog.i18nc("@option:radio", "Anonymous crash reports")
+                    enabled: sendEngineCrashCheckbox.checked && Cura.API.account.isLoggedIn
+                    checked: boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report"))
+                    onClicked: UM.Preferences.setValue("info/anonymous_engine_crash_report", true)
+                }
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: Cura.API.account.isLoggedIn ?
+                      catalog.i18nc("@info:tooltip", "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send.") :
+                      catalog.i18nc("@info:tooltip", "Please sign in to your UltiMaker account to allow sending non-anonymous data.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                Cura.RadioButton
+                {
+                    id: sendEngineCrashCheckboxUser
+                    text: catalog.i18nc("@option:radio", "Include UltiMaker account name")
+                    enabled: sendEngineCrashCheckbox.checked && Cura.API.account.isLoggedIn
+                    checked: !boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report")) && Cura.API.account.isLoggedIn
+                    onClicked: UM.Preferences.setValue("info/anonymous_engine_crash_report", false)
+                }
+            }
+
             UM.TooltipArea
             {
                 width: childrenRect.width
@@ -965,14 +1236,24 @@ UM.PreferencesPage
                 }
             }
 
-
-            /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
             Item
             {
                 //: Spacer
                 height: UM.Theme.getSize("default_margin").height
                 width: UM.Theme.getSize("default_margin").height
             }
+
+            UM.Label
+            {
+                id: languageCaption
+
+                //: Language change warning
+                text: catalog.i18nc("@label", "*) You will need to restart the application for these changes to have effect.")
+                wrapMode: Text.WordWrap
+                font.italic: true
+            }
+
+            /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
 
             Label
             {
@@ -1006,6 +1287,30 @@ UM.PreferencesPage
                     }
 
                     sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+                }
+            }
+
+            FolderDialog
+            {
+                id: dialogLoadPathDialog
+                title: catalog.i18nc("@title:window", "Select Default Load Folder")
+                currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
+                onAccepted:
+                {
+                    CuraApplication.setDefaultPath("dialog_load_path", selectedFolder)
+                    dialogLoadPathField.text = UM.Preferences.getValue("local_file/dialog_load_path")
+                }
+            }
+
+            FolderDialog
+            {
+                id: dialogSavePathDialog
+                title: catalog.i18nc("@title:window", "Select Default Save Folder")
+                currentFolder: CuraApplication.getDefaultPath("dialog_save_path")
+                onAccepted:
+                {
+                    CuraApplication.setDefaultPath("dialog_save_path", selectedFolder)
+                    dialogSavePathField.text = UM.Preferences.getValue("local_file/dialog_save_path")
                 }
             }
         }

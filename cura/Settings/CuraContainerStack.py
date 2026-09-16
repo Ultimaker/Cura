@@ -5,7 +5,7 @@ from typing import Any, cast, List, Optional, Dict
 from PyQt6.QtCore import pyqtProperty, pyqtSignal, QObject
 
 from UM.Application import Application
-from UM.Decorators import override
+from UM.Decorators import CachedMemberFunctions, override
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
@@ -237,6 +237,7 @@ class CuraContainerStack(ContainerStack):
         :param new_value: The new value to set the property to.
         """
 
+        CachedMemberFunctions.clearInstanceCache(self)
         container_index = _ContainerIndexes.UserChanges
         self._containers[container_index].setProperty(key, property_name, property_value, container, set_from_cache)
 
@@ -359,7 +360,7 @@ class CuraContainerStack(ContainerStack):
         return self.definition
 
     @classmethod
-    def _findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainerInterface) -> str:
+    def findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainerInterface) -> str:
         """Find the ID that should be used when searching for instance containers for a specified definition.
 
         This handles the situation where the definition specifies we should use a different definition when
@@ -379,7 +380,7 @@ class CuraContainerStack(ContainerStack):
             Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent = quality_definition, machine = machine_definition.id) #type: ignore
             return machine_definition.id #type: ignore
 
-        return cls._findInstanceContainerDefinitionId(definitions[0])
+        return cls.findInstanceContainerDefinitionId(definitions[0])
 
     def getExtruderPositionValueWithDefault(self, key):
         """getProperty for extruder positions, with translation from -1 to default extruder number"""
@@ -400,6 +401,9 @@ class CuraContainerStack(ContainerStack):
                 return self._settable_per_extruder_cache[key]
 
         return super().getProperty(key, property_name, context)
+
+    def getValue(self, key: str, context = None) -> Any:
+        return self.getProperty(key, "value", context)
 
 
 class _ContainerIndexes:

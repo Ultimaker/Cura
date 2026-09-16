@@ -75,7 +75,7 @@ Item
             visible: createNewProjectButtonVisible && !manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == DF.RetrievalStatus.Success || manager.retrievingProjectsStatus == DF.RetrievalStatus.Failed)
             tooltip: "Maximum number of projects reached. Please upgrade your subscription to create more projects."
 
-            onClicked: Qt.openUrlExternally("https://ultimaker.com/software/enterprise-software?utm_source=cura&utm_medium=software&utm_campaign=MaxProjLink")
+            onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000003150")
         }
     }
 
@@ -117,7 +117,7 @@ Item
                 id: visitDigitalLibraryButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Visit Digital Library"
-                onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "/app/library?utm_source=cura&utm_medium=software&utm_campaign=empty-library")
+                onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "/app/library?utm_source=cura&utm_medium=software&utm_campaign=empty-library")
                 visible: searchBar.text === "" //Show the link to Digital Library when there are no projects in the user's Library.
             }
         }
@@ -159,17 +159,30 @@ Item
                 Repeater
                 {
                     model: manager.digitalFactoryProjectModel
-                    delegate: ProjectSummaryCard
+                    delegate: Item
                     {
-                        id: projectSummaryCard
-                        imageSource: model.thumbnailUrl || "../images/placeholder.svg"
-                        projectNameText: model.displayName
-                        projectUsernameText: model.username
-                        projectLastUpdatedText: "Last updated: " + model.lastUpdated
+                        width: parent.width
+                        height: projectSummaryCard.height
 
-                        onClicked:
+                        UM.TooltipArea
                         {
-                            manager.selectedProjectIndex = index
+                            anchors.fill: parent
+                            text: "This project is inactive and cannot be used."
+                            enabled: !model.active
+                        }
+
+                        ProjectSummaryCard
+                        {
+                            id: projectSummaryCard
+                            imageSource: model.thumbnailUrl || "../images/placeholder.svg"
+                            projectNameText: model.displayName
+                            projectUsernameText: model.username
+                            projectLastUpdatedText: "Last updated: " + model.lastUpdated
+                            enabled: model.active
+
+                            onClicked: {
+                                manager.selectedProjectIndex = index
+                            }
                         }
                     }
                 }

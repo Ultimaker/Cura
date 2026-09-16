@@ -21,6 +21,7 @@ Item
     property var enableSectionClicked: { return }
     property int leftColumnWidth: Math.floor(width * 0.35)
     property bool isCompressed: false
+    property bool keepSettingListOpen: false
 
     property alias contents: settingColumn.children
 
@@ -97,7 +98,7 @@ Item
         State
         {
             name: "settingListClosed"
-            when: !enableSectionSwitchChecked && enableSectionSwitchEnabled
+            when:  (! (keepSettingListOpen || enableSectionSwitchChecked)) && enableSectionSwitchEnabled
             PropertyChanges
             {
                 target: settingSection

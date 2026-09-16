@@ -168,6 +168,23 @@ Item
                 // I don't remember exactly what.
                 afterOnEditingFinishedFunction: manager.updateHasMaterialsMetadata
             }
+
+			Cura.NumericTextFieldWithUnit  // "Print Time Estimation Factor"
+            {
+                id: machineTimeEstimationFactorField
+                containerStackId: machineStackId
+                settingKey: "machine_time_estimation_factor"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Print Time Estimation Factor")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "%")
+                decimals: 1
+                minimum: 1
+                maximum: 1000
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
         }
 
         // =======================================
@@ -214,7 +231,7 @@ Item
 
                 settingStoreIndex: propertyStoreIndex
 
-                labelText: catalog.i18nc("@label", "Y min")
+                labelText: catalog.i18nc("@label", "Y min ( '-' towards back)")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
@@ -254,7 +271,7 @@ Item
                 settingKey: "machine_head_with_fans_polygon"
                 settingStoreIndex: propertyStoreIndex
 
-                labelText: catalog.i18nc("@label", "Y max")
+                labelText: catalog.i18nc("@label", "Y max ( '+' towards front)")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
@@ -303,18 +320,17 @@ Item
 
                     Component.onCompleted:
                     {
-                        update()
+                        updateModel();
                     }
 
-                    function update()
+                    function updateModel()
                     {
-                        clear()
-                        for (var i = 1; i <= Cura.MachineManager.activeMachine.maxExtruderCount; i++)
-                        {
+                        clear();
+                        for (var i = 1; i <= Cura.MachineManager.activeMachine.maxExtruderCount; i ++) {
                             // Use String as value. JavaScript only has Number. PropertyProvider.setPropertyValue()
                             // takes a QVariant as value, and Number gets translated into a float. This will cause problem
                             // for integer settings such as "Number of Extruders".
-                            append({ text: String(i), value: String(i) })
+                            append({ text: String(i), value: String(i) });
                         }
                     }
                 }
@@ -322,7 +338,9 @@ Item
                 Connections
                 {
                     target: Cura.MachineManager
-                    function onGlobalContainerChanged() { extruderCountModel.update() }
+                    function onGlobalContainerChanged() {
+                        extruderCountModel.updateModel();
+                    }
                 }
             }
 
@@ -339,6 +357,21 @@ Item
                 settingKey: "machine_use_extruder_offset_to_offset_coords"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "Apply Extruder offsets to GCode")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
+
+            /* 
+               - Allows user to toggle if Start Gcode is the absolute first gcode.
+            */
+            Cura.SimpleCheckBox  // "Make sure Start Code is before all gcodes"
+            {
+                id: applyStartGcodeFirstCheckbox
+                containerStackId: machineStackId
+                settingKey: "machine_start_gcode_first"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Start GCode must be first")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 forceUpdateOnChangeFunction: forceUpdateFunction
@@ -375,7 +408,7 @@ Item
         anchors
         {
             top: upperBlock.bottom
-            bottom: parent.bottom
+            bottom: buttonLearnMore.top
             left: parent.left
             right: parent.right
             margins: UM.Theme.getSize("default_margin").width
@@ -402,5 +435,19 @@ Item
             settingKey: "machine_end_gcode"
             settingStoreIndex: propertyStoreIndex
         }
+
+    }
+
+    Cura.TertiaryButton
+    {
+        id: buttonLearnMore
+
+        text: catalog.i18nc("@button", "Learn more")
+        iconSource: UM.Theme.getIcon("LinkExternal")
+        isIconOnRightSide: true
+        onClicked: Qt.openUrlExternally("https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code")
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.margins: UM.Theme.getSize("default_margin").width
     }
 }

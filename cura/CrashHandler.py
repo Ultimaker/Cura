@@ -22,7 +22,7 @@ except ImportError:
 
 from PyQt6.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
 from PyQt6.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
-from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtGui import QDesktopServices, QTextCursor
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -309,7 +309,7 @@ class CrashHandler:
         trace = "".join(trace_list)
         text_area.setText(trace)
         text_area.setReadOnly(True)
-
+        text_area.moveCursor(QTextCursor.MoveOperation.End)  # Move cursor to end, so we see last bit of the exception
         layout.addWidget(text_area)
         group.setLayout(layout)
 
@@ -400,7 +400,7 @@ class CrashHandler:
 
         text_area.setText(logdata)
         text_area.setReadOnly(True)
-
+        text_area.moveCursor(QTextCursor.MoveOperation.End)  # Move cursor to end, so we see last bit of the log
         layout.addWidget(text_area)
         group.setLayout(layout)
 

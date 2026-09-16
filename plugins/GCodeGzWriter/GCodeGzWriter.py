@@ -24,7 +24,7 @@ class GCodeGzWriter(MeshWriter):
     def __init__(self) -> None:
         super().__init__(add_to_recent_files = False)
 
-    def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode = MeshWriter.OutputMode.BinaryMode) -> bool:
+    def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode = MeshWriter.OutputMode.BinaryMode, **kwargs) -> bool:
         """Writes the gzipped g-code to a stream.
 
         Note that even though the function accepts a collection of nodes, the

@@ -7,11 +7,85 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "position": "0",
-        "setting_version": 20,
+        "setting_version": 27,
         "type": "extruder"
     },
     "settings":
     {
+        "command_line_settings":
+        {
+            "children":
+            {
+                "material_brand":
+                {
+                    "default_value": "",
+                    "description": "The material brand, e.g. 'UltiMaker'.",
+                    "enabled": false,
+                    "label": "Material Brand",
+                    "type": "str"
+                },
+                "material_density":
+                {
+                    "default_value": 0,
+                    "description": "The printed material density, in g/cm3.",
+                    "enabled": false,
+                    "label": "Material density",
+                    "type": "float"
+                },
+                "material_guid":
+                {
+                    "default_value": "",
+                    "description": "The unique ID of the material.",
+                    "enabled": false,
+                    "label": "Material GUID",
+                    "type": "str"
+                },
+                "material_id":
+                {
+                    "default_value": "",
+                    "description": "The ID of the material that is used internally.",
+                    "enabled": false,
+                    "label": "Cura Material ID",
+                    "type": "str"
+                },
+                "material_name":
+                {
+                    "default_value": "",
+                    "description": "The fully qualified material name, e.g. 'UltiMaker PLA White'.",
+                    "enabled": false,
+                    "label": "Material Name",
+                    "type": "str"
+                },
+                "material_spool_cost":
+                {
+                    "default_value": 0,
+                    "description": "The cost of a full spool of material.",
+                    "enabled": false,
+                    "label": "Material Spool Cost",
+                    "type": "float"
+                },
+                "material_spool_weight":
+                {
+                    "default_value": 0,
+                    "description": "The weight of a full spool of material, in grams.",
+                    "enabled": false,
+                    "label": "Material Spool Weight",
+                    "type": "float"
+                },
+                "material_type":
+                {
+                    "default_value": "",
+                    "description": "The base type of printed material, e.g. PLA or ABS.",
+                    "enabled": false,
+                    "label": "Material Type",
+                    "type": "str"
+                }
+            },
+            "description": "Settings which are only used if CuraEngine isn't called from the Cura frontend.",
+            "enabled": false,
+            "label": "Command Line Settings",
+            "type": "category"
+        },
         "machine_settings":
         {
             "children":
@@ -39,6 +113,18 @@
                     "type": "float",
                     "unit": "mm"
                 },
+                "machine_extruder_change_duration":
+                {
+                    "default_value": 0,
+                    "description": "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur.",
+                    "label": "Extruder Change duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
+                },
                 "machine_extruder_cooling_fan_number":
                 {
                     "default_value": 0,
@@ -61,6 +147,18 @@
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
                     "type": "str"
+                },
+                "machine_extruder_end_code_duration":
+                {
+                    "default_value": 0,
+                    "description": "The time it takes to execute the end g-code, when switching away from this extruder.",
+                    "label": "Extruder End G-Code Duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
                 },
                 "machine_extruder_end_pos_abs":
                 {
@@ -97,6 +195,17 @@
                     "type": "float",
                     "unit": "mm"
                 },
+                "machine_extruder_prestart_code":
+                {
+                    "default_value": "",
+                    "description": "Prestart g-code to execute before switching to this extruder.",
+                    "label": "Extruder Prestart G-Code",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "str"
+                },
                 "machine_extruder_start_code":
                 {
                     "default_value": "",
@@ -107,6 +216,18 @@
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
                     "type": "str"
+                },
+                "machine_extruder_start_code_duration":
+                {
+                    "default_value": 0,
+                    "description": "The time it'll take to execute the start g-code, when switching to this extruder.",
+                    "label": "Extruder Start G-Code Duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
                 },
                 "machine_extruder_start_pos_abs":
                 {
@@ -137,6 +258,17 @@
                     "description": "The y-coordinate of the starting position when turning the extruder on.",
                     "label": "Extruder Start Position Y",
                     "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "machine_nozzle_head_distance":
+                {
+                    "default_value": 3,
+                    "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
+                    "label": "Nozzle Length",
                     "settable_per_extruder": true,
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,

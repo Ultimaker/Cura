@@ -56,8 +56,6 @@
             "default_value": 110,
             "value": "material_flow * 1.1"
         },
-        "prime_tower_position_x": { "value": "250" },
-        "prime_tower_position_y": { "value": "200" },
         "retraction_amount": { "default_value": 1 },
         "retraction_speed": { "default_value": 50 },
         "skirt_brim_minimal_length": { "default_value": 130 },

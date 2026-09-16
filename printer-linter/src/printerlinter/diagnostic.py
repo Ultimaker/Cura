@@ -32,3 +32,13 @@ class Diagnostic:
                 },
                 "Level": self.level
                 }
+
+class GitComment:
+    def __init__(self, comment: str) -> None:
+        """
+        @param comment: The comment text.
+        """
+        self.comment = comment
+
+    def toDict(self) -> Dict[str, Any]:
+        return self.comment

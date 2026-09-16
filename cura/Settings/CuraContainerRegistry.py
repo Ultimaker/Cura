@@ -23,8 +23,8 @@ from UM.Resources import Resources
 from UM.Util import parseBool
 from cura.ReaderWriters.ProfileWriter import ProfileWriter
 
-from . import ExtruderStack
-from . import GlobalStack
+from cura.Settings import ExtruderStack
+from cura.Settings import GlobalStack
 
 import cura.CuraApplication
 from cura.Settings.cura_empty_instance_containers import empty_quality_container
@@ -51,6 +51,31 @@ class CuraContainerRegistry(ContainerRegistry):
         self._database_handlers["variant"] = VariantDatabaseHandler()
         self._database_handlers["quality"] = QualityDatabaseHandler()
         self._database_handlers["intent"] = IntentDatabaseHandler()
+
+    def findGlobalStacks(self, **kwargs: Any) -> List[GlobalStack.GlobalStack]:
+        """Find all GlobalStack objects matching certain criteria.
+
+        :param kwargs: A dictionary of keyword arguments containing
+        keys and values that need to match the metadata of the GlobalStack.
+        An asterisk in the values can be used to denote a wildcard.
+        :note There are currently a lot of calls to findContainerStacks with a type="machine" filter, which technically
+        returns the very same result, except that the result has to be explicitly converted to GlobalStack class and
+        is slightly less self-explicit. They can be converted by calling this method instead.
+        """
+
+        return cast(List[GlobalStack.GlobalStack], self.findContainers(container_type = GlobalStack.GlobalStack, **kwargs))
+
+    def findGlobalStacksMetadata(self, **kwargs: Any) -> List[Dict[str, Any]]:
+        """Find the metadata of all global stacks matching certain criteria.
+
+        :param kwargs: A dictionary of keyword arguments containing keys and
+        values that need to match the metadata. An asterisk in the values can be
+        used to denote a wildcard.
+        :return: A list of metadata dictionaries matching the search criteria, or
+        an empty list if nothing was found.
+        """
+
+        return self.findContainersMetadata(container_type = GlobalStack.GlobalStack, **kwargs)
 
     @override(ContainerRegistry)
     def addContainer(self, container: ContainerInterface) -> bool:

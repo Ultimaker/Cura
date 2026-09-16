@@ -9,8 +9,8 @@ try:
 except ImportError:
     Logger.log("w", "Could not import UFPWriter; libCharon may be missing")
 
-from UM.i18n import i18nCatalog #To translate the file format description.
-from UM.Mesh.MeshWriter import MeshWriter #For the binary mode flag.
+from UM.i18n import i18nCatalog # To translate the file format description.
+from UM.Mesh.MeshWriter import MeshWriter # For the binary mode flag.
 
 i18n_catalog = i18nCatalog("cura")
 

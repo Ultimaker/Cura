@@ -37,24 +37,13 @@ class NewPrinterDetectedMessage(Message):
 
     def finalize(self, new_devices_added, new_output_devices):
         self.setProgress(None)
-        num_devices_added = len(new_devices_added)
-        max_disp_devices = 3
-
-        if num_devices_added > max_disp_devices:
-            num_hidden = num_devices_added - max_disp_devices
-            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in
-                                new_output_devices[0: max_disp_devices]]
-            device_name_list.append(
-                "<li>" + self.i18n_catalog.i18ncp("info:{0} gets replaced by a number of printers", "... and {0} other",
-                                                  "... and {0} others", num_hidden) + "</li>")
-            device_names = "".join(device_name_list)
-        else:
-            device_names = "".join(
-                ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices_added])
 
         if new_devices_added:
-            message_text = self.i18n_catalog.i18nc("info:status",
-                                                   "Printers added from Digital Factory:") + f"<ul>{device_names}</ul>"
+            device_names = ""
+            for device in new_devices_added:
+                device_names = device_names + "<li>{} ({})</li>".format(device.name, device.printerTypeName)
+            message_title = self.i18n_catalog.i18nc("info:status", "Printers added from Digital Factory:")
+            message_text = f"{message_title}<ul>{device_names}</ul>"
             self.setText(message_text)
         else:
             self.hide()

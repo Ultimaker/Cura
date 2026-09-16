@@ -1,9 +1,22 @@
 name: printer-linter-pr-diagnose
 
 on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Target branch to run the workflow on'
+        required: false
+        default: 'main'
+      printer:
+        description: 'Printer name to lint all related files (e.g. ultimaker_s5). Runs instead of the PR diff when set.'
+        required: false
+        default: ''
   pull_request:
-    path:
+    paths:
       - "resources/**"
+
+permissions:
+  contents: read
 
 jobs:
   printer-linter-diagnose:
@@ -11,49 +24,62 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Setup the build environment
+        uses: ultimaker/cura-workflows/.github/actions/setup-build-environment@main
         with:
-          fetch-depth: 2
-
-      - name: Setup Python and pip
-        uses: actions/setup-python@v4
+          branch: ${{ github.event.inputs.branch || github.event.pull_request.head.sha || 'main' }}
+      - uses: greguintow/get-diff-action@v7
         with:
-          python-version: 3.11.x
-          cache: "pip"
-          cache-dependency-path: .github/workflows/requirements-printer-linter.txt
-
-      - uses: technote-space/get-diff-action@v6
-        with:
+          DIFF_FILTER: AMRCD
           PATTERNS: |
             resources/+(extruders|definitions)/*.def.json
             resources/+(intent|quality|variants)/**/*.inst.cfg
 
-      - name: Install Python requirements for runner
-        if: env.GIT_DIFF && !env.MATCHED_FILES
-        run: pip install -r .github/workflows/requirements-printer-linter.txt
-
       - name: Create results directory
         run: mkdir printer-linter-result
+
+      - name: Collect printer files specified by input (UM only, optional)
+        id: collect-printer-files
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.printer != '' }}
+        env:
+          PRINTER_INPUT: ${{ github.event.inputs.printer }}
+        run: |
+          if ! [[ "$PRINTER_INPUT" =~ ^[a-zA-Z0-9_]+$ ]]; then
+            echo "::error::Invalid printer name '${PRINTER_INPUT}'. Only letters, digits, and underscores are allowed."
+            exit 1
+          fi
+          FILES=$(find resources \( \
+            -path "resources/definitions/${PRINTER_INPUT}.def.json" \
+            -o -path "resources/extruders/${PRINTER_INPUT}_*.def.json" \
+            -o -path "resources/quality/${PRINTER_INPUT}/*.inst.cfg" \
+            -o -path "resources/variants/${PRINTER_INPUT}*.inst.cfg" \
+            -o -path "resources/intent/${PRINTER_INPUT}/*.inst.cfg" \
+          \) -type f | tr '\n' ' ')
+          if [ -z "${FILES// }" ]; then
+            echo "::error::No resource files found for printer '${PRINTER_INPUT}'. Verify the printer name is correct."
+            exit 1
+          fi
+          echo "PRINTER_FILES=$FILES" >> "$GITHUB_OUTPUT"
+
+      - name: Diagnose printer file(s) specified by input (UM only, optional)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.printer != '' }}
+        run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ steps.collect-printer-files.outputs.PRINTER_FILES }}
 
       - name: Diagnose file(s)
         if: env.GIT_DIFF && !env.MATCHED_FILES
         run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ env.GIT_DIFF_FILTERED }}
 
+      - name: Check Deleted Files(s)
+        if: env.GIT_DIFF
+        run: python printer-linter/src/terminal.py --deleted --report printer-linter-result/comment.md ${{ env.GIT_DIFF_FILTERED }}
+
       - name: Save PR metadata
         run: |
           echo ${{ github.event.number }} > printer-linter-result/pr-id.txt
           echo ${{ github.event.pull_request.head.repo.full_name }} > printer-linter-result/pr-head-repo.txt
-          echo ${{ github.event.pull_request.head.ref }} > printer-linter-result/pr-head-ref.txt
+          echo ${{ github.event.pull_request.head.sha }} > printer-linter-result/pr-head-sha.txt
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v7
         with:
           name: printer-linter-result
           path: printer-linter-result/
-
-      - name: Run clang-tidy-pr-comments action
-        uses: platisd/clang-tidy-pr-comments@bc0bb7da034a8317d54e7fe1e819159002f4cc40
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          clang_tidy_fixes: result.yml
-          request_changes: true

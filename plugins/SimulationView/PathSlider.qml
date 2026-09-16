@@ -16,7 +16,9 @@ Item
     property real handleRadius: handleSize / 2
     property color handleColor: UM.Theme.getColor("slider_handle")
     property color handleActiveColor: UM.Theme.getColor("slider_handle_active")
+    property color handleDisabledColor: UM.Theme.getColor("slider_handle_disabled")
     property color rangeColor: UM.Theme.getColor("slider_groove_fill")
+    property color rangeColorDisabled: UM.Theme.getColor("slider_groove_fill_disabled")
     property real handleLabelWidth: width
 
     // track properties
@@ -89,7 +91,7 @@ Item
             width: parent.width + sliderRoot.handleSize
             anchors.centerIn: parent
             radius: sliderRoot.trackRadius
-            color: sliderRoot.rangeColor
+            color: sliderRoot.enabled ? sliderRoot.rangeColor : sliderRoot.rangeColorDisabled
         }
     }
 
@@ -103,7 +105,7 @@ Item
         height: sliderRoot.handleSize
         anchors.verticalCenter: sliderRoot.verticalCenter
         radius: sliderRoot.handleRadius
-        color: handleLabel.activeFocus ? sliderRoot.handleActiveColor : sliderRoot.handleColor
+        color: sliderRoot.enabled ? (handleLabel.activeFocus ? sliderRoot.handleActiveColor : sliderRoot.handleColor) : sliderRoot.handleDisabledColor
         visible: sliderRoot.pathsVisible
 
         function onHandleDragged()

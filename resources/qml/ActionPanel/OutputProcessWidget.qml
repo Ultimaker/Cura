@@ -10,7 +10,7 @@ import Cura 1.0 as Cura
 
 
 // This element contains all the elements the user needs to visualize the data
-// that is gather after the slicing process, such as printint time, material usage, ...
+// that is gather after the slicing process, such as printing time, material usage, ...
 // There are also two buttons: one to previsualize the output layers, and the other to
 // select what to do with it (such as print over network, save to file, ...)
 Column
@@ -19,6 +19,7 @@ Column
 
     spacing: UM.Theme.getSize("thin_margin").height
     property bool preSlicedData: PrintInformation.preSliced
+    property bool userTimeAdjusted: PrintInformation.userTimeAdjusted
     property alias hasPreviewButton: previewStageShortcut.visible
 
     UM.I18nCatalog
@@ -54,9 +55,22 @@ Column
             Cura.IconWithText
             {
                 id: estimatedTime
-                width: parent.width
+                width: parent.width - printInformationPanel.width
+                
+                text:
+                {
+                    if (preSlicedData)
+                    {
+                        return catalog.i18nc("@label", "No time estimation available")
+                    }
 
-                text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
+                    if (userTimeAdjusted)
+                    {
+                        return PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long) + " " + catalog.i18nc("@label", "*User Adjusted")
+                    }
+
+                    return PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
+                }
                 source: UM.Theme.getIcon("Clock")
                 font: UM.Theme.getFont("medium_bold")
             }

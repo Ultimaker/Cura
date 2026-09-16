@@ -54,9 +54,20 @@ Item
         from: Math.floor(base.from / base.stepSize)
         to: Math.floor(base.to / base.stepSize)
 
+        function clamp(value, min, max)
+        {
+            return Math.max((Math.min(value, max)), min);
+        }
+
         valueFromText: function(text)
         {
-            return parseFloat(text.substring(prefix.length, text.length - suffix.length).replace(",", ".")) / base.stepSize;
+
+            var value = parseFloat(text.substring(prefix.length, text.length - suffix.length).replace(",", ".")) / base.stepSize;
+            if (Number.isNaN(value))
+            {
+                value = from
+            }
+            return clamp(value, from, to);
         }
 
         textFromValue: function(value)
@@ -69,6 +80,7 @@ Item
         onValueModified:
         {
             base.value = value * base.stepSize;
+            spinBoxText.text = spinBox.textFromValue(value);
         }
 
         // This forces TextField to commit typed values before incrementing with buttons.
@@ -87,6 +99,7 @@ Item
 
         contentItem: Cura.TextField
         {
+            id: spinBoxText
             text: spinBox.textFromValue(spinBox.value, spinBox.locale)
             validator: base.validator
 
@@ -96,6 +109,13 @@ Item
                 {
                     base.editingFinished();
                 }
+            }
+
+            onTextChanged:
+            {
+                var value = spinBox.valueFromText(text);
+                text = spinBox.textFromValue(value);
+                base.value = value;
             }
         }
 

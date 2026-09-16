@@ -1,5 +1,5 @@
 # Copyright (c) 2018 Jaime van Kessel, Ultimaker B.V.
-# The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+# The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 
 import configparser  # The script lists are stored in metadata as serialised config files.
 import importlib.util
@@ -34,7 +34,6 @@ class PostProcessingPlugin(QObject, Extension):
         Extension.__init__(self)
         self.setMenuName(i18n_catalog.i18nc("@item:inmenu", "Post Processing"))
         self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Modify G-Code"), self.showPopup)
-        self._view = None
 
         # Loaded scripts are all scripts that can be used
         self._loaded_scripts = {}  # type: Dict[str, Type[Script]]
@@ -50,7 +49,7 @@ class PostProcessingPlugin(QObject, Extension):
 
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.execute)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)  # When the current printer changes, update the list of scripts.
-        CuraApplication.getInstance().mainWindowChanged.connect(self._createView)  # When the main window is created, create the view so that we can display the post-processing icon if necessary.
+        CuraApplication.getInstance().mainWindowChanged.connect(self._createSaveAreaButton)  # When the main window is created, create the view so that we can display the post-processing icon if necessary.
 
     selectedIndexChanged = pyqtSignal()
 
@@ -93,6 +92,11 @@ class PostProcessingPlugin(QObject, Extension):
                     Logger.logException("e", "Exception in post-processing script.")
             if len(self._script_list):  # Add comment to g-code if any changes were made.
                 gcode_list[0] += ";POSTPROCESSED\n"
+            # Add all the active post processor names to data[0]
+                pp_name_list = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("post_processing_scripts")
+                for pp_name in pp_name_list.split("\n"):
+                    pp_name = pp_name.split("]")
+                    gcode_list[0] += ";  " + str(pp_name[0]) + "]\n"
             gcode_dict[active_build_plate_id] = gcode_list
             setattr(scene, "gcode_dict", gcode_dict)
         else:
@@ -139,22 +143,28 @@ class PostProcessingPlugin(QObject, Extension):
         if self._loaded_scripts: # Already loaded.
             return
 
-        # The PostProcessingPlugin path is for built-in scripts.
-        # The Resources path is where the user should store custom scripts.
-        # The Preferences path is legacy, where the user may previously have stored scripts.
-        resource_folders = [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]
-        resource_folders.extend(Resources.getAllPathsForType(Resources.Resources))
-        for root in resource_folders:
-            if root is None:
-                continue
-            path = os.path.join(root, "scripts")
+        # Make sure a "scripts" folder exists in the main configuration folder and the preferences folder.
+        # On some platforms the resources and preferences folders resolve to the same folder,
+        # but on Linux they can be different.
+        for path in set([os.path.join(Resources.getStoragePath(r), "scripts") for r in [Resources.Resources, Resources.Preferences]]):
             if not os.path.isdir(path):
                 try:
                     os.makedirs(path)
                 except OSError:
                     Logger.log("w", "Unable to create a folder for scripts: " + path)
-                    continue
 
+        # The PostProcessingPlugin path is for built-in scripts.
+        # The Resources path is where the user should store custom scripts.
+        # The Preferences path is legacy, where the user may previously have stored scripts.
+        resource_folders = [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]
+        resource_folders.extend(Resources.getAllPathsForType(Resources.Resources))
+
+        for root in resource_folders:
+            if root is None:
+                continue
+            path = os.path.join(root, "scripts")
+            if not os.path.isdir(path):
+                continue
             self.loadScripts(path)
 
     def loadScripts(self, path: str) -> None:
@@ -335,36 +345,36 @@ class PostProcessingPlugin(QObject, Extension):
         # We do want to listen to other events.
         self._global_container_stack.metaDataChanged.connect(self._restoreScriptInforFromMetadata)
 
-    def _createView(self) -> None:
-        """Creates the view used by show popup.
-
-        The view is saved because of the fairly aggressive garbage collection.
-        """
-
-        Logger.log("d", "Creating post processing plugin view.")
+    def _createSaveAreaButton(self) -> None:
+        """Creates the permanently displayed button on the bottom-right area."""
 
         self.loadAllScripts()
 
         # Create the plugin dialog component
-        path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin")), "PostProcessingPlugin.qml")
-        self._view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
-        if self._view is None:
+        path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin")), "SaveAreaButton.qml")
+        button = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
+        if button is None:
             Logger.log("e", "Not creating PostProcessing button near save button because the QML component failed to be created.")
             return
-        Logger.log("d", "Post processing view created.")
 
-        # Create the save button component
-        CuraApplication.getInstance().addAdditionalComponent("saveButton", self._view.findChild(QObject, "postProcessingSaveAreaButton"))
+        # Register the component in the main view
+        CuraApplication.getInstance().addAdditionalComponent("saveButton", button)
+
+        button.clicked.connect(self.showPopup)
 
     def showPopup(self) -> None:
         """Show the (GUI) popup of the post processing plugin."""
 
-        if self._view is None:
-            self._createView()
-            if self._view is None:
-                Logger.log("e", "Not creating PostProcessing window since the QML component failed to be created.")
-                return
-        self._view.show()
+        self.loadAllScripts()
+
+        # Create the plugin dialog component
+        path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin")),
+                            "PostProcessingPlugin.qml")
+        dialog = CuraApplication.getInstance().createQmlSubWindow(path, {"manager": self})
+        if dialog is None:
+            return
+
+        dialog.show()
 
     def _propertyChanged(self) -> None:
         """Property changed: trigger re-slice
