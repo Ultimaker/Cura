@@ -148,7 +148,8 @@ Item
                         expandedCategories = definitionsModel.expanded.slice()
                         definitionsModel.expanded = [""]  // keep closed while building the list
                         definitionsModel.showAncestors = true
-                        definitionsModel.showAll = false  // respect current tab's visibility handler
+                        // In the Overview tab, reveal settings hidden by the visibility preference when searching.
+                        definitionsModel.showAll = (selectedKey === "_overview")
                         definitionsModel.expanded = ["*"]
                     }
                     else
