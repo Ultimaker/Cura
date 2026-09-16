@@ -10,7 +10,7 @@
         "file_formats": "text/x-gcode",
         "firmware_last_version": "2.0.6.7",
         "first_start_actions": [ "MachineSettingsAction" ],
-        "has_machine_quality": true,
+        "has_machine_quality": false,
         "has_materials": true,
         "has_variants": true,
         "machine_extruder_trains": { "0": "lulzbot_base_285_extruder" },
