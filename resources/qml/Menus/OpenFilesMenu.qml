@@ -12,33 +12,23 @@ import "../Dialogs"
 Cura.Menu
 {
     id: openFilesMenu
-    title: catalog.i18nc("@title:menu menubar:file", "Open File(s)...")
 
-    Instantiator
+    Cura.MenuItem
+    {
+        action: Cura.Actions.open
+    }
+
+    Repeater
     {
         id: fileProviders
-        model: CuraApplication.getFileProviderModel()
+        model: Cura.Actions.extraOpenFileActions
         Cura.MenuItem
         {
-            text: model.displayText
-            onTriggered:
-            {
-                if (model.index == 0)  // The 0th element is the "From Disk" option, which should activate the open local file dialog
-                {
-                    Cura.Actions.open.trigger()
-                }
-                else
-                {
-                    CuraApplication.getFileProviderModel().trigger(model.name);
-                }
-            }
-            shortcut: model.shortcut
-        }
+            required property var modelData
 
-        onObjectAdded: function(index, object) {
-            openFilesMenu.insertItem(index, object);
-            if (Qt.platform.os == "osx") object.text += " ";
+            action: modelData
+            visible: action.enabled
+            enabled: visible
         }
-        onObjectRemoved: function(index, object) { openFilesMenu.removeItem(object) }
     }
 }
