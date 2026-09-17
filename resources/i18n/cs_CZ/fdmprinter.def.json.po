@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2026-03-31 08:53+0000\n"
+"POT-Creation-Date: 2026-09-16 16:53+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -421,6 +421,10 @@ msgctxt "support_tree_branch_diameter_angle label"
 msgid "Branch Diameter Angle"
 msgstr "Úhel průměru větve"
 
+msgctxt "support_tree_smooth_layers label"
+msgid "Branch Smoothing Layers"
+msgstr ""
+
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
 msgstr "Maximální napnutí filamentu při zahřátí"
@@ -516,6 +520,10 @@ msgstr "Průtok při tisku zdi můstku"
 msgctxt "bridge_wall_speed label"
 msgid "Bridge Wall Speed"
 msgstr "Rychlost tisku zdi můstku"
+
+msgctxt "bridge_wall_max_deviation description"
+msgid "Bridge-walls shouldn't deviate from straight lines more than this, anything that falls outside of the area of maximum allowed deviation (defined by the aligned bounding box around the anchor points) isn't considered a bridging wall. Skin lines are already straight."
+msgstr ""
 
 msgctxt "adhesion_type option brim"
 msgid "Brim"
@@ -1025,6 +1033,10 @@ msgctxt "meshfix_fluid_motion_enabled label"
 msgid "Enable Fluid Motion"
 msgstr ""
 
+msgctxt "support_brim_enable label"
+msgid "Enable Inner Support Base"
+msgstr ""
+
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
 msgstr "Povolit žehlení"
@@ -1040,6 +1052,10 @@ msgstr "Povolit řízení teploty trysek"
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
 msgstr "Povolit Ooze štít"
+
+msgctxt "support_outer_brim_enable label"
+msgid "Enable Outer Support Base"
+msgstr ""
 
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
@@ -1060,10 +1076,6 @@ msgstr ""
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
 msgstr "Povolit retrakci"
-
-msgctxt "support_brim_enable label"
-msgid "Enable Support Brim"
-msgstr "Povolit límec podpory"
 
 msgctxt "support_bottom_enable label"
 msgid "Enable Support Floor"
@@ -1455,9 +1467,13 @@ msgctxt "support_enable label"
 msgid "Generate Support"
 msgstr "Generovat podpory"
 
+msgctxt "support_outer_brim_enable description"
+msgid "Generate a base around the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
+msgstr ""
+
 msgctxt "support_brim_enable description"
-msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr "Vytvořte límec v podpůrných výplňových oblastech první vrstvy. Tento límec je vytištěn pod podpěrou, ne kolem ní. Povolením tohoto nastavení se zvýší přilnavost podpory k podložce."
+msgid "Generate a base within the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
+msgstr ""
 
 msgctxt "support_interface_enable description"
 msgid "Generate a dense interface between the model and the support. This will create a skin at the top of the support on which the model is printed and at the bottom of the support, where it rests on the model."
@@ -1959,6 +1975,10 @@ msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
 msgstr "Extruder vnitřní zdi"
 
+msgctxt "wall_x_inset label"
+msgid "Inner Wall Inset"
+msgstr ""
+
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
 msgstr "Okamžitá rychlost při tisku vnitřní zdi"
@@ -1974,6 +1994,10 @@ msgstr "Průtok u vnitřních zdí"
 msgctxt "wall_line_width_x label"
 msgid "Inner Wall(s) Line Width"
 msgstr "Šířka čáry vnitřních stěn"
+
+msgctxt "wall_x_inset description"
+msgid "Inset applied to the path of the inner wall(s). The infill will move along with the new boundary set by the innermost inner wall"
+msgstr ""
 
 msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
@@ -2365,6 +2389,10 @@ msgctxt "support_tree_angle label"
 msgid "Maximum Branch Angle"
 msgstr "Maximální úhel větví"
 
+msgctxt "bridge_wall_max_deviation label"
+msgid "Maximum Bridge Deviation"
+msgstr ""
+
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
 msgstr "Maximální odchylka"
@@ -2536,6 +2564,10 @@ msgstr "Minimální výška k modelu"
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
 msgstr "Minimální plocha výplně"
+
+msgctxt "minimum_infill_line_length label"
+msgid "Minimum Infill Line Length"
+msgstr ""
 
 msgctxt "cool_min_layer_time label"
 msgid "Minimum Layer Time"
@@ -2785,6 +2817,18 @@ msgctxt "machine_extruder_count description"
 msgid "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle."
 msgstr "Počet extruderových strojů. Vytlačovací souprava je kombinací podavače, bowdenu a trysky."
 
+msgctxt "support_wall_thickness_layer_smooth description"
+msgid "Number of layers where the support wall line width transition is smoothed out over. (This may still create jumps when one area splits off from the other though.)"
+msgstr ""
+
+msgctxt "support_wall_thickness_bottom_layers description"
+msgid "Number of layers, counted from the build-plate, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
+msgstr ""
+
+msgctxt "support_wall_thickness_top_layers description"
+msgid "Number of layers, counted from the closest tip of the branches downwards, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
+msgstr ""
+
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
 msgstr "Počet posunů trysky přes kartáč."
@@ -2836,6 +2880,10 @@ msgstr "Pokud možno na podložce"
 msgctxt "support_tree_rest_preference option graceful"
 msgid "On model if required"
 msgstr "Klidně i na modelu"
+
+msgctxt "top_bottom_skin_merge_distance description"
+msgid "On sloped areas especially, top/bottom can become very small or narrow, while skin is nearby. This will sometimes cause walls not to print well. Merge top/bottom into skin when areas become too thin, where 'too thin' is defined by the merge distance (any thinner is merged into a neighbouring area if present)."
+msgstr ""
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -3893,6 +3941,26 @@ msgctxt "acceleration_support label"
 msgid "Support Acceleration"
 msgstr "Akcelerace tisku podpor"
 
+msgctxt "support_base_height label"
+msgid "Support Base Height"
+msgstr ""
+
+msgctxt "support_base_inside_width label"
+msgid "Support Base Inside Width"
+msgstr ""
+
+msgctxt "support_base_outside_width label"
+msgid "Support Base Outside Width"
+msgstr ""
+
+msgctxt "support_base_curve_magnitude label"
+msgid "Support Base Slope"
+msgstr ""
+
+msgctxt "support_base_width label"
+msgid "Support Base Width"
+msgstr ""
+
 msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Vzdálenost spodní podpory"
@@ -3900,14 +3968,6 @@ msgstr "Vzdálenost spodní podpory"
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Počet stěn v podlaze podpor"
-
-msgctxt "support_brim_line_count label"
-msgid "Support Brim Line Count"
-msgstr "Počet podpůrných čar límce"
-
-msgctxt "support_brim_width label"
-msgid "Support Brim Width"
-msgstr "Šířka límce podpor"
 
 msgctxt "support_zag_skip_count label"
 msgid "Support Chunk Line Count"
@@ -3924,6 +3984,10 @@ msgstr "Hustota podpor"
 msgctxt "support_xy_overrides_z label"
 msgid "Support Distance Priority"
 msgstr "Priorita vzdálenost podpor"
+
+msgctxt "support_enlarged_wall_thickness label"
+msgid "Support Enlarged Wall Thickness"
+msgstr ""
 
 msgctxt "support_extruder_nr label"
 msgid "Support Extruder"
@@ -4017,6 +4081,22 @@ msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
 msgstr "Rychlost tisku výplně podpor"
 
+msgctxt "support_brim_line_count label"
+msgid "Support Inner Brim Line Count"
+msgstr ""
+
+msgctxt "support_brim_width label"
+msgid "Support Inner Brim Width"
+msgstr ""
+
+msgctxt "support_inside_base_height label"
+msgid "Support Inside Base Height"
+msgstr ""
+
+msgctxt "support_inside_base_curve_magnitude label"
+msgid "Support Inside Base Slope"
+msgstr ""
+
 msgctxt "acceleration_support_interface label"
 msgid "Support Interface Acceleration"
 msgstr "Akcelerace tisku rozhraní podpor"
@@ -4105,9 +4185,21 @@ msgctxt "support_mesh label"
 msgid "Support Mesh"
 msgstr "Síť podpor"
 
+msgctxt "support_outside_base_height label"
+msgid "Support Outside Base Height"
+msgstr ""
+
+msgctxt "support_outside_base_curve_magnitude label"
+msgid "Support Outside Base Slope"
+msgstr ""
+
 msgctxt "support_angle label"
 msgid "Support Overhang Angle"
 msgstr "Podpora převislého úhlu"
+
+msgctxt "support_paint_resolution label"
+msgid "Support Painting Precision"
+msgstr ""
 
 msgctxt "support_pattern label"
 msgid "Support Pattern"
@@ -4196,6 +4288,22 @@ msgstr "Vzdálenost horní podpory"
 msgctxt "support_wall_count label"
 msgid "Support Wall Line Count"
 msgstr "Počet stěn podpor"
+
+msgctxt "support_wall_thickness_layer_smooth label"
+msgid "Support Wall Smooth Layer Width"
+msgstr ""
+
+msgctxt "support_wall_thickness label"
+msgid "Support Wall Thickness"
+msgstr ""
+
+msgctxt "support_wall_thickness_bottom_layers label"
+msgid "Support Wall Unenlarged Bottom Layers"
+msgstr ""
+
+msgctxt "support_wall_thickness_top_layers label"
+msgid "Support Wall Unenlarged Top Layers"
+msgstr ""
 
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
@@ -4569,13 +4677,13 @@ msgctxt "support_z_seam_min_distance description"
 msgid "The distance between the model and its support structure at the z-axis seam."
 msgstr ""
 
-msgctxt "retraction_combing_avoid_distance description"
-msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
-msgstr ""
-
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
 msgstr "Vzdálenost mezi tryskou a již potištěnými částmi, kterým se hlavy vyvaruje."
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and outer walls when travelling inside a model."
+msgstr ""
 
 msgctxt "raft_base_line_spacing description"
 msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
@@ -4805,6 +4913,14 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "Výška počáteční vrstvy v mm. Silnější počáteční vrstva usnadňuje přilnavost k montážní desce."
 
+msgctxt "support_inside_base_height description"
+msgid "The height of the inside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
+
+msgctxt "support_outside_base_height description"
+msgid "The height of the outside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
+
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
 msgstr ""
@@ -4812,6 +4928,10 @@ msgstr ""
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Výška stupňů schodišťového dna podpory spočívá na modelu. Nízká hodnota ztěžuje odstranění podpory, ale příliš vysoké hodnoty mohou vést k nestabilním podpůrným strukturám. Nastavením na nulu vypnete chování podobné schodišti."
+
+msgctxt "support_base_height description"
+msgid "The height of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
 
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
@@ -4889,8 +5009,20 @@ msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "Délka materiálu zasunutého během pohybu zasunutí."
 
+msgctxt "support_inside_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the inside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr ""
+
+msgctxt "support_outside_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the outside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr ""
+
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr ""
+
+msgctxt "support_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
 msgstr ""
 
 msgctxt "adaptive_layer_height_variation description"
@@ -5170,8 +5302,8 @@ msgid "The number of lines used for a brim. More brim lines enhance adhesion to 
 msgstr "Počet řádků použitých pro límec. Více linek límce zvyšuje přilnavost k podložce, ale také snižuje efektivní tiskovou plochu."
 
 msgctxt "support_brim_line_count description"
-msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr "Počet řádků použitých pro podpůrný límec. Více límcových linií zvyšuje přilnavost k stavební desce za cenu nějakého dalšího materiálu."
+msgid "The number of lines used for the support inside brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr ""
 
 msgctxt "build_volume_fan_nr description"
 msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
@@ -5257,8 +5389,16 @@ msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements."
 msgstr ""
 
+msgctxt "support_tree_smooth_layers description"
+msgid "The positions of the tree support branches will be adjusted to smooth them over the specified number of layers using a rolling window average. This improves inter-layer adhesion and sturdiness, but an excessively high value may cause the structure to bend too close to the model or compromise its integrity."
+msgstr ""
+
 msgctxt "multi_material_paint_resolution description"
 msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr ""
+
+msgctxt "support_paint_resolution description"
+msgid "The precision of the details when generating support based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
 msgstr ""
 
 msgctxt "support_tree_angle_slow description"
@@ -5549,6 +5689,10 @@ msgctxt "wall_thickness description"
 msgid "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls."
 msgstr "Tloušťka stěn v horizontálním směru. Tato hodnota dělená šířkou čáry stěny definuje počet stěn."
 
+msgctxt "support_enlarged_wall_thickness description"
+msgid "The thickness of the walls with which to surround the support infill, when adhesion with the above/below layer is very low. Using larger or extra walls in this case will improve adhesion and make the branch sturdier."
+msgstr ""
+
 msgctxt "infill_sparse_thickness description"
 msgid "The thickness per layer of infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "Tloušťka výplňového materiálu na vrstvu. Tato hodnota by měla být vždy násobkem výšky vrstvy a je jinak zaoblená."
@@ -5556,6 +5700,10 @@ msgstr "Tloušťka výplňového materiálu na vrstvu. Tato hodnota by měla bý
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "Tloušťka na vrstvu nosného výplňového materiálu. Tato hodnota by měla být vždy násobkem výšky vrstvy a je jinak zaoblená."
+
+msgctxt "support_wall_thickness description"
+msgid "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr ""
 
 msgctxt "machine_buildplate_type description"
 msgid "The type of build plate installed on the printer."
@@ -5578,12 +5726,20 @@ msgid "The width (X-direction) of the printable area."
 msgstr "Šířka (Osa X) plochy k tisku."
 
 msgctxt "support_brim_width description"
-msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr "Šířka okraje pro tisk pod podpěrou. Větší okraj zvyšuje přilnavost ke podložce za cenu nějakého dalšího materiálu."
+msgid "The width of the brim to print inside the support, on the first layer. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr ""
+
+msgctxt "support_base_inside_width description"
+msgid "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base."
+msgstr ""
 
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Šířka paprsků vzájemného propletení."
+
+msgctxt "support_base_outside_width description"
+msgid "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
@@ -5592,6 +5748,10 @@ msgstr ""
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "Šířka hlavní věže."
+
+msgctxt "support_base_width description"
+msgid "The width of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
 
 msgctxt "magic_fuzzy_skin_thickness description"
 msgid "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered."
@@ -5817,6 +5977,10 @@ msgctxt "top_bottom_thickness label"
 msgid "Top/Bottom Thickness"
 msgstr "Vrchní/spodní tloušťka"
 
+msgctxt "top_bottom_skin_merge_distance label"
+msgid "Top/Bottom/Skin Merge Distance"
+msgstr ""
+
 msgctxt "support_type option buildplate"
 msgid "Touching Buildplate"
 msgstr "Dotýká se podložky"
@@ -6031,6 +6195,10 @@ msgstr "Stěny"
 
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr ""
+
+msgctxt "minimum_infill_line_length description"
+msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
 msgstr ""
 
 msgctxt "meshfix_fluid_motion_enabled description"
@@ -6513,6 +6681,14 @@ msgstr "cestování"
 #~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
 #~ msgstr "Určete, zda rohy na obrysu modelu ovlivňují polohu švu. Žádné znamená, že rohy nemají žádný vliv na polohu švu. Funkce \"Schovat šev\" zvyšuje pravděpodobnost, že se šev vyskytuje ve vnitřním rohu. \"Ukázat šev\" zvyšuje pravděpodobnost, že se šev objeví na vnějším rohu. \"Skrýt nebo vystavit šev\" zvyšuje pravděpodobnost, že šev nastane ve vnitřním nebo vnějším rohu. \"Inteligentní skrytí\" umožňuje vnitřní i vnější rohy, ale v případě potřeby vybírá vnitřní rohy častěji."
 
+#~ msgctxt "support_brim_enable label"
+#~ msgid "Enable Support Brim"
+#~ msgstr "Povolit límec podpory"
+
+#~ msgctxt "support_brim_enable description"
+#~ msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
+#~ msgstr "Vytvořte límec v podpůrných výplňových oblastech první vrstvy. Tento límec je vytištěn pod podpěrou, ne kolem ní. Povolením tohoto nastavení se zvýší přilnavost podpory k podložce."
+
 #~ msgctxt "layer_0_z_overlap description"
 #~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
 #~ msgstr "První a druhá vrstva modelu se překrývají ve směru Z, aby se kompenzovalo vlákno ztracené ve vzduchové mezeře. Všechny modely nad první vrstvou modelu budou o tuto částku posunuty dolů."
@@ -6561,6 +6737,14 @@ msgstr "cestování"
 #~ msgid "Skin Edge Support Thickness"
 #~ msgstr "Tloušťka podpory hrany povrchu"
 
+#~ msgctxt "support_brim_line_count label"
+#~ msgid "Support Brim Line Count"
+#~ msgstr "Počet podpůrných čar límce"
+
+#~ msgctxt "support_brim_width label"
+#~ msgid "Support Brim Width"
+#~ msgstr "Šířka límce podpor"
+
 #~ msgctxt "support_interface_skip_height label"
 #~ msgid "Support Interface Resolution"
 #~ msgstr "Rozlišení rozhraní podpor"
@@ -6585,6 +6769,10 @@ msgstr "cestování"
 #~ msgid "The number of infill layers that supports skin edges."
 #~ msgstr "Počet výplňových vrstev, které podporují okraje povrchu."
 
+#~ msgctxt "support_brim_line_count description"
+#~ msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+#~ msgstr "Počet řádků použitých pro podpůrný límec. Více límcových linií zvyšuje přilnavost k stavební desce za cenu nějakého dalšího materiálu."
+
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
 #~ msgstr "Vzor výplňového materiálu tisku. Čáry a cik-cak s každou vrstvou obracejí směr výplně, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychle, oktet, čtvrtinově krychlový, křížový a soustředný vzor jsou plně vytištěny v každé vrstvě. Vzory gyroid, krychlový, čtvrtinově krychlový a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru. Bleskový vzor se snaží minimalizovat množství výplně tím, že podporuje pouze strop objektu."
@@ -6600,6 +6788,10 @@ msgstr "cestování"
 #~ msgctxt "skin_edge_support_thickness description"
 #~ msgid "The thickness of the extra infill that supports skin edges."
 #~ msgstr "Tloušťka další výplně, která podporuje okraje povrchu."
+
+#~ msgctxt "support_brim_width description"
+#~ msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+#~ msgstr "Šířka okraje pro tisk pod podpěrou. Větší okraj zvyšuje přilnavost ke podložce za cenu nějakého dalšího materiálu."
 
 #~ msgctxt "wall_overhang_angle description"
 #~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."

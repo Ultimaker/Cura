@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-02-21 15:37+0000\n"
+"POT-Creation-Date: 2026-09-16 16:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -15,6 +15,78 @@ msgstr ""
 
 
 
+
+msgctxt "command_line_settings label"
+msgid "Command Line Settings"
+msgstr ""
+
+msgctxt "command_line_settings description"
+msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
+msgstr ""
+
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr ""
+
+msgctxt "material_brand description"
+msgid "The material brand, e.g. 'UltiMaker'."
+msgstr ""
+
+msgctxt "material_density label"
+msgid "Material density"
+msgstr ""
+
+msgctxt "material_density description"
+msgid "The printed material density, in g/cm3."
+msgstr ""
+
+msgctxt "material_guid label"
+msgid "Material GUID"
+msgstr ""
+
+msgctxt "material_guid description"
+msgid "The unique ID of the material."
+msgstr ""
+
+msgctxt "material_id label"
+msgid "Cura Material ID"
+msgstr ""
+
+msgctxt "material_id description"
+msgid "The ID of the material that is used internally."
+msgstr ""
+
+msgctxt "material_name label"
+msgid "Material Name"
+msgstr ""
+
+msgctxt "material_name description"
+msgid "The fully qualified material name, e.g. 'UltiMaker PLA White'."
+msgstr ""
+
+msgctxt "material_spool_cost label"
+msgid "Material Spool Cost"
+msgstr ""
+
+msgctxt "material_spool_cost description"
+msgid "The cost of a full spool of material."
+msgstr ""
+
+msgctxt "material_spool_weight label"
+msgid "Material Spool Weight"
+msgstr ""
+
+msgctxt "material_spool_weight description"
+msgid "The weight of a full spool of material, in grams."
+msgstr ""
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr ""
+
+msgctxt "material_type description"
+msgid "The base type of printed material, e.g. PLA or ABS."
+msgstr ""
 
 msgctxt "machine_settings label"
 msgid "Machine"

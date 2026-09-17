@@ -82,7 +82,7 @@ def cleanup_artifacts(dist_path: Path):
             shutil.rmtree(d, ignore_errors=True)
 
 
-def build(dist_path: Path, filename: Path):
+def build(dist_path: Path, filename: Path, arch: str = "x64"):
     dist_loc = Path(os.getcwd(), dist_path)
     work_loc = work_path(filename)
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
@@ -105,7 +105,7 @@ def build(dist_path: Path, filename: Path):
     subprocess.call(heat_command)
 
     build_command = ["candle",
-                     "-arch", "x64",
+                     "-arch", arch,
                      f"-dCuraDir={dist_loc}\\",
                      "-ext", "WixFirewallExtension",
                      "-out", f"{build_loc.as_posix()}\\",
@@ -133,7 +133,8 @@ if __name__ == "__main__":
                         help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.msi')")
     parser.add_argument("--name", type=str, help="App name (e.g. 'UltiMaker Cura')")
     parser.add_argument("--version", type=str, help="The full cura version, e.g. 5.9.0-beta.1+24132")
+    parser.add_argument("--arch", type=str, default="x64", choices=["x64", "arm64"], help="Target architecture (default: x64)")
     args = parser.parse_args()
     generate_wxs(args.source_path.resolve(), args.dist_path.resolve(), args.filename.resolve(), args.name, args.version)
     cleanup_artifacts(args.dist_path.resolve())
-    build(args.dist_path.resolve(), args.filename)
+    build(args.dist_path.resolve(), args.filename, args.arch)
