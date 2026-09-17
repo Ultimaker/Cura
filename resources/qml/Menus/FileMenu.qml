@@ -11,61 +11,51 @@ Cura.Menu
 {
     id: base
     title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
-    property var fileProviderModel: CuraApplication.getFileProviderModel()
 
     Cura.MenuItem
     {
         action: Cura.Actions.newProject
     }
 
-    Cura.MenuItem
+    Repeater
     {
-        action: Cura.Actions.open
-        visible: base.fileProviderModel.count == 1
+        model: Qt.platform.os === "osx" ? 0 : 1 // MacOS ignores the menus visibility, so we need to really not create it
+        Cura.MenuItem
+        {
+            id: itemOpemFileFromDisk
+            action: Cura.Actions.open
+            visible: !Cura.Actions.hasExtraOpenFileActions
+            enabled: visible
+            text: openFileMenu.title
+        }
     }
 
     OpenFilesMenu
     {
-        shouldBeVisible: base.fileProviderModel.count > 1
-        enabled: shouldBeVisible
+        id: openFileMenu
+        shouldBeVisible: Cura.Actions.hasExtraOpenFileActions
+        title: catalog.i18nc("@action:inmenu menubar:file", "&Open File(s)...")
     }
 
     RecentFilesMenu { }
 
-    Cura.MenuItem
+    Repeater
     {
-        id: saveWorkspaceMenu
-        shortcut: StandardKey.Save
-        text: catalog.i18nc("@title:menu menubar:file", "&Save Project...")
-        visible: saveProjectMenu.model.count == 1
-        enabled: UM.WorkspaceFileHandler.enabled && saveProjectMenu.model.count == 1
-        onTriggered:
+        model: Qt.platform.os === "osx" ? 0 : 1 // MacOS ignores the menus visibility, so we need to really not create it
+        Cura.MenuItem
         {
-            const args = {
-                "filter_by_machine": false,
-                "file_type": "workspace",
-                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-                "limit_mimetypes":["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
-            };
-            if (UM.Preferences.getValue("cura/dialog_on_project_save"))
-            {
-                saveWorkspaceDialogComponent.createObject(base, {"args": args}).open()
-            }
-            else
-            {
-                UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
-            }
+            id: saveWorkspaceMenu
+            action: Cura.Actions.saveWorkspaceActions[0]
+            visible: !Cura.Actions.hasExtraSaveWorkspaceActions
+            text: saveProjectMenu.title
         }
     }
-
-    UM.ProjectOutputDevicesModel { id: projectOutputDevicesModel }
 
     SaveProjectMenu
     {
         id: saveProjectMenu
-        model: projectOutputDevicesModel
-        shouldBeVisible: model.count > 1
-        enabled: UM.WorkspaceFileHandler.enabled
+        shouldBeVisible: Cura.Actions.hasExtraSaveWorkspaceActions
+        title: catalog.i18nc("@action:inmenu menubar:file", "&Save Project...")
     }
 
     Cura.MenuItem
