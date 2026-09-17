@@ -1094,7 +1094,7 @@ UM.MainWindow
         model: CuraApplication.getExtrudersModel()
         Action
         {
-            text: "%1: %2 - %3".arg(model.name).arg(model.material).arg(model.variant)
+            text: "${model.name}: ${model.material} - ${model.variant}"
             enabled: model.enabled
             checkable: true
             checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1

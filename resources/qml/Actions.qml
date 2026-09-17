@@ -86,31 +86,10 @@ Item
     property alias showFileLocation: showFileLocationAction
 
     property list<Action> extraOpenFileActions: []
-    property bool hasExtraOpenFileActions:
-    {
-        for(var extraOpenFileAction of extraOpenFileActions)
-        {
-            if(extraOpenFileAction.enabled)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    property bool hasExtraOpenFileActions: extraOpenFileActions.some((x) => x.enabled)
 
     property list<Action> saveWorkspaceActions: []
-    property bool hasExtraSaveWorkspaceActions:
-    {
-        let enabled_count = 0;
-        for(var saveWorkspaceAction of saveWorkspaceActions)
-        {
-            if(saveWorkspaceAction.enabled)
-            {
-                enabled_count++;
-            }
-        }
-        return enabled_count > 1;
-    }
+    property bool hasExtraSaveWorkspaceActions: saveWorkspaceActions.filter((x) => x.enabled).length > 1
 
     property list<Action> setExtruderActions: []
 
