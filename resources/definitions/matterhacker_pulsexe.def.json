@@ -1,0 +1,231 @@
+{
+    "version":2,
+    "name":"Matterhackers Pulse XE",
+    "inherits":"fdmprinter",
+    "metadata":{
+        "author":"Chris Inacio <nacho319@inacio.net>",
+        "visible":true,
+        "manufacturer":"Matterhackers",
+        "file_formats":"text/x-gcode",
+        "first_start_actions":["MachineSettingsAction"],
+        "machine_extruder_trains":{
+            "0":"matterhackers_e3dlite_extruder",
+            "1":"matterhackers_e3dv6_extruder"
+        }
+    },
+	"overrides":
+	{
+	    "machine_name":{
+	        "default_value":"Matterhackers Pulse XE"
+	    },
+	    "machine_width":{ "default_value":250 },
+	    "machine_depth":{ "default_value":210 },
+	    "machine_height":{ "default_value":200 },
+	    "machine_gcode_flavor":{
+	        "default_value":"Marlin"
+	    },
+	    "machine_head_with_fans_polygon":{
+	        "default_value":[[-30,5],[40,5],[40,55],[-30,55]]
+	    },
+	    "gantry_height":{
+	        "value":43
+	    },
+	    "has_materials":true,
+	    "has_variants":true,
+	    "has_machine_quality":true,
+	    "variants_name":"Nozzle Size",
+	    "prefered_variant_name":"0.4mm Nozzle",
+	    "preferred_quality_type":"standard",
+	    "preferred_material":"generic_pla",
+	    "machine_start_gcode":{
+	        "default_value":"G21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nG28 ; home all axes\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG29 P1 ; automated bed probing for leveling\nG29 P3 T ; continue probing until all points are filled\nG29 F 10.0 ; fade height for correction at 10mm\nG29 A ; active unified bed leveling system\nG92 E0 ; purge the line \nG1 X5 Y5 Z0.8 F1800 ; move to x=5,y=5,z=0.8 at 1800 mm/s\nG1 X100 Z0.3 E25 F900 ; move to x=100,z=0.3,extrude 25mm, at 900 mm/s\nG92 E0 ; new extruder position\nG1 E-2 F2400 ; retract filament rate 2400 mm/s\n"
+	    },
+	    "machine_end_gcode":{
+	        "default_value":"G28 Z0 ; retract and move away\nM280 P0 S160 ; set servo 0 to position 160 (no clue)\nG4 P400 ; dwell (wait some time)\n  M280 P0 S160 ; set servo 0 to position 160 (still no clue)\nM104 S0 ; turn off extruder\nM140 S0 ; turn off heatbed\nM106 P1 S0 ; turn off layer fan\nM107 ; turn off fan\nG1 X0 Y210; home X axis and push Y forward\nM84 ; disable motors\n; matterhackers end song\nM300 S1760 P20    ; End Tone\nM300 S880 P20     ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S880 P20     ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S880 P20     ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S880 P20     ; End Tone\nM300 S2217 P20    ; End Tone\nM300 S1108 P20    ; End Tone\nM300 S2217 P20    ; End Tone\nM300 S1108 P20    ; End Tone\nM300 S2217 P20    ; End Tone\nM300 S1108 P20    ; End Tone\nM300 S2217 P20    ; End Tone\nM300 S1108 P20    ; End Tone\nM300 S2637 P20    ; End Tone\nM300 S1318 P20    ; End Tone\nM300 S2637 P20    ; End Tone\nM300 S1318 P20    ; End Tone\nM300 S2637 P20    ; End Tone\nM300 S1318 P20    ; End Tone\nM300 S2637 P20    ; End Tone\nM300 S1318 P20    ; End Tone\nM300 S2794 P20    ; End Tone\nM300 S1397 P20    ; End Tone\nM300 S2794 P20    ; End Tone\nM300 S1397 P20    ; End Tone\nM300 S2794 P20    ; End Tone\nM300 S1397 P20    ; End Tone\nM300 S2794 P20    ; End Tone\nM300 S1397 P20    ; End Tone\nM300 S2637 P20    ; End Tone\nM300 S1318 P20    ; End Tone\nM300 S2637 P20    ; End Tone\nM300 S1318 P20    ; End Tone\nM300 S2637 P20    ; End Tone\nM300 S1318 P20    ; End Tone\nM300 S2637 P20    ; End Tone\nM300 S1318 P20    ; End Tone\nM300 S2217 P20    ; End Tone\nM300 S1108 P20    ; End Tone\nM300 S2217 P20    ; End Tone\nM300 S1108 P20    ; End Tone\nM300 S2217 P20    ; End Tone\nM300 S1108 P20    ; End Tone\nM300 S2217 P20    ; End Tone\nM300 S1108 P20    ; End Tone\nM300 S3520 P20    ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S3520 P20    ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S3520 P20    ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S3520 P20    ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S3520 P20    ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S3520 P20    ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S3520 P20    ; End Tone\nM300 S1760 P20    ; End Tone\nM300 S3520 P20    ; End Tone\nM300 S1760 P20    ; End Tone\n"
+	    },
+	    "machine_max_feedrate_x":{
+	        "value":250
+	    },
+	    "machine_max_feedrate_y":{
+	        "value":250
+	    },
+	    "machine_max_feedrate_z":{
+	        "value":10
+	    },
+	    "machine_max_feedrate_e":{
+	        "value":50
+	    },
+	    "machine_max_acceleration_x":{
+	        "value":250
+	    },
+	    "machine_max_acceleration_y":{
+	        "value":250
+	    },
+	    "machine_max_acceleration_z":{
+	        "value":100
+	    },
+	    "machine_max_acceleration_e":{
+	        "value":5000
+	    },
+	    "machine_acceleration":{
+	        "value":500
+	    },
+	    "machine_max_jerk_xy":{
+	        "value":10
+	    },
+	    "machine_max_jerk_z":{
+	        "value":0.4
+	    },
+	    "machine_max_jerk_e":{
+	        "value":5
+	    },
+	    "machine_endstop_positive_direction_x":{
+	        "default_value":true
+	    },
+	    "machine_endstop_positive_direction_y":{
+	        "default_value":true
+	    },
+	    "machine_heated_bed":{
+	        "default_value":true
+	    },
+	    "material_diameter":{
+	        "default_value":1.75
+	    },
+	    "acceleration_print":{
+	        "value":500
+	    },
+	    "acceleration_travel":{
+	        "value":1300
+	    },
+	    "acceleration_travel_layer_0":{
+	        "value":"acceleration_travel"
+	    },"acceleration_roofing":{
+	        "enabled":"acceleration_enabled and roofing_layer_count > 0 and top_layers > 0"
+	    },
+	    "jerk_print":{
+	        "value":8
+	    },
+	    "jerk_travel":{
+	        "value":"jerk_print"
+	    },
+	    "jerk_travel_layer_0":{
+	        "value":"jerk_travel"
+	    },
+	    "acceleration_enabled":{
+	        "value":false
+	    },
+	    "jerk_enabled":{
+	        "value":false
+	    },
+	    "speed_print":{
+	        "value":40.0
+	    },
+	    "speed_infill":{
+	        "value":60.0
+	    },
+	    "speed_wall":{
+	        "value":"speed_print / 2"
+	    },
+	    "speed_wall_0":{
+	        "value":"speed_wall"
+	    },
+	    "speed_wall_x":{
+	        "value":"speed_wall"
+	    },
+	    "speed_topbottom":{
+	        "value":"speed_print / 2"
+	    },
+	    "speed_roofing":{
+	        "value":"speed_topbottom"
+	    },"speed_travel":{
+	        "value":"150.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5"
+	    },
+	    "speed_layer_0":{
+	        "value":18.0
+	    },
+	    "speed_print_layer_0":{
+	        "value":"speed_layer_0"
+	    },
+	    "speed_travel_layer_0":{
+	        "value":"100 if speed_layer_0 < 20 else 150 if speed_layer_0 > 30 else speed_layer_0 * 5"
+	    },
+	    "speed_prime_tower":{"value":"speed_topbottom"},
+	    "speed_support":{"value":"speed_wall_0"},
+	    "speed_support_interface":{"value":"speed_topbottom"},
+	    "speed_z_hop":{"value":5},
+	    "skirt_brim_speed":{"value":"speed_layer_0"},
+	    "line_width":{"value":"machine_nozzle_size"},
+	    "optimize_wall_printing_order":{"value":"True"},
+	    "material_initial_print_temperature":{"value":"material_print_temperature"},
+	    "material_final_print_temperature":{"value":"material_print_temperature"},
+	    "material_flow":{"value":100},
+	    "travel_compensate_overlapping_walls_0_enabled":{"value":"False"},
+	    "z_seam_type":{"value":"'back'"},
+	    "z_seam_corner":{"value":"'z_seam_corner_weighted'"},
+	    "infill_sparse_density":{"value":"20"},
+	    "infill_pattern":{"value":"'lines' if infill_sparse_density > 50 else 'cubic'"},
+	    "infill_before_walls":{"value":false},
+	    "infill_overlap":{"value":30.0},
+	    "skin_overlap":{"value":10.0},
+	    "infill_wipe_dist":{"value":0.0},
+	    "wall_0_wipe_dist":{"value":0.0},
+	    "fill_perimeter_gaps":{"value":"'everywhere'"},
+	    "fill_outline_gaps":{"value":false},
+	    "filter_out_tiny_gaps":{"value":false},
+	    "retraction_speed":{
+	        "maximum_value_warning":"machine_max_feedrate_e if retraction_enable else float('inf')",
+	        "maximum_value":200
+	    },
+	    "retraction_retract_speed":{
+	        "maximum_value_warning":"machine_max_feedrate_e if retraction_enable else float('inf')",
+	        "maximum_value":200
+	    },
+	    "retraction_prime_speed":{
+	        "maximum_value_warning":"machine_max_feedrate_e if retraction_enable else float('inf')",
+	        "maximum_value":200
+	    },
+	    "retraction_hop_enabled":{"value":"False"},
+	    "retraction_hop":{"value":0.2},
+	    "retraction_combing":{"value":"'off' if retraction_hop_enabled else 'noskin'"},
+	    "retraction_combing_max_distance":{"value":30},
+	    "travel_avoid_other_parts":{"value":true},
+	    "travel_avoid_supports":{"value":true},
+	    "travel_retract_before_outer_wall":{"value":true},
+	    "retraction_enable":{"value":true},
+	    "retraction_count_max":{"value":100},
+	    "retraction_extrusion_window":{"value":10},
+	    "retraction_min_travel":{"value":1.5},
+	    "cool_fan_full_at_height":{"value":"layer_height_0 + 2 * layer_height"},
+	    "cool_fan_enabled":{"value":true},
+	    "cool_min_layer_time":{"value":10},
+	    "adhesion_type":{"value":"'skirt'"},
+	    "brim_replaces_support":{"value":false},
+	    "skirt_gap":{"value":10.0},
+	    "skirt_line_count":{"value":3},
+	    "adaptive_layer_height_variation":{"value":0.04},
+	    "adaptive_layer_height_variation_step":{"value":0.04},
+	    "meshfix_maximum_resolution":{"value":"0.25"},
+	    "meshfix_maximum_travel_resolution":{"value":"meshfix_maximum_resolution"},
+	    "support_angle":{"value":"math.floor(math.degrees(math.atan(line_width/2.0/layer_height)))"},
+	    "support_pattern":{"value":"'zigzag'"},
+	    "support_infill_rate":{"value":"0 if support_enable and support_structure == 'tree' else 20"},
+	    "support_use_towers":{"value":false},
+	    "support_xy_distance":{"value":"wall_line_width_0 * 2"},
+	    "support_xy_distance_overhang":{"value":"wall_line_width_0"},
+	    "support_z_distance":{"value":"layer_height if layer_height >= 0.16 else layer_height*2"},
+	    "support_xy_overrides_z":{"value":"'xy_overrides_z'"},
+	    "support_wall_count":{"value":1},
+	    "support_brim_enable":{"value":true},
+	    "support_brim_width":{"value":4},
+	    "support_interface_enable":{"value":true},
+	    "support_interface_height":{"value":"layer_height * 4"},
+	    "support_interface_density":{"value":33.333},
+	    "support_interface_pattern":{"value":"'grid'"},
+	    "support_interface_skip_height":{"value":0.2},
+	    "minimum_support_area":{"value":2},
+	    "minimum_interface_area":{"value":10},
+	    "top_bottom_thickness":{"value":"layer_height_0 + layer_height * 3"},
+	    "wall_thickness":{"value":"line_width * 2"}
+		
+	}
+}
