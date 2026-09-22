@@ -5,20 +5,20 @@
 - Paint Surface: Select entire contiguous faces or curved features in a single click to apply paint on support, contributed by @wawanbreton and @HellAholic
 - Draw straight lines for paint on support using Shift and Shift + Ctrl shortcuts, contributed by @wawanbreton
 - Easily spot unsupported areas with distinct line type colors for overhangs and bridges in the layer preview window.
-- Updated the skin strategy so even when there are small roof/floor areas they are printed in a unified way. Reducing surface fragmentation and unnecessary travel moves.
+- Updated the skin strategy so that small roof and floor areas are printed in a unified way, reducing surface fragmentation and unnecessary travel moves.
 - Enable support reminder for models with severe overhangs without supports enabled
 - Pop-up dialogs are now created dynamically, improving boot times and reducing memory usage
 - Start and end G-code template formulas, along with end-of-print variable replacements (like total print time), are now processed directly within CuraEngine, contributed by @wawanbreton
-- Start and end G-code now supports substring matching and list syntax (e.g., material_type in ['TPU', 'TPU 95A']).
+- Start and end G-code templates now support substring matching and list syntax (e.g., material_type in ['TPU', 'TPU 95A']).
 - Generated G-code files now list active CuraEngine plugins in their metadata headers.
 - Upgraded our underlying UI framework from Qt 6.6 to Qt 6.10, resulting in a number of smaller changes like a new topbar for MacOS
 - This version of Cura comes with a build for Windows on ARM, to help users with laptops who have a processor based on ARM architecture. If you have a Mac with ARM, those builds have been available for a while now.
 - Fix symbol encoding across all postprocessing scripts, contributed by @GregValiant, resolves https://github.com/Ultimaker/Cura/issues/21624
 - Navigate the settings panel more easily with a tabbed organization layout, based on the Tabbed Settings plugin by @fieldofview and contributed by @HellAholic
 - Added an option to the right click menu when a single model is selected to show the location of the file containing the model on the disk. Does not work for grouped models, for multi-selection, or copied meshes, contributed by @HellAholic
-- Added an option to define a default save and load location, this will override the default behavior of the Cura application to open the last saved/load location. It can be toggled on/off from the preferences, contributed by @HellAholic
+- Added an option to define a default save and load location. This overrides Cura's default behavior of opening the last-used save/load location. It can be toggled on or off in Preferences, contributed by @HellAholic
 - Overhauled and stabilized the PauseAtHeight.py Post-processing script, contributed by @GregValiant and @HellAholic
-- Added a feature to define different preferred materials and extruders for multi-tool printers. The preferred entries in definition file now accept a list in addition to the previous single entry string.
+- Added a feature to define different preferred materials and extruders for multi-tool printers. The preferred entries in the definition file now accept a list in addition to the previous single-entry string.
 - Support settings are now always visible, as supports can be painted directly on the model
 
 * New Settings:
@@ -48,7 +48,7 @@
 - Fixed missing build plate grids and backplate images during initialization.
 - Ensured the Open Project dialog behaves as a modal child of the main Cura window, and fixed dialog window centering under Linux (Qt 6.10).
 - Settings that rely on automatic defaults now explicitly display "Auto" instead of "-1".
-- Added a tooltip for the post processing script indicator
+- Added a tooltip for the post-processing script indicator
 
 * Printer definitions, profiles and materials:
 - Generic Definitions: Cleaned up the fdmprinter base definition by fixing initial bottom layer formula calculations and simplifying division expressions. Provided sensible fallback parameters for skin support when bridging settings are disabled.
