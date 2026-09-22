@@ -1069,22 +1069,22 @@ class CuraApplication(QtApplication):
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
         return self._setting_visibility_presets_model
 
-    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
+    @deprecated("This shouldn't be called anymore, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getWelcomePagesModel(self, *args) -> "WelcomePagesModel":
         return WelcomePagesModel()
 
-    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
+    @deprecated("This shouldn't be called anymore, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getAddPrinterPagesModel(self, *args) -> "AddPrinterPagesModel":
         return AddPrinterPagesModel()
 
-    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
+    @deprecated("This shouldn't be called anymore, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getAddPrinterPagesModelWithoutCancel(self, *args) -> "AddPrinterPagesModel":
         return AddPrinterPagesModel()
 
-    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
+    @deprecated("This shouldn't be called anymore, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getWhatsNewPagesModel(self, *args) -> "WhatsNewPagesModel":
         return WhatsNewPagesModel()

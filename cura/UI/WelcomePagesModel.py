@@ -190,7 +190,7 @@ class WelcomePagesModel(ListModel):
         should_show_function = next_page_item.get("should_show_function", lambda: True)
         return should_show_function()
 
-    @deprecated("This should no more be called, you should create a new model for each view instead", since = "5.14.0")
+    @deprecated("This shouldn't be called anymore, you should create a new model for each view instead", since = "5.14.0")
     @pyqtSlot()
     def resetState(self) -> None:
         """
