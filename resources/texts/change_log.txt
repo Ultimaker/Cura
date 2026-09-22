@@ -13,12 +13,13 @@
 - Generated G-code files now list active CuraEngine plugins in their metadata headers.
 - Upgraded our underlying UI framework from Qt 6.6 to Qt 6.10, resulting in a number of smaller changes like a new topbar for MacOS
 - This version of Cura comes with a build for Windows on ARM, to help users with laptops who have a processor based on ARM architecture. If you have a Mac with ARM, those builds have been available for a while now.
-- Fix symbol encoding across all postprocessing scripts, contributed by @GregValiant, resolves 21624
+- Fix symbol encoding across all postprocessing scripts, contributed by @GregValiant, resolves https://github.com/Ultimaker/Cura/issues/21624
 - Navigate the settings panel more easily with a tabbed organization layout, based on the Tabbed Settings plugin by @fieldofview and contributed by @HellAholic
 - Added an option to the right click menu when a single model is selected to show the location of the file containing the model on the disk. Does not work for grouped models, for multi-selection, or copied meshes, contributed by @HellAholic
 - Added an option to define a default save and load location, this will override the default behavior of the Cura application to open the last saved/load location. It can be toggled on/off from the preferences, contributed by @HellAholic
 - Overhauled and stabilized the PauseAtHeight.py Post-processing script, contributed by @GregValiant and @HellAholic
 - Added a feature to define different preferred materials and extruders for multi-tool printers. The preferred entries in definition file now accept a list in addition to the previous single entry string.
+- Support settings are now always visible, as supports can be painted directly on the model
 
 * New Settings:
 - Inner Wall Inset: Defines an intentional offset or gap between the outer wall and the outermost inner wall and helps reducing infill artifacts protruding through the walls
