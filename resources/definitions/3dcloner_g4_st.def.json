@@ -1,0 +1,33 @@
+{
+    "name": "3DCloner ST G4",
+    "version": 2,
+    "inherits": "3dcloner_g4_base",
+    "metadata": {
+        "quality_definition": "3dcloner_g4_base",
+        "visible": true,
+		"platform": "3dcloner_g4_st_plataform.stl",
+		"platform_offset": [ -172.5, -5.8, 121.5]
+    },
+    "overrides": {
+        "machine_name": { "default_value": "3DCloner ST G4" },
+        "machine_width": { "default_value": 320 },
+        "machine_depth": { "default_value": 210 },
+        "machine_height": { "default_value": 210.5 },
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-57, 39],
+                [-57, -87],
+                [64, -87],
+                [64, 39]
+            ]
+        },
+        "machine_start_gcode": {
+            "default_value": "M107                  ; Fan off\nG28                   ; Home all\nM375 P\"heightmap.csv\" ; Load height map\nG1 Z1.0 F6000         ; Move the bed\nG92 E0                ; Set extruder position\nG1 F200 E30           ; Prime the extruder\nG92 E0                ; Set extruder position\nM572 D0 S0.06        ;  pressure advance"
+        },
+
+		"machine_end_gcode": {
+			"default_value": "G92 E0               ; Set extruder position\nG1 E-10 F4200        ; Retract the filament\nG92 E0               ; Set extruder position\nG1 X-2.5 Y218 F36000 ; Go to home\nM104 S0              ; Turn off heating hotend\nM140 S0              ; Turn off heating bed\nM107                 ; Fan off\nM18                  ; Disable all motors"
+		},
+		
+        "gantry_height": { "value": 25 }
+    }
+}
