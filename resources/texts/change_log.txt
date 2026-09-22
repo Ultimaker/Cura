@@ -29,7 +29,7 @@
 - Support base settings to improve the sturdiness of tree support bases and improve adhesion like: Enable Inner Support Base, Support Inner Brim Width, Support Inner Brim Line Count,  Enable Outer Support Base, Support Base Height ,Support Inside Base Height, Support Outside Base Height, Support Base Width, Support Base Inside Width, Support Base Outside Width, Support Base Slope, Support Inside Base Slope, Support Outside Base Slope
 - Minimum Infill Line Length allows filtering of small infill islands. This filters based on the total length of infill area (island). Currently set to 0 (disabled) but should be 4x to 10x nozzle width as base value to filter out any infill area that is super small.
 - Wall Line Count Skin: Replaces Skin Outline Count to streamline boundary line configuration for skin layers.
-- Maximum Bridge Deviation; explicitly control the maximum radial length deviation (from a straight line) that bridging lines may have without encountering another anchoring point.
+- Maximum Bridge Deviation: Explicitly controls the maximum radial deviation (from a straight line) that bridging lines may have without encountering another anchoring point.
 
 * Bug fixes:
 - Wall overhang speed and Wall seam placement overhang filter are now support-independent, addition/removal of support does not change the behavior.
