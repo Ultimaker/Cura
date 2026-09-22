@@ -5901,7 +5901,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "default_value": 15,
-                    "value": "15 if support_structure == 'normal' else 0 if support_structure == 'tree' else 15",
+                    "value": "0 if support_structure == 'tree' else 15",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
