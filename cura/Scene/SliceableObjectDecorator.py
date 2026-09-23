@@ -31,6 +31,8 @@ class SliceableObjectDecorator(SceneNodeDecorator):
             application.getMachineManager().extruderChanged.connect(self._updateIsAssignedToDisabledExtruder)
         self._painted_extruders: Optional[List[int]] = None
         self._painted_support_texels: bool = False
+        self._prev_painted_extruders: Optional[List[int]] = [-1]
+        self._prev_painted_support_texels: bool = True
 
         self.paintTextureChanged = Signal()
 
@@ -97,30 +99,37 @@ class SliceableObjectDecorator(SceneNodeDecorator):
                 named_bitflags |= 0b1 << i
             return (named_bitflags & self._texture_bitflags_maybe_dirty) != 0b0
 
+        anything_changed = False
         if "extruder" in self._texture_data_mapping and bitrange_dirty("extruder"):
-            self._updatePaintedExtruders(image_array)
+            anything_changed |= self._updatePaintedExtruders(image_array)
         if "support" in self._texture_data_mapping and bitrange_dirty("support"):
-            self._updatePaintedSupport(image_array)
+            anything_changed |= self._updatePaintedSupport(image_array)
 
         self._texture_bitflags_maybe_dirty = 0b0
 
-        from cura.CuraApplication import CuraApplication
-        CuraApplication.getInstance().globalContainerStackChanged.emit()
+        if anything_changed:
+            from cura.CuraApplication import CuraApplication
+            CuraApplication.getInstance().globalContainerStackChanged.emit()
 
-    def _updatePaintedExtruders(self, image_array) -> None:
+    def _updatePaintedExtruders(self, image_array: numpy.ndarray) -> bool:
         bit_range_start, bit_range_end = self._texture_data_mapping["extruder"]
         full_int32 = 0xffffffff
         bit_mask = (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (
                 32 - 1 - bit_range_end))
-
         texel_counts = numpy.bincount((image_array & bit_mask) >> bit_range_start)
         self._painted_extruders = [extruder_nr for extruder_nr, count in enumerate(texel_counts) if count > 0]
+        res = self._prev_painted_extruders != self._painted_extruders
+        self._prev_painted_extruders = self._painted_extruders.copy()
+        return res
 
-    def _updatePaintedSupport(self, image_array) -> None:
+    def _updatePaintedSupport(self, image_array: numpy.ndarray) -> bool:
         bit_range_start, bit_range_end = self._texture_data_mapping["support"]
         # We only need the 'allow' bit; 'dissallow' or 'no value' don't change wether or not support will be generated.
         bit_mask = 0b1 << bit_range_start
         self._painted_support_texels = numpy.any(image_array & bit_mask)
+        res = self._prev_painted_support_texels != self._painted_support_texels
+        self._prev_painted_support_texels = self._painted_support_texels
+        return res
 
     def setPaintTexture(self, texture: Texture) -> None:
         self._paint_texture = texture
