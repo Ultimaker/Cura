@@ -4506,10 +4506,7 @@ msgstr "Tobera insertada en este extrusor."
 
 msgctxt "@label"
 msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr "Patrón del material de relleno de la impresión:"
-"Para impresiones rpidas de modelos no funcionales, elija lnea, zigzag o relleno ligero."
-"Para una pieza funcional que no est sujeta a mucha tensin, recomendamos rejilla, tringulo o trihexgono."
-"Para las impresiones 3D funcionales que requieran una alta resistencia en varias direcciones, utilice cbico, subdivisin cbica, cbico bitruncado, octeto o giroide."
+msgstr "Patrón del material de relleno de la impresión:\n\nPara impresiones rpidas de modelos no funcionales, elija lnea, zigzag o relleno ligero.\n\nPara una pieza funcional que no est sujeta a mucha tensin, recomendamos rejilla, tringulo o trihexgono.\n\nPara las impresiones 3D funcionales que requieran una alta resistencia en varias direcciones, utilice cbico, subdivisin cbica, cbico bitruncado, octeto o giroide."
 
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
