@@ -1,10 +1,10 @@
 {
     "version": 2,
-    "name": "Extruder 1",
+    "name": "Main Extruder",
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "stereotech_ste320",
+        "machine": "hte530v5",
         "position": "0"
     },
     "overrides":
@@ -14,12 +14,12 @@
             "default_value": 0,
             "maximum_value": "1"
         },
-        "machine_extruder_end_pos_abs": { "default_value": true },
-        "machine_extruder_end_pos_x": { "value": "prime_tower_position_x" },
-        "machine_extruder_end_pos_y": { "value": "prime_tower_position_y" },
+        "machine_extruder_end_pos_abs": { "default_value": false },
+        "machine_extruder_end_pos_x": { "value": 0 },
+        "machine_extruder_end_pos_y": { "value": 0 },
         "machine_extruder_start_pos_abs": { "default_value": true },
-        "machine_extruder_start_pos_x": { "value": "prime_tower_position_x" },
-        "machine_extruder_start_pos_y": { "value": "prime_tower_position_y" },
+        "machine_extruder_start_pos_x": { "value": 0 },
+        "machine_extruder_start_pos_y": { "value": 0 },
         "machine_nozzle_offset_x": { "default_value": 0.0 },
         "machine_nozzle_offset_y": { "default_value": 0.0 },
         "machine_nozzle_size": { "default_value": 0.4 },
