@@ -178,7 +178,7 @@ msgstr "La coordinata x della posizione di fine allo spegnimento dell’estrusor
 
 msgctxt "machine_nozzle_offset_x description"
 msgid "The x-coordinate of the offset of the nozzle."
-msgstr "La coordinata y dell’offset dell’ugello."
+msgstr "La coordinata x dell’offset dell’ugello."
 
 msgctxt "machine_extruder_start_pos_x description"
 msgid "The x-coordinate of the starting position when turning the extruder on."
