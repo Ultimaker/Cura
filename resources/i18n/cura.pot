@@ -2755,7 +2755,7 @@ msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr ""
 
 msgctxt "@message"
-msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
+msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. If you use supports, ensure models and the build plate leave enough room for support structures; packing models tightly or using Arrange All Models can still leave no usable space, which may trigger this error. To assist us further, consider sharing your project details on our issue tracker."
 msgstr ""
 
 msgctxt "@action:button"
