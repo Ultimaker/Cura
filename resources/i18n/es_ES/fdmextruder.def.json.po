@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2026-09-16 16:53+0000\n"
+"POT-Creation-Date: 2024-03-11 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,14 +24,6 @@ msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Adherencia de la placa de impresión"
 
-msgctxt "command_line_settings label"
-msgid "Command Line Settings"
-msgstr ""
-
-msgctxt "material_id label"
-msgid "Cura Material ID"
-msgstr ""
-
 msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "Diámetro"
@@ -43,10 +35,6 @@ msgstr "Finalizar GCode para ejecutarlo al cambiar desde este extrusor."
 msgctxt "extruder_nr label"
 msgid "Extruder"
 msgstr "Extrusor"
-
-msgctxt "machine_extruder_change_duration label"
-msgid "Extruder Change duration"
-msgstr "Duración del cambio del extrusor"
 
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
@@ -67,10 +55,6 @@ msgstr "Posición de fin del extrusor sobre el eje X"
 msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
 msgstr "Posición de fin del extrusor sobre el eje Y"
-
-msgctxt "machine_extruder_prestart_code label"
-msgid "Extruder Prestart G-Code"
-msgstr "G-code de prearranque de extrusor"
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -132,34 +116,6 @@ msgctxt "material label"
 msgid "Material"
 msgstr "Material"
 
-msgctxt "material_brand label"
-msgid "Material Brand"
-msgstr ""
-
-msgctxt "material_guid label"
-msgid "Material GUID"
-msgstr ""
-
-msgctxt "material_name label"
-msgid "Material Name"
-msgstr ""
-
-msgctxt "material_spool_cost label"
-msgid "Material Spool Cost"
-msgstr ""
-
-msgctxt "material_spool_weight label"
-msgid "Material Spool Weight"
-msgstr ""
-
-msgctxt "material_type label"
-msgid "Material Type"
-msgstr ""
-
-msgctxt "material_density label"
-msgid "Material density"
-msgstr ""
-
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "Diámetro de la tobera"
@@ -167,10 +123,6 @@ msgstr "Diámetro de la tobera"
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "Id. de la tobera"
-
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr "Longitud de la boquilla"
 
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
@@ -180,21 +132,9 @@ msgctxt "machine_nozzle_offset_y label"
 msgid "Nozzle Y Offset"
 msgstr "Desplazamiento de la tobera sobre el eje Y"
 
-msgctxt "machine_extruder_prestart_code description"
-msgid "Prestart g-code to execute before switching to this extruder."
-msgstr "Prearrancar g-code para ejecutar antes de cambiar a este extrusor."
-
-msgctxt "command_line_settings description"
-msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
-msgstr ""
-
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
 msgstr "Iniciar GCode para ejecutarlo al cambiar a este extrusor."
-
-msgctxt "material_id description"
-msgid "The ID of the material that is used internally."
-msgstr ""
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
@@ -208,33 +148,13 @@ msgctxt "extruder_prime_pos_z description"
 msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
 msgstr "Coordenada Z de la posición en la que la tobera queda preparada al inicio de la impresión."
 
-msgctxt "material_type description"
-msgid "The base type of printed material, e.g. PLA or ABS."
-msgstr ""
-
-msgctxt "material_spool_cost description"
-msgid "The cost of a full spool of material."
-msgstr ""
-
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "El tren extrusor que se utiliza para imprimir. Se emplea en la extrusión múltiple."
 
-msgctxt "material_name description"
-msgid "The fully qualified material name, e.g. 'UltiMaker PLA White'."
-msgstr ""
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr "La diferencia de altura entre la punta de la boquilla y la parte más baja del cabezal de impresión."
-
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
 msgstr "Diámetro interior de la tobera. Cambie este ajuste cuando utilice un tamaño de tobera no estándar."
-
-msgctxt "material_brand description"
-msgid "The material brand, e.g. 'UltiMaker'."
-msgstr ""
 
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
@@ -244,10 +164,6 @@ msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
 msgstr "Número del ventilador de refrigeración de impresión asociado al extrusor. Modifique el valor predeterminado 0 solo cuando disponga de un ventilador de refrigeración de impresión diferente para cada extrusor."
 
-msgctxt "material_density description"
-msgid "The printed material density, in g/cm3."
-msgstr ""
-
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
 msgstr "El tiempo que tarda en ejecutarse el código G final, cuando se sale de este extrusor."
@@ -255,14 +171,6 @@ msgstr "El tiempo que tarda en ejecutarse el código G final, cuando se sale de 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
 msgstr "El tiempo que tardará en ejecutarse el código G de inicio, al cambiar a este extrusor."
-
-msgctxt "material_guid description"
-msgid "The unique ID of the material."
-msgstr ""
-
-msgctxt "material_spool_weight description"
-msgid "The weight of a full spool of material, in grams."
-msgstr ""
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
@@ -288,6 +196,98 @@ msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "Coordenada Y de la posición de inicio cuando se enciende el extrusor."
 
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "Longitud de la boquilla"
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "La diferencia de altura entre la punta de la boquilla y la parte más baja del cabezal de impresión."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Duración del cambio del extrusor"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "G-code de prearranque de extrusor"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "Prearrancar g-code para ejecutar antes de cambiar a este extrusor."
+
 msgctxt "machine_extruder_change_duration description"
 msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
 msgstr "Cuando se use una configuración multiherramienta, este valor es el tiempo de cambio de herramienta en segundos. Se añadirá este valor al tiempo estimado en base al número de cambios que ocurran."
+
+msgctxt "command_line_settings label"
+msgid "Command Line Settings"
+msgstr "Ajustes de la línea de comandos"
+
+msgctxt "material_id label"
+msgid "Cura Material ID"
+msgstr "ID de material de Cura"
+
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr "Marca del material"
+
+msgctxt "material_guid label"
+msgid "Material GUID"
+msgstr "GUID del material"
+
+msgctxt "material_name label"
+msgid "Material Name"
+msgstr "Nombre del material"
+
+msgctxt "material_spool_cost label"
+msgid "Material Spool Cost"
+msgstr "Coste de la bobina de material"
+
+msgctxt "material_spool_weight label"
+msgid "Material Spool Weight"
+msgstr "Peso de la bobina de material"
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr "Tipo de material"
+
+msgctxt "material_density label"
+msgid "Material density"
+msgstr "Densidad del material"
+
+msgctxt "command_line_settings description"
+msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
+msgstr "Ajustes que solo se utilizan si CuraEngine no se llama desde la interfaz de Cura."
+
+msgctxt "material_id description"
+msgid "The ID of the material that is used internally."
+msgstr "ID del material utilizado internamente."
+
+msgctxt "material_type description"
+msgid "The base type of printed material, e.g. PLA or ABS."
+msgstr "El tipo base del material impreso; por ejemplo, PLA o ABS."
+
+msgctxt "material_spool_cost description"
+msgid "The cost of a full spool of material."
+msgstr "El coste de una bobina completa de material."
+
+msgctxt "material_name description"
+msgid "The fully qualified material name, e.g. 'UltiMaker PLA White'."
+msgstr "El nombre completo del material; por ejemplo, 'UltiMaker PLA White'."
+
+msgctxt "material_brand description"
+msgid "The material brand, e.g. 'UltiMaker'."
+msgstr "La marca del material; por ejemplo, 'UltiMaker'."
+
+msgctxt "material_density description"
+msgid "The printed material density, in g/cm3."
+msgstr "La densidad del material impreso, en g/cm3."
+
+msgctxt "material_guid description"
+msgid "The unique ID of the material."
+msgstr "El ID único del material."
+
+msgctxt "material_spool_weight description"
+msgid "The weight of a full spool of material, in grams."
+msgstr "El peso de una bobina completa de material, en gramos."
