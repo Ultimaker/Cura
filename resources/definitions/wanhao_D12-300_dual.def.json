@@ -1,0 +1,189 @@
+{
+    "version": 2,
+    "name": "Wanhao Duplicator D12 300 dual",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Frank",
+        "manufacturer": "Wanhao",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "wanhao_d12-300_extruder_0",
+            "1": "wanhao_d12-300_extruder_1"
+        }
+
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Wanhao Duplicator D12 300 dual" },
+        "machine_width": {
+            "default_value": 300
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_depth": {
+            "default_value": 300
+        },        "machine_center_is_zero": {
+            "default_value": false
+        },
+		"machine_extruders_share_heater":{
+            "default_value": true
+        },
+        "machine_heated_bed": {
+           "default_value": true
+        },
+        "layer_height": { "default_value": 0.1 },
+		"prime_tower_enable":
+                {
+                    "label": "Enable Prime Tower",
+                    "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
+                    "type": "bool",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": true,
+                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('prime_tower_enable'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+		"prime_tower_size":
+                {
+                    "label": "Prime Tower Size",
+                    "description": "The width of the prime tower.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "default_value": 35,
+                    "resolve": "max(extruderValues('prime_tower_size'))",
+                    "minimum_value": "0",
+                    "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
+                    "minimum_value_warning": "max(extruderValues('prime_tower_line_width')) * 2",
+                    "maximum_value_warning": "20",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "prime_tower_min_volume":
+                {
+                    "label": "Prime Tower Minimum Volume",
+                    "description": "The minimum volume for each layer of the prime tower in order to purge enough material.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default_value": 48,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height')",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "prime_tower_wipe_enabled":
+                {
+                    "label": "Wipe Inactive Nozzle on Prime Tower",
+                    "description": "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "prime_tower_brim_enable":
+                {
+                    "label": "Prime Tower Brim",
+                    "description": "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('adhesion_type') != 'raft')",
+                    "resolve": "resolveOrValue('prime_tower_enable') and (resolveOrValue('adhesion_type') in ('none', 'skirt'))",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+				"switch_extruder_retraction_amount":
+                {
+                    "label": "Nozzle Switch Retraction Distance",
+                    "description": "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "retraction_enable and extruders_enabled_count > 1",
+                    "default_value": 6,
+                    "value": "machine_heat_zone_length",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "switch_extruder_retraction_speeds":
+                {
+                    "label": "Nozzle Switch Retraction Speed",
+                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "enabled": "retraction_enable and extruders_enabled_count > 1",
+                    "default_value": 50,
+                    "minimum_value": "0.1",
+                    "minimum_value_warning": "1",
+                    "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
+                    "maximum_value_warning": "70",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "switch_extruder_retraction_speed":
+                        {
+                            "label": "Nozzle Switch Retract Speed",
+                            "description": "The speed at which the filament is retracted during a nozzle switch retract.",
+                            "type": "float",
+                            "unit": "mm/s",
+                            "enabled": "retraction_enable and extruders_enabled_count > 1",
+                            "default_value": 50,
+                            "value": "switch_extruder_retraction_speeds",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "1",
+                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
+                            "maximum_value_warning": "70",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "switch_extruder_prime_speed":
+                        {
+                            "label": "Nozzle Switch Prime Speed",
+                            "description": "The speed at which the filament is pushed back after a nozzle switch retraction.",
+                            "type": "float",
+                            "unit": "mm/s",
+                            "enabled": "retraction_enable and extruders_enabled_count > 1",
+                            "default_value": 25,
+                            "value": "switch_extruder_retraction_speeds",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "1",
+                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
+                            "maximum_value_warning": "70",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+        "layer_height_0": { "default_value": 0.3 },
+        "retraction_amount": { "default_value": 0.8 },
+        "retraction_speed": { "default_value": 35 },
+        "adhesion_type": { "default_value": "raft" },
+        "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
+        "gantry_height": { "value": "28" },
+        "machine_max_feedrate_z": { "default_value": 12 },
+        "machine_max_feedrate_e": { "default_value": 120 },
+        "machine_max_acceleration_z": { "default_value": 500 },
+        "machine_acceleration": { "default_value": 1000 },
+        "machine_max_jerk_xy": { "default_value": 10 },
+        "machine_max_jerk_z": { "default_value": 0.2 },
+        "machine_max_jerk_e": { "default_value": 2.5 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_start_gcode": {
+             "default_value": "G21 ;metric values\nG90\nM107\nG28 X0 Y0\nG28 Z0\nG1 Z15.0 F300\nG28 X0 Y0\nT0\nG92 E0\nG1 F700 E-80\nT1\nG92 E0\nG1 F200 E100\nT1\nG92 E0\nG1 F700 E-80\nT0\nG92 E0\nG1 F200 E20\nG92 E0\nG1 F\nM117"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 T0 S0\nM104 T1 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        }
+
+    }
+}
