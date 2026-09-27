@@ -96,7 +96,7 @@ class CuraActions(QObject):
 
         system = platform.system()
         if system == "Windows":
-            subprocess.Popen(["explorer", "/select," + os.path.normpath(file_path)])
+            subprocess.Popen(f'explorer /select,"{os.path.normpath(file_path)}"', shell = False)
         elif system == "Darwin":
             subprocess.Popen(["open", "-R", file_path])
         else:

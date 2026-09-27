@@ -117,6 +117,7 @@ message PathSegment {
     bytes line_width = 5; // The widths of the line segments as bytes of a float array of length 1 or N
     bytes line_thickness = 6; // The thickness of the line segments as bytes of a float array of length 1 or N
     bytes line_feedrate = 7; // The feedrate of the line segments as bytes of a float array of length 1 or N
+    repeated uint32 attributes = 8; // Print attributes of each segment, e.g. overhanging or bridging
 }
 
 

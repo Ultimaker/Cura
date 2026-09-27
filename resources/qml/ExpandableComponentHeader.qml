@@ -22,6 +22,33 @@ Cura.RoundedRectangle
     border.color: UM.Theme.getColor("lining")
     radius: UM.Theme.getSize("default_radius").width
 
+    Rectangle
+    {
+        anchors
+        {
+            left:        parent.left
+            leftMargin:  parent.border.width
+            right:       parent.right
+            rightMargin: parent.border.width
+            bottom:      parent.bottom
+        }
+        height: parent.border.width
+        color:  parent.color
+    }
+
+    // Single separator line between the header and the content area.
+    Rectangle
+    {
+        anchors
+        {
+            left:   parent.left
+            right:  parent.right
+            bottom: parent.bottom
+        }
+        height: UM.Theme.getSize("default_lining").height
+        color:  UM.Theme.getColor("lining")
+    }
+
     UM.Label
     {
         id: headerLabel

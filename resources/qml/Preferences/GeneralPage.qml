@@ -3,6 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.15
+import QtQuick.Dialogs
 import QtQuick.Layouts 1.1
 
 import UM 1.5 as UM
@@ -140,6 +141,9 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("info/latest_update_source")
         UM.Preferences.resetPreference("info/automatic_plugin_update_check")
         pluginNotificationsUpdateCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
+
+        UM.Preferences.resetPreference("local_file/use_fixed_dialog_paths")
+        fixedPathsCheckbox.checked = boolCheck(UM.Preferences.getValue("local_file/use_fixed_dialog_paths"))
     }
 
     buttons: [
@@ -878,6 +882,115 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "When enabled, file open and save dialogs will always start at the specified locations below. When disabled, dialogs remember the last folder you navigated to.")
+
+                UM.CheckBox
+                {
+                    id: fixedPathsCheckbox
+                    text: catalog.i18nc("@option:check", "Always use the same default locations for opening and saving files")
+                    checked: boolCheck(UM.Preferences.getValue("local_file/use_fixed_dialog_paths"))
+                    onCheckedChanged:
+                    {
+                        UM.Preferences.setValue("local_file/use_fixed_dialog_paths", checked)
+                        if (checked)
+                        {
+                            dialogLoadPathField.text = UM.Preferences.getValue("local_file/dialog_load_path")
+                            dialogSavePathField.text = UM.Preferences.getValue("local_file/dialog_save_path")
+                        }
+                    }
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                enabled: fixedPathsCheckbox.checked
+                opacity: fixedPathsCheckbox.checked ? 1.0 : 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@info:tooltip", "The default folder to open when loading files.")
+
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default file load location:")
+                    }
+
+                    Row
+                    {
+                        spacing: UM.Theme.getSize("narrow_margin").width
+
+                        Cura.TextField
+                        {
+                            id: dialogLoadPathField
+                            selectByMouse: true
+                            text: UM.Preferences.getValue("local_file/dialog_load_path")
+                            implicitWidth: UM.Theme.getSize("combobox_wide").width
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onEditingFinished: UM.Preferences.setValue("local_file/dialog_load_path", text)
+                        }
+
+                        Cura.SecondaryButton
+                        {
+                            text: catalog.i18nc("@action:button", "Browse")
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onClicked: dialogLoadPathDialog.open()
+                        }
+                    }
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                enabled: fixedPathsCheckbox.checked
+                opacity: fixedPathsCheckbox.checked ? 1.0 : 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                text: catalog.i18nc("@info:tooltip", "The default folder to open when saving files.")
+
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default file save location:")
+                    }
+
+                    Row
+                    {
+                        spacing: UM.Theme.getSize("narrow_margin").width
+
+                        Cura.TextField
+                        {
+                            id: dialogSavePathField
+                            selectByMouse: true
+                            text: UM.Preferences.getValue("local_file/dialog_save_path")
+                            implicitWidth: UM.Theme.getSize("combobox_wide").width
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onEditingFinished: UM.Preferences.setValue("local_file/dialog_save_path", text)
+                        }
+
+                        Cura.SecondaryButton
+                        {
+                            text: catalog.i18nc("@action:button", "Browse")
+                            implicitHeight: UM.Theme.getSize("setting_control").height
+                            onClicked: dialogSavePathDialog.open()
+                        }
+                    }
+                }
+            }
+
             Item
             {
                 //: Spacer
@@ -1174,6 +1287,30 @@ UM.PreferencesPage
                     }
 
                     sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+                }
+            }
+
+            FolderDialog
+            {
+                id: dialogLoadPathDialog
+                title: catalog.i18nc("@title:window", "Select Default Load Folder")
+                currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
+                onAccepted:
+                {
+                    CuraApplication.setDefaultPath("dialog_load_path", selectedFolder)
+                    dialogLoadPathField.text = UM.Preferences.getValue("local_file/dialog_load_path")
+                }
+            }
+
+            FolderDialog
+            {
+                id: dialogSavePathDialog
+                title: catalog.i18nc("@title:window", "Select Default Save Folder")
+                currentFolder: CuraApplication.getDefaultPath("dialog_save_path")
+                onAccepted:
+                {
+                    CuraApplication.setDefaultPath("dialog_save_path", selectedFolder)
+                    dialogSavePathField.text = UM.Preferences.getValue("local_file/dialog_save_path")
                 }
             }
         }
