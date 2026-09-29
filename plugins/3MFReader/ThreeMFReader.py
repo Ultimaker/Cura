@@ -160,7 +160,7 @@ class ThreeMFReader(MeshReader):
             um_node.setMeshData(mesh_data)
 
         for child in savitar_node.getChildren():
-            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child, archive=archive, scene=scene)
+            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child, archive=archive, scene=scene, file_name=file_name)
             if child_node:
                 um_node.addChild(child_node)
 
