@@ -243,54 +243,40 @@ Item
             }
         }
 
-        UM.Label
-        {
-            id: supportAngleLabel
-            text: catalog.i18nc("@label", "Auto-Support Overhang")
-            visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "True"
-        }
-
         Cura.TertiaryButton
         {
+            id: buttonEnableAutoSupport
             text: catalog.i18nc("@label", "<b>Enable auto-support</b>")
             visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "False"
             onClicked: supportEnabled.setPropertyValue("value", true)
-            height: supportAngleLabel.height + supportAngleSlider.height + UM.Theme.getSize("default_margin").height
+            width: parent.width
+            height: columnAngle.height
         }
 
-        RowLayout
+        Column
         {
-            id: supportAngleSlider
+            id: columnAngle
             width: parent.width
+            spacing: UM.Theme.getSize("wide_margin").height
             visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "True"
-            height: childrenRect.height
+
+            UM.Label
+            {
+                id: supportAngleLabel
+                text: catalog.i18nc("@label", "Auto-Support Overhang")
+            }
 
             Cura.SingleSettingSlider
             {
-                Layout.minimumHeight: parent.visible ? UM.Theme.getSize("combobox").height : 0.0
-                Layout.fillHeight: true
-                Layout.minimumWidth: parent.width / 2.0
-                Layout.fillWidth: true
+                id: supportAngleSlider
+                width: parent.width
 
                 from: 0
                 to: 90
-                stepSize: 5
+                stepSize: 1
                 tooltipUnit: "°"
                 settingName: "support_angle"
                 updateAllExtruders: true
-            }
-
-            Cura.SingleSettingTextField
-            {
-                Layout.minimumHeight: parent.visible ? UM.Theme.getSize("combobox").height : 0.0
-                Layout.fillHeight: true
-                Layout.minimumWidth: UM.Theme.getSize("large_button").width
-                Layout.fillWidth: false
-
-                settingName: "support_angle"
-                updateAllExtruders: true
-                validator: UM.FloatValidator {}
-                unitText: "°"
             }
         }
 
