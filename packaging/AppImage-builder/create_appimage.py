@@ -107,5 +107,5 @@ if __name__ == "__main__":
     parser.add_argument("version", type = str, help = "Full version number of Cura (e.g. '5.1.0-beta')")
     parser.add_argument("filename", type = str, help = "Filename of the AppImage (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
     args = parser.parse_args()
-    prepare_workspace(args.dist_path, args.filename)
+    prepare_workspace(args.dist_path, args.version, args.filename)
     build_appimage(args.dist_path, args.version, args.filename)
