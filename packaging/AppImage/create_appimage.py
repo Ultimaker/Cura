@@ -29,18 +29,18 @@ def copy_metadata_files(dist_path, version):
     """
     Copy metadata files for the metadata of the AppImage.
     """
-    copied_files = {
-        os.path.join("..", "icons", "cura-icon.svg"):         os.path.join("usr", "share", "icons", "hicolor", "scalable", "apps", "cura-icon.svg"),
-        os.path.join("..", "icons", "cura-icon_64x64.png"):   os.path.join("usr", "share", "icons", "hicolor", "64x64", "apps", "cura-icon.png"),
-        os.path.join("..", "icons", "cura-icon_128x128.png"): os.path.join("usr", "share", "icons", "hicolor", "128x128", "apps", "cura-icon.png"),
-        os.path.join("..", "icons", "cura-icon_256x256.png"): os.path.join("usr", "share", "icons", "hicolor", "256x256", "apps", "cura-icon.png"),
-        os.path.join("..", "icons", "cura-icon_256x256.png"): "cura-icon.png",
-        "cura.appdata.xml": "cura.appdata.xml",
-        "AppRun": "AppRun"
-    }
+    copied_files = [
+        (os.path.join("..", "icons", "cura-icon.svg"),         os.path.join("usr", "share", "icons", "hicolor", "scalable", "apps", "cura-icon.svg")),
+        (os.path.join("..", "icons", "cura-icon_64x64.png"),   os.path.join("usr", "share", "icons", "hicolor", "64x64", "apps", "cura-icon.png")),
+        (os.path.join("..", "icons", "cura-icon_128x128.png"), os.path.join("usr", "share", "icons", "hicolor", "128x128", "apps", "cura-icon.png")),
+        (os.path.join("..", "icons", "cura-icon_256x256.png"), os.path.join("usr", "share", "icons", "hicolor", "256x256", "apps", "cura-icon.png")),
+        (os.path.join("..", "icons", "cura-icon_256x256.png"), "cura-icon.png"),
+        ("cura.appdata.xml", "cura.appdata.xml"),
+        ("AppRun", "AppRun")
+    ]
 
     packaging_dir = os.path.dirname(__file__)
-    for source, dest in copied_files.items():
+    for source, dest in copied_files:
         dest_file_path = os.path.join(dist_path, dest)
         os.makedirs(os.path.dirname(dest_file_path), exist_ok=True)
         shutil.copyfile(os.path.join(packaging_dir, source), dest_file_path)
