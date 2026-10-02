@@ -79,6 +79,13 @@ class FootPrintsFirst(Script):
         # Get the "from" location for the initial extrusion of each layer:0 and add them to a list.
         data = self.getFromLocation(data)
 
+<<<<<<< Updated upstream
+=======
+        # If rafts are enabled the travel between prints must be ortho so and intervening print doesn't get hit.
+        if self.raft_enabled:
+            data = self.orthoTravel(data)
+            
+>>>>>>> Stashed changes
         # Strip the temperature lines.
         data = self.stripTemperatureLines(data)
 
@@ -252,4 +259,19 @@ class FootPrintsFirst(Script):
             IndexError, ValueError
         if display_info_index < footprintsfirst_index:
             Message(title = "⚠️[FootprintsFirst]", text = "'FootprintsFirst' should run BEFORE 'DisplayInfoOnLCD' to insure the layer numbers turn out correct.").show()
+<<<<<<< Updated upstream
+=======
+        return alt_data
+        
+    def orthoTravel(self, alt_data):
+        for index, layer in enumerate(alt_data):
+            lines = layer.split("\n")
+            for ddex, line in enumerate(lines):
+                if line.startswith("G0 ") and " X" in line and " Y" in line and " Z" in line:
+                    xy_move = line.split(" Z")[0]
+                    z_move = line.split(" Z")[1]
+                    lines[ddex] = f"{xy_move}          ; FpF XY Ortho\nG0 Z{z_move}                     ; FpF Z Ortho"
+                    break
+            alt_data[index] = "\n".join(lines)
+>>>>>>> Stashed changes
         return alt_data
