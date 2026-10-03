@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2026-09-16 16:53+0000\n"
-"PO-Revision-Date: 2026-02-23 11:33+0000\n"
+"PO-Revision-Date: 2026-10-03 03:30+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -18,11 +18,11 @@ msgstr "<html>プライムタワーの生成方法:<ul><li><b>通常:</b>2番目
 
 msgctxt "travel_retract_before_outer_wall description"
 msgid "<html>Retraction behavior when moving to the start of an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>From infill unretracted:</b> The travel move from an infill area to an outer wall will be unretracted, others will use automatic</li></ul></html>"
-msgstr ""
+msgstr "<html>外側ウォールの開始に向かって移動する際の引き戻し動作:<ul><li><b>自動</b>他の設定により引き戻しを計算</li><li><b>常時:</b>外側ウォールへの移動で常に引き戻しを行う</li><li><b>しない:</b>外側ウォールへの移動は引き戻しを<b>行わない</b></li><li><b>インフィルから引き戻さない:</b>インフィル領域から外側ウォールへの移動は引き戻さず、その他の場合は自動</li></ul></html>"
 
 msgctxt "infill_pattern description"
 msgid "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>⚠ Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>"
-msgstr "<html>プリントのインフィル材料パターンです。<ul><li>ラインとジグザグはレイヤーの交互に入れ替え、材料の使用を抑えます。</li><li>グリッド、トライアングル、トリヘキサゴン、キュービック、オクテット、クォーターキュービック、クロス、そしてコンセントリックパターンは各レイヤーで必ず印刷されます。</li><li>ジャイロイド、ハニカム構造、オクタゴン、キュービック、クオーターキュービック、およびオクテットのインフィルは全方向に対して強度を発揮するようレイヤーごとに変化します。</li><li>ライトニングはインフィルを最小化しようとしますが、オブジェクトの底面によってのみ支えられます。</li></ul>⚠グリッド、トライアングル、およびキュービックのインフィルパターンは交差するラインを含み、ノズルがプリントされたラインとの衝突を起こしたり、プリンターが振動したりする場合がありますのでご注意ください。<br/></html>"
+msgstr "<html>プリントのインフィル材料パターン。<ul><li>ラインとジグザグはレイヤーの交互に入れ替え、材料の使用を抑えます。</li><li>グリッド、トライアングル、トリヘキサゴン、キュービック、オクテット、クォーターキュービック、クロス、そしてコンセントリックパターンは各レイヤーで必ず印刷されます。</li><li>ジャイロイド、ハニカム構造、オクタゴン、キュービック、クオーターキュービック、およびオクテットのインフィルは全方向に対して強度を発揮するようレイヤーごとに変化します。</li><li>ライトニング型インフィルはインフィルを最小化しようとしますが、オブジェクトの底面によってのみ支えられます。</li></ul>⚠グリッド、トライアングル、およびキュービックのインフィルパターンは交差するラインを含み、ノズルがプリントされたラインとの衝突を起こしたり、プリンターが振動したりする場合がありますのでご注意ください。<br/></html>"
 
 msgctxt "prime_during_travel_ratio description"
 msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
@@ -38,7 +38,7 @@ msgstr "<html>ノズル切り替え中に冷却ファンを作動させるかど
 
 msgctxt "infill_start_end_preference description"
 msgid "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>ℹ️ Note that this will be applied only when walls are printed just after infill.</li></ul>"
-msgstr ""
+msgstr "<ul><li><b>最も近くから開始:</b>インフィルは直前の位置に最も近い場所から開始します。</li><li><b>ランダム地点から開始:</b>各インフィル領域でランダムな位置から開始します。これは1か所だけ強度が高くなることを防ぎますが、その分移動のコストがかかります。</li><li><b>シームの近くで終了:</b>インフィルラインは次のウォールシームにできるだけ近い場所で終了するよう並び替えられます。必要な場合、1本のインフィルラインが適切な終了地点となるよう分割されます。これはインフィルの印刷中に追加の移動を費やして、より良いウォールシームとなるようにインフィルとウォール開始地点の移動距離を短くします。<br/>※これはインフィルの直後にウォールが印刷される場合のみ適用されることに注意してください。</li></ul>"
 
 msgctxt "brim_inside_margin description"
 msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
@@ -54,11 +54,11 @@ msgstr "フィーダーとノズルチャンバーの間でフィラメントが
 
 msgctxt "flooring_angles description"
 msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "底面の表面レイヤーがジグザグパターンの場合に使用する、ラインの角度を示す整数のリストです。リストの要素はレイヤーが進むにつれ順番に使用され、最後に到達すると次は最初からとなります。リスト項目はカンマ区切りで、リストの全体は四角かっこで囲います。既定は空のリストで、この場合は従来の角度（45度と135度）を用います。"
+msgstr "底面の表面レイヤーがジグザグパターンの場合に使用する、ラインの角度を示す整数のリスト。リストの要素はレイヤーが進むにつれ順番に使用され、最後に到達すると次は最初からとなります。リスト項目はカンマ区切りで、リストの全体は四角かっこで囲います。既定は空のリストで、この場合は従来の角度（45度と135度）を用います。"
 
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "トップ表面層に縦かジグザグパターンを利用する時に使用する整数の行方向のリスト。リスト内から順番に使われていき、リストの最後に達するとまた最初の設定値に戻ります。リストアイテムはカンマで区切られ、全体はカッコで括られています。デフォルトでは何も入っておらず、設定角度は従来からの既定角度（45度と135度）になります。"
+msgstr "上面の表面レイヤーが縦かジグザグパターンを利用する時に使用する行方向を表す整数のリスト。リスト内から順番に使われていき、リストの最後に達するとまた最初の設定値に戻ります。リストアイテムはカンマで区切られ、全体はカッコで括られています。デフォルトでは何も入っておらず、設定角度は従来からの既定角度（45度と135度）になります。"
 
 msgctxt "skin_angles description"
 msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
@@ -70,19 +70,19 @@ msgstr "使用する整数線の方向のリスト。リストの要素は、層
 
 msgctxt "support_bottom_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
-msgstr "使用する整数線の方向のリスト。リストの要素は、レイヤの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストとなり、デフォルトの角度を使用します（境界面がかなり厚い場合には45度と135度を交互に使用、それ以外では90度を使用）。"
+msgstr "使用する整数線の方向のリスト。リストの要素はレイヤーの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストとなり、デフォルトの角度を使用します（境界面がかなり厚い場合には45度と135度を交互に使用、それ以外では90度を使用）。"
 
 msgctxt "support_interface_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
-msgstr "使用する整数線の方向のリスト。リストの要素は、レイヤの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストとなり、デフォルトの角度を使用します（境界面がかなり厚い場合には45度と135度を交互に使用、それ以外では90度を使用）。"
+msgstr "使用する整数線の方向のリスト。リストの要素はレイヤーの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストとなり、デフォルトの角度を使用します（境界面がかなり厚い場合には45度と135度を交互に使用、それ以外では90度を使用）。"
 
 msgctxt "support_roof_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
-msgstr "使用する整数線の方向のリスト。リストの要素は、レイヤの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストとなり、デフォルトの角度を使用します（境界面がかなり厚い場合には45度と135度を交互に使用、それ以外では90度を使用）。"
+msgstr "使用する整数線の方向のリスト。リストの要素はレイヤーの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストとなり、デフォルトの角度を使用します（境界面がかなり厚い場合には45度と135度を交互に使用、それ以外では90度を使用）。"
 
 msgctxt "infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns)."
-msgstr "使用する整数線の方向のリスト。リストの要素は、レイヤの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストです。これは、従来のデフォルト角度（線とジグザグのパターンでは45と135度、他のすべてのパターンでは45度）を使用することを意味します。"
+msgstr "使用する整数線の方向のリスト。リストの要素は、レイヤーの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストです。これは、従来のデフォルト角度（線とジグザグのパターンでは45と135度、他のすべてのパターンでは45度）を使用することを意味します。"
 
 msgctxt "nozzle_disallowed_areas description"
 msgid "A list of polygons with areas the nozzle is not allowed to enter."
@@ -98,7 +98,7 @@ msgstr "枝がサポートポイントからどれくらい移動できるかに
 
 msgctxt "material_delta_temperature_roofing description"
 msgid "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low."
-msgstr ""
+msgstr "上面レイヤー印刷時に適用される温度差。この設定は、かなり高速に印刷しても表面を滑らかにする効果があります。温度が増分に達することを待つことなく適用されるため、温度が上がらないままであることに注意してください。"
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -142,7 +142,7 @@ msgstr "スキンラインのライン幅とウォールの最内部に対する
 
 msgctxt "skin_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "ウォールとスキンの中央ラインの終端が重なる量を調整します。わずかな交差によって、ウォールがスキンと堅く接合されます。スキンとウォールのライン幅が等しくかつ割合が50%を超えると、スキンがウォールを通過している可能性があります。これは、その時点でスキンエクストルーダーのノズル位置が、すでにウォールの中央を過ぎている可能性があるためです。"
+msgstr "ウォールとスキンの中央ラインの終端が重なる量を調整します。わずかな交差によって、ウォールがスキンと堅く接合されます。スキンとウォールのライン幅が等しくかつ割合が50%を超えると、スキンがウォールを通過している可能性があります。これは、その時点ですでにスキンエクストルーダーのノズル位置がウォールの中央を過ぎている可能性があるためです。"
 
 msgctxt "infill_sparse_density description"
 msgid "Adjusts the density of infill of the print."
@@ -166,7 +166,7 @@ msgstr "使用するフィラメントの太さの調整。この値を使用す
 
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr "サポート材の配置を調整します。配置はTouching BuildplateまたはEveryWhereに設定できます。EveryWhereに設定した場合、サポート材がモデルの上にもプリントされます。"
+msgstr "サポート材の配置を調整します。配置は「ビルドプレートにタッチ」または「全対象」に設定できます。全対象に設定した場合、サポート材がモデルの上にもプリントされます。"
 
 msgctxt "prime_tower_wipe_enabled description"
 msgid "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower."
@@ -194,7 +194,7 @@ msgstr "プリントの解像度に影響を与えるすべての設定。これ
 
 msgctxt "user_defined_print_order_enabled description"
 msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
-msgstr "オブジェクトリストを並べ替えて、印刷順序を手動で設定できます。リストの最初のオブジェクトが最初に印刷されます。"
+msgstr "オブジェクトリストを並べ替えて、プリント順序を手動で設定できます。リストの最初のオブジェクトが最初に印刷されます。"
 
 msgctxt "alternate_extra_perimeter label"
 msgid "Alternate Extra Wall"
@@ -210,7 +210,7 @@ msgstr "代替ウォールの向き"
 
 msgctxt "material_alternate_walls description"
 msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
-msgstr "レイヤーやインセットで交互に適用される代替のウォール方向。金属プリンティングなど、応力が蓄積されてしまう可能性がある材料に有用です。"
+msgstr "レイヤーやはめ込みで交互に適用されるウォール方向。金属プリントなど、応力が蓄積されてしまう可能性がある材料に有用です。"
 
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
@@ -218,7 +218,7 @@ msgstr "アルミニウム"
 
 msgctxt "travel_retract_before_outer_wall option force_retracted"
 msgid "Always"
-msgstr ""
+msgstr "常時"
 
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
@@ -278,7 +278,7 @@ msgstr "モデルが接触する箇所に、インターロックビーム構造
 
 msgctxt "travel_retract_before_outer_wall option automatic"
 msgid "Automatic"
-msgstr ""
+msgstr "自動"
 
 msgctxt "travel_avoid_other_parts label"
 msgid "Avoid Printed Parts When Traveling"
@@ -418,7 +418,7 @@ msgstr "枝直径角度"
 
 msgctxt "support_tree_smooth_layers label"
 msgid "Branch Smoothing Layers"
-msgstr ""
+msgstr "滑らかにする枝のレイヤー数"
 
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
@@ -518,7 +518,7 @@ msgstr "ブリッジウォール速度"
 
 msgctxt "bridge_wall_max_deviation description"
 msgid "Bridge-walls shouldn't deviate from straight lines more than this, anything that falls outside of the area of maximum allowed deviation (defined by the aligned bounding box around the anchor points) isn't considered a bridging wall. Skin lines are already straight."
-msgstr ""
+msgstr "ブリッジウォールが設定値より多い直線から逸脱しないようにします。最大許容偏差の領域（固定位置の周囲に並べられた境界枠により決定）より外にあるものは、ブリッジウォールとはみなされません。表面のラインは常に直線になります。"
 
 msgctxt "adhesion_type option brim"
 msgid "Brim"
@@ -730,7 +730,7 @@ msgstr "内側のウォール形状に沿ったラインを使用してインフ
 
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr "隣接する上層/底層面のパスを接合します。同心円のパターンの場合この設定を有効にすることにより移動時間が短縮されますが、インフィルまでの途中で接合があるためこの機能により上層面の品質を損なう場合があります。"
+msgstr "隣接する上面と底面の表面パスを接合します。同心円のパターンの場合この設定を有効にすることにより移動時間が短縮されますが、インフィルまでの途中で接合があるためこの機能により上面の品質を損なう場合があります。"
 
 msgctxt "z_seam_corner description"
 msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
@@ -742,7 +742,7 @@ msgstr "各インフィルラインをこの多重ラインに変換します。
 
 msgctxt "support_infill_multiplier description"
 msgid "Convert each support infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
-msgstr ""
+msgstr "サポートの各インフィルラインを設定した本数に変換します。追加のラインは互いに交差せず避けるようになります。これによりインフィルを丈夫にしますが、印刷時間と使用する材料が増加します。"
 
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
@@ -862,7 +862,7 @@ msgstr "Zシームをより目立たなくする、スカーフシームの長�
 
 msgctxt "initial_layer_inset_direction description"
 msgid "Determines the order in which walls are printed on the initial layer. This allows different wall ordering specifically for the first layer to improve bed adhesion. When not changed by user, the Wall Ordering setting value is used."
-msgstr ""
+msgstr "最初のレイヤーでウォールを印刷する順序を決定します。これにより最初のレイヤーを異なるウォールの順序にすることでベッドとの接着が向上できます。変更しない場合、「ウォール順序」の設定値が使用されます。"
 
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
@@ -874,19 +874,19 @@ msgstr "インフィルメッシュの重なりが複数生じた場合のこの
 
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr "ライトニングインフィルレイヤーがその上の物を支える必要がある場合を決定します。レイヤーの厚さを考慮して角度で指定されます。"
+msgstr "ライトニング型インフィルレイヤーがその上の構造物を支える必要があるかどうかを決定します。レイヤーの厚さを考慮して角度で指定します。"
 
 msgctxt "support_lightning_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "ライトニング型インフィルレイヤーがその上の構造物を支える必要があるかどうかを決定します。レイヤーの厚さを考慮して角度で指定します。"
 
 msgctxt "support_lightning_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the lines above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "ライトニング型インフィルレイヤーが上部のラインをサポートするかどうかを決定します。厚みを考慮して、指定された角度により判断されます。"
 
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr "ライトニングインフィルレイヤーがその上のモデルを支える必要がある場合を決定します。厚さを考慮して角度で指定されます。"
+msgstr "ライトニング型インフィルレイヤーがその上のモデルをサポートするかどうかを決定します。厚みを考慮して、指定された角度により判断されます。"
 
 msgctxt "material_diameter label"
 msgid "Diameter"
@@ -938,15 +938,15 @@ msgstr "サポートの上部から印刷物までの距離。"
 
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
-msgstr "サポート構造の上部/下部からプリントまでの距離です。このギャップは、モデル印刷後にサポートを取り除くためのクリアランスを提供します。モデルの下にある最上層のサポート層は、通常のレイヤーの一部分になる場合があります。"
+msgstr "サポート構造の上部・下部からプリントまでの距離。このギャップは、モデル印刷後にサポートを取り除くためのクリアランスを提供します。モデルの下にある最上層のサポート層は、通常のレイヤーの一部分になる場合があります。"
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
-msgstr "インフィルがウォールにより接着するための、インフィルラインが終わるたびに追加される移動の距離です。このオプションはインフィルの重なりに似ていますが、吐出がなくインフィルラインの片側の端に適用されます。"
+msgstr "インフィルがウォールにより接着するための、インフィルラインが終わるたびに追加される移動の距離。このオプションはインフィルの重なりに似ていますが、吐出がなくインフィルラインの片側の端に適用されます。"
 
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
-msgstr "Zシームを更に隠すための、外側のウォールの後に追加する移動の距離です。"
+msgstr "Zシームを更に隠すための、外側のウォールの後に追加する移動の距離。"
 
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
@@ -1030,7 +1030,7 @@ msgstr "フルイドモーションを有効にする"
 
 msgctxt "support_brim_enable label"
 msgid "Enable Inner Support Base"
-msgstr ""
+msgstr "内部サポートの土台を有効化"
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -1050,7 +1050,7 @@ msgstr "Ooze Shieldを有効にする"
 
 msgctxt "support_outer_brim_enable label"
 msgid "Enable Outer Support Base"
-msgstr ""
+msgstr "外部サポート土台を有効化"
 
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
@@ -1126,7 +1126,7 @@ msgstr "終了G-code"
 
 msgctxt "infill_start_end_preference option end_close_to_seam"
 msgid "End close to seam"
-msgstr ""
+msgstr "シームの近くで終了"
 
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
@@ -1206,7 +1206,7 @@ msgstr "エクストルーダーの共有ノズル"
 
 msgctxt "material_extrusion_cool_down_speed label"
 msgid "Extrusion Cool Down Speed Modifier"
-msgstr "押出クールダウン速度修飾子"
+msgstr "押出クールダウン速度変更"
 
 msgctxt "speed_equalize_flow_width_factor description"
 msgid "Extrusion width based correction factor on the speed. At 0% the movement speed is kept constant at the Print Speed. At 100% the movement speed is adjusted so that the flow (in mm³/s) is kept constant, i.e. lines half the normal Line Width are printed twice as fast and lines twice as wide are printed half as fast. A value larger than 100% can help to compensate for the higher pressure required to extrude wide lines."
@@ -1226,7 +1226,7 @@ msgstr "この長さより短い輪郭の形体は、Small Feature Speedを使�
 
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr "これからもっと充実させていく機能です。"
+msgstr "これからもっと充実させていく機能。"
 
 msgctxt "machine_feeder_wheel_diameter label"
 msgid "Feeder Wheel Diameter"
@@ -1258,7 +1258,7 @@ msgstr "フロー制限"
 
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
-msgstr "流量補正要因"
+msgstr "流量補正係数"
 
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow Rate Compensation Max Extrusion Offset"
@@ -1290,7 +1290,7 @@ msgstr "インフィルのフロー補正。"
 
 msgctxt "support_interface_material_flow description"
 msgid "Flow compensation on lines of support roof or floor."
-msgstr "支持材の天井面または床面のフロー補正。"
+msgstr "サポート天井面または床面のフロー補正。"
 
 msgctxt "flooring_material_flow description"
 msgid "Flow compensation on lines of the areas at the bottom of the print."
@@ -1310,15 +1310,15 @@ msgstr "スカートまたはブリムのフロー補正。"
 
 msgctxt "support_bottom_material_flow description"
 msgid "Flow compensation on support floor lines."
-msgstr "支持材床面のフロー補正。"
+msgstr "サポート床面のフロー補正。"
 
 msgctxt "support_roof_material_flow description"
 msgid "Flow compensation on support roof lines."
-msgstr "支持材天井面のフロー補正。"
+msgstr "サポート天井面のフロー補正。"
 
 msgctxt "support_material_flow description"
 msgid "Flow compensation on support structure lines."
-msgstr "支持材のフロー補正。"
+msgstr "サポート構造ラインのフロー補正。"
 
 msgctxt "wall_0_material_flow_flooring description"
 msgid "Flow compensation on the bottom surface outermost wall line."
@@ -1334,11 +1334,11 @@ msgstr "最も外側のウォールのフロー補正。"
 
 msgctxt "wall_0_material_flow_roofing description"
 msgid "Flow compensation on the top surface outermost wall line."
-msgstr "最も外側のウォールラインにおける流量補正。"
+msgstr "上面の最も外側のウォールラインにおける流量補正。"
 
 msgctxt "wall_x_material_flow_roofing description"
 msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-msgstr "最外のラインを除く、すべてのウォールラインにおける最上部ウォールラインのフロー補正です。"
+msgstr "最外のラインを除く、すべてのウォールラインにおける上面ウォールラインのフロー補正。"
 
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
@@ -1390,7 +1390,7 @@ msgstr "ノズルサイズの1～2倍程度の薄い構造の場合、ライン�
 
 msgctxt "travel_retract_before_outer_wall option force_not_retracted_from_infill"
 msgid "From infill unretracted"
-msgstr ""
+msgstr "インフィルから引き戻さない"
 
 msgctxt "z_seam_position option front"
 msgid "Front"
@@ -1462,11 +1462,11 @@ msgstr "サポートを生成"
 
 msgctxt "support_outer_brim_enable description"
 msgid "Generate a base around the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "初期レイヤーにおけるサポートのインフィル領域の周囲に土台を生成します。この設定を有効にすることでサポートとビルドプレートの接着が向上します。"
 
 msgctxt "support_brim_enable description"
 msgid "Generate a base within the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "初期レイヤーにおけるサポートのインフィル領域の中に土台を生成します。この設定を有効にすることでサポートとビルドプレートの接着が向上します。"
 
 msgctxt "support_interface_enable description"
 msgid "Generate a dense interface between the model and the support. This will create a skin at the top of the support on which the model is printed and at the bottom of the support, where it rests on the model."
@@ -1490,7 +1490,7 @@ msgstr "ガラス"
 
 msgctxt "ironing_enabled description"
 msgid "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material."
-msgstr "微量の材料のみを吐出して、再度上部表面を動きます。これにより上部のプラスティックが溶かされ、よりスムースな表面になります。ノズルチャンバーには高い圧力が保たれるため、表面上のしわが材料で埋められます。"
+msgstr "微量の材料のみを吐出して、もう一度上面を印刷します。これにより上部のプラスティックが溶かされ、よりスムースな表面になります。ノズルチャンバーには高い圧力が保たれるため、表面上のしわが材料で埋められます。"
 
 msgctxt "gradual_infill_step_height label"
 msgid "Gradual Infill Step Height"
@@ -1606,7 +1606,7 @@ msgstr "これより直径が小さな輪郭の穴とパーツは、Small Featur
 
 msgctxt "support_brim_minimum_hole_area description"
 msgid "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim"
-msgstr ""
+msgstr "この値より小さい面積の穴はサポートブリムから取り除かれることで、一貫したブリムとなります。0に設定すると完全に生成されたサポートブリムが得られます。"
 
 msgctxt "infill_pattern option honeycomb"
 msgid "Honeycomb"
@@ -1622,7 +1622,7 @@ msgstr "水平拡張"
 
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
-msgstr "水平スケールファクタ収縮補正"
+msgstr "収縮補正用の水平拡張倍率"
 
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
@@ -1838,7 +1838,7 @@ msgstr "インフィル始端・終端の内側への移動量"
 
 msgctxt "infill_start_end_preference label"
 msgid "Infill Start/End Preference"
-msgstr ""
+msgstr "インフィル開始・終了設定"
 
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
@@ -1942,7 +1942,7 @@ msgstr "初期レイヤー移動速度"
 
 msgctxt "initial_layer_inset_direction label"
 msgid "Initial Layer Wall Ordering"
-msgstr ""
+msgstr "初期レイヤーウォール順序"
 
 msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
@@ -1970,7 +1970,7 @@ msgstr "内側ウォール用エクストルーダー"
 
 msgctxt "wall_x_inset label"
 msgid "Inner Wall Inset"
-msgstr ""
+msgstr "内部ウォールはめ込み"
 
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
@@ -1990,11 +1990,11 @@ msgstr "内側ウォールライン幅"
 
 msgctxt "wall_x_inset description"
 msgid "Inset applied to the path of the inner wall(s). The infill will move along with the new boundary set by the innermost inner wall"
-msgstr ""
+msgstr "はめ込みを内部ウォールの経路に適用します。インフィルは最も内側のウォールのそばに境界を持つようになります。"
 
 msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
-msgstr "外側ウォールの経路にはめ込む。外側ウォールがノズルよりも小さく、外側ウォールの後に造形されている場合は、オフセットを使用して、ノズルの穴をモデルの外側ではなく外側ウォールと重なるようにします。"
+msgstr "外側ウォールの経路にはめ込みを適用します。外側ウォールがノズルよりも小さく、外側ウォールの後に造形されている場合は、オフセットを使用して、ノズルの穴をモデルの外側ではなく外側ウォールと重なるようにします。"
 
 msgctxt "brim_location option inside"
 msgid "Inside Only"
@@ -2002,7 +2002,7 @@ msgstr "内側のみ"
 
 msgctxt "initial_layer_inset_direction option inside_out"
 msgid "Inside To Outside"
-msgstr ""
+msgstr "内側から外側へ"
 
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
@@ -2066,7 +2066,7 @@ msgstr "アイロンフロー"
 
 msgctxt "ironing_inset label"
 msgid "Ironing Inset"
-msgstr "アイロンインセット"
+msgstr "はめ込みをアイロン"
 
 msgctxt "jerk_ironing label"
 msgid "Ironing Jerk"
@@ -2158,23 +2158,23 @@ msgstr "ライトニング"
 
 msgctxt "support_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "ライトニング"
 
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr "ライトニングインフィルオーバーハング角度"
+msgstr "ライトニング型インフィルのオーバーハング角度"
 
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr "ライトニングインフィル刈り込み角度"
+msgstr "ライトニング型インフィル刈り込み角度"
 
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr "ライトニングインフィル矯正角度"
+msgstr "ライトニング型インフィル矯正角度"
 
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr "ライトニングインフィルサポート角度"
+msgstr "ライトニング型インフィルのサポート角度"
 
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Limit Branch Reach"
@@ -2302,7 +2302,7 @@ msgstr "オーバーハング底面のサポート領域を小さくします。
 
 msgctxt "support_mesh_drop_down description"
 msgid "Make support everywhere below the support mesh, so that there's no overhang in the support mesh."
-msgstr "サポートメッシュの下のサポート材を全箇所に作ります、これはサポートメッシュ下にてオーバーハングしないようにするためです。"
+msgstr "サーポートメッシュでオーバーハングがないように、サポートメッシュの下のすべての箇所にサポート材作成します。"
 
 msgctxt "extruder_prime_pos_abs description"
 msgid "Make the extruder prime position absolute rather than relative to the last-known location of the head."
@@ -2350,7 +2350,7 @@ msgstr "材料のブランド"
 
 msgctxt "material_guid label"
 msgid "Material GUID"
-msgstr "材料GUID"
+msgstr "材料のGUID"
 
 msgctxt "material_max_flowrate label"
 msgid "Material Maximum Flow Rate"
@@ -2386,7 +2386,7 @@ msgstr "最大枝角度"
 
 msgctxt "bridge_wall_max_deviation label"
 msgid "Maximum Bridge Deviation"
-msgstr ""
+msgstr "最大ブリッジ逸脱"
 
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
@@ -2474,7 +2474,7 @@ msgstr "フィラメントのモーターの最大加速度。"
 
 msgctxt "support_tower_maximum_supported_diameter description"
 msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
-msgstr "特殊なサポートタワーにより支持される小さな領域のX/Y方向の最小直径。"
+msgstr "特殊なサポートタワーにより支えられる小さな領域のX/Y方向の最小直径。"
 
 msgctxt "material_max_flowrate description"
 msgid "Maximum flow rate that the printer can extrude for the material"
@@ -2562,7 +2562,7 @@ msgstr "最小インフィル領域"
 
 msgctxt "minimum_infill_line_length label"
 msgid "Minimum Infill Line Length"
-msgstr ""
+msgstr "最小インフィルライン長"
 
 msgctxt "cool_min_layer_time label"
 msgid "Minimum Layer Time"
@@ -2642,7 +2642,7 @@ msgstr "サポートのルーフの最小領域サイズ。この値より小さ
 
 msgctxt "support_brim_minimum_hole_area label"
 msgid "Minimum hole area in brim support"
-msgstr ""
+msgstr "ブリムサポート穴の最小面積"
 
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
@@ -2678,11 +2678,11 @@ msgstr "アイロン方向一貫性"
 
 msgctxt "raft_surface_monotonic label"
 msgid "Monotonic Raft Top Surface Order"
-msgstr "単一のラフト上層部表面の順序"
+msgstr "単一のラフト上面の順序"
 
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
-msgstr "上層面の順序一貫性"
+msgstr "上面の順序一貫性"
 
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
@@ -2706,15 +2706,15 @@ msgstr "プリント時間の見積もりに使用する倍率を調整します
 
 msgctxt "support_infill_density_multiplier_initial_layer description"
 msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
-msgstr "サポート材の初期層におけるインフィル密度の倍率です。この値を増やすことで、ベッドとの接着力を高めることができます。"
+msgstr "サポート材の初期層におけるインフィル密度の倍率。この値を増やすことで、ベッドとの接着力を高めることができます。"
 
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
-msgstr "最初のレイヤーにおけるライン幅の乗数です。この値を増やすと、ベッドとの接着が向上します。"
+msgstr "最初のレイヤーにおけるライン幅の乗数。この値を増やすと、ベッドとの接着が向上します。"
 
 msgctxt "travel_retract_before_outer_wall option force_not_retracted"
 msgid "Never"
-msgstr ""
+msgstr "しない"
 
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
@@ -2726,7 +2726,7 @@ msgstr "Z軸ギャップにスキンなし"
 
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr "これまでにないモデルの印刷方法です。"
+msgstr "これまでにないモデルの印刷方法。"
 
 msgctxt "adhesion_type option none"
 msgid "None"
@@ -2814,15 +2814,15 @@ msgstr "エクストルーダーの数。エクストルーダーの単位は、
 
 msgctxt "support_wall_thickness_layer_smooth description"
 msgid "Number of layers where the support wall line width transition is smoothed out over. (This may still create jumps when one area splits off from the other though.)"
-msgstr ""
+msgstr "サポートのウォールライン幅が滑らかに推移するレイヤーの数。（ただし、ある領域が他の領域から分岐する場合は段差になる場合があります）"
 
 msgctxt "support_wall_thickness_bottom_layers description"
 msgid "Number of layers, counted from the build-plate, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
-msgstr ""
+msgstr "サポートウォールが拡張しない幅（スムージングされたライン幅を含まない）を使用する場合の、ビルドプレートから数えたレイヤー数。"
 
 msgctxt "support_wall_thickness_top_layers description"
 msgid "Number of layers, counted from the closest tip of the branches downwards, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
-msgstr ""
+msgstr "サポートウォールが拡張しない幅（スムージングされたライン幅を含まない）を使用する場合の、最も近い枝の先端から下向きに数えたレイヤーの数。"
 
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
@@ -2878,7 +2878,7 @@ msgstr "必要に応じてモデル上に配置"
 
 msgctxt "top_bottom_skin_merge_distance description"
 msgid "On sloped areas especially, top/bottom can become very small or narrow, while skin is nearby. This will sometimes cause walls not to print well. Merge top/bottom into skin when areas become too thin, where 'too thin' is defined by the merge distance (any thinner is merged into a neighbouring area if present)."
-msgstr ""
+msgstr "表面が近くにあって、特に傾斜状の領域では上面・底面が非常に小さくまたは狭くなることでウォールの印刷不良を生じることがあります。設定された距離よりも領域が薄い場合に、上面・底面を表面に統合します。（より薄い領域の場合は近くの領域に統合されます）"
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -2982,7 +2982,7 @@ msgstr "外側のみ"
 
 msgctxt "initial_layer_inset_direction option outside_in"
 msgid "Outside To Inside"
-msgstr ""
+msgstr "外側から内側へ"
 
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
@@ -3010,7 +3010,7 @@ msgstr "ブリッジウォールとスキンを印刷する際に使用するフ
 
 msgctxt "skin_support_fan_speed description"
 msgid "Percentage fan speed to use when printing skin support."
-msgstr "表面サポートをプリントする際に使用するファン速度の割合（%）です。"
+msgstr "表面サポートをプリントする際に使用するファン速度の割合 (%)。"
 
 msgctxt "bridge_fan_speed_2 description"
 msgid "Percentage fan speed to use when printing the second bridge skin layer."
@@ -3042,7 +3042,7 @@ msgstr "圧力推進係数"
 
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
-msgstr "1つ外側のウォールと1つ内側のウォールの間を行き来することを防止します。このマージンは、続くライン幅の範囲を［最小ウォールライン幅 - マージン, 2 * 最小ウォールライン幅 + マージン］に拡張します。このマージンを増やすと移動の回数が減り、これにより押出の開始/停止回数と移動時間を削減します。ただし、ライン幅の変化が大きくなると押出不足や押出過多の問題が発生する場合があります。"
+msgstr "ウォールとその1つとなりのウォールの間を行き来することを防止します。このマージンは、続くライン幅の範囲を［最小ウォールライン幅 - マージン, 2 * 最小ウォールライン幅 + マージン］に拡張します。このマージンを増やすと移動の回数が減り、これにより押出の開始/停止回数と移動時間を削減します。ただし、ライン幅の変化が大きくなると押出不足や押出過多の問題が発生する場合があります。"
 
 msgctxt "prime_during_travel_ratio label"
 msgid "Prime During Travel Move"
@@ -3134,7 +3134,7 @@ msgstr "印刷プロセスレポート"
 
 msgctxt "print_sequence label"
 msgid "Print Sequence"
-msgstr "印刷頻度"
+msgstr "プリント順序"
 
 msgctxt "speed_print label"
 msgid "Print Speed"
@@ -3574,7 +3574,7 @@ msgstr "土台設定"
 
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
-msgstr "外側ウォールの前に引き戻す"
+msgstr "外側ウォール前の引き戻し"
 
 msgctxt "retract_at_layer_change label"
 msgid "Retract at Layer Change"
@@ -3626,15 +3626,15 @@ msgstr "右"
 
 msgctxt "machine_scale_fan_speed_zero_to_one label"
 msgid "Scale Fan Speed To 0-1"
-msgstr "ファン速度を0～1にスケール"
+msgstr "ファン速度を0～1で調整"
 
 msgctxt "machine_scale_fan_speed_zero_to_one description"
 msgid "Scale the fan speed to be between 0 and 1 instead of between 0 and 256."
-msgstr "ファン速度を0～256ではなく、0～1でスケールします。"
+msgstr "ファン速度を0～256ではなく、0～1の値で調整します。"
 
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr "スケールファクタ収縮補正"
+msgstr "収縮補正用の拡張倍率"
 
 msgctxt "machine_scan_first_layer label"
 msgid "Scan the first layer"
@@ -3666,7 +3666,7 @@ msgstr "シームオーバーハンギング ウォール角度"
 
 msgctxt "user_defined_print_order_enabled label"
 msgid "Set Print Sequence Manually"
-msgstr "手動で印刷順序を設定する"
+msgstr "プリント順序の手動設定"
 
 msgctxt "draft_shield_height_limitation description"
 msgid "Set the height of the draft shield. Choose to print the draft shield at the full height of the model or at a limited height."
@@ -3894,11 +3894,11 @@ msgstr "開始G-Codeを必ず最初に実行"
 
 msgctxt "infill_start_end_preference option start_closest"
 msgid "Start at closest"
-msgstr ""
+msgstr "最も近くから開始"
 
 msgctxt "infill_start_end_preference option start_random"
 msgid "Start at random"
-msgstr ""
+msgstr "ランダム地点から開始"
 
 msgctxt "layer_start_at_z_seam description"
 msgid "Start printing at the Z seam position."
@@ -3938,23 +3938,23 @@ msgstr "サポート加速度"
 
 msgctxt "support_base_height label"
 msgid "Support Base Height"
-msgstr ""
+msgstr "サポート土台の高さ"
 
 msgctxt "support_base_inside_width label"
 msgid "Support Base Inside Width"
-msgstr ""
+msgstr "サポート土台内側の幅"
 
 msgctxt "support_base_outside_width label"
 msgid "Support Base Outside Width"
-msgstr ""
+msgstr "サポート土台外側の幅"
 
 msgctxt "support_base_curve_magnitude label"
 msgid "Support Base Slope"
-msgstr ""
+msgstr "サポート土台の傾き"
 
 msgctxt "support_base_width label"
 msgid "Support Base Width"
-msgstr ""
+msgstr "サポート土台の幅"
 
 msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
@@ -3982,7 +3982,7 @@ msgstr "サポート距離優先順位"
 
 msgctxt "support_enlarged_wall_thickness label"
 msgid "Support Enlarged Wall Thickness"
-msgstr ""
+msgstr "拡張サポートウォールの厚さ"
 
 msgctxt "support_extruder_nr label"
 msgid "Support Extruder"
@@ -4002,7 +4002,7 @@ msgstr "サポートフロアエクストルーダー"
 
 msgctxt "support_bottom_material_flow label"
 msgid "Support Floor Flow"
-msgstr "支持材床面フロー"
+msgstr "サポート床面フロー"
 
 msgctxt "support_bottom_offset label"
 msgid "Support Floor Horizontal Expansion"
@@ -4038,7 +4038,7 @@ msgstr "サポートフロア厚さ"
 
 msgctxt "support_material_flow label"
 msgid "Support Flow"
-msgstr "支持材のフロー"
+msgstr "サポートのフロー"
 
 msgctxt "support_offset label"
 msgid "Support Horizontal Expansion"
@@ -4070,7 +4070,7 @@ msgstr "サポートインフィルラインの向き"
 
 msgctxt "support_infill_multiplier label"
 msgid "Support Infill Line Multiplier"
-msgstr ""
+msgstr "サポートインフィルライン倍率"
 
 msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
@@ -4078,19 +4078,19 @@ msgstr "サポートインフィル速度"
 
 msgctxt "support_brim_line_count label"
 msgid "Support Inner Brim Line Count"
-msgstr ""
+msgstr "サポート内側ブリムのライン数"
 
 msgctxt "support_brim_width label"
 msgid "Support Inner Brim Width"
-msgstr ""
+msgstr "サポート内側ブリムの幅"
 
 msgctxt "support_inside_base_height label"
 msgid "Support Inside Base Height"
-msgstr ""
+msgstr "サポート内側土台の高さ"
 
 msgctxt "support_inside_base_curve_magnitude label"
 msgid "Support Inside Base Slope"
-msgstr ""
+msgstr "サポート内側土台の傾き"
 
 msgctxt "acceleration_support_interface label"
 msgid "Support Interface Acceleration"
@@ -4154,19 +4154,19 @@ msgstr "サポート接合距離"
 
 msgctxt "support_lightning_angle label"
 msgid "Support Lightning Angle"
-msgstr ""
+msgstr "ライトニング型サポートの角度"
 
 msgctxt "support_lightning_overhang_angle label"
 msgid "Support Lightning Overhang Angle"
-msgstr ""
+msgstr "ライトニング型サポートのオーバーハング角度"
 
 msgctxt "support_lightning_prune_angle label"
 msgid "Support Lightning Prune Angle"
-msgstr ""
+msgstr "ライトニング型サポート刈り込み角度"
 
 msgctxt "support_lightning_straightening_angle label"
 msgid "Support Lightning Straightening Angle"
-msgstr ""
+msgstr "ライトニング型サポート矯正角度"
 
 msgctxt "support_line_distance label"
 msgid "Support Line Distance"
@@ -4182,11 +4182,11 @@ msgstr "サポートメッシュ"
 
 msgctxt "support_outside_base_height label"
 msgid "Support Outside Base Height"
-msgstr ""
+msgstr "サポート外側土台の高さ"
 
 msgctxt "support_outside_base_curve_magnitude label"
 msgid "Support Outside Base Slope"
-msgstr ""
+msgstr "サポート外側土台の傾き"
 
 msgctxt "support_angle label"
 msgid "Support Overhang Angle"
@@ -4194,7 +4194,7 @@ msgstr "サポートオーバーハング角度"
 
 msgctxt "support_paint_resolution label"
 msgid "Support Painting Precision"
-msgstr ""
+msgstr "サポートペイント精度"
 
 msgctxt "support_pattern label"
 msgid "Support Pattern"
@@ -4218,7 +4218,7 @@ msgstr "サポートルーフエクストルーダー"
 
 msgctxt "support_roof_material_flow label"
 msgid "Support Roof Flow"
-msgstr "支持材天井面フロー"
+msgstr "サポート天井面フロー"
 
 msgctxt "support_roof_offset label"
 msgid "Support Roof Horizontal Expansion"
@@ -4286,19 +4286,19 @@ msgstr "サポートウォールライン数"
 
 msgctxt "support_wall_thickness_layer_smooth label"
 msgid "Support Wall Smooth Layer Width"
-msgstr ""
+msgstr "サポートウォール平滑化レイヤー幅"
 
 msgctxt "support_wall_thickness label"
 msgid "Support Wall Thickness"
-msgstr ""
+msgstr "サポートウォールの厚さ"
 
 msgctxt "support_wall_thickness_bottom_layers label"
 msgid "Support Wall Unenlarged Bottom Layers"
-msgstr ""
+msgstr "サポートウォールの非拡張底面レイヤー数"
 
 msgctxt "support_wall_thickness_top_layers label"
 msgid "Support Wall Unenlarged Top Layers"
-msgstr ""
+msgstr "サポートウォールの非拡張上面レイヤー数"
 
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
@@ -4358,7 +4358,7 @@ msgstr "隣接する2つのレイヤー間の目標水平距離。この設定�
 
 msgctxt "material_delta_temperature_roofing label"
 msgid "Temperature Delta Top Surface"
-msgstr ""
+msgstr "上面温度差"
 
 msgctxt "layer_start_x description"
 msgid "The X coordinate of the position near where to find the part to start printing each layer."
@@ -4366,7 +4366,7 @@ msgstr "各レイヤーの印刷を開始する基準地点のX座標。"
 
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
-msgstr "レイヤー内で各パーツの印刷を開始する位置付近のX座標です。相対Zシームが無効の場合、この設定はビルドプレートの絶対座標になります。有効にした場合、各オブジェクトの中央からの相対座標になります。"
+msgstr "レイヤー内で各パーツの印刷を開始する位置付近のX座標。相対Zシームが無効の場合、この設定はビルドプレートの絶対座標になります。有効にした場合、各オブジェクトの中央からの相対座標になります。"
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
@@ -4378,7 +4378,7 @@ msgstr "各レイヤーの印刷を開始する基準地点のY座標。"
 
 msgctxt "z_seam_y description"
 msgid "The Y coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
-msgstr "レイヤー内で各パーツの印刷を開始する位置付近のY座標です。相対Zシームが無効の場合、この設定はビルドプレートの絶対座標になります。有効の場合、各オブジェクトの中央からの相対座標になります。"
+msgstr "レイヤー内で各パーツの印刷を開始する位置付近のY座標。相対Zシームが無効の場合、この設定はビルドプレートの絶対座標になります。有効の場合、各オブジェクトの中央からの相対座標になります。"
 
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
@@ -4422,7 +4422,7 @@ msgstr "アイロン時の加速度。"
 
 msgctxt "acceleration_print description"
 msgid "The acceleration with which printing happens."
-msgstr "印刷の加速スピードです。"
+msgstr "印刷の加速スピード。"
 
 msgctxt "raft_base_acceleration description"
 msgid "The acceleration with which the base raft layer is printed."
@@ -4482,11 +4482,11 @@ msgstr "ラフトの上層部印刷時の加速度。"
 
 msgctxt "acceleration_wall_x_roofing description"
 msgid "The acceleration with which the top surface inner walls are printed."
-msgstr "最上部内側のウォールをプリントする際の加速度。"
+msgstr "上面の内側ウォールをプリントする際の加速度。"
 
 msgctxt "acceleration_wall_0_roofing description"
 msgid "The acceleration with which the top surface outermost walls are printed."
-msgstr "最上部の最も外側のウォールが印刷される際の加速度。"
+msgstr "上面の最も外側のウォールが印刷される際の加速度。"
 
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
@@ -4494,7 +4494,7 @@ msgstr "ウォールをプリントする際の加速度。"
 
 msgctxt "acceleration_roofing description"
 msgid "The acceleration with which top surface skin layers are printed."
-msgstr "上部表面プリント時の加速度。"
+msgstr "上面の表面プリント時の加速度。"
 
 msgctxt "acceleration_topbottom description"
 msgid "The acceleration with which top/bottom layers are printed."
@@ -4522,7 +4522,7 @@ msgstr "ラフト表面のプリント中に押出す材料の量（通常の押
 
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
-msgstr "通常のスキンラインに対してアイロン時にノズルから吐出するフィラメントの量。ノズルが常に材料で満たされた状態を保つことで、表面の溝を埋めるのに役立ちます。ただし多過ぎると側面が粗くなります。"
+msgstr "通常のスキンラインに対してアイロン時にノズルから吐出するフィラメントの量。ノズルが常に材料で満たされた状態を保つことで、上面の溝を埋めるのに役立ちます。ただし多過ぎると側面が粗くなります。"
 
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
@@ -4570,7 +4570,7 @@ msgstr "タワーの屋上の角度。値が高いほど尖った屋根が得ら
 
 msgctxt "mold_angle description"
 msgid "The angle of overhang of the outer walls created for the mold. 0° will make the outer shell of the mold vertical, while 90° will make the outside of the model follow the contour of the model."
-msgstr "型の外側ウォールのオーバーハング角度です。0度にすると垂直の外殻をつくります。 90度は輪郭に従いモデル外側に外殻をつくります。"
+msgstr "型の外側ウォールのオーバーハング角度。0度にすると垂直の外殻をつくります。 90度は輪郭に従いモデル外側に外殻をつくります。"
 
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
@@ -4590,7 +4590,7 @@ msgstr "各線分に導入されたランダム点間の平均距離。ポリゴ
 
 msgctxt "material_brand description"
 msgid "The brand of material used."
-msgstr "使用されている材料のブランドです。"
+msgstr "使用されている材料のブランド。"
 
 msgctxt "machine_acceleration description"
 msgid "The default acceleration of print head movement."
@@ -4610,7 +4610,7 @@ msgstr "ブリッジスキンレイヤーの密度。100以下の場合、スキ
 
 msgctxt "support_bottom_density description"
 msgid "The density of the floors of the support structure. A higher value results in better adhesion of the support on top of the model."
-msgstr "サポート構造のフロアの密度です。高い値は、サポートのよりよい接着を促します。"
+msgstr "サポート構造のフロアの密度。高い値は、サポートのよりよい接着を促します。"
 
 msgctxt "support_roof_density description"
 msgid "The density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
@@ -4622,7 +4622,7 @@ msgstr "セカンドブリッジスキンレイヤーの密度。100以下の場
 
 msgctxt "skin_support_density description"
 msgid "The density of the skin support layer. Values less than 100 will increase the gaps between the lines."
-msgstr "表面サポートレイヤーの密度です。100より小さい値の場合、ライン間のギャップが広くなります。"
+msgstr "表面サポートレイヤーの密度。100より小さい値の場合、ラインの間隔が広くなります。"
 
 msgctxt "bridge_skin_density_3 description"
 msgid "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
@@ -4634,7 +4634,7 @@ msgstr "造形可能領域の幅（Y方向）。"
 
 msgctxt "multi_material_paint_depth description"
 msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
-msgstr "ペイントした部分に対するモデル内部の深さです。より深くすることでより強く結合しますが、メモリー使用量とスライスにかかる時間が増加します。出来るだけ深くなるよう高い値を設定してください。実際に計算される深さは変わる場合があります。"
+msgstr "ペイントした部分に対するモデル内部の深さ。より深くすることでより強く結合しますが、メモリー使用量とスライスにかかる時間が増加します。出来るだけ深くなるよう高い値を設定してください。実際に計算される深さは変わる場合があります。"
 
 msgctxt "support_tower_diameter description"
 msgid "The diameter of a special tower."
@@ -4662,7 +4662,7 @@ msgstr "次のレイヤーの高さを前のレイヤーの高さと比べた差
 
 msgctxt "machine_head_with_fans_polygon description"
 msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
-msgstr "一度にプリントする場合の「モデルとの安全距離」に使用される、プリントヘッドの座標です。これらの数値は最初のエクストルーダーノズルの中心線との相対値になります。ノズルの左側がX軸の最小値で、必ず負の値になります。ノズルの後方がY軸の最小値で、必ず負の値になります。X軸最大値（右側）とY軸最大値（前方）は正の値になります。ガントリーの高さはビルドプレートからガントリーの梁（はり）との距離になります。"
+msgstr "一度にプリントする場合の「モデルとの安全距離」に使用される、プリントヘッドの座標。これらの数値は最初のエクストルーダーノズルの中心線との相対値になります。ノズルの左側がX軸の最小値で、必ず負の値になります。ノズルの後方がY軸の最小値で、必ず負の値になります。X軸最大値（右側）とY軸最大値（前方）は正の値になります。ガントリーの高さはビルドプレートからガントリーの梁（はり）との距離になります。"
 
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
@@ -4678,11 +4678,11 @@ msgstr "ノズルが既に印刷された部分を移動する際の間隔。"
 
 msgctxt "retraction_combing_avoid_distance description"
 msgid "The distance between the nozzle and outer walls when travelling inside a model."
-msgstr ""
+msgstr "モデル内部を移動する時のノズルと外部ウォールとの距離。"
 
 msgctxt "raft_base_line_spacing description"
 msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr "ラフトの土台層のラフトライン間の距離。間隔を広くすると、ラフトをブルドプレートから外すのが簡単になります。"
+msgstr "ラフト土台層のラフトライン間の距離。間隔を広くすると、ラフトをビルドプレートから外すのが簡単になります。"
 
 msgctxt "raft_interface_line_spacing description"
 msgid "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers."
@@ -4694,7 +4694,7 @@ msgstr "ラフトの上層部とラフト線との距離。サーフェスが強
 
 msgctxt "prime_tower_raft_base_line_spacing description"
 msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr "プライムタワーラフト層の独自のラフトライン間の距離です。間隔が広いと、ラフトをビルドプレートから簡単に取り除くことができます。"
+msgstr "プライムタワーラフト層に固有のラフトライン間の距離。間隔が広いと、ラフトをビルドプレートから簡単に取り除くことができます。"
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -4714,15 +4714,15 @@ msgstr "ノズルからの熱がフィラメントに伝達される距離。"
 
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr "スキンがインフィルまで到達する距離です。高い値の場合、スキンはインフィルのパターンに隣接しやすく、近接するウォールのレイヤーもスキンに接着しやすくなります。低い値の場合、材料の使用量を節約します。"
+msgstr "スキンがインフィルまで到達する距離。高い値の場合、スキンはインフィルのパターンに隣接しやすく、近接するウォールのレイヤーもスキンに接着しやすくなります。低い値の場合、材料の使用量を節約します。"
 
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr "スキンがインフィルまで到達する距離です。高い値の場合、スキンはインフィルのパターンに隣接しやすく、近接するウォールのレイヤーもスキンに接着しやすくなります。低い値の場合、材料の使用量を節約します。"
+msgstr "スキンがインフィルまで到達する距離。高い値の場合、スキンはインフィルのパターンに隣接しやすく、近接するウォールのレイヤーもスキンに接着しやすくなります。低い値の場合、材料の使用量を節約します。"
 
 msgctxt "top_skin_expand_distance description"
 msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr "スキンがインフィルまで到達する距離です。高い値の場合、スキンはインフィルのパターンに隣接しやすく、近接するウォールのレイヤーもスキンに接着しやすくなります。低い値の場合、材料の使用量を節約します。"
+msgstr "スキンがインフィルまで到達する距離。高い値の場合、スキンはインフィルのパターンに隣接しやすく、近接するウォールのレイヤーもスキンに接着しやすくなります。低い値の場合、材料の使用量を節約します。"
 
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
@@ -4730,11 +4730,11 @@ msgstr "ブラシ全体でヘッド前後に動かす距離。"
 
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr "インフィルラインのエンドポイントは短縮され、材料が節約されます。この設定は、これらのラインのエンドポイントにおけるオーバーハングの角度です。"
+msgstr "材料を節約するため、インフィルラインの端を短くします。ラインの端におけるオーバーハングの角度で設定します。"
 
 msgctxt "support_lightning_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "材料を節約するため、インフィルラインの端を短くします。ラインの端におけるオーバーハングの角度で設定します。"
 
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
@@ -4818,7 +4818,7 @@ msgstr "外部ファンまたはビルドボリュームファンの速度（%�
 
 msgctxt "build_volume_fan_speed_0 description"
 msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
-msgstr "「レイヤーのビルドボリュームファン速度」に達する前の外部またはビルドボリュームファンの速度（%指定）です。その後、「ビルドボリュームファン速度」に設定されます。（初期レイヤー用の速度ではありません）"
+msgstr "「レイヤーのビルドボリュームファン速度」に達する前の外部またはビルドボリュームファンの速度（%指定）。その後、「ビルドボリュームファン速度」に設定されます。（初期レイヤー用の速度ではありません）"
 
 msgctxt "raft_base_fan_speed description"
 msgid "The fan speed for the base raft layer."
@@ -4910,15 +4910,15 @@ msgstr "初期レイヤーの高さ (mm)。初期レイヤーが厚くなると�
 
 msgctxt "support_inside_base_height description"
 msgid "The height of the inside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "内側サポート土台の高さ。この値を増やすと、土台が幅広くなるためサポートはより丈夫になります。この設定が小さ過ぎる場合、サポートはしっかりとした土台を得られません。"
 
 msgctxt "support_outside_base_height description"
 msgid "The height of the outside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "外側サポート土台の高さ。この値を増やすと、土台が幅広くなるためサポートはより丈夫になります。この設定が小さ過ぎる場合、サポートはしっかりとした土台を得られません。"
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
-msgstr "プライムタワーベースの高さです。この値を増やすと、ベースが広くなるためプライムタワーはより頑丈になります。この設定が低すぎると、プライムタワーは頑丈なベースを持たなくなります。"
+msgstr "プライムタワー土台の高さ。この値を増やすと、土台が広くなるためプライムタワーはより頑丈になります。この設定が低すぎると、プライムタワーはしっかりとした土台を得られません。"
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4926,7 +4926,7 @@ msgstr "モデルにのっている階段状のサポートの底のステップ
 
 msgctxt "support_base_height description"
 msgid "The height of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "サポート土台の高さ。この値を増やすと、土台が幅広くなるためサポートはより丈夫になります。この設定が小さ過ぎる場合、サポートはしっかりとした土台を得られません。"
 
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
@@ -4942,11 +4942,11 @@ msgstr ""
 
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr "インフィルラインは矯正され、プリント時間が節約されます。これは、インフィルラインの全長にわたって許可されるオーバーハングの最大角度です。"
+msgstr "プリント時間を節約するためにインフィルラインを矯正します。インフィルラインの全長にわたって許可されるオーバーハングの最大角度を設定します。"
 
 msgctxt "support_lightning_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr ""
+msgstr "プリント時間を節約するためにインフィルラインを矯正します。インフィルラインの全長にわたって許可されるオーバーハングの最大角度を設定します。"
 
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
@@ -5006,19 +5006,19 @@ msgstr "引き戻し移動中に引き戻される材料の長さ。"
 
 msgctxt "support_inside_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the inside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "内側サポート土台の傾きの大きさに使われる係数。この値を大きくすると、土台はより細くなります。小さくすると、土台は太くなります。"
 
 msgctxt "support_outside_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the outside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "外側サポート土台の傾きの大きさに使われる係数。この値を大きくすると、土台はより細くなります。小さくすると、土台は太くなります。"
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr "プライムタワーベースの傾斜に使用される倍率係数です。この値を増やすと、ベースが細くなります。減らすと、ベースが厚くなります。"
+msgstr "プライムタワー土台の傾きの大きさに使われる係数。この値を増やすと、土台はより細くなります。小さくすると、土台がより太くなります。"
 
 msgctxt "support_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "サポート土台の傾きの大きさに使われる係数。この値を大きくすると、土台はより細くなります。小さくすると、土台はより太くなります。"
 
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
@@ -5042,7 +5042,7 @@ msgstr "モデル底部にある穴の最大領域（「オーバーハング印
 
 msgctxt "meshfix_maximum_deviation description"
 msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true."
-msgstr "最大解像度の設定で解像度を下げるときに許容される最大偏差です。これを大きくすると印刷の精度は低くなりますが、g-codeは小さくなります。最大偏差は最大解像度の限度であるため、最大偏差でこの2つが競合する場合には常にtrueとなります。"
+msgstr "最大解像度の設定で解像度を下げるときに許容される最大偏差。これを大きくすると印刷の精度は低くなりますが、g-codeは小さくなります。最大偏差は最大解像度の限度であるため、最大偏差でこの2つが競合する場合には常にtrueとなります。"
 
 msgctxt "support_join_distance description"
 msgid "The maximum distance between support structures in the X/Y directions. When separate structures are closer together than this value, the structures merge into one."
@@ -5074,7 +5074,7 @@ msgstr "内側のウォールがプリントされれう際の最大瞬間速度
 
 msgctxt "jerk_flooring description"
 msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
-msgstr "底面スキンレイヤーをプリントする際の瞬間速度変化の最大値です。"
+msgstr "底面スキンレイヤーをプリントする際の瞬間速度変化の最大値。"
 
 msgctxt "jerk_infill description"
 msgid "The maximum instantaneous velocity change with which infill is printed."
@@ -5082,11 +5082,11 @@ msgstr "インフィルの印刷時の瞬間速度の変更。"
 
 msgctxt "jerk_wall_x_flooring description"
 msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
-msgstr "底面内側ウォールをプリントする際の瞬間速度変化の最大値です。"
+msgstr "底面内側ウォールをプリントする際の瞬間速度変化の最大値。"
 
 msgctxt "jerk_wall_0_flooring description"
 msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
-msgstr "底面の最も外側のウォールをプリントする際の瞬間速度変化の最大値です。"
+msgstr "底面の最も外側のウォールをプリントする際の瞬間速度変化の最大値。"
 
 msgctxt "jerk_support_bottom description"
 msgid "The maximum instantaneous velocity change with which the floors of support are printed."
@@ -5106,7 +5106,7 @@ msgstr "プライムタワーがプリントされる際の最大瞬間速度を
 
 msgctxt "jerk_support_interface description"
 msgid "The maximum instantaneous velocity change with which the roofs and floors of support are printed."
-msgstr "サポートのルーフとフロアを印刷する際の瞬間速度変化の最大値です。"
+msgstr "サポートのルーフとフロアを印刷する際の瞬間速度変化の最大値。"
 
 msgctxt "jerk_support_roof description"
 msgid "The maximum instantaneous velocity change with which the roofs of support are printed."
@@ -5122,11 +5122,11 @@ msgstr "サポート材の印刷時の最大瞬間速度の変更。"
 
 msgctxt "jerk_wall_x_roofing description"
 msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
-msgstr "上面で最も外側のウォールを印刷する際の瞬間速度変化の最大値です。"
+msgstr "上面で最も外側のウォールを印刷する際の瞬間速度変化の最大値。"
 
 msgctxt "jerk_wall_0_roofing description"
 msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
-msgstr "上面で内側のウォールを印刷する際の瞬間速度変化の最大値です。"
+msgstr "上面で内側のウォールを印刷する際の瞬間速度変化の最大値。"
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -5134,7 +5134,7 @@ msgstr "ウォールのプリント時の最大瞬間速度を変更。"
 
 msgctxt "jerk_roofing description"
 msgid "The maximum instantaneous velocity change with which top surface skin layers are printed."
-msgstr "上部表面プリント時の最大加速度。"
+msgstr "上面の表面レイヤーをプリントする際の最大加速度。"
 
 msgctxt "jerk_topbottom description"
 msgid "The maximum instantaneous velocity change with which top/bottom layers are printed."
@@ -5166,11 +5166,11 @@ msgstr "フィラメントの最大速度。"
 
 msgctxt "support_bottom_stair_step_width description"
 msgid "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
-msgstr "モデルにのっている階段のような下部のサポートのステップの最大幅。低い値にするサポートの除去が困難になり、高すぎる値は不安定なサポート構造につながります。"
+msgstr "モデル上に置かれる階段状のサポート下部のステップ最大幅。低い値にするとサポートの除去が困難になり、値が高すぎると不安定なサポート構造を引き起こします。"
 
 msgctxt "mold_width description"
 msgid "The minimal distance between the outside of the mold and the outside of the model."
-msgstr "型の外側とモデルの外側との間の最小距離です。"
+msgstr "型の外側とモデルの外側との間の最小距離。"
 
 msgctxt "machine_minimum_feedrate description"
 msgid "The minimal movement speed of the print head."
@@ -5210,7 +5210,7 @@ msgstr "通常の多角形ウォールの最小ライン幅。この設定は、
 
 msgctxt "cool_min_speed description"
 msgid "The minimum print speed, despite slowing down due to the minimum layer time. When the printer would slow down too much, the pressure in the nozzle would be too low and result in bad print quality."
-msgstr "最遅印刷速度。印刷の速度が遅すぎると、ノズル内の圧力が低すぎて印刷品質が低下します。"
+msgstr "印刷速度の最低値。プリンターの速度が遅くなり過ぎると、ノズル内の圧力が低すぎて印刷品質が低下します。"
 
 msgctxt "meshfix_maximum_resolution description"
 msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
@@ -5222,7 +5222,7 @@ msgstr "スライス後の移動線分の最小サイズ。これを増やすと
 
 msgctxt "support_bottom_stair_step_min_slope description"
 msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
-msgstr "ステアステップ効果を発揮するための、エリアの最小スロープです。小さい値を指定すると緩い勾配となりサポートを取り除きやすくなる一方、非常に小さい値の場合は別のモデルの部品で効果を感じられなくなる場合があります。"
+msgstr "ステアステップ効果を発揮するための、エリアの最小スロープ。小さい値を指定すると緩い勾配となりサポートを取り除きやすくなる一方、非常に小さい値の場合は別のモデルの部品で効果を感じられなくなる場合があります。"
 
 msgctxt "prime_tower_min_shell_thickness description"
 msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
@@ -5230,11 +5230,11 @@ msgstr "プライムタワーシェルの最小の厚さ。厚くすることで
 
 msgctxt "cool_min_layer_time_overhang description"
 msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
-msgstr "オーバーハングになる押し出しを含むレイヤーでの最小時間です。これは1つのレイヤーに最低限かける時間までプリンターを強制的に遅くします。これにより、次のレイヤーを印刷する前にプリントされた材料が適切に冷却されるようになります。ヘッド持ち上げが無効かつ最低速度を下回ってしまう場合は、レイヤーの印刷時間は最小レイヤー印刷時間より短くなります。"
+msgstr "オーバーハングになる押し出しを含むレイヤーでの最小時間。これは1つのレイヤーに最低限かける時間までプリンターを強制的に遅くします。これにより、次のレイヤーを印刷する前にプリントされた材料が適切に冷却されるようになります。ヘッド持ち上げが無効かつ最低速度を下回ってしまう場合は、レイヤーの印刷時間は最小レイヤー印刷時間より短くなります。"
 
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
-msgstr "1つのレイヤーに最低限費やす時間。1つの層に必ず設定された時間を費やすため、場合によってはプリントに遅れが生じます。これにより、次の層をプリントする前にプリントされた材料を適切に冷却できます。ヘッド持ち上げが無効かつ最小速度を下回った場合、最小レイヤー時間よりも短くなる場合があります。"
+msgstr "1つのレイヤーに最低限費やす時間。1つの層に必ず設定された時間を費やすため、プリンターは強制的に速度を落とします。これにより、次の層をプリントする前にプリントされた材料を適切に冷却できます。ヘッド持ち上げが無効かつ最小速度を下回った場合、最小レイヤー時間よりも短くなる場合があります。"
 
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
@@ -5266,7 +5266,7 @@ msgstr "最底面のレイヤー数。下の厚さで計算すると、この値
 
 msgctxt "flooring_layer_count description"
 msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
-msgstr "最低面レイヤーの数です。通常、高品質な最低面レイヤーには1つのみで十分です。"
+msgstr "最低面のレイヤー数。通常、高品質な最低面レイヤーには1つのみで十分です。"
 
 msgctxt "raft_base_wall_count description"
 msgid "The number of contours to print around the linear pattern in the base layer of the raft."
@@ -5298,7 +5298,7 @@ msgstr "ブリムに使用される線数。ブリムの線数は、ビルドプ
 
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support inside brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "ブリム内側のサポートに使われるライン数。ブリムのライン数が多いほど、追加の材料を費やしてビルドプレートとの接着が向上します。"
 
 msgctxt "build_volume_fan_nr description"
 msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
@@ -5306,7 +5306,7 @@ msgstr "ビルドボリュームを冷却するファンの数。これが0に�
 
 msgctxt "raft_surface_layers description"
 msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
-msgstr "第2ラフト層の上の最上層の数。これらは、モデルが置かれる完全に塗りつぶされた積層です。 2つの層は、1よりも滑らかな上面をもたらす。"
+msgstr "第2ラフト層の上の最上層の数。これらは、完全に塗りつぶされたモデルが置かれるレイヤーです。 2つの層は、1つの場合よりも滑らかな上面となります。"
 
 msgctxt "top_layers description"
 msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
@@ -5314,7 +5314,7 @@ msgstr "最上面のレイヤー数。トップの厚さを計算する場合、
 
 msgctxt "roofing_layer_count description"
 msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
-msgstr "上部表面のレイヤー数。通常一層で綺麗に出来上がります。"
+msgstr "上部表面のレイヤー数。通常1層のレイヤーで十分なクオリティの表面を実現できます。"
 
 msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
@@ -5346,11 +5346,11 @@ msgstr "ノズルの外径。"
 
 msgctxt "flooring_pattern description"
 msgid "The pattern of the bottom most layers."
-msgstr "最低面レイヤーのパターンです。"
+msgstr "最低面レイヤーのパターン。"
 
 msgctxt "support_pattern description"
 msgid "The pattern of the support structures of the print. The different options available result in sturdy or easy to remove support."
-msgstr "サポート材の形。サポート材の除去の方法を頑丈または容易にする設定が可能です。"
+msgstr "サポート材のパターン。サポートを頑丈にしたり取り外しやすい設定が用意されています。"
 
 msgctxt "roofing_pattern description"
 msgid "The pattern of the top most layers."
@@ -5382,19 +5382,19 @@ msgstr "サポートのルーフが印刷されるパターン。"
 
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements."
-msgstr "レイヤー内における各パーツの印刷開始位置です。注意：「中央」設定は、相対位置は相対Zシーム設定によって、ビルドプレートの中央（絶対的）か各オブジェクトの中央（相対的）となり、シームの位置がまったく異なる結果となります。"
+msgstr "レイヤー内における各パーツの印刷開始位置。注意：「中央」設定は、相対位置は相対Zシーム設定によって、ビルドプレートの中央（絶対的）か各オブジェクトの中央（相対的）となり、シームの位置がまったく異なる結果となります。"
 
 msgctxt "support_tree_smooth_layers description"
 msgid "The positions of the tree support branches will be adjusted to smooth them over the specified number of layers using a rolling window average. This improves inter-layer adhesion and sturdiness, but an excessively high value may cause the structure to bend too close to the model or compromise its integrity."
-msgstr ""
+msgstr "ツリー型サポートの位置が、指定された数のレイヤーを滑らかにするよう移動平均を用いて調整されるようになります。これにより内部レイヤーの接着と丈夫さが向上しますが、過剰に大きい値を指定すると構造が曲がってモデルに近づきすぎるか、モデルの正確性を損なう場合があります。"
 
 msgctxt "multi_material_paint_resolution description"
 msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
-msgstr "ペイント情報に基づく複数材料の形状の精度です。低い値はより詳細になりますが、メモリー使用量とスライスにかかる時間が増加します。"
+msgstr "ペイント情報に基づく複数材料の形状の精度。低い値はより詳細になりますが、メモリー使用量とスライスにかかる時間が増加します。"
 
 msgctxt "support_paint_resolution description"
 msgid "The precision of the details when generating support based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
-msgstr ""
+msgstr "ペイントデータに基づいてサポートを生成する場合の細部の精度。精度を細かくするほどより詳細になりますが、スライス時間とメモリー使用量が増加します。"
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
@@ -5438,7 +5438,7 @@ msgstr "内側のウォールをプリントする速度。外側より内側の
 
 msgctxt "speed_flooring description"
 msgid "The speed at which bottom surface skin layers are printed."
-msgstr "底面レイヤーをプリントする際の速度です。"
+msgstr "底面レイヤーをプリントする際の速度。"
 
 msgctxt "bridge_skin_speed description"
 msgid "The speed at which bridge skin regions are printed."
@@ -5454,7 +5454,7 @@ msgstr "印刷スピード。"
 
 msgctxt "skin_support_speed description"
 msgid "The speed at which skin support regions are printed."
-msgstr "表面サポート領域をプリントする際のスピードです。"
+msgstr "表面サポート領域をプリントする際の速度。"
 
 msgctxt "raft_base_speed description"
 msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
@@ -5462,11 +5462,11 @@ msgstr "ベースラフト層が印刷される速度。ノズルから出てく
 
 msgctxt "speed_wall_x_flooring description"
 msgid "The speed at which the bottom surface inner walls are printed."
-msgstr "底面内側ウォールをプリントする際の速度です。"
+msgstr "底面内側ウォールをプリントする際の速度。"
 
 msgctxt "speed_wall_0_flooring description"
 msgid "The speed at which the bottom surface outermost wall is printed."
-msgstr "底面の最も外側のウォールをプリントする際の速度です。"
+msgstr "底面の最も外側のウォールをプリントする際の速度。"
 
 msgctxt "bridge_wall_speed description"
 msgid "The speed at which the bridge walls are printed."
@@ -5562,7 +5562,7 @@ msgstr "スカートとブリムのプリント速度。通常は一層目のス
 
 msgctxt "speed_support description"
 msgid "The speed at which the support structure is printed. Printing support at higher speeds can greatly reduce printing time. The surface quality of the support structure is not important since it is removed after printing."
-msgstr "サポート材をプリントする速度です。高速でサポートをプリントすると印刷時間を大幅に短縮できます。印刷後取り除かれるため、サポート構造の品質はそれほど重要ではありません。"
+msgstr "サポート材をプリントする速度。高速でサポートをプリントすると印刷時間を大幅に短縮できます。印刷後取り除かれるため、サポート構造表面の品質はそれほど重要ではありません。"
 
 msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
@@ -5586,7 +5586,7 @@ msgstr "ウォールを印刷する速度。"
 
 msgctxt "speed_ironing description"
 msgid "The speed at which to pass over the top surface."
-msgstr "上部表面を通過する際の速度。"
+msgstr "上面を通過する際の速度。"
 
 msgctxt "material_break_speed description"
 msgid "The speed at which to retract the filament in order to break it cleanly."
@@ -5594,7 +5594,7 @@ msgstr "フィラメントをきれいに引き出すために維持すべきフ
 
 msgctxt "speed_roofing description"
 msgid "The speed at which top surface skin layers are printed."
-msgstr "上部表面プリント時の速度。"
+msgstr "上面の表面レイヤーを印刷する際の速度。"
 
 msgctxt "speed_topbottom description"
 msgid "The speed at which top/bottom layers are printed."
@@ -5614,7 +5614,7 @@ msgstr "初期レイヤーでの速度。ビルドプレートへの接着を改
 
 msgctxt "speed_print_layer_0 description"
 msgid "The speed of printing for the initial layer. A lower value is advised to improve adhesion to the build plate."
-msgstr "一層目をプリントする速度。ビルトプレートへの接着を向上するため低速を推奨します。"
+msgstr "一層目をプリントする速度。ビルドプレートへの接着を向上するため低速を推奨します。"
 
 msgctxt "speed_travel_layer_0 description"
 msgid "The speed of travel moves in the initial layer. A lower value is advised to prevent pulling previously printed parts away from the build plate. The value of this setting can automatically be calculated from the ratio between the Travel Speed and the Print Speed."
@@ -5638,7 +5638,7 @@ msgstr "印刷終了直前に冷却を開始する温度。"
 
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer."
-msgstr "最初の層を印刷するために使用される温度です。"
+msgstr "最初のレイヤーを印刷する際の温度。"
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -5686,7 +5686,7 @@ msgstr "ウォールの厚さ。この値をラインの幅で割ることによ
 
 msgctxt "support_enlarged_wall_thickness description"
 msgid "The thickness of the walls with which to surround the support infill, when adhesion with the above/below layer is very low. Using larger or extra walls in this case will improve adhesion and make the branch sturdier."
-msgstr ""
+msgstr "接着する上下のレイヤーが非常に低い場合のサポートのインフィルを囲むウォールの厚さ。この場合にウォールを大きくするか追加することで、接着が向上し枝をより丈夫にします。"
 
 msgctxt "infill_sparse_thickness description"
 msgid "The thickness per layer of infill material. This value should always be a multiple of the layer height and is otherwise rounded."
@@ -5698,7 +5698,7 @@ msgstr "サポートのインフィル材料の厚さ。この値はレイヤー
 
 msgctxt "support_wall_thickness description"
 msgid "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr ""
+msgstr "サポートインフィルを囲むウォールの厚さ。ウォールを追加するとサポートの印刷をより確実にしオーバーハングをより支えられるようになりますが、プリント時間と材料の使用量が増加します。"
 
 msgctxt "machine_buildplate_type description"
 msgid "The type of build plate installed on the printer."
@@ -5722,11 +5722,11 @@ msgstr "造形可能領域の幅（X方向）。"
 
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print inside the support, on the first layer. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "最初のレイヤーでサポートの内部に印刷するブリムの幅。より大きいブリムは、追加の材料を費やしてビルドプレートとの接着が向上します。"
 
 msgctxt "support_base_inside_width description"
 msgid "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base."
-msgstr ""
+msgstr "内側サポート土台の幅。この値を増やすことでサポートがより丈夫になります。この設定が小さ過ぎる場合、サポートはしっかりとした土台を得られません。"
 
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
@@ -5734,7 +5734,7 @@ msgstr "インターロック構造ビームの幅。"
 
 msgctxt "support_base_outside_width description"
 msgid "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "外側サポートの土台の幅。この値を増やすことで、土台が幅広くなるためサポートはより丈夫になります。この設定が小さ過ぎる場合、サポートはしっかりした土台を得られません。"
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
@@ -5746,7 +5746,7 @@ msgstr "プライムタワーの幅。"
 
 msgctxt "support_base_width description"
 msgid "The width of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "サポート土台の幅。この値を増やすことで、土台が幅広くなるためサポートはより丈夫になります。この設定が小さ過ぎると、サポートはしっかりとした土台を得られません。"
 
 msgctxt "magic_fuzzy_skin_thickness description"
 msgid "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered."
@@ -5774,23 +5774,23 @@ msgstr "ブリッジウォールが始まる直前に、エクストルーダー
 
 msgctxt "wall_0_acceleration description"
 msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
-msgstr "外側ウォールをプリントする際における最高速度に達するまでの加速度です。"
+msgstr "これは外側ウォールをプリントする際における最高速度に達するまでの加速度です。"
 
 msgctxt "wall_0_deceleration description"
 msgid "This is the deceleration with which to end printing an outer wall."
-msgstr "外側ウォールのプリントを終了する際の減速度です。"
+msgstr "これは外側ウォールのプリントを終了する際の減速度です。"
 
 msgctxt "wall_0_speed_split_distance description"
 msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
-msgstr "外側ウォールの加減速を適用するために長いパスを分割する際の造形パスの最大長です。距離が短いほど精度が上がりますが、Gコードが冗長になります。"
+msgstr "これは外側ウォールの加減速を適用するために長いパスを分割する際の造形パスの最大長です。距離が短いほど精度が上がりますが、Gコードが冗長になります。"
 
 msgctxt "wall_0_end_speed_ratio description"
 msgid "This is the ratio of the top speed to end with when printing an outer wall."
-msgstr "外側ウォールをプリントする際における終了時の最高速度の比率です。"
+msgstr "これは外側ウォールをプリントする際における終了時の最高速度の比率です。"
 
 msgctxt "wall_0_start_speed_ratio description"
 msgid "This is the ratio of the top speed to start with when printing an outer wall."
-msgstr "外側ウォールをプリントする際における開始時の最高速度の比率です。"
+msgstr "これは外側ウォールをプリントする際における開始時の最高速度の比率です。"
 
 msgctxt "raft_base_smoothing description"
 msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
@@ -5826,15 +5826,15 @@ msgstr "先端直径"
 
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
-msgstr "材料の冷却時の収縮を補正するために、モデルはXY（水平）方向にこのファクタでスケールされます。"
+msgstr "材料の冷却時の収縮を補正するために、モデルはXY軸（水平）方向にこの倍率で拡張されます。"
 
 msgctxt "material_shrinkage_percentage_z description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the Z-direction (vertically)."
-msgstr "材料の冷却時の収縮を補正するために、モデルはZ（垂直）方向にこのファクタでスケールされます。"
+msgstr "材料の冷却時の収縮を補正するために、モデルはZ軸（垂直）方向にこの倍率で拡張されます。"
 
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr "材料の冷却時の収縮を補正するために、モデルはこのスケールファクタでスケールされます。"
+msgstr "材料の冷却時の収縮を補正するために、モデルはこの倍率で拡張されます。"
 
 msgctxt "top_layers label"
 msgid "Top Layers"
@@ -5850,7 +5850,7 @@ msgstr "上面除去幅"
 
 msgctxt "roofing_expansion label"
 msgid "Top Surface Expansion"
-msgstr "表面拡張"
+msgstr "上面拡張"
 
 msgctxt "acceleration_wall_x_roofing label"
 msgid "Top Surface Inner Wall Acceleration"
@@ -5890,11 +5890,11 @@ msgstr "最上面加速度"
 
 msgctxt "roofing_extruder_nr label"
 msgid "Top Surface Skin Extruder"
-msgstr "上部表面用エクストルーダー"
+msgstr "上面表層用エクストルーダー"
 
 msgctxt "roofing_material_flow label"
 msgid "Top Surface Skin Flow"
-msgstr "上部表面スキンフロー"
+msgstr "上面表層フロー"
 
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
@@ -5902,7 +5902,7 @@ msgstr "最上面ジャーク"
 
 msgctxt "roofing_layer_count label"
 msgid "Top Surface Skin Layers"
-msgstr "上部表面レイヤー"
+msgstr "上面表層レイヤー"
 
 msgctxt "roofing_angles label"
 msgid "Top Surface Skin Line Directions"
@@ -5914,7 +5914,7 @@ msgstr "最上面のライン幅"
 
 msgctxt "roofing_pattern label"
 msgid "Top Surface Skin Pattern"
-msgstr "上部表面パターン"
+msgstr "上面表層パターン"
 
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
@@ -5974,7 +5974,7 @@ msgstr "上部/底面の厚さ"
 
 msgctxt "top_bottom_skin_merge_distance label"
 msgid "Top/Bottom/Skin Merge Distance"
-msgstr ""
+msgstr "上面・底面・表面のマージ距離"
 
 msgctxt "support_type option buildplate"
 msgid "Touching Buildplate"
@@ -6090,7 +6090,7 @@ msgstr "プリントヘッドの移動に異なるジャーク値を使用しま
 
 msgctxt "relative_extrusion description"
 msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the g-code. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any g-code script is output."
-msgstr "絶対押出ではなく、相対押出を使用します。相対Eステップを使用すると、G-codeのポストプロセッシングが容易になります。ただし、すべてのプリンタでサポートされているわけではなく、絶対的Eステップと比べて材料の量にごくわずかな偏差を生じることがあります。この設定に関係なく、G-codeスクリプトが出力される前にエクストルーダーのモードは常に絶対値にて設定されています。"
+msgstr "絶対押出ではなく、相対押出を使用します。相対Eステップを使用すると、G-codeのポストプロセッシングが容易になります。ただし、すべてのプリンターでサポートされているわけではなく、絶対的Eステップと比べて材料の量にごくわずかな偏差を生じることがあります。この設定に関係なく、G-codeスクリプトが出力される前にエクストルーダーのモードは常に絶対値で設定されます。"
 
 msgctxt "support_use_towers description"
 msgid "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof."
@@ -6114,11 +6114,11 @@ msgstr "ユーザー指定"
 
 msgctxt "material_shrinkage_percentage_z label"
 msgid "Vertical Scaling Factor Shrinkage Compensation"
-msgstr "垂直スケールファクタ収縮補正"
+msgstr "収縮補正用の垂直拡張倍率"
 
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
-msgstr "スライスされたレイヤーにおける垂直方向の公差です。レイヤーの輪郭は通常、各レイヤーの厚さの中間を通る断面で生成されます（中間）。代わりに、レイヤーごとに、ボリューム内にレイヤーの厚さの分だけ入り込んだエリアにしたり（排他）、レイヤー内の任意の位置まで入り込んだエリアにしたりする（包括）こともできます。包括は最も細かく、排他は最もフィットし、中間は元の表面に最も近くなります。"
+msgstr "スライスされたレイヤーにおける垂直方向の公差。レイヤーの輪郭は通常、各レイヤーの厚さの中間を通る断面で生成されます（中間）。代わりに、レイヤーごとに、ボリューム内にレイヤーの厚さの分だけ入り込んだエリアにしたり（排他）、レイヤー内の任意の位置まで入り込んだエリアにしたりする（包括）こともできます。包括は最も細かく、排他は最もフィットし、中間は元の表面に最も近くなります。"
 
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
@@ -6194,7 +6194,7 @@ msgstr "この角度を超えるオーバーハングとなるウォールは、
 
 msgctxt "minimum_infill_line_length description"
 msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
-msgstr ""
+msgstr "インフィル領域に生成させるラインの長さの合計がこの値より小さい場合、小さく効果がないラインを印刷しないよう切り捨てられます。これは移動距離および引き戻しや再充填を減らすのに役立ちます。"
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -6338,7 +6338,7 @@ msgstr "プリンターに加熱式ビルドプレートが付属しているか
 
 msgctxt "machine_heated_build_volume description"
 msgid "Whether the machine is able to stabilize the build volume temperature."
-msgstr "機器が造形温度を安定化処理できるかどうかです。"
+msgstr "プリンターがビルドボリュームの温度安定化に対応しているかどうか。"
 
 msgctxt "center_object description"
 msgid "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved."
@@ -6398,7 +6398,7 @@ msgstr "サポートのルーフ、フロアのライン幅。"
 
 msgctxt "flooring_line_width description"
 msgid "Width of a single line of the areas at the bottom of the print."
-msgstr "プリントの底面領域における1本のラインの幅です。"
+msgstr "プリントの底面領域における1本のラインの幅。"
 
 msgctxt "roofing_line_width description"
 msgid "Width of a single line of the areas at the top of the print."
@@ -6454,7 +6454,7 @@ msgstr "ラフトの上面の線の幅。これらは細い線で、ラフトの
 
 msgctxt "wall_line_width_0 description"
 msgid "Width of the outermost wall line. By lowering this value, higher levels of detail can be printed."
-msgstr "最も外側のウォールラインの幅。この値を下げると、より詳細な印刷できます。"
+msgstr "最も外側のウォールラインの幅。この値を下げると、より精密に印刷できます。"
 
 msgctxt "min_bead_width description"
 msgid "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself."

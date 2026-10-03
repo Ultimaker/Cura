@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2026-09-16 16:53+0000\n"
-"PO-Revision-Date: 2026-02-21 03:36+0000\n"
+"PO-Revision-Date: 2026-10-03 03:30+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -26,11 +26,11 @@ msgstr "ビルドプレートとの接着"
 
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
-msgstr ""
+msgstr "コマンドライン設定"
 
 msgctxt "material_id label"
 msgid "Cura Material ID"
-msgstr ""
+msgstr "Cura Material ID"
 
 msgctxt "material_diameter label"
 msgid "Diameter"
@@ -134,31 +134,31 @@ msgstr "材料"
 
 msgctxt "material_brand label"
 msgid "Material Brand"
-msgstr ""
+msgstr "材料のブランド"
 
 msgctxt "material_guid label"
 msgid "Material GUID"
-msgstr ""
+msgstr "材料のGUID"
 
 msgctxt "material_name label"
 msgid "Material Name"
-msgstr ""
+msgstr "材料名"
 
 msgctxt "material_spool_cost label"
 msgid "Material Spool Cost"
-msgstr ""
+msgstr "スプールあたりの材料コスト"
 
 msgctxt "material_spool_weight label"
 msgid "Material Spool Weight"
-msgstr ""
+msgstr "スプールあたりの材料の重さ"
 
 msgctxt "material_type label"
 msgid "Material Type"
-msgstr ""
+msgstr "材料の種類"
 
 msgctxt "material_density label"
 msgid "Material density"
-msgstr ""
+msgstr "材料密度"
 
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
@@ -186,7 +186,7 @@ msgstr "このエクストルーダーへの切り替え前に実行される開
 
 msgctxt "command_line_settings description"
 msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
-msgstr ""
+msgstr "CuraエンジンがCuraフロントエンドから呼び出されない場合のみ使用される設定。"
 
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
@@ -194,7 +194,7 @@ msgstr "このエクストルーダーへの切り替え時に実行される開
 
 msgctxt "material_id description"
 msgid "The ID of the material that is used internally."
-msgstr ""
+msgstr "内部で使用される材料のID。"
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
@@ -210,11 +210,11 @@ msgstr "プリント開始時における主要ノズル地点のZ座標。"
 
 msgctxt "material_type description"
 msgid "The base type of printed material, e.g. PLA or ABS."
-msgstr ""
+msgstr "ベースとなる印刷材料の種類。例: PLA, ABS"
 
 msgctxt "material_spool_cost description"
 msgid "The cost of a full spool of material."
-msgstr ""
+msgstr "スプール1本あたりの材料コスト。"
 
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
@@ -222,7 +222,7 @@ msgstr "印刷に使用するエクストルーダーの列。デュアルノズ
 
 msgctxt "material_name description"
 msgid "The fully qualified material name, e.g. 'UltiMaker PLA White'."
-msgstr ""
+msgstr "材料の正式名称。例: 'UltiMaker PLA White'"
 
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
@@ -234,7 +234,7 @@ msgstr "ノズルの内径。標準以外のノズルを使用する場合は、
 
 msgctxt "material_brand description"
 msgid "The material brand, e.g. 'UltiMaker'."
-msgstr ""
+msgstr "材料のブランド。例: 'UltiMaker'"
 
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
@@ -242,11 +242,11 @@ msgstr "\"AA 0.4\" や \"BB 0.8\" など、エクストルーダーのノズルI
 
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
-msgstr "このエクストルーダーに関連付けられているプリント冷却ファンの数です。各エクストルーダーに対して個別のプリント冷却ファンがある場合のみ、この値を既定値の0から変更してください。"
+msgstr "このエクストルーダーに関連付けられているプリント冷却ファンの数。各エクストルーダーに対して個別のプリント冷却ファンがある場合のみ、この値を既定値の0から変更してください。"
 
 msgctxt "material_density description"
 msgid "The printed material density, in g/cm3."
-msgstr ""
+msgstr "印刷された材料の密度 (g/cm3)。"
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
@@ -258,11 +258,11 @@ msgstr "このエクストルーダーに切り替えるとき、開始Gコー�
 
 msgctxt "material_guid description"
 msgid "The unique ID of the material."
-msgstr ""
+msgstr "材料を一意に識別するID。"
 
 msgctxt "material_spool_weight description"
 msgid "The weight of a full spool of material, in grams."
-msgstr ""
+msgstr "スプール1本の材料の重さ (g)。"
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
