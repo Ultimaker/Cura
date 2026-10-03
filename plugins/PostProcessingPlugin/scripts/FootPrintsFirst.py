@@ -1,15 +1,14 @@
 """
-    By GregValiant (Greg Foresi) September of 2026 (concept by:  'EdoFro')
+    By GregValiant (Greg Foresi) September of 2026 (concept by: 'EdoFro')
     ~ This script will print the ";LAYER:0's" of each model first, and then revert to One-at-a-Time print sequence.
-    ~ When using this with other scripts, this script must run before 'DisplayInfoOnLCD' of the M117 and M118 lines inserted by DisplayInfo will be incorrect.
-    ~ This script requires print_sequence == "One at a Time"
+    ~ When using this with other scripts, this script must run before 'DisplayInfoOnLCD' or the M117 and M118 lines inserted by DisplayInfo will be incorrect.
+    ~ This script requires "Print Sequence" == "One at a Time"
 """
 
 from UM.Application import Application
 from ..Script import Script
 from UM.Message import Message
 from UM.Logger import Logger
-import re
 
 class FootPrintsFirst(Script):
     def getSettingDataString(self):
@@ -33,61 +32,71 @@ class FootPrintsFirst(Script):
         # Exit if the script is not enabled
         if not self.getSettingValueByKey("footprints_first_enabled"):
             data[0] += ";  [Foot Prints First] Not enabled\n"
-            Logger.log("i", "[Foot Prints First] Not enabled")
+            Logger.info("[Foot Prints First] Not enabled")
             return data
         # Exit if the gcode has already been post-processed
         if ";POSTPROCESSED" in data[0]:
             return data
 
-        # Initialize some variables
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        extruder = global_stack.extruderList
-        self.relative_extrusion = bool(global_stack.getProperty("relative_extrusion", "value"))
-        self.one_at_a_time = True if global_stack.getProperty("print_sequence", "value") == "one_at_a_time" else False
-        self.adaptiveLayerHgt = True if bool(global_stack.getProperty("adaptive_layer_height_enabled", "value")) else False
-        self.z_hops_enabled = True if bool(extruder[0].getProperty("retraction_hop_enabled", "value")) else False
-        init_layer_height = global_stack.getProperty("layer_height_0", "value")
-        layer_height = global_stack.getProperty("layer_height", "value")
-        self.raft_enabled = True if global_stack.getProperty("adhesion_type", "value") == "raft" else False
-        speed_z_hop = int(global_stack.getProperty("speed_z_hop", "value")) * 60
-        self.speed_travel = int(extruder[0].getProperty("speed_travel", "value")) * 60
-        self.new_travel_line = ""
-        self.matl_print_temp_0 = extruder[0].getProperty("material_print_temperature_layer_0", "value")
-        self.matl_print_temp = extruder[0].getProperty("material_print_temperature", "value")
-        self.matl_bed_temp_0 = global_stack.getProperty("material_bed_temperature_layer_0", "value")
-        matl_bed_temp = global_stack.getProperty("material_bed_temperature", "value")
-        self.new_travel_list = []
+        self.global_stack = Application.getInstance().getGlobalContainerStack()
+        extruder = self.global_stack.extruderList
 
-        # A check to insure that the user knows 'FootPrintsFirst' should run before 'DisplayInfoOnLCD'
-        data = self.getPostProcessorOrder(data)
-
-        # If in Absolute Extrusion mode - enter 'G92 E' lines to insure the E is synced to the start of the layer.
-        if not self.relative_extrusion:
-            data = self.adjustELocations(data)
-
-        # If adaptive layers are enabled then the Layer:1 Height must be checked
-        layer_1_hgt = self.getRealLayer1Hgt(data)
-        self.init_layer_height_line = f"G1 F{speed_z_hop} Z{layer_1_hgt}                ; FpF Move Z"
+        # Get the Print Sequence from Cura
+        if self.global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+            one_at_a_time = True
+        else:
+            one_at_a_time = False
 
         # Exit logic: If "one at a time" is not enabled then exit the script.
-        if not self.one_at_a_time:
+        if not one_at_a_time:
             Message(title = "⚠️⚠️ [Foot Prints First] Did NOT run ⚠️⚠️", text = "Print Sequence must be set to 'One at a Time'.").show()
-            Logger.log("i", "[Foot Prints First] Did NOT run. Print Sequence must be set to 'One at a Time'.")
+            Logger.info("[Foot Prints First] Did NOT run. Print Sequence must be set to 'One at a Time'.")
             data[0] += ";  [Foot Prints First] Did not run.  Print Sequence must be 'One At A Time'.\n"
             return data
 
+        # Initialize variables
+        relative_extrusion = bool(self.global_stack.getProperty("relative_extrusion", "value"))
+        if bool(extruder[0].getProperty("retraction_hop_enabled", "value")):
+            self.z_hops_enabled = True
+        else:
+            self.z_hops_enabled = False
+
+        if self.global_stack.getProperty("adhesion_type", "value") == "raft":
+            raft_enabled = True
+        else:
+            raft_enabled = False
+
+        speed_z_hop = int(self.global_stack.getProperty("speed_z_hop", "value")) * 60
+        self.speed_travel = int(extruder[0].getProperty("speed_travel", "value")) * 60
+        matl_print_temp_0 = extruder[0].getProperty("material_print_temperature_layer_0", "value")
+        self.matl_print_temp = extruder[0].getProperty("material_print_temperature", "value")
+        matl_bed_temp_0 = self.global_stack.getProperty("material_bed_temperature_layer_0", "value")
+        matl_bed_temp = self.global_stack.getProperty("material_bed_temperature", "value")
+        self.new_travel_list = []
+
+        # A check to insure that the user knows 'FootPrintsFirst' should run before 'DisplayInfoOnLCD'
+        data = self._PostProcessorOrderWarning(data)
+
+        # If in Absolute Extrusion mode - enter 'G92 E' lines to insure the E is synced to the start of the layer.
+        if not relative_extrusion:
+            data = self._AdjustELocations(data)
+
+        # If adaptive layers are enabled then the Layer:1 Height must be checked so just do it
+        layer_1_height = self._RealLayer1Height(data)
+        self.init_layer_height_line = f"G1 F{speed_z_hop} Z{layer_1_height}                ; FpF Move Z"
+
         # Get the "from" location for the initial extrusion of each layer:0 and add them to a list.
-        data = self.getFromLocation(data)
+        data = self._ExtrudeFromLocation(data)
 
         # If rafts are enabled the travel between prints must be ortho so and intervening print doesn't get hit.
-        if self.raft_enabled:
-            data = self.orthoTravel(data)
-            
+        if raft_enabled:
+            data = self._OrthogonalTravel(data)
+
         # Strip the temperature lines.
-        data = self.stripTemperatureLines(data)
+        data = self._StripTemperatureLines(data)
 
         # Pull all the layer:0's from the gcode and concatenate them into a single layer.  This includes any Raft layers.
-        layer_0_result = self.getLayer0string(data)
+        layer_0_result = self._Layer0String(data)
         layer_0_str = layer_0_result[0]
         data = layer_0_result[1]
 
@@ -101,7 +110,7 @@ class FootPrintsFirst(Script):
                 start_now = True
 
         # Set the temps for Layer:0 to 'Initial Layer Print/Initial Layer Bed' Temps and then reset to 'Print/Bed Temps' for Layer:1
-        layer_0_list.insert(1, f"M104 S{round(self.matl_print_temp_0)}                   ; FpF Print Temp\nM140 S{round(self.matl_bed_temp_0)}                    ; FpF Bed Temp")
+        layer_0_list.insert(1, f"M104 S{round(matl_print_temp_0)}                   ; FpF Print Temp\nM140 S{round(matl_bed_temp_0)}                    ; FpF Bed Temp")
         layer_0_list.insert(len(layer_0_list)-2, f"M104 S{round(self.matl_print_temp)}                   ; FpF Print Temp\nM140 S{round(matl_bed_temp)}                    ; FpF Bed Temp")
         layer_0_str = "\n".join(layer_0_list)
 
@@ -109,16 +118,17 @@ class FootPrintsFirst(Script):
         data.insert(2, layer_0_str)
 
         # Insert an XY lateral move line and a Z height line before the start of each layer.
-        data = self.addTravelLines(data)
+        data = self._AddTravelLines(data)
 
         # Re-number the layers to fix the Cura preview
-        data = self.renumberLayers(data)
+        data = self._RenumberLayers(data)
         return data
 
-    def getFromLocation(self, alt_data):
+    def _ExtrudeFromLocation(self, alt_data):
         # The first-extrusion-of-a-layer 'From' line is before layer change and must move to still relate to their 'go to' lines after the layers are shuffled.
         prev_x = 0.0
         prev_y = 0.0
+        new_travel_line = ""
         for index, layer in enumerate(alt_data):
             if ";LAYER:0" in layer:
                 lines = alt_data[index].split("\n")
@@ -128,14 +138,15 @@ class FootPrintsFirst(Script):
                         prev_x = self.getValue(line, "X")
                         prev_y = self.getValue(line, "Y")
                         break
-                self.new_travel_line = f"G0 F{self.speed_travel} X{prev_x} Y{prev_y} ; FpF Travel"
-                self.new_travel_list.append(self.new_travel_line)
+                new_travel_line = f"G0 F{self.speed_travel} X{prev_x} Y{prev_y} ; FpF Travel"
+                self.new_travel_list.append(new_travel_line)
         return alt_data
 
-    def adjustELocations(self, alt_data):
+    def _AdjustELocations(self, alt_data):
         # This accounts for the shuffling of the Initial Layer E values when in Absolute Extrusion mode.
+        # Pad the list so the e_list indices match the layers in data
         e_list = ["G92 E0", "G92 E0", "G92 E0"]
-        cur_e = "G92 E0"
+        cur_e_string = "G92 E0"
         for index, layer in enumerate(alt_data):
             if index < 2:
                 continue
@@ -143,8 +154,9 @@ class FootPrintsFirst(Script):
             for line in lines:
                 if line.startswith("G1 ") and " E" in line:
                     if self.getValue(line, "E") is not None:
-                        cur_e = f"G92 E{self.getValue(line, "E")}               ; FpF Set E"
-            e_list.append(cur_e)
+                        cur_e_value = self.getValue(line, "E")
+                        cur_e_string = f"G92 E{cur_e_value}               ; FpF Set E"
+            e_list.append(cur_e_string)
         for index, layer in enumerate(alt_data):
             if index < 2:
                 continue
@@ -156,14 +168,13 @@ class FootPrintsFirst(Script):
                 alt_data[index] = "\n".join(lines)
         return alt_data
 
-    def stripTemperatureLines(self, alt_data):
+    def _StripTemperatureLines(self, alt_data):
         # The 'initial layer' has been modified so the 'Init Bed' temps and 'Init Print' temps need to be reinserted.
         indices_to_delete = []
         for index, layer in enumerate(alt_data):
             if index < 2 or index >= len(alt_data)-1:
                 continue
             lines = layer.split("\n")
-            back_sp = 0
             for ldex, line in enumerate(lines):
                 try:
                     if lines[ldex].startswith("M104 S") or lines[ldex].startswith("M140"):
@@ -180,7 +191,7 @@ class FootPrintsFirst(Script):
             alt_data[index] = "\n".join(lines)
         return alt_data
 
-    def renumberLayers(self, alt_data):
+    def _RenumberLayers(self, alt_data):
         # Renumber so the Cura preview is correct when the Gcode is opened
         consecutive_lay_num = 0
         for num, layer in enumerate(alt_data):
@@ -192,7 +203,7 @@ class FootPrintsFirst(Script):
             alt_data[num] = "\n".join(lines)
         return alt_data
 
-    def addTravelLines(self, alt_data):
+    def _AddTravelLines(self, alt_data):
         # Insert the lateral move line and the vertical move line before the start of each layer:1
         count = 0
         for num, layer in enumerate(alt_data):
@@ -203,7 +214,7 @@ class FootPrintsFirst(Script):
                 alt_data[num-1] = "\n".join(lines)
         return alt_data
 
-    def getLayer0string(self, alt_data):
+    def _Layer0String(self, alt_data):
         # Pull any raft layers and the layer:0's and morph them into a single layer ala 'All at Once'.
         layer_0_str = ""
         layer_0_index_list = []
@@ -219,25 +230,26 @@ class FootPrintsFirst(Script):
             del alt_data[i]
         return layer_0_str, alt_data
 
-    def getRealLayer1Hgt(self, alt_data):
-        # This accounts for Adaptive Layers
+    def _RealLayer1Height(self, alt_data):
+        # This accounts for the Layer:1 height whether or not Adaptive Layers is enabled
+        layer_1_height = self.global_stack.getProperty("layer_height", "value") + self.global_stack.getProperty("layer_height_0", "value")
         for index, layer in enumerate(alt_data):
             if not self.z_hops_enabled:
                 if ";LAYER:0" in layer:
                     lines = layer.split("\n")
                     for line in lines:
                         if " Z" in line:
-                            layer_1_hgt = self.getValue(line, "Z")
+                            layer_1_height = self.getValue(line, "Z")
             else:
                 if ";LAYER:1\n" in layer:
                         lines = layer.split("\n")
                         for line in lines:
                             if " Z" in line:
-                                layer_1_hgt = self.getValue(line, "Z")
+                                layer_1_height = self.getValue(line, "Z")
                                 break
-        return layer_1_hgt
+        return layer_1_height
 
-    def getPostProcessorOrder(self, alt_data):
+    def _PostProcessorOrderWarning(self, alt_data):
         # It won't hurt anything but FootPrintsFirst really needs to run before DisplayInfoOnLCD.  This puts up a reminder message for the user.
         pp_data = ""
         scripts_list = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("post_processing_scripts")
@@ -252,19 +264,22 @@ class FootPrintsFirst(Script):
                     display_info_index = index
                 if "[FootPrintsFirst]" in post_proc:
                     footprintsfirst_index = index
+                if "add_filament_use = True" in post_proc:
+                    Message(title = "⚠️[Foot Prints First]⚠️", text = "Is not compatible with Display Info on LCD 'Filament Usage' and could be negative filament use values reported to a print server.").show()
         except:
             IndexError, ValueError
         if display_info_index < footprintsfirst_index:
             Message(title = "⚠️[FootprintsFirst]", text = "'FootprintsFirst' should run BEFORE 'DisplayInfoOnLCD' to insure the layer numbers turn out correct.").show()
         return alt_data
-        
-    def orthoTravel(self, alt_data):
+
+    def _OrthogonalTravel(self, alt_data):
+        # If rafts are enabled it is possible that there could be one in the way of the nozzle so any Z move must be last.
         for index, layer in enumerate(alt_data):
             lines = layer.split("\n")
             for ddex, line in enumerate(lines):
                 if line.startswith("G0 ") and " X" in line and " Y" in line and " Z" in line:
                     xy_move = line.split(" Z")[0]
-                    z_move = line.split(" Z")[1]
+                    z_move = line.split(" Z")[1].split()[0]
                     lines[ddex] = f"{xy_move}          ; FpF XY Ortho\nG0 Z{z_move}                     ; FpF Z Ortho"
                     break
             alt_data[index] = "\n".join(lines)
