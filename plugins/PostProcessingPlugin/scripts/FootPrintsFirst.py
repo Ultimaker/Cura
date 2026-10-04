@@ -181,8 +181,8 @@ class FootPrintsFirst(Script):
                         indices_to_delete.append(ldex)
                     if ";LAYER_COUNT:" in line:
                         lines[ldex] = f"M104 S{round(self.matl_print_temp)}                   ; FpF Print Temp\n" + line
-                except:
-                    IndexError
+                except IndexError:
+                    Logger.warning(f"[Foot Prints First] IndexError while stripping temperature line at index {ldex}")
             # Step backwards through the list and delete the temperature lines to avoid skips
             if indices_to_delete != []:
                 for ddex in sorted(indices_to_delete, reverse=True):
