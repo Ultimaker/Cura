@@ -103,11 +103,15 @@ class FootPrintsFirst(Script):
         # Skip the first LAYER:0 line and then remove any other Layer:0 lines from the new layer 0.
         start_now = False
         layer_0_list = layer_0_str.split("\n")
+        indices_to_delete = []
         for ldex, line in enumerate(layer_0_list):
             if (";LAYER:0" in line or ";LAYER:-" in line) and start_now:
-                layer_0_list.pop(ldex)
+                indices_to_delete.append(ldex)
             if ";LAYER:0" in line or ";LAYER:-" in line:
                 start_now = True
+        # Step backwards through the list and delete so earlier indices aren't shifted out from under us.
+        for ldex in sorted(indices_to_delete, reverse=True):
+            layer_0_list.pop(ldex)
 
         # Set the temps for Layer:0 to 'Initial Layer Print/Initial Layer Bed' Temps and then reset to 'Print/Bed Temps' for Layer:1
         layer_0_list.insert(1, f"M104 S{round(matl_print_temp_0)}                   ; FpF Print Temp\nM140 S{round(matl_bed_temp_0)}                    ; FpF Bed Temp")
