@@ -266,8 +266,8 @@ class FootPrintsFirst(Script):
                     footprintsfirst_index = index
                 if "add_filament_use = True" in post_proc:
                     Message(title = "⚠️[Foot Prints First]⚠️", text = "Is not compatible with Display Info on LCD 'Filament Usage' and could be negative filament use values reported to a print server.").show()
-        except:
-            IndexError, ValueError
+        except (IndexError, ValueError):
+            Logger.warning("[Foot Prints First] Error parsing post_processing_scripts metadata for order check")
         if display_info_index < footprintsfirst_index:
             Message(title = "⚠️[FootprintsFirst]", text = "'FootprintsFirst' should run BEFORE 'DisplayInfoOnLCD' to insure the layer numbers turn out correct.").show()
         return alt_data
