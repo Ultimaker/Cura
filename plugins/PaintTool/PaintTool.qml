@@ -208,37 +208,43 @@ Item
             }
         }
 
-        UM.TooltipArea
+        Column
         {
-            width: childrenRect.width
-            height: childrenRect.height
-            text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@tooltip", "Select neighboring faces whose angle differs by no more than this value.") : catalog.i18nc("@tooltip", "Select the size of the brush for painting.")
-
-            UM.Label
-            {
-                text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@label", "Angle Threshold") : catalog.i18nc("@label", "Brush Size")
-            }
-        }
-
-        UM.Slider
-        {
-            id: shapeSizeSlider
             width: parent.width
-            stepSize: 1
-            indicatorVisible: isFaceAngle
-            tooltipUnit: isFaceAngle ? "°" : ""
+            spacing: shapeSizeSlider.isFaceAngle ? UM.Theme.getSize("wide_margin").height : UM.Theme.getSize("default_margin").height
 
-            readonly property bool isFaceAngle: UM.Controller.properties.getValue("BrushShape") === Cura.PaintToolBrush.FACE
-
-            from: isFaceAngle ? 0 : 1
-            to: isFaceAngle ? 90 : 100
-            value: UM.Controller.properties.getValue(isFaceAngle ? "FaceAngle" : "BrushSize")
-
-            onPressedChanged: function(pressed)
+            UM.TooltipArea
             {
-                if(! pressed)
+                width: childrenRect.width
+                height: childrenRect.height
+                text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@tooltip", "Select neighboring faces whose angle differs by no more than this value.") : catalog.i18nc("@tooltip", "Select the size of the brush for painting.")
+
+                UM.Label
                 {
-                    UM.Controller.setProperty(isFaceAngle ? "FaceAngle" : "BrushSize", shapeSizeSlider.value);
+                    text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@label", "Angle Threshold") : catalog.i18nc("@label", "Brush Size")
+                }
+            }
+
+            UM.Slider
+            {
+                id: shapeSizeSlider
+                width: parent.width
+                stepSize: 1
+                indicatorVisible: isFaceAngle
+                tooltipUnit: isFaceAngle ? "°" : ""
+
+                readonly property bool isFaceAngle: UM.Controller.properties.getValue("BrushShape") === Cura.PaintToolBrush.FACE
+
+                from: isFaceAngle ? 0 : 1
+                to: isFaceAngle ? 90 : 100
+                value: UM.Controller.properties.getValue(isFaceAngle ? "FaceAngle" : "BrushSize")
+
+                onPressedChanged: function (pressed)
+                {
+                    if (!pressed)
+                    {
+                        UM.Controller.setProperty(isFaceAngle ? "FaceAngle" : "BrushSize", shapeSizeSlider.value);
+                    }
                 }
             }
         }
