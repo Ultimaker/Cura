@@ -30,13 +30,6 @@ Item
 
     property string extruderStackId: ""
     property int extruderPosition: 0
-    property var forceUpdateFunction: manager.forceUpdate
-
-    function updateMaterialDiameter()
-    {
-        manager.updateMaterialForDiameter(extruderPosition)
-    }
-
     Item
     {
         id: upperBlock
@@ -67,6 +60,7 @@ Item
             Cura.NumericTextFieldWithUnit  // "Nozzle size"
             {
                 id: extruderNozzleSizeField
+                draftManager: manager
                 visible: !Cura.MachineManager.activeMachine.hasVariants
                 containerStackId: base.extruderStackId
                 settingKey: "machine_nozzle_size"
@@ -76,12 +70,12 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             Cura.NumericTextFieldWithUnit  // "Compatible material diameter"
             {
                 id: extruderCompatibleMaterialDiameterField
+                draftManager: manager
                 containerStackId: base.extruderStackId
                 settingKey: "material_diameter"
                 settingStoreIndex: propertyStoreIndex
@@ -90,14 +84,12 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
-                forceUpdateOnChangeFunction: forceUpdateFunction
-                // Other modules won't automatically respond after the user changes the value, so we need to force it.
-                afterOnEditingFinishedFunction: updateMaterialDiameter
             }
 
             Cura.NumericTextFieldWithUnit  // "Nozzle offset X"
             {
                 id: extruderNozzleOffsetXField
+                draftManager: manager
                 containerStackId: base.extruderStackId
                 settingKey: "machine_nozzle_offset_x"
                 settingStoreIndex: propertyStoreIndex
@@ -107,12 +99,12 @@ Item
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
                 minimum: Number.NEGATIVE_INFINITY
-                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             Cura.NumericTextFieldWithUnit  // "Nozzle offset Y"
             {
                 id: extruderNozzleOffsetYField
+                draftManager: manager
                 containerStackId: base.extruderStackId
                 settingKey: "machine_nozzle_offset_y"
                 settingStoreIndex: propertyStoreIndex
@@ -122,12 +114,12 @@ Item
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
                 minimum: Number.NEGATIVE_INFINITY
-                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             Cura.NumericTextFieldWithUnit  // "Cooling Fan Number"
             {
                 id: extruderNozzleCoolingFanNumberField
+                draftManager: manager
                 containerStackId: base.extruderStackId
                 settingKey: "machine_extruder_cooling_fan_number"
                 settingStoreIndex: propertyStoreIndex
@@ -137,7 +129,6 @@ Item
                 controlWidth: base.controlWidth
                 unitText: ""
                 decimals: 0
-                forceUpdateOnChangeFunction: forceUpdateFunction
             }
         }
 
@@ -162,6 +153,7 @@ Item
             Cura.NumericTextFieldWithUnit
             {
                 id: extruderChangeDurationFieldId
+                draftManager: manager
                 containerStackId: base.extruderStackId
                 settingKey: "machine_extruder_change_duration"
                 settingStoreIndex: propertyStoreIndex
@@ -170,12 +162,12 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "s")
-                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             Cura.NumericTextFieldWithUnit
             {
                 id: extruderStartCodeDurationFieldId
+                draftManager: manager
                 containerStackId: base.extruderStackId
                 settingKey: "machine_extruder_start_code_duration"
                 settingStoreIndex: propertyStoreIndex
@@ -184,12 +176,12 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "s")
-                forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
             Cura.NumericTextFieldWithUnit
             {
                 id: extruderEndCodeDurationFieldId
+                draftManager: manager
                 containerStackId: base.extruderStackId
                 settingKey: "machine_extruder_end_code_duration"
                 settingStoreIndex: propertyStoreIndex
@@ -198,7 +190,6 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "s")
-                forceUpdateOnChangeFunction: forceUpdateFunction
             }
         }
     }
@@ -233,6 +224,7 @@ Item
                 labelText: catalog.i18nc("@title:label", "Extruder Prestart G-code")
                 containerStackId: base.extruderStackId
                 settingKey: "machine_extruder_prestart_code"
+                draftManager: manager
                 settingStoreIndex: propertyStoreIndex
             }
 
@@ -246,6 +238,7 @@ Item
                 labelText: catalog.i18nc("@title:label", "Extruder Start G-code")
                 containerStackId: base.extruderStackId
                 settingKey: "machine_extruder_start_code"
+                draftManager: manager
                 settingStoreIndex: propertyStoreIndex
             }
         }
@@ -261,6 +254,7 @@ Item
             labelText: catalog.i18nc("@title:label", "Extruder End G-code")
             containerStackId: base.extruderStackId
             settingKey: "machine_extruder_end_code"
+            draftManager: manager
             settingStoreIndex: propertyStoreIndex
         }
 
