@@ -51,18 +51,10 @@ NumericTextFieldWithUnit
 
     valueText: axisValue
 
-    Connections
+    // When the entered text is not valid, recreate the binding to show the correct value.
+    discardEditFunction: function()
     {
-        target: textField
-        function onActiveFocusChanged()
-        {
-            // When this text field loses focus and the entered text is not valid, make sure to recreate the binding to
-            // show the correct value.
-            if (!textField.activeFocus && !textField.acceptableInput)
-            {
-                valueText = Qt.binding(function() { return printerHeadMinMaxField.axisValue })
-            }
-        }
+        valueText = Qt.binding(function() { return printerHeadMinMaxField.axisValue })
     }
 
     editingFinishedFunction: function()
