@@ -116,11 +116,10 @@ UM.ManagementPage
                 {
                     if (!visible)
                     {
-                        // Commit the value of whichever single field currently has focus,
-                        // without triggering it for every field on the page.
-                        if (activeFocusItem && typeof activeFocusItem.editingFinishedFunction === "function")
+                        // Title-bar close skips focus-out; release focus so the field commits via its validated editingFinished.
+                        if (activeFocusItem)
                         {
-                            activeFocusItem.editingFinishedFunction()
+                            activeFocusItem.focus = false
                         }
                         destroy()
                     }
