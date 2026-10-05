@@ -79,14 +79,12 @@ class LayerPolygon:
         # re-used and can save a lot of memory usage.
         self._color_map = LayerPolygon.getColorMap()
 
-        # Give every segment an explicit "no attribute" entry when the caller (the g-code reader) passes no print attributes.
-        if print_attributes is None:
-            print_attributes = [PrintSegmentAttributes.NoAttribute] * len(self._types)
+        segment_count = len(self._types) if print_attributes is None else min(len(self._types), len(print_attributes))
 
         raw_colors = []
-        for idx in range(min(len(self._types), len(print_attributes))):
+        for idx in range(segment_count):
             line_type = self._types[idx][0]
-            line_attributes = print_attributes[idx]
+            line_attributes = PrintSegmentAttributes.NoAttribute if print_attributes is None else print_attributes[idx]
             color_index = 0
             if line_type == LayerPolygon.Inset0Type or line_type == LayerPolygon.InsetXType:
                 if PrintSegmentAttributes.Bridging in line_attributes:
