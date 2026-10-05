@@ -51,6 +51,23 @@ UM.TooltipArea
     property var afterOnEditingFinishedFunction: dummy_func
     property var forceUpdateOnChangeFunction: dummy_func
     property var setValueFunction: null
+    property var discardEditFunction: dummy_func
+
+    // When set to a MachineSettingsAction, edits are staged in it instead of written to the stack.
+    property var draftManager: null
+
+    property var displayedValue:
+    {
+        if (draftManager)
+        {
+            const revision = draftManager.pendingRevision  // Read so that this updates when the staged edits change.
+            if (draftManager.hasPendingValue(containerStackId, settingKey))
+            {
+                return draftManager.pendingValue(containerStackId, settingKey)
+            }
+        }
+        return propertyProvider.properties.value
+    }
 
     // a dummy function for default property values
     function dummy_func() {}
@@ -68,6 +85,7 @@ UM.TooltipArea
         anchors.left: parent.left
         anchors.verticalCenter: textFieldWithUnit.verticalCenter
         visible: text != ""
+        elide: Text.ElideRight
     }
 
     TextField
@@ -158,11 +176,17 @@ UM.TooltipArea
             {
                 selectAll()
             }
+            else if (!activeFocus && hasUncommittedEdit)
+            {
+                // editingFinished already committed valid input, so what is left was rejected by the validator.
+                hasUncommittedEdit = false
+                discardEditFunction()
+            }
         }
 
         text:
         {
-            const value = propertyProvider.properties.value
+            const value = numericTextFieldWithUnit.displayedValue
             return value ? value : ""
         }
         property string validatorString:
@@ -199,14 +223,38 @@ UM.TooltipArea
             previousText = text;
         }
 
-        onEditingFinished: editingFinishedFunction()
+        // Qt emits editingFinished on every Return and focus loss, so only commit once per user edit.
+        property bool hasUncommittedEdit: false
+        onTextEdited: hasUncommittedEdit = true
 
-        Component.onDestruction: editingFinishedFunction()
+        onEditingFinished:
+        {
+            if (hasUncommittedEdit)
+            {
+                hasUncommittedEdit = false
+                editingFinishedFunction()
+            }
+        }
 
         property var editingFinishedFunction: defaultEditingFinishedFunction
 
         function defaultEditingFinishedFunction()
         {
+            if (numericTextFieldWithUnit.draftManager)
+            {
+                if (text.trim() != "")
+                {
+                    numericTextFieldWithUnit.draftManager.setPendingValue(numericTextFieldWithUnit.containerStackId, numericTextFieldWithUnit.settingKey, text)
+                }
+                // Show the staged value again, also when the entered text was not usable.
+                text = Qt.binding(function()
+                {
+                    const value = numericTextFieldWithUnit.displayedValue
+                    return value ? value : ""
+                })
+                return
+            }
+
             if (propertyProvider && text != propertyProvider.properties.value)
             {
                 // For some properties like the extruder-compatible material diameter, they need to

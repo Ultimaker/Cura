@@ -83,6 +83,10 @@ UM.ManagementPage
                                     "loader.manager": currentItem,
                                     "loader.source": currentItem.qmlPath
                                 });
+                            if (actionDialog.loader.item)
+                            {
+                                actionDialog.loader.item.dialog = actionDialog
+                            }
                             actionDialog.show()
                         }
                         else
@@ -109,6 +113,7 @@ UM.ManagementPage
                 maximumWidth: minimumWidth * 3
                 maximumHeight: minimumHeight * 3
                 backgroundColor: UM.Theme.getColor("main_background")
+
                 selfDestroy: true
             }
         }

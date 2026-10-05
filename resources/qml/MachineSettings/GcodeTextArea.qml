@@ -25,6 +25,22 @@ Item
     property alias labelText: titleLabel.text
     property alias labelFont: titleLabel.font
 
+    // When set to a MachineSettingsAction, the text is staged in it instead of written to the stack.
+    property var draftManager: null
+
+    property var displayedValue:
+    {
+        if (draftManager)
+        {
+            const revision = draftManager.pendingRevision  // Read so that this updates when the staged edits change.
+            if (draftManager.hasPendingValue(containerStackId, settingKey))
+            {
+                return draftManager.pendingValue(containerStackId, settingKey)
+            }
+        }
+        return propertyProvider.properties.value
+    }
+
     UM.SettingPropertyProvider
     {
         id: propertyProvider
@@ -60,7 +76,7 @@ Item
             hoverEnabled: true
             selectByMouse: true
 
-            text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
+            text: (control.displayedValue) ? control.displayedValue : ""
             font: UM.Theme.getFont("fixed")
             renderType: Text.NativeRendering
             color: UM.Theme.getColor("text")
@@ -69,17 +85,20 @@ Item
             wrapMode: TextEdit.NoWrap
             padding: UM.Theme.getSize("narrow_margin").height + backgroundRectangle.border.width
 
-            onActiveFocusChanged:
+            onEditingFinished:
             {
-                if (!activeFocus)
+                var currentValue = control.displayedValue ? control.displayedValue : ""
+                if (currentValue !== text)
                 {
-                    propertyProvider.setPropertyValue("value", text)
+                    if (control.draftManager)
+                    {
+                        control.draftManager.setPendingValue(control.containerStackId, control.settingKey, text)
+                    }
+                    else
+                    {
+                        propertyProvider.setPropertyValue("value", text)
+                    }
                 }
-            }
-
-            Component.onDestruction:
-            {
-                propertyProvider.setPropertyValue("value", text)
             }
 
             background: Rectangle
