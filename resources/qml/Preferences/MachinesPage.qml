@@ -83,6 +83,10 @@ UM.ManagementPage
                                     "loader.manager": currentItem,
                                     "loader.source": currentItem.qmlPath
                                 });
+                            if (actionDialog.loader.item)
+                            {
+                                actionDialog.loader.item.dialog = actionDialog
+                            }
                             actionDialog.show()
                         }
                         else
@@ -110,20 +114,7 @@ UM.ManagementPage
                 maximumHeight: minimumHeight * 3
                 backgroundColor: UM.Theme.getColor("main_background")
 
-                // Do not use selfDestroy so we can commit any active edit first.
-                selfDestroy: false
-                onVisibleChanged:
-                {
-                    if (!visible)
-                    {
-                        // Title-bar close skips focus-out; release focus so the field commits via its validated editingFinished.
-                        if (activeFocusItem)
-                        {
-                            activeFocusItem.focus = false
-                        }
-                        destroy()
-                    }
-                }
+                selfDestroy: true
             }
         }
 
