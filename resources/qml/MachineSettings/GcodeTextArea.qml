@@ -69,15 +69,7 @@ Item
             wrapMode: TextEdit.NoWrap
             padding: UM.Theme.getSize("narrow_margin").height + backgroundRectangle.border.width
 
-            onActiveFocusChanged:
-            {
-                if (!activeFocus)
-                {
-                    propertyProvider.setPropertyValue("value", text)
-                }
-            }
-
-            Component.onDestruction:
+            onEditingFinished:
             {
                 var currentValue = propertyProvider.properties.value ? propertyProvider.properties.value : ""
                 if (currentValue !== text)
