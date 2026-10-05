@@ -2510,7 +2510,7 @@
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "default_value": 15,
-                    "value": "bridge_skin_speed if (bridge_settings_enabled) else (infill_speed / 2)",
+                    "value": "bridge_skin_speed if (bridge_settings_enabled) else (speed_infill / 2)",
                     "enabled": "skin_support",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
