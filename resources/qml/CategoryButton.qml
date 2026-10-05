@@ -22,12 +22,18 @@ Button
 
     property var expanded: false
     property bool indented: false
+    // When false, hides the collapse/expand chevron. Used for non-collapsible headers.
+    property bool showArrow: true
+    // When false, disables hover/press/focus visuals and keyboard focus. Used for non-collapsible headers.
+    property bool interactive: true
     property alias arrow: categoryArrow
     property alias categoryIcon: icon.source
     property alias labelText: categoryLabel.text
     property alias labelFont: categoryLabel.font
     leftPadding: UM.Theme.getSize("narrow_margin").width
     rightPadding: UM.Theme.getSize("narrow_margin").width
+    hoverEnabled: base.interactive
+    focusPolicy: base.interactive ? Qt.StrongFocus : Qt.NoFocus
     states:
     [
         State
@@ -41,7 +47,7 @@ Button
         State
         {
             name: "hovered"
-            when: base.hovered
+            when: base.interactive && base.hovered
             PropertyChanges { target: categoryLabel; color: UM.Theme.getColor("setting_category_active_text") }
             PropertyChanges { target: icon; color: UM.Theme.getColor("setting_category_active_text") }
             PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_category_hover") }
@@ -49,7 +55,7 @@ Button
         State
         {
             name: "active"
-            when: base.pressed || base.activeFocus
+            when: base.interactive && (base.pressed || base.activeFocus)
             PropertyChanges { target: categoryLabel; color: UM.Theme.getColor("setting_category_active_text") }
             PropertyChanges { target: icon; color: UM.Theme.getColor("setting_category_active_text") }
             PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_category") }
@@ -108,7 +114,8 @@ Button
         {
             id: categoryArrow
             anchors.right: parent.right
-            width: UM.Theme.getSize("standard_arrow").width
+            visible: base.showArrow
+            width: visible ? UM.Theme.getSize("standard_arrow").width : 0
             height: UM.Theme.getSize("standard_arrow").height
             anchors.verticalCenter: parent.verticalCenter
             color: UM.Theme.getColor("setting_control_button")
