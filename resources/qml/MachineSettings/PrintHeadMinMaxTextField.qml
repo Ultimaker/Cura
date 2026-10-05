@@ -35,10 +35,10 @@ NumericTextFieldWithUnit
     property string axisMinOrMax: "min"
     property var axisValue:
     {
-        if(propertyProvider.properties.value === undefined) { //PropertyProvider not initialised yet or there is no global stack.
+        if(displayedValue === undefined) { //PropertyProvider not initialised yet or there is no global stack.
             return 0;
         }
-        var polygon = JSON.parse(propertyProvider.properties.value);
+        var polygon = JSON.parse(displayedValue);
         var item = (axisName == "x") ? 0 : 1;
         var result = polygon[0][item];
         var func = (axisMinOrMax == "min") ? Math.min : Math.max;
@@ -62,7 +62,7 @@ NumericTextFieldWithUnit
         var newValue = parseFloat(valueText.replace(',', '.'))
         if (newValue != axisValue)
         {
-            var polygon = JSON.parse(propertyProvider.properties.value)
+            var polygon = JSON.parse(displayedValue)
 
             if (axisName == "x")  // x min/x max
             {
@@ -77,7 +77,11 @@ NumericTextFieldWithUnit
                 polygon[start_i1 + 2][1] = newValue
             }
             var polygon_string = JSON.stringify(polygon)
-            if (polygon_string != propertyProvider.properties.value)
+            if (draftManager)
+            {
+                draftManager.setPendingValue(containerStackId, settingKey, polygon_string)
+            }
+            else if (polygon_string != propertyProvider.properties.value)
             {
                 propertyProvider.setPropertyValue("value", polygon_string)
                 forceUpdateOnChangeFunction()
