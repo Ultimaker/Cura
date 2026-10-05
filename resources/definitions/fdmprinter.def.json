@@ -2564,7 +2564,7 @@
                     "label": "Interlace Skin Support Lines",
                     "description": "When enabled, skin support lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added.",
                     "default_value": false,
-                    "value": "bridge_interlace_lines if (bridge_settings_enabled) else false",
+                    "value": "bridge_interlace_lines if (bridge_settings_enabled) else False",
                     "type": "bool",
                     "enabled": "skin_support",
                     "settable_per_mesh": true,
