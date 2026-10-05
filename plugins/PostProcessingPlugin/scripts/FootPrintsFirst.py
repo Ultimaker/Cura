@@ -261,7 +261,8 @@ class FootPrintsFirst(Script):
             script_str = script_str.replace(r"\\\n", "\n;  ").replace("\n;  \n;  ", "\n")
             pp_data += str(script_str)
         pp_list = pp_data.split("\n")
-        display_info_index = len(pp_list)
+        display_info_index = len(pp_list)        
+        footprintsfirst_index = -1
         try:
             for index, post_proc in enumerate(pp_list):
                 if "[DisplayInfoOnLCD]" in post_proc:
