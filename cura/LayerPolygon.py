@@ -40,7 +40,7 @@ class LayerPolygon:
 
     def __init__(self, extruder: int, line_types: numpy.ndarray, data: numpy.ndarray,
                  line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray,
-                 print_attributes: List["PrintSegmentAttributes"]) -> None:
+                 print_attributes: Optional[List["PrintSegmentAttributes"]] = None) -> None:
         """LayerPolygon, used in ProcessSlicedLayersJob
 
         :param extruder: The position of the extruder
@@ -49,7 +49,7 @@ class LayerPolygon:
         :param line_widths: array with line widths
         :param line_thicknesses: array with type as index and thickness as value
         :param line_feedrates: array with line feedrates
-        :parm print_attributes: array with the print attributes of each segment, e.g. overhanging or bridging
+        :param print_attributes: array with the print attributes of each segment, e.g. overhanging or bridging. If not set, no segment has any attribute.
         """
 
         self._extruder = extruder
@@ -78,6 +78,10 @@ class LayerPolygon:
         # Buffering the colors shouldn't be necessary as it is not
         # re-used and can save a lot of memory usage.
         self._color_map = LayerPolygon.getColorMap()
+
+        # Give every segment an explicit "no attribute" entry when the caller (the g-code reader) passes no print attributes.
+        if print_attributes is None:
+            print_attributes = [PrintSegmentAttributes.NoAttribute] * len(self._types)
 
         raw_colors = []
         for idx in range(min(len(self._types), len(print_attributes))):
