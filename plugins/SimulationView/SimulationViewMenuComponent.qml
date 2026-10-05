@@ -285,6 +285,60 @@ Cura.ExpandableComponent
                         }
                     ];
 
+                    const shellTypesModel = [
+                        {
+                            label: catalog.i18nc("@label", "Outer wall"),
+                            colorId: "layerview_inset_0"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Outer wall - Overhanging"),
+                            colorId: "layerview_inset_0_overhang"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Outer wall - Bridging"),
+                            colorId: "layerview_inset_0_bridge"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Inner wall"),
+                            colorId: "layerview_inset_x"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Inner wall - Overhanging"),
+                            colorId: "layerview_inset_x_overhang"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Inner wall - Bridging"),
+                            colorId: "layerview_inset_x_bridge"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Top / Bottom"),
+                            colorId: "layerview_skin"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Top / Bottom - Bridging"),
+                            colorId: "layerview_skin_bridge"
+                        }
+                    ]
+
+                    const helpersTypesModel = [
+                        {
+                            label: catalog.i18nc("@label", "Support"),
+                            colorId: "layerview_support"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Support interface"),
+                            colorId: "layerview_support_interface"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Skirt / Brim"),
+                            colorId: "layerview_skirt"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Prime tower"),
+                            colorId: "layerview_prime_tower"
+                        }
+                    ];
+
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Travels"),
                         initialValue: viewSettings.show_travel_moves,
@@ -297,14 +351,14 @@ Cura.ExpandableComponent
                         initialValue: viewSettings.show_helpers,
                         preference: "layerview/show_helpers",
                         colorId:  "layerview_support",
-                        subTypesModel: []
+                        subTypesModel: helpersTypesModel
                     });
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Shell"),
                         initialValue: viewSettings.show_skin,
                         preference: "layerview/show_skin",
                         colorId:  "layerview_inset_0",
-                        subTypesModel: []
+                        subTypesModel: shellTypesModel
                     });
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Infill"),
@@ -429,49 +483,6 @@ Cura.ExpandableComponent
             text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
             width: parent.width
             visible: UM.SimulationView.compatibilityMode
-        }
-
-        Repeater
-        {
-            model: ListModel
-            {
-                id: typesLegendModelNoCheck
-                Component.onCompleted:
-                {
-                    typesLegendModelNoCheck.append({
-                        label: catalog.i18nc("@label", "Top / Bottom"),
-                        colorId: "layerview_skin",
-                    });
-                    typesLegendModelNoCheck.append({
-                        label: catalog.i18nc("@label", "Inner Wall"),
-                        colorId: "layerview_inset_x",
-                    });
-                }
-            }
-
-            UM.Label
-            {
-                text: label
-                visible: viewSettings.show_legend
-                id: typesLegendModelLabel
-
-                height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
-                width: parent.width
-                color: UM.Theme.getColor("setting_control_text")
-                Rectangle
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: typesLegendModelLabel.right
-
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-
-                    color: UM.Theme.getColor(model.colorId)
-
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                }
-            }
         }
 
         // Text for the minimum, maximum and units for the feedrates and layer thickness
