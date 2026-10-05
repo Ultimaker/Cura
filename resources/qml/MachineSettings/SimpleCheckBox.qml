@@ -37,6 +37,22 @@ UM.TooltipArea
     // callback functions
     property var forceUpdateOnChangeFunction: dummy_func
 
+    // When set to a MachineSettingsAction, the value is staged in it instead of written to the stack.
+    property var draftManager: null
+
+    property var displayedValue:
+    {
+        if (draftManager)
+        {
+            const revision = draftManager.pendingRevision  // Read so that this updates when the staged edits change.
+            if (draftManager.hasPendingValue(containerStackId, settingKey))
+            {
+                return draftManager.pendingValue(containerStackId, settingKey)
+            }
+        }
+        return propertyProvider.properties.value
+    }
+
     // a dummy function for default property values
     function dummy_func() {}
 
@@ -63,11 +79,16 @@ UM.TooltipArea
             leftMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
-        checked: String(propertyProvider.properties.value).toLowerCase() != 'false'
+        checked: String(simpleCheckBox.displayedValue).toLowerCase() != 'false'
         height: UM.Theme.getSize("checkbox").height
         text: ""
         onClicked:
         {
+            if (draftManager)
+            {
+                draftManager.setPendingValue(containerStackId, settingKey, checked)
+                return
+            }
             propertyProvider.setPropertyValue("value", checked)
             forceUpdateOnChangeFunction()
         }
