@@ -51,6 +51,7 @@ UM.TooltipArea
     property var afterOnEditingFinishedFunction: dummy_func
     property var forceUpdateOnChangeFunction: dummy_func
     property var setValueFunction: null
+    property var discardEditFunction: dummy_func
 
     // a dummy function for default property values
     function dummy_func() {}
@@ -151,17 +152,18 @@ UM.TooltipArea
         color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
 
-        // When the textbox gets focused by TAB, select all text.
-        // When focus is lost (including dialog close), commit any in-progress edit.
+        // When the textbox gets focused by TAB, select all text
         onActiveFocusChanged:
         {
             if (activeFocus && (focusReason == Qt.TabFocusReason || focusReason == Qt.BacktabFocusReason))
             {
                 selectAll()
             }
-            else if (!activeFocus && propertyProvider && text != propertyProvider.properties.value)
+            else if (!activeFocus && hasUncommittedEdit)
             {
-                editingFinishedFunction()
+                // editingFinished already committed valid input, so what is left was rejected by the validator.
+                hasUncommittedEdit = false
+                discardEditFunction()
             }
         }
 
@@ -204,7 +206,18 @@ UM.TooltipArea
             previousText = text;
         }
 
-        onEditingFinished: editingFinishedFunction()
+        // Qt emits editingFinished on every Return and focus loss, so only commit once per user edit.
+        property bool hasUncommittedEdit: false
+        onTextEdited: hasUncommittedEdit = true
+
+        onEditingFinished:
+        {
+            if (hasUncommittedEdit)
+            {
+                hasUncommittedEdit = false
+                editingFinishedFunction()
+            }
+        }
 
         property var editingFinishedFunction: defaultEditingFinishedFunction
 
