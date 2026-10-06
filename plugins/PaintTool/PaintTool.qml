@@ -211,7 +211,7 @@ Item
         Column
         {
             width: parent.width
-            spacing: shapeSizeSlider.isFaceAngle ? UM.Theme.getSize("wide_margin").height : UM.Theme.getSize("default_margin").height
+            spacing: shapeSizeSlider.isFaceAngle ? UM.Theme.getSize("thick_margin").height : UM.Theme.getSize("default_margin").height
 
             UM.TooltipArea
             {
@@ -229,7 +229,9 @@ Item
             {
                 id: shapeSizeSlider
                 width: parent.width
+                height: UM.Theme.getSize("combobox").height
                 stepSize: 1
+                largeStepSize: 5
                 indicatorVisible: isFaceAngle
                 tooltipUnit: isFaceAngle ? "°" : ""
 
@@ -239,13 +241,7 @@ Item
                 to: isFaceAngle ? 90 : 100
                 value: UM.Controller.properties.getValue(isFaceAngle ? "FaceAngle" : "BrushSize")
 
-                onPressedChanged: function (pressed)
-                {
-                    if (!pressed)
-                    {
-                        UM.Controller.setProperty(isFaceAngle ? "FaceAngle" : "BrushSize", shapeSizeSlider.value);
-                    }
-                }
+                onMoved: UM.Controller.setProperty(isFaceAngle ? "FaceAngle" : "BrushSize", shapeSizeSlider.value);
             }
         }
 
@@ -263,7 +259,7 @@ Item
         {
             id: columnAngle
             width: parent.width
-            spacing: UM.Theme.getSize("wide_margin").height
+            spacing: UM.Theme.getSize("thick_margin").height
             visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "True"
 
             UM.Label
@@ -276,10 +272,12 @@ Item
             {
                 id: supportAngleSlider
                 width: parent.width
+                height: UM.Theme.getSize("combobox").height
 
                 from: 0
                 to: 90
                 stepSize: 1
+                largeStepSize: 5
                 tooltipUnit: "°"
                 settingName: "support_angle"
                 updateAllExtruders: true
