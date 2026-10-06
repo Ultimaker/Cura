@@ -159,10 +159,6 @@ UM.TooltipArea
             {
                 selectAll()
             }
-            else if (!activeFocus && propertyProvider && text != propertyProvider.properties.value)
-            {
-                editingFinishedFunction()
-            }
         }
 
         text:
