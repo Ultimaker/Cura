@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2026-09-16 16:53+0000\n"
-"PO-Revision-Date: 2026-10-07 16:57+0000\n"
+"PO-Revision-Date: 2026-10-07 17:36+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -730,7 +730,7 @@ msgstr "内側のウォール形状に沿ったラインを使用してインフ
 
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr "隣接する上面と底面の表面パスを接合します。同心円のパターンの場合この設定を有効にすることにより移動時間が短縮されますが、インフィルまでの途中で接合があるためこの機能により上面の品質を損なう場合があります。"
+msgstr "隣接する上面と底面の表面パスを接合します。同心円のパターンの場合この設定を有効にすることにより移動時間が短縮されますが、インフィルの途中で接合されてしまう場合があるため、この機能により上面の品質を損なう場合があります。"
 
 msgctxt "z_seam_corner description"
 msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
