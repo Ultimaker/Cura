@@ -20,7 +20,7 @@ class FootPrintsFirst(Script):
             "settings": {
                 "footprints_first_enabled": {
                     "label": "Enable script",
-                    "description": "Enables the script so it will run.  This script will move all the individual 'Initial Layers' into a single layer that will print first.  That allows you to see if all the prints start OK.  Please note: 'One-at-a-Time'.",
+                    "description": "Enables the script so it will run.  Use with 'One at a Time' mode.  This script will move all the individual 'Initial Layers' into a single layer that will print first.  That allows you to see if all the prints start OK.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": true
@@ -73,6 +73,8 @@ class FootPrintsFirst(Script):
         matl_bed_temp_0 = self.global_stack.getProperty("material_bed_temperature_layer_0", "value")
         matl_bed_temp = self.global_stack.getProperty("material_bed_temperature", "value")
         self.new_travel_list = []
+        self.layer_0_index_list = []
+        self.layer_0_total_time = 0.0
 
         # A check to insure that the user knows 'FootPrintsFirst' should run before 'DisplayInfoOnLCD'
         data = self._PostProcessorOrderWarning(data)
@@ -118,6 +120,9 @@ class FootPrintsFirst(Script):
         layer_0_list.insert(len(layer_0_list)-2, f"M104 S{round(self.matl_print_temp)}                   ; FpF Print Temp\nM140 S{round(matl_bed_temp)}                    ; FpF Bed Temp")
         layer_0_str = "\n".join(layer_0_list)
 
+        # Remove the TIME_ELAPSED lines from the new Layer 0 (re-ordering renders them incorrect.)
+        layer_0_str = self._RemoveTimeElapsedLines(layer_0_str)
+
         # Insert the layer_0_string at the beginning of the file as the new Layer:0.
         data.insert(2, layer_0_str)
 
@@ -142,7 +147,7 @@ class FootPrintsFirst(Script):
                         prev_x = self.getValue(line, "X")
                         prev_y = self.getValue(line, "Y")
                         break
-                new_travel_line = f"G0 F{self.speed_travel} X{prev_x} Y{prev_y} ; FpF Travel"
+                new_travel_line = f"G0 F{self.speed_travel} X{prev_x} Y{prev_y}   ; FpF Travel"
                 self.new_travel_list.append(new_travel_line)
         return alt_data
 
@@ -204,6 +209,9 @@ class FootPrintsFirst(Script):
                 if ";LAYER:" in line:
                     lines[index] = f";LAYER:{consecutive_lay_num}"
                     consecutive_lay_num += 1
+                if ";TIME_ELAPSED:" in line:
+                    time_val = float(line.split(":")[1].split(".")[0])
+                    lines[index] = f";TIME_ELAPSED:{round(time_val,1)}"
             alt_data[num] = "\n".join(lines)
         return alt_data
 
@@ -261,7 +269,7 @@ class FootPrintsFirst(Script):
             script_str = script_str.replace(r"\\\n", "\n;  ").replace("\n;  \n;  ", "\n")
             pp_data += str(script_str)
         pp_list = pp_data.split("\n")
-        display_info_index = len(pp_list)        
+        display_info_index = len(pp_list)
         footprintsfirst_index = -1
         try:
             for index, post_proc in enumerate(pp_list):
@@ -271,6 +279,7 @@ class FootPrintsFirst(Script):
                     footprintsfirst_index = index
                 if "add_filament_use = True" in post_proc:
                     Message(title = "⚠️[Foot Prints First]⚠️", text = "Is not compatible with Display Info on LCD 'Filament Usage' and could be negative filament use values reported to a print server.").show()
+
         except (IndexError, ValueError):
             Logger.warning("[Foot Prints First] Error parsing post_processing_scripts metadata for order check")
         if display_info_index < footprintsfirst_index:
@@ -289,3 +298,21 @@ class FootPrintsFirst(Script):
                     break
             alt_data[index] = "\n".join(lines)
         return alt_data
+
+    def _RemoveTimeElapsedLines(self, layer_0_str):
+        time_elapsed_list = []
+        lines = layer_0_str.split("\n")
+        zero_count = layer_0_str.count(";TIME_ELAPSED:")
+        for index, timeline in enumerate(lines):
+            if ";TIME_ELAPSED:" in timeline:
+                time_value = float(timeline.split(":")[1])
+                self.layer_0_total_time = time_value
+                break
+        self.layer_0_total_time *= zero_count
+        line_to_leave = f";TIME_ELAPSED:{round(self.layer_0_total_time)}"
+        for index, line in enumerate(lines):
+            if ";TIME_ELAPSED:" in line:
+                lines.pop(index)
+        layer_0_str = "\n".join(lines)
+        layer_0_str += line_to_leave + "\n"
+        return layer_0_str
