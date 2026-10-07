@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2026-09-16 16:53+0000\n"
-"PO-Revision-Date: 2026-10-03 03:30+0000\n"
+"PO-Revision-Date: 2026-10-07 16:57+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -242,7 +242,7 @@ msgstr "\"AA 0.4\" や \"BB 0.8\" など、エクストルーダーのノズルI
 
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
-msgstr "このエクストルーダーに関連付けられているプリント冷却ファンの数。各エクストルーダーに対して個別のプリント冷却ファンがある場合のみ、この値を既定値の0から変更してください。"
+msgstr "このエクストルーダーに関連付けられているプリント冷却ファンの番号。各エクストルーダーに対して個別のプリント冷却ファンがある場合のみ、この値を既定値の0から変更してください。"
 
 msgctxt "material_density description"
 msgid "The printed material density, in g/cm3."
