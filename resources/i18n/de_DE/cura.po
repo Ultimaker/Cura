@@ -225,11 +225,11 @@ msgstr "<p><b>Hoppla, bei UltiMaker Cura ist ein Problem aufgetreten.</p></b>"
 "                "
 
 msgctxt "@info:status"
-msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
+msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr "<p>Ein oder mehrere 3D-Modelle können möglicherweise aufgrund der Modellgröße und Materialkonfiguration nicht optimal gedruckt werden:</p>"
 "<p>{model_names}</p>"
 "<p>Erfahren Sie, wie Sie die bestmögliche Druckqualität und Zuverlässigkeit sicherstellen.</p>"
-"<p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">Leitfaden zu Druckqualität anzeigen</a></p>"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Leitfaden zu Druckqualität anzeigen</a></p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
@@ -4503,6 +4503,13 @@ msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "Die in diesem Extruder eingesetzte Düse."
 
+msgctxt "@label"
+msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+msgstr "Das Muster des Füllmaterials des Drucks:"
+"Für schnelle Drucke von nicht funktionalen Modellen wählen Sie die Linien-, Zickzack- oder Blitz-Füllung."
+"Für funktionale Teile, die keiner großen Belastung ausgesetzt sind, empfehlen wir ein Raster-, Dreieck- oder Tri-Hexagon-Muster."
+"Für funktionale 3D-Drucke, die eine hohe Festigkeit in mehreren Richtungen erfordern, verwenden Sie am besten die Würfel-, Würfel-Unterbereich-, Viertelwürfel-, Octahedral- und Gyroid-Füllungen."
+
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr "Der Prozentsatz an Licht, der einen Druck von einer Dicke mit 1 Millimeter durchdringt. Senkt man diesen Wert, steigt der Kontrast in den dunkleren Bereichen, während der Kontrast in den helleren Bereichen des Bilds sinkt."
@@ -5528,8 +5535,8 @@ msgstr "Ihr neuer Drucker wird automatisch in Cura angezeigt."
 
 msgctxt "@info:status"
 msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr "Ihr Drucker <b>{printer_name}</b> könnte über die Cloud verbunden werden."
-" Verwalten Sie Ihre Druckwarteschlange und überwachen Sie Ihre Drucke von überall aus, indem Sie Ihren Drucker mit Digital Factory verbinden"
+" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
+msgstr "Ihr Drucker <b>{printer_name}</b> könnte über die Cloud verbunden werden. Verwalten Sie Ihre Druckwarteschlange und überwachen Sie Ihre Drucke von überall aus, indem Sie Ihren Drucker mit Digital Factory verbinden"
 
 msgctxt "@label"
 msgid "Z"
@@ -6006,3 +6013,191 @@ msgstr "Upgrade-Konfigurationen von Cura 5.12 auf 5.13"
 msgctxt "name"
 msgid "Version Upgrade 5.12 to 5.13"
 msgstr "Upgrade von Version 5.12 auf 5.13"
+
+msgctxt "@label"
+msgid "<b>Enable auto-support</b>"
+msgstr "<b>Autom. Stützstrukturen aktivieren</b>"
+
+msgctxt "@info:status"
+msgid "<p>One or more 3D models may not print optimally due to the model shape and missing support:</p><p>{model_names}</p><p>Enable auto-support or paint on support for better print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667417606331\">View support settings guide</a></p>"
+msgstr "<p>Ein oder mehrere 3D-Modelle können aufgrund der Modellform und fehlender Stützstrukturen möglicherweise nicht optimal gedruckt werden:</p><p>{model_names}</p><p>Aktivieren Sie die autom. Stützstruktur oder tragen Sie Stützstruktur manuell auf, um eine bessere Druckqualität und Zuverlässigkeit zu erreichen.</p><p><a href=\"https://support.ultimaker.com/s/article/1667417606331\">Leitfaden zur Anpassung von Stützstrukturen anzeigen</a></p>"
+
+msgctxt "@info:status"
+msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p><p>{model_names}</p><p>Find out how to ensure the best possible print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
+msgstr "<p>Ein oder mehrere 3D-Modelle können aufgrund der Modellform und fehlender Stützstrukturen möglicherweise nicht optimal gedruckt werden:</p><p>{model_names}</p><p>Erfahren Sie, wie Sie die optimale Druckqualität und Zuverlässigkeit erzielen können.</p><p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">Leitfaden zu Druckqualität anzeigen</a></p>"
+
+msgctxt "@action:menu"
+msgid "Add to visible settings"
+msgstr "Zu sichtbaren Einstellungen hinzufügen"
+
+msgctxt "@option:check"
+msgid "Always use the same default locations for opening and saving files"
+msgstr "Beim Öffnen und Speichern von Dateien stets die gleichen Standardpfade verwenden"
+
+msgctxt "@label"
+msgid "Angle Threshold"
+msgstr "Winkelgrenzwert"
+
+msgctxt "@menuitem"
+msgid "Auto"
+msgstr "Autom."
+
+msgctxt "@label"
+msgid "Auto-Support"
+msgstr "Autom. Stützstruktur"
+
+msgctxt "@label"
+msgid "Auto-Support Overhang"
+msgstr "Überhang der autom. Stützstruktur"
+
+msgctxt "@action:button"
+msgid "Browse"
+msgstr "Durchsuchen"
+
+msgctxt "@label:category menu label"
+msgid "Changed settings"
+msgstr "Einstellungen geändert"
+
+msgctxt "@action:menu"
+msgid "Configure visible settings..."
+msgstr "Sichtbare Einstellungen konfigurieren …"
+
+msgctxt "@window:text"
+msgid "Default file load location:"
+msgstr "Standardpfad zum Laden von Dateien:"
+
+msgctxt "@window:text"
+msgid "Default file save location:"
+msgstr "Standardpfad zum Speichern von Dateien:"
+
+msgctxt "@button"
+msgid "Enable Auto-Support"
+msgstr "Autom. Stützstruktur aktivieren"
+
+msgctxt "@action:button"
+msgid "Face"
+msgstr "Fläche"
+
+msgctxt "@info:title"
+msgid "File Not Found"
+msgstr "Datei nicht gefunden"
+
+msgctxt "@label"
+msgid "Inner wall"
+msgstr "Innenwand"
+
+msgctxt "@label"
+msgid "Inner wall - Bridging"
+msgstr "Innenwand – Überbrückung"
+
+msgctxt "@label"
+msgid "Inner wall - Overhanging"
+msgstr "Innenwand – Überhang"
+
+msgctxt "@info:status"
+msgid "No settings have been changed from the active profile defaults."
+msgstr "Es wurden keine Einstellungen aus den Standardeinstellungen des aktiven Profils geändert."
+
+msgctxt "@label"
+msgid "Outer wall"
+msgstr "Außenwand"
+
+msgctxt "@label"
+msgid "Outer wall - Bridging"
+msgstr "Außenwand – Überbrückung"
+
+msgctxt "@label"
+msgid "Outer wall - Overhanging"
+msgstr "Außenwand – Überhang"
+
+msgctxt "@label:category menu label"
+msgid "Overview"
+msgstr "Übersicht"
+
+msgctxt "@label"
+msgid "Prime tower"
+msgstr "Primärturm"
+
+msgctxt "@action:button"
+msgid "Redo Stroke (Ctrl+Shift+L)"
+msgstr "Auftragen wiederholen (Strg+Umschalt+L)"
+
+msgctxt "@action:menu"
+msgid "Remove from visible settings"
+msgstr "Aus den sichtbaren Einstellungen entfernen"
+
+msgctxt "@title:window"
+msgid "Select Default Load Folder"
+msgstr "Standardordner zum Laden von Dateien auswählen"
+
+msgctxt "@title:window"
+msgid "Select Default Save Folder"
+msgstr "Standardordner zum Speichern von Dateien auswählen"
+
+msgctxt "@tooltip"
+msgid "Select neighboring faces whose angle differs by no more than this value."
+msgstr "Wählen Sie benachbarte Flächen aus, deren Winkel höchstens um diesen Wert voneinander abweichen."
+
+msgctxt "@tooltip"
+msgid "Select the size of the brush for painting."
+msgstr "Wählen Sie die Größe des Pinsels zum Auftragen aus."
+
+msgctxt "@action:inmenu"
+msgid "Show File Location"
+msgstr "Dateiort anzeigen"
+
+msgctxt "@label"
+msgid "Skirt / Brim"
+msgstr "Skirt/Brim"
+
+msgctxt "@option:check"
+msgid "Sort by installed"
+msgstr "Nach „installiert\" sortieren"
+
+msgctxt "@label"
+msgid "Support for the model is currently off, turn auto-support on."
+msgstr "Für dieses Modell sind Stützstrukturen derzeit deaktiviert. Schalten Sie die autom. Stützstruktur ein."
+
+msgctxt "@label"
+msgid "Support interface"
+msgstr "Stützstruktur-Interface"
+
+msgctxt "@info:tooltip"
+msgid "The default folder to open when loading files."
+msgstr "Der Standardordner, der beim Laden von Dateien geöffnet wird."
+
+msgctxt "@info:tooltip"
+msgid "The default folder to open when saving files."
+msgstr "Der Standardordner, der beim Speichern von Dateien geöffnet wird."
+
+msgctxt "@info:status"
+msgid "The source file could not be found. It may have been moved or deleted."
+msgstr "Die Quelldatei konnte nicht gefunden werden. Möglicherweise wurde sie verschoben oder gelöscht."
+
+msgctxt "@label"
+msgid "Top / Bottom - Bridging"
+msgstr "Überbrückung oben/unten"
+
+msgctxt "@action:button"
+msgid "Undo Stroke (Ctrl+L)"
+msgstr "Auftragen rückgängig machen (Strg+L)"
+
+msgctxt "@button"
+msgid "Update all"
+msgstr "Alles aktualisieren"
+
+msgctxt "@label"
+msgid "Update all the Materials: %1 materials have a new version available."
+msgstr "Alle Materialien aktualisieren: Für %1 Materialien ist eine neue Version verfügbar."
+
+msgctxt "@label"
+msgid "Update all the Plugins: %1 plugins have a new version available."
+msgstr "Alle Plug-ins aktualisieren: Für %1 Plug-ins ist eine neue Version verfügbar."
+
+msgctxt "@label"
+msgid "Update all the packages: %1 packages have a new version available."
+msgstr "Alle Pakete aktualisieren: Für %1 Pakete ist eine neue Version verfügbar."
+
+msgctxt "@info:tooltip"
+msgid "When enabled, file open and save dialogs will always start at the specified locations below. When disabled, dialogs remember the last folder you navigated to."
+msgstr "Bei aktivierter Option starten die Dialoge zum Öffnen und Speichern von Dateien immer an den unten festgelegten Orten. Bei Deaktivierung schlagen die Dialoge den zuletzt aufgerufenen Ordner vor."

@@ -6608,3 +6608,199 @@ msgstr "Verkürzung der Infill-Endpunkte: Die Endpunkte von Infill-Linien werden
 msgctxt "support_lightning_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr "Begradigen der Infill-Linien: Die Infill-Linien werden begradigt, um die Druckzeit zu reduzieren. Diese Einstellung legt den maximal zulässigen Überhangwinkel entlang der Infill-Linie fest."
+
+msgctxt "support_tree_smooth_layers label"
+msgid "Branch Smoothing Layers"
+msgstr "Zweig-Glättungsschichten"
+
+msgctxt "bridge_wall_max_deviation description"
+msgid "Bridge-walls shouldn't deviate from straight lines more than this, anything that falls outside of the area of maximum allowed deviation (defined by the aligned bounding box around the anchor points) isn't considered a bridging wall. Skin lines are already straight."
+msgstr "Brückenwände sollten nicht mehr als diese Abweichung von geraden Linien aufweisen. Alle Elemente, die außerhalb der maximal zulässigen Abweichung liegen (definiert durch den ausgerichteten Begrenzungsrahmen um die Ankerpunkte), gelten nicht als Brückenwand. Hautlinien verlaufen bereits gerade."
+
+msgctxt "support_brim_enable label"
+msgid "Enable Inner Support Base"
+msgstr "Innere Stützbasis aktivieren"
+
+msgctxt "support_outer_brim_enable label"
+msgid "Enable Outer Support Base"
+msgstr "Äußere Stützbasis aktivieren"
+
+msgctxt "support_outer_brim_enable description"
+msgid "Generate a base around the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
+msgstr "Erzeugen Sie eine Basis um die Stützausfüllbereiche der ersten Schichten. Das Aktivieren dieser Einstellung erhöht die Haftung der Stützstruktur auf der Bauplatte."
+
+msgctxt "support_brim_enable description"
+msgid "Generate a base within the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
+msgstr "Erzeugen Sie eine Basis innerhalb der Stützausfüllbereiche der ersten Schichten. Das Aktivieren dieser Einstellung verbessert die Haftung der Stützstruktur auf der Bauplatte."
+
+msgctxt "wall_x_inset label"
+msgid "Inner Wall Inset"
+msgstr "Einschub der Innenwand"
+
+msgctxt "wall_x_inset description"
+msgid "Inset applied to the path of the inner wall(s). The infill will move along with the new boundary set by the innermost inner wall"
+msgstr "Der Einschub wird auf den Verlauf der Innenwand bzw. Innenwände angewendet. Die Füllung verschiebt sich dabei entlang der neuen Begrenzung, die durch die innerste Innenwand festgelegt wird."
+
+msgctxt "bridge_wall_max_deviation label"
+msgid "Maximum Bridge Deviation"
+msgstr "Maximale Brückenabweichung"
+
+msgctxt "minimum_infill_line_length label"
+msgid "Minimum Infill Line Length"
+msgstr "Mindestlänge der Fülllinie"
+
+msgctxt "support_wall_thickness_layer_smooth description"
+msgid "Number of layers where the support wall line width transition is smoothed out over. (This may still create jumps when one area splits off from the other though.)"
+msgstr "Die Anzahl der Schichten, bei denen die Übergänge der Linienbreite der Stützwand geglättet werden (dabei kann es allerdings weiterhin zu Sprüngen kommen, wenn sich ein Bereich von einem anderen abspaltet)."
+
+msgctxt "support_wall_thickness_bottom_layers description"
+msgid "Number of layers, counted from the build-plate, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
+msgstr "Die Anzahl der Schichten, gezählt ab der Bauplatte, bei denen für die Stützwände die nicht vergrößerte Stützwandstärke verwendet wird (die Linienbreitenglättung wird dabei nicht berücksichtigt)."
+
+msgctxt "support_wall_thickness_top_layers description"
+msgid "Number of layers, counted from the closest tip of the branches downwards, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
+msgstr "Die Anzahl der Schichten, gezählt von der nächstgelegenen Spitze der Zweige nach unten, bei denen die Stützwände die nicht vergrößerte Stützwandstärke verwenden (die Linienbreitenglättung wird dabei nicht berücksichtigt)."
+
+msgctxt "top_bottom_skin_merge_distance description"
+msgid "On sloped areas especially, top/bottom can become very small or narrow, while skin is nearby. This will sometimes cause walls not to print well. Merge top/bottom into skin when areas become too thin, where 'too thin' is defined by the merge distance (any thinner is merged into a neighbouring area if present)."
+msgstr "Besonders an geneigten Stellen können die oberen und unteren Bereiche sehr klein oder schmal werden, wenn sich die Haut in der Nähe befindet. Dies verhindert manchmal einen sauberen Wanddruck. Fügen Sie deshalb die oberen und unteren Bereiche mit der Haut zusammen, wenn diese zu dünn werden, wobei „zu dünn\" über den Zusammenführungsabstand definiert wird (alles, was dünner ist, wird mit einem benachbarten Bereich zusammengeführt, sofern vorhanden)."
+
+msgctxt "support_base_height label"
+msgid "Support Base Height"
+msgstr "Höhe der Stützbasis"
+
+msgctxt "support_base_inside_width label"
+msgid "Support Base Inside Width"
+msgstr "Innenbreite der Stützbasis"
+
+msgctxt "support_base_outside_width label"
+msgid "Support Base Outside Width"
+msgstr "Außenbreite der Stützbasis"
+
+msgctxt "support_base_curve_magnitude label"
+msgid "Support Base Slope"
+msgstr "Neigung der Stützbasis"
+
+msgctxt "support_base_width label"
+msgid "Support Base Width"
+msgstr "Breite der Stützbasis"
+
+msgctxt "support_enlarged_wall_thickness label"
+msgid "Support Enlarged Wall Thickness"
+msgstr "Stärke der vergrößerten Wand der Stützstruktur"
+
+msgctxt "support_brim_line_count label"
+msgid "Support Inner Brim Line Count"
+msgstr "Anzahl der inneren Brimlinien der Stützstruktur"
+
+msgctxt "support_brim_width label"
+msgid "Support Inner Brim Width"
+msgstr "Breite der inneren Brims der Stützstruktur"
+
+msgctxt "support_inside_base_height label"
+msgid "Support Inside Base Height"
+msgstr "Höhe der Innenbasis der Stützstruktur"
+
+msgctxt "support_inside_base_curve_magnitude label"
+msgid "Support Inside Base Slope"
+msgstr "Neigung der Innenbasis der Stützstruktur"
+
+msgctxt "support_outside_base_height label"
+msgid "Support Outside Base Height"
+msgstr "Höhe der Außenbasis der Stützstruktur"
+
+msgctxt "support_outside_base_curve_magnitude label"
+msgid "Support Outside Base Slope"
+msgstr "Neigung der Außenbasis der Stützstruktur"
+
+msgctxt "support_paint_resolution label"
+msgid "Support Painting Precision"
+msgstr "Auftragungsgenauigkeit der Stützstruktur"
+
+msgctxt "support_wall_thickness_layer_smooth label"
+msgid "Support Wall Smooth Layer Width"
+msgstr "Breite der glatten Schicht der Stützwand"
+
+msgctxt "support_wall_thickness label"
+msgid "Support Wall Thickness"
+msgstr "Stärke der Stützwand"
+
+msgctxt "support_wall_thickness_bottom_layers label"
+msgid "Support Wall Unenlarged Bottom Layers"
+msgstr "Nicht vergrößerte Bodenschichten der Stützwand"
+
+msgctxt "support_wall_thickness_top_layers label"
+msgid "Support Wall Unenlarged Top Layers"
+msgstr "Nicht vergrößerte Oberschichten der Stützwand"
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and outer walls when travelling inside a model."
+msgstr "Der Abstand zwischen der Düse und den Außenwänden während der Bewegung innerhalb eines Modells."
+
+msgctxt "support_inside_base_height description"
+msgid "The height of the inside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
+msgstr "Die Höhe der inneren Stützbasis. Ein höherer Wert führt zu einer stabileren Stützstruktur, da die Basis entsprechend stärker ausgeführt ist. Wenn dieser Wert zu niedrig ist, erhalten die stützenden Elemente keine stabile Basis."
+
+msgctxt "support_outside_base_height description"
+msgid "The height of the outside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
+msgstr "Die Höhe der äußeren Stützbasis. Ein höherer Wert führt zu einer stabileren Stützstruktur, da die Basis entsprechend stärker ausgeführt ist. Wenn dieser Wert zu niedrig ist, erhalten die stützenden Elemente keine stabile Basis."
+
+msgctxt "support_base_height description"
+msgid "The height of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr "Die Höhe der Stützbasis. Ein höherer Wert führt zu einer stabileren Stützstruktur, da die Basis entsprechend breiter ausgeführt ist. Wenn dieser Wert zu niedrig ist, erhalten die stützenden Elemente keine stabile Basis."
+
+msgctxt "support_inside_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the inside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "Der Skalierungsfaktor für die Neigung der inneren Stützbasis. Ein höherer Wert führt zu einer dünneren Basis, ein niedrigerer Wert zu einer dickeren."
+
+msgctxt "support_outside_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the outside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "Der Skalierungsfaktor für die Neigung der äußeren Stützbasis. Ein höherer Wert führt zu einer dünneren Basis, ein niedrigerer Wert zu einer dickeren."
+
+msgctxt "support_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "Der Skalierungsfaktor für die Neigung der Stützbasis. Ein höherer Wert führt zu einer dünneren Basis, ein niedrigerer Wert zu einer dickeren."
+
+msgctxt "support_brim_line_count description"
+msgid "The number of lines used for the support inside brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr "Die Anzahl der Linien für den inneren Brim der Stützstruktur. Mehr Brimlinien erhöhen die Haftung auf der Bauplatte, allerdings wird auch etwas mehr Material verbraucht."
+
+msgctxt "support_tree_smooth_layers description"
+msgid "The positions of the tree support branches will be adjusted to smooth them over the specified number of layers using a rolling window average. This improves inter-layer adhesion and sturdiness, but an excessively high value may cause the structure to bend too close to the model or compromise its integrity."
+msgstr "Die Positionen der Stützzweige des Baums werden angepasst, um sie über die festgelegte Anzahl von Schichten hinweg mithilfe eines gleitenden Durchschnitts zu glätten. Das erhöht die Haftung zwischen den Schichten und verbessert die Stabilität – ein zu hoher Wert kann aber dazu führen, dass sich die Struktur zu nah am Modell verbiegt oder dass dessen Integrität beeinträchtigt wird."
+
+msgctxt "support_paint_resolution description"
+msgid "The precision of the details when generating support based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr "Die Detailgenauigkeit bei der Erstellung von Stützstrukturen auf Basis von Auftragungsdaten. Eine geringere Genauigkeit liefert mehr Details, erhöht dafür aber die Slicing-Zeit und den Speicherbedarf."
+
+msgctxt "support_enlarged_wall_thickness description"
+msgid "The thickness of the walls with which to surround the support infill, when adhesion with the above/below layer is very low. Using larger or extra walls in this case will improve adhesion and make the branch sturdier."
+msgstr "Die Stärke der Wände, mit denen die Stützfüllung umgeben wird, wenn die Haftung zur darüber- bzw. darunterliegenden Schicht sehr niedrig ist. In diesem Fall erhöht die Verwendung größerer oder zusätzlicher Wände die Haftung und macht den Ast stabiler."
+
+msgctxt "support_wall_thickness description"
+msgid "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr "Die Stärke der Wände, mit denen die Stützfüllung umgeben wird. Das Hinzufügen einer Wand kann den Druck der Stützstrukturen zuverlässiger machen und Überhänge besser stützen, allerdings steigen dadurch Druckzeit und Materialverbrauch."
+
+msgctxt "support_brim_width description"
+msgid "The width of the brim to print inside the support, on the first layer. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr "Die Breite des Brims, der innerhalb der Stützstruktur auf der ersten Schicht gedruckt wird. Ein größerer Brim erhöht die Haftung auf der Bauplatte, allerdings wird auch etwas mehr Material verbraucht."
+
+msgctxt "support_base_inside_width description"
+msgid "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base."
+msgstr "Die Breite der inneren Stützbasis. Ein höherer Wert führt zu einer stabileren Stützstruktur. Wenn dieser Wert zu niedrig ist, erhalten die stützenden Elemente keine stabile Innenbasis."
+
+msgctxt "support_base_outside_width description"
+msgid "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr "Die Breite der äußeren Stützbasis. Ein höherer Wert führt zu einer stabileren Stützstruktur, da die Basis entsprechend breiter ausgeführt ist. Wenn dieser Wert zu niedrig ist, erhalten die stützenden Elemente keine stabile Basis."
+
+msgctxt "support_base_width description"
+msgid "The width of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr "Die Breite der Stützbasis. Ein höherer Wert führt zu einer stabileren Stützstruktur, da die Basis entsprechend breiter ausgeführt ist. Wenn dieser Wert zu niedrig ist, erhalten die stützenden Elemente keine stabile Basis."
+
+msgctxt "top_bottom_skin_merge_distance label"
+msgid "Top/Bottom/Skin Merge Distance"
+msgstr "Zusammenführungsabstand oben/unten/Haut"
+
+msgctxt "minimum_infill_line_length description"
+msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
+msgstr "Wenn ein Füllbereich Linien erzeugt, deren Gesamtlänge unter diesem Wert liegt, werden diese verworfen, um nicht unnötig viele winzige, nutzlose Linien zu drucken. Dies kann helfen, Fahrbewegungen sowie Ein- und Ausfahrvorgänge zu reduzieren."

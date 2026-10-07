@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-02-21 15:37+0000\n"
+"POT-Creation-Date: 2026-09-16 16:53+0000\n"
 "PO-Revision-Date: 2020-02-20 17:30+0100\n"
 "Last-Translator: DenyCZ <www.github.com/DenyCZ>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -28,6 +28,14 @@ msgstr "Nastavuje průměr použitého vlákna filamentu. Srovnejte tuto hodnotu
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Adheze topné podložky"
+
+msgctxt "command_line_settings label"
+msgid "Command Line Settings"
+msgstr ""
+
+msgctxt "material_id label"
+msgid "Cura Material ID"
+msgstr ""
 
 msgctxt "material_diameter label"
 msgid "Diameter"
@@ -129,6 +137,34 @@ msgctxt "material label"
 msgid "Material"
 msgstr "Materiál"
 
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr ""
+
+msgctxt "material_guid label"
+msgid "Material GUID"
+msgstr ""
+
+msgctxt "material_name label"
+msgid "Material Name"
+msgstr ""
+
+msgctxt "material_spool_cost label"
+msgid "Material Spool Cost"
+msgstr ""
+
+msgctxt "material_spool_weight label"
+msgid "Material Spool Weight"
+msgstr ""
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr ""
+
+msgctxt "material_density label"
+msgid "Material density"
+msgstr ""
+
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "Průměr trysky"
@@ -153,9 +189,17 @@ msgctxt "machine_extruder_prestart_code description"
 msgid "Prestart g-code to execute before switching to this extruder."
 msgstr ""
 
+msgctxt "command_line_settings description"
+msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
+msgstr ""
+
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
 msgstr "Spusťte g-kód, který se má provést při přepnutí na tento extrudér."
+
+msgctxt "material_id description"
+msgid "The ID of the material that is used internally."
+msgstr ""
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
@@ -169,9 +213,21 @@ msgctxt "extruder_prime_pos_z description"
 msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
 msgstr "Souřadnice Z pozice, ve které tryska naplní tlak na začátku tisku."
 
+msgctxt "material_type description"
+msgid "The base type of printed material, e.g. PLA or ABS."
+msgstr ""
+
+msgctxt "material_spool_cost description"
+msgid "The cost of a full spool of material."
+msgstr ""
+
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "Vytlačovací stroj byl použit pro tisknutí. Toto je používáno při vícenásobné extruzi."
+
+msgctxt "material_name description"
+msgid "The fully qualified material name, e.g. 'UltiMaker PLA White'."
+msgstr ""
 
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
@@ -181,6 +237,10 @@ msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
 msgstr "Vnitřní průměr trysky. Změňte toto nastavení pokud používáte nestandardní velikost trysky."
 
+msgctxt "material_brand description"
+msgid "The material brand, e.g. 'UltiMaker'."
+msgstr ""
+
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
 msgstr "ID trysky pro vytlačovací stroj, např. \"AA 0.4\" nebo \"BB 0.8\"."
@@ -189,12 +249,24 @@ msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
 msgstr "Číslo ventilátoru chlazení tisku přidruženého k tomuto extrudéru. Tuto změnu změňte pouze z výchozí hodnoty 0, pokud máte pro každý extrudér jiný ventilátor chlazení tisku."
 
+msgctxt "material_density description"
+msgid "The printed material density, in g/cm3."
+msgstr ""
+
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
 msgstr ""
 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
+msgstr ""
+
+msgctxt "material_guid description"
+msgid "The unique ID of the material."
+msgstr ""
+
+msgctxt "material_spool_weight description"
+msgid "The weight of a full spool of material, in grams."
 msgstr ""
 
 msgctxt "machine_extruder_end_pos_x description"
