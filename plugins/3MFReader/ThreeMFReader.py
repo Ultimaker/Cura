@@ -151,7 +151,6 @@ class ThreeMFReader(MeshReader):
         mesh_builder.setUVCoordinates(uv_coordinates)
         if file_name:
             # The filename is used to give the user the option to reload the file if it is changed on disk
-            # It is only set for the root node of the 3mf file
             mesh_builder.setFileName(file_name)
 
         mesh_data = mesh_builder.build()
@@ -160,7 +159,7 @@ class ThreeMFReader(MeshReader):
             um_node.setMeshData(mesh_data)
 
         for child in savitar_node.getChildren():
-            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child, archive=archive, scene=scene)
+            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child, archive=archive, scene=scene, file_name=file_name)
             if child_node:
                 um_node.addChild(child_node)
 
