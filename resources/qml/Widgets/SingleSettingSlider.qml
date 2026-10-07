@@ -42,14 +42,7 @@ UM.Slider
     // set initial value from stack
     value: parseInt(propertyProvider.properties.value)
 
-    // When the slider is released trigger an update immediately. This forces the slider to snap to the rounded value.
-    onPressedChanged: function(pressed)
-    {
-        if(!pressed)
-        {
-            updateSetting(settingSlider.value);
-        }
-    }
+    onMoved: updateSetting(settingSlider.value)
 
     Connections
     {
