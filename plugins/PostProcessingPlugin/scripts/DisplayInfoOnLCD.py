@@ -32,6 +32,7 @@ Display Filename and Layer on the LCD by Amanda de Castilho on August 28, 2018
 Date:  June 30, 2025 Cost of electricity added to the other print statistics in '_add_stats'. (GregValiant)
 Date:  Sept 24, 2025 Disabled countdown to pauses when in 'One-at-a-Time' mode. (GregValiant)
 Date:  Jan 20, 2026 Added "weight" to the stats inserted in the Gcode.
+Date:  Sept 22, 2026 Added 'Filament Remaining' option
 """
 
 from ..Script import Script
@@ -41,12 +42,13 @@ import time
 import datetime
 import math
 from UM.Message import Message
+from UM.Logger import Logger
 
 class DisplayInfoOnLCD(Script):
- 
+
     minimumCuraVersion = 5110
- 
-    def initialize(self) -> None:        
+
+    def initialize(self) -> None:
         super().initialize()
         cura_version = Application.getInstance().getVersion()
         cura_version_str = cura_version.split("-")[0]
@@ -63,7 +65,7 @@ class DisplayInfoOnLCD(Script):
                 self._instance.setProperty("time_adj_percentage", "value", cura_adjust_percent)
         except (AttributeError, KeyError):
             # Handle cases where the global container stack or its properties are not accessible
-            cura_adjust_percent = 100       
+            cura_adjust_percent = 100
 
     def getSettingDataString(self):
         return """{
@@ -260,11 +262,18 @@ class DisplayInfoOnLCD(Script):
                     "label": "Printer Power Usage",
                     "description": "Average power usage of the 3D printer in Watts.  The actual wattage has many variables.  50% of the power supply rating would be a ballpark figure.",
                     "type": "float",
-                    "default_value": 175,
-                    "minimum_value": 0,
+                    "default_value": 275,
+                    "minimum_value": 50,
                     "unit": "Watts  "
+                },
+                "add_filament_use":
+                {
+                    "label": "Filament Remaining",
+                    "description": "Adds a line at the end of each layer (in the G-Code) indicating the amount of filament that is required to finish the print from that point.  If 'Add M118 Line' is true - the M118 line will be the Filament Indicator line.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": true
                 }
-
             }
         }"""
 
@@ -280,8 +289,15 @@ class DisplayInfoOnLCD(Script):
         self.add_m73_time = self.getSettingValueByKey("add_m73_time")
         self.add_m73_percent = self.getSettingValueByKey("add_m73_percent")
         self.m73_str = ""
-        para_1 = data[0].split("\n")
-        for line in para_1:
+        self.filament_list = []
+        self.add_filament_use = self.getSettingValueByKey("add_filament_use")
+        # The Filament Use per layer
+        the_return = self.filament_usage(data)
+        data = the_return[0]
+        self.filament_list = the_return[1]
+
+        paragraph_1 = data[0].split("\n")
+        for line in paragraph_1:
             if line.startswith(";TIME:") or line.startswith(";PRINT.TIME:"):
                 self.time_total = int(line.split(":")[1])
                 break
@@ -451,7 +467,7 @@ class DisplayInfoOnLCD(Script):
                     if line.startswith(";LAYER_COUNT:"):
                         number_of_layers = int(line.split(":")[1])
                     if print_sequence == "one_at_a_time":
-                        number_of_layers = 1
+                        number_of_layers = 0
                         for lay in range(2,len(data)-1,1):
                             if ";LAYER:" in data[lay]:
                                 number_of_layers += 1
@@ -492,7 +508,7 @@ class DisplayInfoOnLCD(Script):
                         line = lines[line_index]
                         if line.startswith(";TIME_ELAPSED:"):
                             # update time_elapsed for the NEXT layer and exit the loop
-                            time_elapsed = int(float(line.split(":")[1]))
+                            time_elapsed = int(float(line.split(":")[1].split()[0]))
                             break
             # insert the text AFTER the first line of the layer (in case other scripts use ";LAYER:")
             for l_index, line in enumerate(lines):
@@ -506,6 +522,8 @@ class DisplayInfoOnLCD(Script):
                         if self.add_m118_p0:
                             m118_text += "P0 "
                         lines[l_index] += m118_text + display_text
+                        if self.add_filament_use:
+                            lines[l_index] += str(self.filament_list[current_layer-1])
                     # add M73 line
                     if display_remaining_time:
                         mins = int(60 * h + m)
@@ -556,6 +574,8 @@ class DisplayInfoOnLCD(Script):
                         if line.startswith("M118") and "|" in line and "P" in time_list[num]:
                             time_to_go = self._get_time_to_go(time_list[num])
                             M118_line = line.split("|")[0] + "| TP " + time_to_go
+                            if self.add_filament_use:
+                                M118_line += f"{self.filament_list[num-2]}"
                             layer = layer.replace(line, M118_line)
                     except:
                         continue
@@ -692,7 +712,7 @@ class DisplayInfoOnLCD(Script):
         filament_line_t0 = ";Extruder 1 (T0)\n"
         filament_amount = Application.getInstance().getPrintInformation().materialLengths
         filament_weight = Application.getInstance().getPrintInformation().materialWeights
-        filament_line_t0 += f";  Filament used: {filament_amount[0]}m ({round(filament_weight[0], 2)}g)\n"
+        filament_line_t0 += f";  Filament used: {round(filament_amount[0],2)}m ({round(filament_weight[0], 2)}g)\n"
         filament_line_t0 += f";  Filament Type: {self.global_stack.extruderList[0].material.getMetaDataEntry("material", "")}\n"
         filament_line_t0 += f";  Filament Dia.: {self.global_stack.extruderList[0].getProperty("material_diameter", "value")}mm\n"
         filament_line_t0 += f";  Nozzle Size  : {self.global_stack.extruderList[0].getProperty("machine_nozzle_size", "value")}mm\n"
@@ -703,7 +723,7 @@ class DisplayInfoOnLCD(Script):
         filament_line_t1 = ""
         if extruder_count > 1:
             filament_line_t1 = "\n;Extruder 2 (T1)\n"
-            filament_line_t1 += f";  Filament used: {filament_amount[1]}m ({round(filament_weight[1], 2)}g)\n"
+            filament_line_t1 += f";  Filament used: {round(filament_amount[1],2)}m ({round(filament_weight[1], 2)}g)\n"
             filament_line_t1 += f";  Filament Type: {self.global_stack.extruderList[1].material.getMetaDataEntry("material", "")}\n"
             filament_line_t1 += f";  Filament Dia.: {self.global_stack.extruderList[1].getProperty("material_diameter", "value")}mm\n"
             filament_line_t1 += f";  Nozzle Size  : {self.global_stack.extruderList[1].getProperty("machine_nozzle_size", "value")}mm\n"
@@ -745,3 +765,47 @@ class DisplayInfoOnLCD(Script):
         total_cost_electricity = (printer_power_usage / 1000) * (self.time_total / 3600) * electricity_cost
         electric_line = f"Electric Cost: {currency_unit}{total_cost_electricity:.2f}"
         return electric_line
+
+    def filament_usage(self, data):
+        """
+        Adds a line to the Gcode at the end of each layer indicating the amount of filament required to finish the print (ex: ";Filament Required to Finish: 11.94m")
+        """
+        # Define the global_stack to access the Cura settings
+        absolute_extrusion = not bool(self.global_stack.getProperty("relative_extrusion", "value"))
+        reset_e = False
+        carry_over_e = 0.0
+        cur_e = 0.0
+        cmd_list = ["G0 ", "G1 ", "G2 ", "G3 "]
+        self.filament_list = []
+        opening_paragraph = data[0].split("\n")
+        for line in opening_paragraph:
+            if "Filament used" in line:
+                self.total_amount = float(line.split(":")[1].split("m")[0])
+                self.filament_list.append(f" | Filament Req'd {round(self.total_amount,2)}m")
+        for layindex, layer in enumerate(data):
+            if layindex < 2 or layindex > len(data)-3:
+                continue
+            lines = layer.split("\n")
+            layer_partial  = 0.0
+            for index, line in enumerate(lines):
+                if line[0:3] in cmd_list and " E" in line:
+                    cur_e = self.getValue(line, "E")
+                    reset_e = False
+                if line.startswith("G92") and " E0" in line:
+                    cur_e = 0
+                    reset_e = True
+                    carry_over_e = layer_partial
+                if absolute_extrusion:
+                    if not reset_e:
+                        layer_partial = cur_e + carry_over_e
+                    elif reset_e:
+                        layer_partial += cur_e
+                        reset_e = False
+                elif not absolute_extrusion:
+                    layer_partial += cur_e
+            if self.add_filament_use and not self.add_m118_line:
+                lines.insert(len(lines)-2, f";Filament Req'd = {round(self.total_amount - layer_partial/1000, 2)}m")
+            self.filament_list.append(f" | Filament Req'd = {round(self.total_amount - layer_partial/1000, 2)}m")
+            data[layindex] = "\n".join(lines)
+        self.filament_list.append(f" | Filament Req'd = 0.00m")
+        return data, self.filament_list
