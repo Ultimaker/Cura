@@ -225,11 +225,11 @@ msgstr "<p><b>¡Vaya! UltiMaker Cura ha encontrado un error.</p></b>"
 "                "
 
 msgctxt "@info:status"
-msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
+msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr "<p>Es posible que uno o más modelos 3D no se impriman correctamente debido al tamaño del modelo y la configuración del material:</p>"
 "<p>{model_names}</p>"
 "<p>Obtenga más información sobre cómo garantizar la mejor calidad y fiabilidad de impresión posible.</p>"
-"<p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">Ver guía de impresión de calidad</a></p>"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver guía de impresión de calidad</a></p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
@@ -4504,6 +4504,10 @@ msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "Tobera insertada en este extrusor."
 
+msgctxt "@label"
+msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+msgstr "Patrón del material de relleno de la impresión:\n\nPara impresiones rpidas de modelos no funcionales, elija lnea, zigzag o relleno ligero.\n\nPara una pieza funcional que no est sujeta a mucha tensin, recomendamos rejilla, tringulo o trihexgono.\n\nPara las impresiones 3D funcionales que requieran una alta resistencia en varias direcciones, utilice cbico, subdivisin cbica, cbico bitruncado, octeto o giroide."
+
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr "El porcentaje de luz que penetra en una impresión con un grosor de 1 milímetro. Bajar este valor aumenta el contraste en las regiones oscuras y disminuye el contraste en las regiones claras de la imagen."
@@ -6007,3 +6011,191 @@ msgstr "Actualizaciones de las configuraciones de Cura 5.12 a Cura 5.13"
 msgctxt "name"
 msgid "Version Upgrade 5.12 to 5.13"
 msgstr "Actualización de la versión 5.12 a 5.13"
+
+msgctxt "@label"
+msgid "<b>Enable auto-support</b>"
+msgstr "<b>Activar soporte automático</b>"
+
+msgctxt "@info:status"
+msgid "<p>One or more 3D models may not print optimally due to the model shape and missing support:</p><p>{model_names}</p><p>Enable auto-support or paint on support for better print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667417606331\">View support settings guide</a></p>"
+msgstr "<p>Es posible que uno o varios modelos 3D no se impriman de forma óptima debido a la forma del modelo y a la falta de soporte:</p><p>{model_names}</p><p>Active el soporte automático o pinte el soporte para conseguir una mejor calidad y fiabilidad de impresión.</p><p><a href=\"https://support.ultimaker.com/s/article/1667417606331\">Ver la guía de ajustes de soporte</a></p>"
+
+msgctxt "@info:status"
+msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p><p>{model_names}</p><p>Find out how to ensure the best possible print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
+msgstr "<p>Es posible que uno o varios modelos 3D no se impriman de forma óptima debido al tamaño del modelo y a la configuración del material:</p><p>{model_names}</p><p>Descubra cómo garantizar la mejor calidad y fiabilidad de impresión posibles.</p><p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">Ver la guía de calidad de impresión</a></p>"
+
+msgctxt "@action:menu"
+msgid "Add to visible settings"
+msgstr "Añadir a los ajustes visibles"
+
+msgctxt "@option:check"
+msgid "Always use the same default locations for opening and saving files"
+msgstr "Utilizar siempre las mismas ubicaciones por defecto para abrir y guardar archivos"
+
+msgctxt "@label"
+msgid "Angle Threshold"
+msgstr "Umbral de ángulo"
+
+msgctxt "@menuitem"
+msgid "Auto"
+msgstr "Automático"
+
+msgctxt "@label"
+msgid "Auto-Support"
+msgstr "Soporte automático"
+
+msgctxt "@label"
+msgid "Auto-Support Overhang"
+msgstr "Voladizo de soporte automático"
+
+msgctxt "@action:button"
+msgid "Browse"
+msgstr "Examinar"
+
+msgctxt "@label:category menu label"
+msgid "Changed settings"
+msgstr "Ajustes modificados"
+
+msgctxt "@action:menu"
+msgid "Configure visible settings..."
+msgstr "Configurar ajustes visibles..."
+
+msgctxt "@window:text"
+msgid "Default file load location:"
+msgstr "Ubicación por defecto para cargar archivos:"
+
+msgctxt "@window:text"
+msgid "Default file save location:"
+msgstr "Ubicación por defecto para guardar archivos:"
+
+msgctxt "@button"
+msgid "Enable Auto-Support"
+msgstr "Activar soporte automático"
+
+msgctxt "@action:button"
+msgid "Face"
+msgstr "Cara"
+
+msgctxt "@info:title"
+msgid "File Not Found"
+msgstr "Archivo no encontrado"
+
+msgctxt "@label"
+msgid "Inner wall"
+msgstr "Pared interior"
+
+msgctxt "@label"
+msgid "Inner wall - Bridging"
+msgstr "Pared interior: puente"
+
+msgctxt "@label"
+msgid "Inner wall - Overhanging"
+msgstr "Pared interior: voladizo"
+
+msgctxt "@info:status"
+msgid "No settings have been changed from the active profile defaults."
+msgstr "No se ha modificado ningún ajuste respecto a los valores por defecto del perfil activo."
+
+msgctxt "@label"
+msgid "Outer wall"
+msgstr "Pared exterior"
+
+msgctxt "@label"
+msgid "Outer wall - Bridging"
+msgstr "Pared exterior: puente"
+
+msgctxt "@label"
+msgid "Outer wall - Overhanging"
+msgstr "Pared exterior: voladizo"
+
+msgctxt "@label:category menu label"
+msgid "Overview"
+msgstr "Resumen"
+
+msgctxt "@label"
+msgid "Prime tower"
+msgstr "Torre de purga"
+
+msgctxt "@action:button"
+msgid "Redo Stroke (Ctrl+Shift+L)"
+msgstr "Rehacer trazo (Ctrl+Shift+L)"
+
+msgctxt "@action:menu"
+msgid "Remove from visible settings"
+msgstr "Quitar de los ajustes visibles"
+
+msgctxt "@title:window"
+msgid "Select Default Load Folder"
+msgstr "Seleccione la carpeta de carga por defecto"
+
+msgctxt "@title:window"
+msgid "Select Default Save Folder"
+msgstr "Seleccione la carpeta de guardado por defecto"
+
+msgctxt "@tooltip"
+msgid "Select neighboring faces whose angle differs by no more than this value."
+msgstr "Seleccione las caras adyacentes cuyo ángulo no difiera en más de este valor."
+
+msgctxt "@tooltip"
+msgid "Select the size of the brush for painting."
+msgstr "Seleccione el tamaño del pincel para pintar."
+
+msgctxt "@action:inmenu"
+msgid "Show File Location"
+msgstr "Mostrar ubicación del archivo"
+
+msgctxt "@label"
+msgid "Skirt / Brim"
+msgstr "Falda/Borde"
+
+msgctxt "@option:check"
+msgid "Sort by installed"
+msgstr "Ordenar por instalados"
+
+msgctxt "@label"
+msgid "Support for the model is currently off, turn auto-support on."
+msgstr "El soporte para el modelo está desactivado actualmente; active el soporte automático."
+
+msgctxt "@label"
+msgid "Support interface"
+msgstr "Interfaz de soporte"
+
+msgctxt "@info:tooltip"
+msgid "The default folder to open when loading files."
+msgstr "Carpeta por defecto que se abrirá al cargar archivos."
+
+msgctxt "@info:tooltip"
+msgid "The default folder to open when saving files."
+msgstr "Carpeta por defecto que se abrirá al guardar archivos."
+
+msgctxt "@info:status"
+msgid "The source file could not be found. It may have been moved or deleted."
+msgstr "No se ha podido encontrar el archivo de origen. Es posible que se haya movido o eliminado."
+
+msgctxt "@label"
+msgid "Top / Bottom - Bridging"
+msgstr "Superior/Inferior: puente"
+
+msgctxt "@action:button"
+msgid "Undo Stroke (Ctrl+L)"
+msgstr "Deshacer trazo (Ctrl+L)"
+
+msgctxt "@button"
+msgid "Update all"
+msgstr "Actualizar todo"
+
+msgctxt "@label"
+msgid "Update all the Materials: %1 materials have a new version available."
+msgstr "Actualizar todos los materiales: hay una nueva versión disponible para %1 materiales."
+
+msgctxt "@label"
+msgid "Update all the Plugins: %1 plugins have a new version available."
+msgstr "Actualizar todos los complementos: hay una nueva versión disponible para %1 complementos."
+
+msgctxt "@label"
+msgid "Update all the packages: %1 packages have a new version available."
+msgstr "Actualizar todos los paquetes: hay una nueva versión disponible para %1 paquetes."
+
+msgctxt "@info:tooltip"
+msgid "When enabled, file open and save dialogs will always start at the specified locations below. When disabled, dialogs remember the last folder you navigated to."
+msgstr "Cuando esté activada esta opción, los cuadros de diálogo para abrir y guardar archivos se iniciarán siempre en las siguientes ubicaciones. Cuando esté desactivada, los cuadros de diálogo recordarán la última carpeta a la que haya accedido."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-31 08:53+0200\n"
+"POT-Creation-Date: 2026-09-16 16:53+0200\n"
 "PO-Revision-Date: 2022-07-15 10:53+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -213,6 +213,10 @@ msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
 msgstr ""
 
+msgctxt "@label"
+msgid "<b>Enable auto-support</b>"
+msgstr ""
+
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr ""
@@ -258,11 +262,11 @@ msgid ""
 msgstr ""
 
 msgctxt "@info:status"
-msgid ""
-"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
-"<p>{model_names}</p>\n"
-"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
-"<p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
+msgid "<p>One or more 3D models may not print optimally due to the model shape and missing support:</p><p>{model_names}</p><p>Enable auto-support or paint on support for better print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667417606331\">View support settings guide</a></p>"
+msgstr ""
+
+msgctxt "@info:status"
+msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p><p>{model_names}</p><p>Find out how to ensure the best possible print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
 msgstr ""
 
 msgctxt "@label"
@@ -431,6 +435,10 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr ""
 
+msgctxt "@action:menu"
+msgid "Add to visible settings"
+msgstr ""
+
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr ""
@@ -511,9 +519,17 @@ msgctxt "@option:discardOrKeep"
 msgid "Always transfer changed settings to new profile"
 msgstr ""
 
+msgctxt "@option:check"
+msgid "Always use the same default locations for opening and saving files"
+msgstr ""
+
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "Malli voi vaikuttaa erittäin pieneltä, jos sen koko on ilmoitettu esimerkiksi metreissä eikä millimetreissä. Pitäisikö nämä mallit suurentaa?"
+
+msgctxt "@label"
+msgid "Angle Threshold"
+msgstr ""
 
 msgctxt "annealing intent label"
 msgid "Annealing"
@@ -595,8 +611,20 @@ msgctxt "@label:button"
 msgid "Ask a question"
 msgstr ""
 
+msgctxt "@menuitem"
+msgid "Auto"
+msgstr ""
+
 msgctxt "@checkbox:description"
 msgid "Auto Backup"
+msgstr ""
+
+msgctxt "@label"
+msgid "Auto-Support"
+msgstr ""
+
+msgctxt "@label"
+msgid "Auto-Support Overhang"
 msgstr ""
 
 msgctxt "@checkbox:description"
@@ -682,6 +710,10 @@ msgstr ""
 msgctxt "@label"
 msgid "Brand"
 msgstr "Merkki"
+
+msgctxt "@action:button"
+msgid "Browse"
+msgstr ""
 
 msgctxt "@label"
 msgid "Brush Shape"
@@ -805,6 +837,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
+msgstr ""
+
+msgctxt "@label:category menu label"
+msgid "Changed settings"
 msgstr ""
 
 msgctxt "@info:title"
@@ -971,6 +1007,10 @@ msgstr ""
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Määritä asetusten näkyvyys..."
+
+msgctxt "@action:menu"
+msgid "Configure visible settings..."
+msgstr ""
 
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
@@ -1314,6 +1354,14 @@ msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
 msgstr "Projektitiedoston avaamisen oletustoimintatapa: "
 
+msgctxt "@window:text"
+msgid "Default file load location:"
+msgstr ""
+
+msgctxt "@window:text"
+msgid "Default file save location:"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Defaults"
 msgstr ""
@@ -1426,10 +1474,6 @@ msgctxt "@action:label"
 msgid "Don't show project summary on save again"
 msgstr "Älä näytä projektin yhteenvetoa tallennettaessa"
 
-msgctxt "@action:menu"
-msgid "Don't show this setting"
-msgstr "Älä näytä tätä asetusta"
-
 msgctxt "@label"
 msgid "Don't support overlaps"
 msgstr ""
@@ -1492,6 +1536,10 @@ msgstr ""
 
 msgctxt "@button"
 msgid "Enable"
+msgstr ""
+
+msgctxt "@button"
+msgid "Enable Auto-Support"
 msgstr ""
 
 msgctxt "@action:inmenu"
@@ -1658,6 +1706,10 @@ msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Face"
+msgstr ""
+
 msgctxt "@label:status"
 msgid "Failed"
 msgstr ""
@@ -1741,6 +1793,10 @@ msgstr "Tulostuslangan paino"
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "Tiedosto on jo olemassa"
+
+msgctxt "@info:title"
+msgid "File Not Found"
+msgstr ""
 
 msgctxt "@info:title"
 msgid "File Saved"
@@ -1989,10 +2045,6 @@ msgctxt "@action:button"
 msgid "Hide settings"
 msgstr ""
 
-msgctxt "@action:menu"
-msgid "Hide this setting"
-msgstr "Piilota tämä asetus"
-
 msgctxt "@info:tooltip"
 msgid "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry."
 msgstr ""
@@ -2117,13 +2169,21 @@ msgctxt "@info:progress"
 msgid "Initializing machine manager..."
 msgstr ""
 
-msgctxt "@label"
-msgid "Inner Wall"
-msgstr "Sisäseinämä"
-
 msgctxt "@tooltip"
 msgid "Inner Walls"
 msgstr "Sisäseinämät"
+
+msgctxt "@label"
+msgid "Inner wall"
+msgstr ""
+
+msgctxt "@label"
+msgid "Inner wall - Bridging"
+msgstr ""
+
+msgctxt "@label"
+msgid "Inner wall - Overhanging"
+msgstr ""
 
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
@@ -2240,10 +2300,6 @@ msgstr ""
 msgctxt "@action:button"
 msgid "Keep printer configurations"
 msgstr ""
-
-msgctxt "@action:menu"
-msgid "Keep this setting visible"
-msgstr "Pidä tämä asetus näkyvissä"
 
 msgctxt "@label The argument is a timestamp"
 msgid "Last update: %1"
@@ -2777,6 +2833,10 @@ msgctxt "@message"
 msgid "No results found with current filter"
 msgstr ""
 
+msgctxt "@info:status"
+msgid "No settings have been changed from the active profile defaults."
+msgstr ""
+
 msgctxt "@label"
 msgid "No specific value has been set"
 msgstr ""
@@ -2993,6 +3053,18 @@ msgid "Outer Wall"
 msgstr "Ulkoseinämä"
 
 msgctxt "@label"
+msgid "Outer wall"
+msgstr ""
+
+msgctxt "@label"
+msgid "Outer wall - Bridging"
+msgstr ""
+
+msgctxt "@label"
+msgid "Outer wall - Overhanging"
+msgstr ""
+
+msgctxt "@label"
 msgid "Overlaps with this model are not supported."
 msgstr ""
 
@@ -3009,6 +3081,10 @@ msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
 msgstr[0] ""
 msgstr[1] ""
+
+msgctxt "@label:category menu label"
+msgid "Overview"
+msgstr ""
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
@@ -3262,6 +3338,10 @@ msgstr ""
 
 msgctxt "@tooltip"
 msgid "Prime Tower"
+msgstr ""
+
+msgctxt "@label"
+msgid "Prime tower"
 msgstr ""
 
 msgctxt "@label"
@@ -3665,7 +3745,7 @@ msgid "Recommended settings (for <b>%1</b>) were altered."
 msgstr ""
 
 msgctxt "@action:button"
-msgid "Redo Stroke"
+msgid "Redo Stroke (Ctrl+Shift+L)"
 msgstr ""
 
 msgctxt "@tooltip"
@@ -3719,6 +3799,10 @@ msgstr "Irrotettavan aseman tulostusvälineen laajennus"
 msgctxt "@action:button"
 msgid "Remove"
 msgstr "Poista"
+
+msgctxt "@action:menu"
+msgid "Remove from visible settings"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Remove printers"
@@ -3933,6 +4017,14 @@ msgid "Select All Models"
 msgstr "Valitse kaikki mallit"
 
 msgctxt "@title:window"
+msgid "Select Default Load Folder"
+msgstr ""
+
+msgctxt "@title:window"
+msgid "Select Default Save Folder"
+msgstr ""
+
+msgctxt "@title:window"
 msgid "Select Printer"
 msgstr ""
 
@@ -3960,9 +4052,17 @@ msgctxt "@option:check"
 msgid "Select models when loaded"
 msgstr ""
 
+msgctxt "@tooltip"
+msgid "Select neighboring faces whose angle differs by no more than this value."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Select settings"
 msgstr "Valitse asetukset"
+
+msgctxt "@tooltip"
+msgid "Select the size of the brush for painting."
+msgstr ""
 
 msgctxt "@action"
 msgid "Select upgrades"
@@ -4152,6 +4252,10 @@ msgctxt "@button"
 msgid "Show Custom"
 msgstr ""
 
+msgctxt "@action:inmenu"
+msgid "Show File Location"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Näytä sähköinen &dokumentaatio"
@@ -4240,6 +4344,10 @@ msgctxt "@tooltip"
 msgid "Skirt"
 msgstr "Helma"
 
+msgctxt "@label"
+msgid "Skirt / Brim"
+msgstr ""
+
 msgctxt "@button"
 msgid "Slice"
 msgstr ""
@@ -4326,6 +4434,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Something went wrong..."
+msgstr ""
+
+msgctxt "@option:check"
+msgid "Sort by installed"
 msgstr ""
 
 msgctxt "@label:listbox"
@@ -4456,6 +4568,14 @@ msgctxt "@action:label"
 msgid "Support Structure"
 msgstr ""
 
+msgctxt "@label"
+msgid "Support for the model is currently off, turn auto-support on."
+msgstr ""
+
+msgctxt "@label"
+msgid "Support interface"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Sync"
 msgstr ""
@@ -4564,6 +4684,14 @@ msgstr "Lämmitettävän pöydän nykyinen lämpötila."
 
 msgctxt "@tooltip"
 msgid "The current temperature of this hotend."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "The default folder to open when loading files."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "The default folder to open when saving files."
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -4698,6 +4826,10 @@ msgstr ""
 
 msgctxt "@info:message"
 msgid "The send-print-job process was aborted. Please try again."
+msgstr ""
+
+msgctxt "@info:status"
+msgid "The source file could not be found. It may have been moved or deleted."
 msgstr ""
 
 msgctxt "@tooltip"
@@ -4916,6 +5048,10 @@ msgctxt "@label"
 msgid "Top / Bottom"
 msgstr "Yläosa/alaosa"
 
+msgctxt "@label"
+msgid "Top / Bottom - Bridging"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
 msgstr ""
@@ -5115,7 +5251,7 @@ msgid "Unavailable printer"
 msgstr ""
 
 msgctxt "@action:button"
-msgid "Undo Stroke"
+msgid "Undo Stroke (Ctrl+L)"
 msgstr ""
 
 msgctxt "@action:inmenu menubar:edit"
@@ -5192,6 +5328,22 @@ msgstr ""
 
 msgctxt "@title"
 msgid "Update Firmware"
+msgstr ""
+
+msgctxt "@button"
+msgid "Update all"
+msgstr ""
+
+msgctxt "@label"
+msgid "Update all the Materials: %1 materials have a new version available."
+msgstr ""
+
+msgctxt "@label"
+msgid "Update all the Plugins: %1 plugins have a new version available."
+msgstr ""
+
+msgctxt "@label"
+msgid "Update all the packages: %1 packages have a new version available."
 msgstr ""
 
 msgctxt "@action:ComboBox Update/override existing profile"
@@ -5603,6 +5755,10 @@ msgid "When checking for updates, only check for stable releases."
 msgstr ""
 
 msgctxt "@info:tooltip"
+msgid "When enabled, file open and save dialogs will always start at the specified locations below. When disabled, dialogs remember the last folder you navigated to."
+msgstr ""
+
+msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
 msgstr "Kun olet tehnyt muutokset profiiliin ja vaihtanut toiseen, näytetään valintaikkuna, jossa kysytään, haluatko säilyttää vai hylätä muutokset. Tässä voit myös valita oletuskäytöksen, jolloin valintaikkunaa ei näytetä uudelleen."
 
@@ -5812,6 +5968,10 @@ msgstr ""
 #~ msgid "Data interchange format"
 #~ msgstr "Data Interchange Format"
 
+#~ msgctxt "@action:menu"
+#~ msgid "Don't show this setting"
+#~ msgstr "Älä näytä tätä asetusta"
+
 #~ msgctxt "@label"
 #~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 #~ msgstr "Ota reunuksen tai pohjaristikon tulostus käyttöön. Tämä lisää kappaleen ympärille tai alle tasaisen alueen, joka on helppo leikata pois myöhemmin."
@@ -5836,9 +5996,21 @@ msgstr ""
 #~ msgid "Graphical user interface"
 #~ msgstr "Graafinen käyttöliittymä"
 
+#~ msgctxt "@action:menu"
+#~ msgid "Hide this setting"
+#~ msgstr "Piilota tämä asetus"
+
+#~ msgctxt "@label"
+#~ msgid "Inner Wall"
+#~ msgstr "Sisäseinämä"
+
 #~ msgctxt "@label Description for application component"
 #~ msgid "Interprocess communication library"
 #~ msgstr "Prosessien välinen tietoliikennekirjasto"
+
+#~ msgctxt "@action:menu"
+#~ msgid "Keep this setting visible"
+#~ msgstr "Pidä tämä asetus näkyvissä"
 
 #~ msgctxt "@label"
 #~ msgid "Nozzle Size"

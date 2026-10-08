@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2026-03-31 08:53+0000\n"
+"POT-Creation-Date: 2026-09-16 16:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -414,6 +414,10 @@ msgctxt "support_tree_branch_diameter_angle label"
 msgid "Branch Diameter Angle"
 msgstr "Dal Çapı Açısı"
 
+msgctxt "support_tree_smooth_layers label"
+msgid "Branch Smoothing Layers"
+msgstr ""
+
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
 msgstr "Geri Çekme Pozisyonunda Durma Mesafesi"
@@ -509,6 +513,10 @@ msgstr "Köprü Duvarı Akışı"
 msgctxt "bridge_wall_speed label"
 msgid "Bridge Wall Speed"
 msgstr "Köprü Duvarı Hızı"
+
+msgctxt "bridge_wall_max_deviation description"
+msgid "Bridge-walls shouldn't deviate from straight lines more than this, anything that falls outside of the area of maximum allowed deviation (defined by the aligned bounding box around the anchor points) isn't considered a bridging wall. Skin lines are already straight."
+msgstr ""
 
 msgctxt "adhesion_type option brim"
 msgid "Brim"
@@ -1018,6 +1026,10 @@ msgctxt "meshfix_fluid_motion_enabled label"
 msgid "Enable Fluid Motion"
 msgstr "Akışkan Hareketini Etkinleştir"
 
+msgctxt "support_brim_enable label"
+msgid "Enable Inner Support Base"
+msgstr ""
+
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
 msgstr "Ütülemeyi Etkinleştir"
@@ -1033,6 +1045,10 @@ msgstr "Nozül Sıcaklığı Kontrolünü Etkinleştir"
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
 msgstr "Sızdırma Kalkanını Etkinleştir"
+
+msgctxt "support_outer_brim_enable label"
+msgid "Enable Outer Support Base"
+msgstr ""
 
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
@@ -1053,10 +1069,6 @@ msgstr "Yazdırma İşlemi Raporlamasını Etkinleştir"
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
 msgstr "Geri Çekmeyi Etkinleştir"
-
-msgctxt "support_brim_enable label"
-msgid "Enable Support Brim"
-msgstr "Destek Kenarını Etkinleştir"
 
 msgctxt "support_bottom_enable label"
 msgid "Enable Support Floor"
@@ -1446,9 +1458,13 @@ msgctxt "support_enable label"
 msgid "Generate Support"
 msgstr "Oluşturma Desteği"
 
+msgctxt "support_outer_brim_enable description"
+msgid "Generate a base around the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
+msgstr ""
+
 msgctxt "support_brim_enable description"
-msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
-msgstr "İlk katmanın destek dolgu alanı içinde bir kenar oluşturun. Bu kenar, desteğin çevresine değil, altına yazdırılır. Bu ayarı etkinleştirmek, desteğin baskı tablasına yapışma alanını artırır."
+msgid "Generate a base within the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
+msgstr ""
 
 msgctxt "support_interface_enable description"
 msgid "Generate a dense interface between the model and the support. This will create a skin at the top of the support on which the model is printed and at the bottom of the support, where it rests on the model."
@@ -1950,6 +1966,10 @@ msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
 msgstr "İç Duvar Ekstrüderi"
 
+msgctxt "wall_x_inset label"
+msgid "Inner Wall Inset"
+msgstr ""
+
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
 msgstr "İç Duvar Salınımı"
@@ -1965,6 +1985,10 @@ msgstr "İç Duvar Akışı"
 msgctxt "wall_line_width_x label"
 msgid "Inner Wall(s) Line Width"
 msgstr "İç Duvar(lar) Hattı Genişliği"
+
+msgctxt "wall_x_inset description"
+msgid "Inset applied to the path of the inner wall(s). The infill will move along with the new boundary set by the innermost inner wall"
+msgstr ""
 
 msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
@@ -2356,6 +2380,10 @@ msgctxt "support_tree_angle label"
 msgid "Maximum Branch Angle"
 msgstr "Maksimum Dal Açısı"
 
+msgctxt "bridge_wall_max_deviation label"
+msgid "Maximum Bridge Deviation"
+msgstr ""
+
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
 msgstr "Maksimum Sapma"
@@ -2527,6 +2555,10 @@ msgstr "Modele Göre Minimum Yükseklik"
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
 msgstr "Minimum Dolgu Alanı"
+
+msgctxt "minimum_infill_line_length label"
+msgid "Minimum Infill Line Length"
+msgstr ""
 
 msgctxt "cool_min_layer_time label"
 msgid "Minimum Layer Time"
@@ -2776,6 +2808,18 @@ msgctxt "machine_extruder_count description"
 msgid "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle."
 msgstr "Ekstruder dişli çarklarının sayısı. Ekstruder dişli çarkı besleyici, bowden tüpü ve nozülden oluşur."
 
+msgctxt "support_wall_thickness_layer_smooth description"
+msgid "Number of layers where the support wall line width transition is smoothed out over. (This may still create jumps when one area splits off from the other though.)"
+msgstr ""
+
+msgctxt "support_wall_thickness_bottom_layers description"
+msgid "Number of layers, counted from the build-plate, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
+msgstr ""
+
+msgctxt "support_wall_thickness_top_layers description"
+msgid "Number of layers, counted from the closest tip of the branches downwards, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
+msgstr ""
+
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
 msgstr "Nozülün fırçadan geçirilme sayısı."
@@ -2827,6 +2871,10 @@ msgstr "Mümkün olduğunda yapı levhası üzerinde"
 msgctxt "support_tree_rest_preference option graceful"
 msgid "On model if required"
 msgstr "Gerektiğinde model üzerinde"
+
+msgctxt "top_bottom_skin_merge_distance description"
+msgid "On sloped areas especially, top/bottom can become very small or narrow, while skin is nearby. This will sometimes cause walls not to print well. Merge top/bottom into skin when areas become too thin, where 'too thin' is defined by the merge distance (any thinner is merged into a neighbouring area if present)."
+msgstr ""
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -3884,6 +3932,26 @@ msgctxt "acceleration_support label"
 msgid "Support Acceleration"
 msgstr "Destek İvmesi"
 
+msgctxt "support_base_height label"
+msgid "Support Base Height"
+msgstr ""
+
+msgctxt "support_base_inside_width label"
+msgid "Support Base Inside Width"
+msgstr ""
+
+msgctxt "support_base_outside_width label"
+msgid "Support Base Outside Width"
+msgstr ""
+
+msgctxt "support_base_curve_magnitude label"
+msgid "Support Base Slope"
+msgstr ""
+
+msgctxt "support_base_width label"
+msgid "Support Base Width"
+msgstr ""
+
 msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Destek Alt Mesafesi"
@@ -3891,14 +3959,6 @@ msgstr "Destek Alt Mesafesi"
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Destek Alt Duvar Hattı Sayısı"
-
-msgctxt "support_brim_line_count label"
-msgid "Support Brim Line Count"
-msgstr "Destek Kenar Hattı Sayısı"
-
-msgctxt "support_brim_width label"
-msgid "Support Brim Width"
-msgstr "Destek Kenar Genişliği"
 
 msgctxt "support_zag_skip_count label"
 msgid "Support Chunk Line Count"
@@ -3915,6 +3975,10 @@ msgstr "Destek Yoğunluğu"
 msgctxt "support_xy_overrides_z label"
 msgid "Support Distance Priority"
 msgstr "Destek Mesafesi Önceliği"
+
+msgctxt "support_enlarged_wall_thickness label"
+msgid "Support Enlarged Wall Thickness"
+msgstr ""
 
 msgctxt "support_extruder_nr label"
 msgid "Support Extruder"
@@ -4008,6 +4072,22 @@ msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
 msgstr "Destek Dolgu Hızı"
 
+msgctxt "support_brim_line_count label"
+msgid "Support Inner Brim Line Count"
+msgstr ""
+
+msgctxt "support_brim_width label"
+msgid "Support Inner Brim Width"
+msgstr ""
+
+msgctxt "support_inside_base_height label"
+msgid "Support Inside Base Height"
+msgstr ""
+
+msgctxt "support_inside_base_curve_magnitude label"
+msgid "Support Inside Base Slope"
+msgstr ""
+
 msgctxt "acceleration_support_interface label"
 msgid "Support Interface Acceleration"
 msgstr "Destek Arayüzü İvmesi"
@@ -4096,9 +4176,21 @@ msgctxt "support_mesh label"
 msgid "Support Mesh"
 msgstr "Destek Örgüsü"
 
+msgctxt "support_outside_base_height label"
+msgid "Support Outside Base Height"
+msgstr ""
+
+msgctxt "support_outside_base_curve_magnitude label"
+msgid "Support Outside Base Slope"
+msgstr ""
+
 msgctxt "support_angle label"
 msgid "Support Overhang Angle"
 msgstr "Destek Çıkıntı Açısı"
+
+msgctxt "support_paint_resolution label"
+msgid "Support Painting Precision"
+msgstr ""
 
 msgctxt "support_pattern label"
 msgid "Support Pattern"
@@ -4187,6 +4279,22 @@ msgstr "Destek Üst Mesafesi"
 msgctxt "support_wall_count label"
 msgid "Support Wall Line Count"
 msgstr "Duvar Hattı Sayısını Destekle"
+
+msgctxt "support_wall_thickness_layer_smooth label"
+msgid "Support Wall Smooth Layer Width"
+msgstr ""
+
+msgctxt "support_wall_thickness label"
+msgid "Support Wall Thickness"
+msgstr ""
+
+msgctxt "support_wall_thickness_bottom_layers label"
+msgid "Support Wall Unenlarged Bottom Layers"
+msgstr ""
+
+msgctxt "support_wall_thickness_top_layers label"
+msgid "Support Wall Unenlarged Top Layers"
+msgstr ""
 
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
@@ -4560,13 +4668,13 @@ msgctxt "support_z_seam_min_distance description"
 msgid "The distance between the model and its support structure at the z-axis seam."
 msgstr "Model ile z ekseni dikiş izindeki destek yapısı arasındaki mesafe."
 
-msgctxt "retraction_combing_avoid_distance description"
-msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
-msgstr "Bir modelin içinde hareket ederken nozül ile önceden basılmış dış duvarlar arasındaki mesafe."
-
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
 msgstr "Hareket esnasında atlama yaparken nozül ve daha önce yazdırılmış olan bölümler arasındaki mesafe."
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and outer walls when travelling inside a model."
+msgstr ""
 
 msgctxt "raft_base_line_spacing description"
 msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
@@ -4796,6 +4904,14 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "İlk katmanın milimetre cinsinden yüksekliği. Kalın ilk katmanlar yapı levhasına yapışmayı kolaylaştırır."
 
+msgctxt "support_inside_base_height description"
+msgid "The height of the inside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
+
+msgctxt "support_outside_base_height description"
+msgid "The height of the outside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
+
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
 msgstr "Prime tower tabanının yüksekliği. Bu değeri artırmak, taban daha geniş olacağı için daha sağlam bir prime tower oluşturur. Eğer bu ayar çok düşükse, prime tower sağlam bir tabana sahip olmayacaktır."
@@ -4803,6 +4919,10 @@ msgstr "Prime tower tabanının yüksekliği. Bu değeri artırmak, taban daha g
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Modelin üzerinde sabit duran desteğin merdiven benzeri alt kısmının basamak yüksekliği. Daha düşük bir değer desteğin hareket ettirilmesini zorlaştırırken, daha yüksek bir değer kararsız destek yapılarına yol açabilir. Merdiven benzeri davranışı kapatmak için sıfır değerine ayarlayın."
+
+msgctxt "support_base_height description"
+msgid "The height of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
 
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
@@ -4878,9 +4998,21 @@ msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "Geri çekme hareketi sırasında geri çekilen malzemenin uzunluğu."
 
+msgctxt "support_inside_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the inside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr ""
+
+msgctxt "support_outside_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the outside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr ""
+
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
 msgstr "Prime tower tabanının eğiminde kullanılan büyüklük faktörü. Bu değeri artırırsanız, taban daha ince hale gelir. Azaltırsanız, taban daha kalın olur."
+
+msgctxt "support_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr ""
 
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
@@ -5159,8 +5291,8 @@ msgid "The number of lines used for a brim. More brim lines enhance adhesion to 
 msgstr "Bir kenar için kullanılan hatların sayısı Daha fazla kenar hattı yapı levhasına yapışmayı artırmanın yanı sıra etkin yazdırma alanını da azaltır."
 
 msgctxt "support_brim_line_count description"
-msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr "Bir destek kenarı için kullanılan hatların sayısı. Daha fazla kenar hattı, ekstra malzeme karşılığında baskı tablasına daha fazla alanın yapışacağı anlamına gelir."
+msgid "The number of lines used for the support inside brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr ""
 
 msgctxt "build_volume_fan_nr description"
 msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
@@ -5246,9 +5378,17 @@ msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements."
 msgstr ""
 
+msgctxt "support_tree_smooth_layers description"
+msgid "The positions of the tree support branches will be adjusted to smooth them over the specified number of layers using a rolling window average. This improves inter-layer adhesion and sturdiness, but an excessively high value may cause the structure to bend too close to the model or compromise its integrity."
+msgstr ""
+
 msgctxt "multi_material_paint_resolution description"
 msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
 msgstr "Boyama verilerine bağlı olarak çoklu materyal şekillerinin oluşturulduğu sıradaki detayların hassasiyeti. Daha düşük bir hassasiyet daha çok detay sunar fakat dilimleme süresini ve bellek kullanımını artırır."
+
+msgctxt "support_paint_resolution description"
+msgid "The precision of the details when generating support based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr ""
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
@@ -5538,6 +5678,10 @@ msgctxt "wall_thickness description"
 msgid "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls."
 msgstr "Yatay yönde duvar kalınlığı. Bu değer duvar hattı genişliğiyle bölündüğünde duvar sayısını belirler."
 
+msgctxt "support_enlarged_wall_thickness description"
+msgid "The thickness of the walls with which to surround the support infill, when adhesion with the above/below layer is very low. Using larger or extra walls in this case will improve adhesion and make the branch sturdier."
+msgstr ""
+
 msgctxt "infill_sparse_thickness description"
 msgid "The thickness per layer of infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "Dolgu malzemesinin her bir katmanının kalınlığı Bu değer her zaman katman yüksekliğinin katı olmalıdır, aksi takdirde yuvarlanır."
@@ -5545,6 +5689,10 @@ msgstr "Dolgu malzemesinin her bir katmanının kalınlığı Bu değer her zama
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "Her katmandaki destek dolgusu malzemesinin kalınlığı. Bu değer her zaman katman yüksekliğinin bir katı olmalıdır, aksi takdirde değer yuvarlanır."
+
+msgctxt "support_wall_thickness description"
+msgid "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr ""
 
 msgctxt "machine_buildplate_type description"
 msgid "The type of build plate installed on the printer."
@@ -5567,12 +5715,20 @@ msgid "The width (X-direction) of the printable area."
 msgstr "Yazdırılabilir alan genişliği (X yönü)."
 
 msgctxt "support_brim_width description"
-msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr "Desteğin altına yazdırılacak kenarın genişliği. Daha geniş kenar, ekstra malzeme karşılığında baskı tablasına daha fazla alanın yapışacağı anlamına gelir."
+msgid "The width of the brim to print inside the support, on the first layer. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr ""
+
+msgctxt "support_base_inside_width description"
+msgid "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base."
+msgstr ""
 
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "İç içe geçen yapı kirişlerinin genişliği."
+
+msgctxt "support_base_outside_width description"
+msgid "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
@@ -5581,6 +5737,10 @@ msgstr "Prime tower brim/tabanının genişliği. Daha büyük bir taban yapış
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "İlk Direk Genişliği."
+
+msgctxt "support_base_width description"
+msgid "The width of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
+msgstr ""
 
 msgctxt "magic_fuzzy_skin_thickness description"
 msgid "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered."
@@ -5806,6 +5966,10 @@ msgctxt "top_bottom_thickness label"
 msgid "Top/Bottom Thickness"
 msgstr "Üst/Alt Kalınlık"
 
+msgctxt "top_bottom_skin_merge_distance label"
+msgid "Top/Bottom/Skin Merge Distance"
+msgstr ""
+
 msgctxt "support_type option buildplate"
 msgid "Touching Buildplate"
 msgstr "Yapı Levhasına Dokunma"
@@ -6021,6 +6185,10 @@ msgstr "Duvarlar"
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
 msgstr "Bu açıdan daha fazla çıkıntı yapan duvarlar, çıkıntılı duvar ayarları kullanılarak yazdırılacaktır. Değer 90 olduğunda, hiçbir duvar çıkıntı olarak değerlendirilmeyecektir. Dayanak tarafından desteklenen çıkıntılar da çıkıntı olarak değerlendirilmeyecektir. Ayrıca, çıkıntının yarısından az olan herhangi bir hat da çıkıntı olarak değerlendirilmeyecektir."
+
+msgctxt "minimum_infill_line_length description"
+msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
+msgstr ""
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -6498,9 +6666,17 @@ msgstr "hareket"
 #~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
 #~ msgstr "Modelin ana hatlarında yer alan köşelerin dikişin konumunu etkileyip etkilemediğini kontrol edin. Hiçbiri, köşelerin dikişin konumunu etkilemediği anlamına gelir. Dikişi Gizle, dikişin daha büyük olasılıkla bir iç köşe üzerinde oluşmasını sağlar. Dikişi Açığa Çıkar, dikişin daha büyük olasılıkla bir dış köşe üzerinde oluşmasını sağlar. Dikişi Gizle veya Açığa Çıkar, dikişin daha büyük olasılıkla bir iç veya dış köşe üzerinde oluşmasını sağlar. Akıllı Gizleme, hem iç hem de dış köşelere izin verir ancak uygun olduğu durumlarda iç köşeleri daha sık seçer."
 
+#~ msgctxt "support_brim_enable label"
+#~ msgid "Enable Support Brim"
+#~ msgstr "Destek Kenarını Etkinleştir"
+
 #~ msgctxt "extra_infill_lines_to_support_skins label"
 #~ msgid "Extra Infill Lines To Support Skins"
 #~ msgstr "Kaplamaları Desteklemek İçin Ekstra Dolgu Hatları"
+
+#~ msgctxt "support_brim_enable description"
+#~ msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
+#~ msgstr "İlk katmanın destek dolgu alanı içinde bir kenar oluşturun. Bu kenar, desteğin çevresine değil, altına yazdırılır. Bu ayarı etkinleştirmek, desteğin baskı tablasına yapışma alanını artırır."
 
 #~ msgctxt "bridge_sparse_infill_max_density description"
 #~ msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
@@ -6550,6 +6726,14 @@ msgstr "hareket"
 #~ msgid "Skin Edge Support Thickness"
 #~ msgstr "Kaplamanın Kenar Desteği Kalınlığı"
 
+#~ msgctxt "support_brim_line_count label"
+#~ msgid "Support Brim Line Count"
+#~ msgstr "Destek Kenar Hattı Sayısı"
+
+#~ msgctxt "support_brim_width label"
+#~ msgid "Support Brim Width"
+#~ msgstr "Destek Kenar Genişliği"
+
 #~ msgctxt "z_seam_x description"
 #~ msgid "The X coordinate of the position near where to start printing each part in a layer."
 #~ msgstr "Bir katmandaki her kısmın yazdırılmaya başlanacağı yere yakın konumun X koordinatı."
@@ -6557,6 +6741,10 @@ msgstr "hareket"
 #~ msgctxt "z_seam_y description"
 #~ msgid "The Y coordinate of the position near where to start printing each part in a layer."
 #~ msgstr "Bir katmandaki her kısmın yazdırılmaya başlanacağı yere yakın konumun Y koordinatı."
+
+#~ msgctxt "retraction_combing_avoid_distance description"
+#~ msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
+#~ msgstr "Bir modelin içinde hareket ederken nozül ile önceden basılmış dış duvarlar arasındaki mesafe."
 
 #~ msgctxt "machine_nozzle_head_distance description"
 #~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
@@ -6574,6 +6762,10 @@ msgstr "hareket"
 #~ msgid "The number of infill layers that supports skin edges."
 #~ msgstr "Kaplamanın kenarlarını destekleyen dolgu katmanının kalınlığı."
 
+#~ msgctxt "support_brim_line_count description"
+#~ msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+#~ msgstr "Bir destek kenarı için kullanılan hatların sayısı. Daha fazla kenar hattı, ekstra malzeme karşılığında baskı tablasına daha fazla alanın yapışacağı anlamına gelir."
+
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
 #~ msgstr "Baskının dolgu malzemesinin şeklidir. Hat ve zikzak dolgu, farklı katmanlar üzerinde yön değiştirerek malzeme maliyetini azaltır. Izgara, üçgen, üçlü altıgen, kübik, sekizlik, çeyrek kübik, çapraz ve eşmerkezli şekiller her katmana tam olarak basılır. Gyroid, kübik, çeyrek kübik ve sekizlik dolgu, her yönde daha eşit bir kuvvet dağılımı sağlamak için her katmanda değişir. Yıldırım dolgu, objenin yalnızca tavanını destekleyerek dolgu miktarını en aza indirmeye çalışır."
@@ -6589,6 +6781,10 @@ msgstr "hareket"
 #~ msgctxt "skin_edge_support_thickness description"
 #~ msgid "The thickness of the extra infill that supports skin edges."
 #~ msgstr "Kaplamanın kenarlarını destekleyen ekstra dolgunun kalınlığı."
+
+#~ msgctxt "support_brim_width description"
+#~ msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+#~ msgstr "Desteğin altına yazdırılacak kenarın genişliği. Daha geniş kenar, ekstra malzeme karşılığında baskı tablasına daha fazla alanın yapışacağı anlamına gelir."
 
 #~ msgctxt "extra_infill_lines_to_support_skins option walls"
 #~ msgid "Walls Only"
