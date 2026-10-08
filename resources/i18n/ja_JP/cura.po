@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-16 16:53+0200\n"
-"PO-Revision-Date: 2026-02-23 11:33+0000\n"
+"PO-Revision-Date: 2026-10-08 13:02+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -191,11 +191,11 @@ msgstr "3MFリーダー"
 
 msgctxt "name"
 msgid "3MF Writer"
-msgstr "3MFリーダー"
+msgstr "3MFライター"
 
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
-msgstr "3MFリーダーのプラグインが破損しています。"
+msgstr "3MFライターのプラグインが破損しています。"
 
 msgctxt "@item:inlistbox"
 msgid "3MF file"
@@ -211,7 +211,7 @@ msgstr "<b>%1</b>カスタムプロファイルが一部の設定を上書き中
 
 msgctxt "@label"
 msgid "<b>Enable auto-support</b>"
-msgstr ""
+msgstr "<b>自動サポートを有効化</b>"
 
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
@@ -267,11 +267,11 @@ msgstr ""
 
 msgctxt "@info:status"
 msgid "<p>One or more 3D models may not print optimally due to the model shape and missing support:</p><p>{model_names}</p><p>Enable auto-support or paint on support for better print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667417606331\">View support settings guide</a></p>"
-msgstr ""
+msgstr "<p>3Dモデルの形状とサポートの不足により、1つ以上のモデルが適切に印刷されない可能性があります:</p><p>{model_names}</p><p>より高い品質と信頼性のため、自動サポートを有効にするか、ペイントでサポートする箇所を指定してください。</p><p><a href=\"https://support.ultimaker.com/s/article/1667417606331\">サポート設定ガイドを参照</a>（英語）</p>"
 
 msgctxt "@info:status"
 msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p><p>{model_names}</p><p>Find out how to ensure the best possible print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
-msgstr ""
+msgstr "<p>モデルのサイズと材料設定により、1つ以上の3Dモデルが適切に印刷されない可能性があります:</p><p>{model_names}</p><p>可能な限り最高の印刷品質と信頼性を得るため調整してください。</p><p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">印刷品質ガイド</a>（英語）</p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
@@ -440,7 +440,7 @@ msgstr "手動でプリンターを追加"
 
 msgctxt "@action:menu"
 msgid "Add to visible settings"
-msgstr ""
+msgstr "表示設定に追加"
 
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
@@ -464,7 +464,7 @@ msgstr "プリントのインフィルの密度を調整します。"
 
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr "サポート材の配置を調整します。配置はTouching BuildplateまたはEveryWhereに設定できます。EveryWhereに設定した場合、サポート材がモデルの上にもプリントされます。"
+msgstr "サポート材の配置を調整します。配置は「ビルドプレートにタッチ」または「全対象」に設定できます。全対象に設定した場合、サポート材がモデルの上にもプリントされます。"
 
 msgctxt "@label Header for list of settings."
 msgid "Affected By"
@@ -524,7 +524,7 @@ msgstr "常に変更した設定を新しいプロファイルに送信する"
 
 msgctxt "@option:check"
 msgid "Always use the same default locations for opening and saving files"
-msgstr ""
+msgstr "ファイルの読み込み・保存で常にそれぞれ既定の場所を使用"
 
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
@@ -532,7 +532,7 @@ msgstr "単位がミリメートルではなくメートルの場合、モデル
 
 msgctxt "@label"
 msgid "Angle Threshold"
-msgstr ""
+msgstr "角度しきい値"
 
 msgctxt "annealing intent label"
 msgid "Annealing"
@@ -592,11 +592,11 @@ msgstr "新しいプロジェクトを開始しますか？この操作により
 
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
-msgstr "%1を取り外しますか？この操作は取り消しできません。"
+msgstr "%1を削除してもよろしいですか？この操作は元に戻せません。"
 
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
-msgstr "{0}を取り除いてもよろしいですか？この操作は元に戻せません。"
+msgstr "{0}を削除してもよろしいですか？この操作は元に戻せません。"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
@@ -616,7 +616,7 @@ msgstr "質問をする"
 
 msgctxt "@menuitem"
 msgid "Auto"
-msgstr ""
+msgstr "自動"
 
 msgctxt "@checkbox:description"
 msgid "Auto Backup"
@@ -624,11 +624,11 @@ msgstr "自動バックアップ"
 
 msgctxt "@label"
 msgid "Auto-Support"
-msgstr ""
+msgstr "自動サポート"
 
 msgctxt "@label"
 msgid "Auto-Support Overhang"
-msgstr ""
+msgstr "自動サポートオーバーハング"
 
 msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
@@ -716,7 +716,7 @@ msgstr "ブランド"
 
 msgctxt "@action:button"
 msgid "Browse"
-msgstr ""
+msgstr "参照"
 
 msgctxt "@label"
 msgid "Brush Shape"
@@ -844,7 +844,7 @@ msgstr "プリントコア%1を%2から%3に変更します。"
 
 msgctxt "@label:category menu label"
 msgid "Changed settings"
-msgstr ""
+msgstr "変更された設定"
 
 msgctxt "@info:title"
 msgid "Changes detected from your UltiMaker account"
@@ -1018,7 +1018,7 @@ msgstr "表示項目設定..."
 
 msgctxt "@action:menu"
 msgid "Configure visible settings..."
-msgstr ""
+msgstr "表示設定を変更..."
 
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
@@ -1161,7 +1161,7 @@ msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "Operating system is blocking it (antivirus?)"
 msgstr ""
-"EnginePluginを開始できませんでした：{self._plugin_id}\n"
+"EnginePluginを開始できませんでした: {self._plugin_id}\n"
 "OSによりブロックされています（ウイルス対策？）"
 
 msgctxt "@info:plugin_failed"
@@ -1370,11 +1370,11 @@ msgstr "プロジェクトファイル読み込み時のデフォルト動作: "
 
 msgctxt "@window:text"
 msgid "Default file load location:"
-msgstr ""
+msgstr "既定のファイル読み込み先:"
 
 msgctxt "@window:text"
 msgid "Default file save location:"
-msgstr ""
+msgstr "既定のファイル保存先:"
 
 msgctxt "@action:button"
 msgid "Defaults"
@@ -1554,7 +1554,7 @@ msgstr "有効にする"
 
 msgctxt "@button"
 msgid "Enable Auto-Support"
-msgstr ""
+msgstr "自動サポートを有効化"
 
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
@@ -1722,7 +1722,7 @@ msgstr "エクストルーダーを無効にしました"
 
 msgctxt "@action:button"
 msgid "Face"
-msgstr ""
+msgstr "表面"
 
 msgctxt "@label:status"
 msgid "Failed"
@@ -1750,7 +1750,7 @@ msgstr "材料のエクスポートに失敗しました <filename>%1</filename>
 
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
-msgstr "<filename>{0}</filename>にプロファイルを書き出すのに失敗しました: <message>{1}</message>"
+msgstr "<filename>{0}</filename>へのプロファイル書き出しに失敗しました: <message>{1}</message>"
 
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
@@ -1758,15 +1758,15 @@ msgstr "<filename>{0}</filename>にプロファイルを書き出すことに失
 
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "<filename>{0}</filename>からプロファイルのインポートに失敗しました:"
+msgstr "<filename>{0}</filename>からのプロファイル読み込みに失敗しました:"
 
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "<filename>{0}</filename>からプロファイルのインポートに失敗しました:"
+msgstr "<filename>{0}</filename>からのプロファイル読み込みに失敗しました:"
 
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
-msgstr "<filename>{0}</filename>からプロファイルのインポートに失敗しました: {1}"
+msgstr "<filename>{0}</filename>からのプロファイル読み込みに失敗しました: {1}"
 
 msgctxt "@button"
 msgid "Failed to load packages:"
@@ -1810,7 +1810,7 @@ msgstr "すでに存在するファイルです"
 
 msgctxt "@info:title"
 msgid "File Not Found"
-msgstr ""
+msgstr "ファイルが見つかりません"
 
 msgctxt "@info:title"
 msgid "File Saved"
@@ -1918,7 +1918,7 @@ msgstr "簡単な数ステップの手順に従うことで、すべての材料
 
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
-msgstr "すべてのポジションに。"
+msgstr "すべての地点に対して、紙1枚をノズルの下に敷いてビルドプレートの高さを調整します。紙がビルドプレートとノズルの先端との間でわずかに挟まる時、正しい高さになります。"
 
 msgctxt "@info:tooltip"
 msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
@@ -2185,19 +2185,19 @@ msgstr "プリンターマネージャーを初期化中..."
 
 msgctxt "@tooltip"
 msgid "Inner Walls"
-msgstr "インナーウォール"
+msgstr "内側ウォール"
 
 msgctxt "@label"
 msgid "Inner wall"
-msgstr ""
+msgstr "内側ウォール"
 
 msgctxt "@label"
 msgid "Inner wall - Bridging"
-msgstr ""
+msgstr "内側ウォール - ブリッジ"
 
 msgctxt "@label"
 msgid "Inner wall - Overhanging"
-msgstr ""
+msgstr "内側ウォール - オーバーハング"
 
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
@@ -2409,7 +2409,7 @@ msgstr "線形"
 
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
-msgstr "%3を材料%1にロードします。（これは上書きできません）"
+msgstr "%3を材料%1にロードします。（これは上書きされません）"
 
 msgctxt "@button"
 msgid "Load more"
@@ -2477,7 +2477,7 @@ msgstr "プリンターの設定アクション"
 
 msgctxt "@backuplist:label"
 msgid "Machines"
-msgstr "プリンタ"
+msgstr "プリンター"
 
 msgctxt "@text"
 msgid "Make sure all your printers are turned ON and connected to Digital Factory."
@@ -2847,7 +2847,7 @@ msgstr "現在のフィルターでは、結果が見つかりません"
 
 msgctxt "@info:status"
 msgid "No settings have been changed from the active profile defaults."
-msgstr ""
+msgstr "どの設定もアクティブなプロファイルの既定値から変更されていません。"
 
 msgctxt "@label"
 msgid "No specific value has been set"
@@ -3066,15 +3066,15 @@ msgstr "アウターウォール"
 
 msgctxt "@label"
 msgid "Outer wall"
-msgstr ""
+msgstr "外側ウォール"
 
 msgctxt "@label"
 msgid "Outer wall - Bridging"
-msgstr ""
+msgstr "外側ウォール - ブリッジ"
 
 msgctxt "@label"
 msgid "Outer wall - Overhanging"
-msgstr ""
+msgstr "外側ウォール - オーバーハング"
 
 msgctxt "@label"
 msgid "Overlaps with this model are not supported."
@@ -3095,7 +3095,7 @@ msgstr[0] "%1個の設定を上書きします。"
 
 msgctxt "@label:category menu label"
 msgid "Overview"
-msgstr ""
+msgstr "概要"
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
@@ -3131,7 +3131,7 @@ msgstr "ペイントビュー"
 
 msgctxt "@label"
 msgid "Painting is not available on this device. Your graphics card or drivers do not fully support it. Updating your graphics drivers may enable this feature."
-msgstr ""
+msgstr "ペイント機能はこのデバイスで使用できません。グラフィックスカードまたはドライバーが完全に対応していません。グラフィックスドライバーを更新することで使用できる場合があります。"
 
 msgctxt "@info:status"
 msgid "Parsing G-code"
@@ -3247,8 +3247,8 @@ msgid ""
 "- Are not all set as modifier meshes"
 msgstr ""
 "設定を見直し、モデルが次の状態かどうかを確認してください。\n"
-"- 造形サイズに合っている\n"
-"- すべてのセットが修飾子メッシュとして設定されていない"
+"- 造形サイズに収まっているか\n"
+"- すべてが変更メッシュとして設定されていないか"
 
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
@@ -3256,7 +3256,7 @@ msgstr "このUltiMaker Originalに施されたアップグレートを選択す
 
 msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-msgstr "UltiMaker Cura Enterprise用の検証済みプラグインおよび材料を入手するにはサインインしてください。"
+msgstr "UltiMaker Cura Enterprise用の認証済みプラグインおよび材料を入手するにはサインインしてください。"
 
 msgctxt "@info:tooltip"
 msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
@@ -3328,7 +3328,7 @@ msgstr "ステージの準備"
 
 msgctxt "@label"
 msgid "Preparing model for painting..."
-msgstr "ペイント用のモデルを準備中です..."
+msgstr "ペイント用のモデルを準備中..."
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -3360,7 +3360,7 @@ msgstr "プライムタワー"
 
 msgctxt "@label"
 msgid "Prime tower"
-msgstr ""
+msgstr "プライムタワー"
 
 msgctxt "@label"
 msgid "Priming"
@@ -3390,7 +3390,7 @@ msgstr[0] "選択したモデルを%1で印刷する"
 
 msgctxt "@label"
 msgid "Print Time Estimation Factor"
-msgstr "予想プリント時間の要素"
+msgstr "予想プリント時間係数"
 
 msgctxt "@label"
 msgid "Print as support"
@@ -3622,7 +3622,7 @@ msgstr "Cura内にモニターステージを提供します。"
 
 msgctxt "description"
 msgid "Provides a normal solid mesh view."
-msgstr "ノーマルなソリットメッシュビューを提供します。"
+msgstr "ノーマルなソリッドメッシュビューを提供します。"
 
 msgctxt "description"
 msgid "Provides a prepare stage in Cura."
@@ -3634,7 +3634,7 @@ msgstr "Cura内にプレビューステージを提供します。"
 
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "プリンター設定を変更する方法を提供します。（印刷ボリューム、ノズルサイズなど）"
+msgstr "プリンター設定を変更する方法を提供します。（ビルドボリューム、ノズルサイズなど）"
 
 msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
@@ -3762,7 +3762,7 @@ msgstr "推奨設定(<b>%1</b>)が変更されました。"
 
 msgctxt "@action:button"
 msgid "Redo Stroke (Ctrl+Shift+L)"
-msgstr ""
+msgstr "描画をやり直し (Ctrl+Shift+L)"
 
 msgctxt "@tooltip"
 msgid "Refine seam placement by defining preferred/avoidance areas"
@@ -3818,7 +3818,7 @@ msgstr "削除"
 
 msgctxt "@action:menu"
 msgid "Remove from visible settings"
-msgstr ""
+msgstr "表示設定から削除"
 
 msgctxt "@action:button"
 msgid "Remove printers"
@@ -4034,11 +4034,11 @@ msgstr "全モデルを選択"
 
 msgctxt "@title:window"
 msgid "Select Default Load Folder"
-msgstr ""
+msgstr "既定の読み込み先フォルダーを選択"
 
 msgctxt "@title:window"
 msgid "Select Default Save Folder"
-msgstr ""
+msgstr "既定の保存先フォルダーを選択"
 
 msgctxt "@title:window"
 msgid "Select Printer"
@@ -4070,7 +4070,7 @@ msgstr "ロード後にモデルを選択"
 
 msgctxt "@tooltip"
 msgid "Select neighboring faces whose angle differs by no more than this value."
-msgstr ""
+msgstr "この値を超える角度にならない隣接した面を選択。"
 
 msgctxt "@action:button"
 msgid "Select settings"
@@ -4078,7 +4078,7 @@ msgstr "設定を選択する"
 
 msgctxt "@tooltip"
 msgid "Select the size of the brush for painting."
-msgstr ""
+msgstr "ペイントのブラシサイズを選択。"
 
 msgctxt "@action"
 msgid "Select upgrades"
@@ -4218,7 +4218,7 @@ msgstr "レイヤーを強制的に互換モードにするかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
-msgstr "モデルがビルドボリュームに対して大きすぎる場合にサイズを調整するかどうか"
+msgstr "モデルが造形可能サイズに対して大きすぎる場合にサイズを調整するかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
@@ -4226,7 +4226,7 @@ msgstr "モデルをロード後に選択するかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
-msgstr "プラットフォーム上のモデルをブルドプレートに触れるまで下げるかどうか"
+msgstr "プラットフォーム上のモデルをビルドプレートに触れるまで下げるかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
@@ -4270,7 +4270,7 @@ msgstr "カスタム表示"
 
 msgctxt "@action:inmenu"
 msgid "Show File Location"
-msgstr ""
+msgstr "ファイルの場所を表示"
 
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
@@ -4362,7 +4362,7 @@ msgstr "スカート"
 
 msgctxt "@label"
 msgid "Skirt / Brim"
-msgstr ""
+msgstr "スカート・ブリム"
 
 msgctxt "@button"
 msgid "Slice"
@@ -4454,7 +4454,7 @@ msgstr "問題が発生しました..."
 
 msgctxt "@option:check"
 msgid "Sort by installed"
-msgstr ""
+msgstr "インストール状況で並び替え"
 
 msgctxt "@label:listbox"
 msgid "Speed"
@@ -4506,7 +4506,7 @@ msgstr "スライス処理の開始"
 
 msgctxt "@label"
 msgid "Starts"
-msgstr "開始"
+msgstr "開始位置"
 
 msgctxt "@text"
 msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
@@ -4586,11 +4586,11 @@ msgstr "サポート構造"
 
 msgctxt "@label"
 msgid "Support for the model is currently off, turn auto-support on."
-msgstr ""
+msgstr "現在、モデルのサポートが無効化されています。自動サポートを有効にしてください。"
 
 msgctxt "@label"
 msgid "Support interface"
-msgstr ""
+msgstr "サポート境界面"
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4667,7 +4667,7 @@ msgstr "ビルドプレートからベースまでの高さをミリメートル
 
 msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
-msgstr "プリントシークエンス設定値により、ガントリーと造形物の衝突を避けるため印刷データの高さを低くしました。"
+msgstr "プリント順序設定により、ガントリーと造形物の衝突を避けるため印刷データの高さを低くしました。"
 
 msgctxt "@status"
 msgid "The cloud connection is currently unavailable. Please check your internet connection."
@@ -4703,11 +4703,11 @@ msgstr "このホットエンドの現在の温度です。"
 
 msgctxt "@info:tooltip"
 msgid "The default folder to open when loading files."
-msgstr ""
+msgstr "ファイルを読み込む際に開く既定のフォルダー。"
 
 msgctxt "@info:tooltip"
 msgid "The default folder to open when saving files."
-msgstr ""
+msgstr "ファイルを保存する際に開く既定のフォルダー。"
 
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
@@ -4844,7 +4844,7 @@ msgstr "プリントジョブ送信処理が中断されました。もう一度
 
 msgctxt "@info:status"
 msgid "The source file could not be found. It may have been moved or deleted."
-msgstr ""
+msgstr "ソースファイルが見つかりませんでした。移動または削除された可能性があります。"
 
 msgctxt "@tooltip"
 msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
@@ -4988,11 +4988,11 @@ msgstr "この設定がアクティブなプリンターにより非表示にな
 msgctxt "@item:tooltip %1 is list of setting names"
 msgid "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible."
 msgid_plural "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible."
-msgstr[0] "この設定は%1の値により表示されていません。%1の値を変更すると表示されるようになります。"
+msgstr[0] "この設定は%1の値により表示されていません。該当の値を変更すると表示されるようになります。"
 
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
-msgstr "この設定は常に全てのエクストルーダーに共有されています。ここですべてのエクストルーダーの数値を変更できます。"
+msgstr "この設定は常に全てのエクストルーダーに共有されています。ここで値を変更すると、全てのエクストルーダーに適用されます。"
 
 msgctxt "@label"
 msgid ""
@@ -5062,7 +5062,7 @@ msgstr "トップ/ボトム"
 
 msgctxt "@label"
 msgid "Top / Bottom - Bridging"
-msgstr ""
+msgstr "トップ・ボトム - ブリッジ"
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
@@ -5266,7 +5266,7 @@ msgstr "利用できないプリンター"
 
 msgctxt "@action:button"
 msgid "Undo Stroke (Ctrl+L)"
-msgstr ""
+msgstr "描画を元に戻す (Ctrl+L)"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
@@ -5286,7 +5286,7 @@ msgstr "Universal Cura Project"
 
 msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
-msgstr "Universal Cura Projectファイルは座標情報と選択した設定を保持し、さまざまな3Dプリンターで印刷できます。エクスポートすると、ビルドプレート上に存在するすべてのモデルに、現在の位置、方向、拡大率が含まれます。適切な印刷を保証するために、エクストルーダーごとまたはモデルごとにどの設定を含めるかを選択できます。"
+msgstr "Universal Cura Projectファイルは座標情報と選択した設定を保持し、さまざまな3Dプリンターで印刷できます。エクスポートすると、現在の位置、方向、拡大率とともにビルドプレート上に存在するすべてのモデルが含まれます。適切な印刷を保証するために、エクストルーダーごとまたはモデルごとにどの設定を含めるかを選択できます。"
 
 msgctxt "@label"
 msgid "Unknown"
@@ -5346,19 +5346,19 @@ msgstr "ファームウェアアップデート"
 
 msgctxt "@button"
 msgid "Update all"
-msgstr ""
+msgstr "全てアップデート"
 
 msgctxt "@label"
 msgid "Update all the Materials: %1 materials have a new version available."
-msgstr ""
+msgstr "全ての材料をアップデート: %1種の材料に新しいバージョンがあります。"
 
 msgctxt "@label"
 msgid "Update all the Plugins: %1 plugins have a new version available."
-msgstr ""
+msgstr "全てのプラグインをアップデート: %1個のプラグインに新しいバージョンがあります。"
 
 msgctxt "@label"
 msgid "Update all the packages: %1 packages have a new version available."
-msgstr ""
+msgstr "全てのパッケージをアップデート: %1個のパッケージに新しいバージョンがあります。"
 
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
@@ -5486,7 +5486,7 @@ msgstr "Cura 5.11からCura5.12に構成をアップグレードします"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.12 to Cura 5.13"
-msgstr ""
+msgstr "Cura 5.12からCura 5.13に構成をアップグレードします。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
@@ -5638,7 +5638,7 @@ msgstr "バージョン5.11から5.12へのアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 5.12 to 5.13"
-msgstr ""
+msgstr "バージョン5.12から5.13へのアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
@@ -5770,7 +5770,7 @@ msgstr "アップデートを確認する際に、安定版リリースのみを
 
 msgctxt "@info:tooltip"
 msgid "When enabled, file open and save dialogs will always start at the specified locations below. When disabled, dialogs remember the last folder you navigated to."
-msgstr ""
+msgstr "有効にすると、ファイルの読み込みや保存のダイアログは常に下記に指定された場所が表示されます。無効にすると、ダイアログは最後に開いたフォルダーを記憶します。"
 
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
