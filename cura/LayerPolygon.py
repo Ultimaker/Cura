@@ -40,7 +40,7 @@ class LayerPolygon:
 
     def __init__(self, extruder: int, line_types: numpy.ndarray, data: numpy.ndarray,
                  line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray,
-                 print_attributes: List["PrintSegmentAttributes"]) -> None:
+                 print_attributes: Optional[List["PrintSegmentAttributes"]] = None) -> None:
         """LayerPolygon, used in ProcessSlicedLayersJob
 
         :param extruder: The position of the extruder
@@ -49,7 +49,7 @@ class LayerPolygon:
         :param line_widths: array with line widths
         :param line_thicknesses: array with type as index and thickness as value
         :param line_feedrates: array with line feedrates
-        :parm print_attributes: array with the print attributes of each segment, e.g. overhanging or bridging
+        :param print_attributes: array with the print attributes of each segment, e.g. overhanging or bridging. If not set, no segment has any attribute.
         """
 
         self._extruder = extruder
@@ -79,10 +79,12 @@ class LayerPolygon:
         # re-used and can save a lot of memory usage.
         self._color_map = LayerPolygon.getColorMap()
 
+        segment_count = len(self._types) if print_attributes is None else min(len(self._types), len(print_attributes))
+
         raw_colors = []
-        for idx in range(min(len(self._types), len(print_attributes))):
+        for idx in range(segment_count):
             line_type = self._types[idx][0]
-            line_attributes = print_attributes[idx]
+            line_attributes = PrintSegmentAttributes.NoAttribute if print_attributes is None else print_attributes[idx]
             color_index = 0
             if line_type == LayerPolygon.Inset0Type or line_type == LayerPolygon.InsetXType:
                 if PrintSegmentAttributes.Bridging in line_attributes:
