@@ -9,6 +9,9 @@ from UM.Application import Application
 from ..Script import Script
 from UM.Message import Message
 from UM.Logger import Logger
+import time
+from UM.Qt.Duration import DurationFormat
+import re
 
 class FootPrintsFirst(Script):
     def getSettingDataString(self):
@@ -20,7 +23,7 @@ class FootPrintsFirst(Script):
             "settings": {
                 "footprints_first_enabled": {
                     "label": "Enable script",
-                    "description": "Enables the script so it will run.  Use with 'One at a Time' mode.  This script will move all the individual 'Initial Layers' into a single layer that will print first.  That allows you to see if all the prints start OK.",
+                    "description": "Enables the script so it will run.  This script will move all the individual 'Initial Layers' into a single layer that will print first.  That allows you to see if all the prints start OK.  Please note: 'One-at-a-Time'.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": true
@@ -79,7 +82,7 @@ class FootPrintsFirst(Script):
         # A check to insure that the user knows 'FootPrintsFirst' should run before 'DisplayInfoOnLCD'
         data = self._PostProcessorOrderWarning(data)
 
-        # If in Absolute Extrusion mode - enter 'G92 E' lines to insure the E is synced to the start of the layer.
+        # If in Absolute Extrusion mode - enter 'G92 E' lines to insure the E is synced to the start of each layer.
         if not relative_extrusion:
             data = self._AdjustELocations(data)
 
@@ -90,12 +93,15 @@ class FootPrintsFirst(Script):
         # Get the "from" location for the initial extrusion of each layer:0 and add them to a list.
         data = self._ExtrudeFromLocation(data)
 
-        # If rafts are enabled the travel between prints must be ortho so and intervening print doesn't get hit.
+        # If rafts are enabled the travel between prints must be ortho so any intervening print doesn't get hit.
         if raft_enabled:
             data = self._OrthogonalTravel(data)
 
         # Strip the temperature lines.
         data = self._StripTemperatureLines(data)
+
+        # Determine the time it takes for each layer to print and add 'LAYER_TIME' to each layer
+        data = self._AddLayerTimes(data)
 
         # Pull all the layer:0's from the gcode and concatenate them into a single layer.  This includes any Raft layers.
         layer_0_result = self._Layer0String(data)
@@ -105,26 +111,25 @@ class FootPrintsFirst(Script):
         # Skip the first LAYER:0 line and then remove any other Layer:0 lines from the new layer 0.
         start_now = False
         layer_0_list = layer_0_str.split("\n")
-        indices_to_delete = []
         for ldex, line in enumerate(layer_0_list):
             if (";LAYER:0" in line or ";LAYER:-" in line) and start_now:
-                indices_to_delete.append(ldex)
+                layer_0_list.pop(ldex)
             if ";LAYER:0" in line or ";LAYER:-" in line:
                 start_now = True
-        # Step backwards through the list and delete so earlier indices aren't shifted out from under us.
-        for ldex in sorted(indices_to_delete, reverse=True):
-            layer_0_list.pop(ldex)
 
         # Set the temps for Layer:0 to 'Initial Layer Print/Initial Layer Bed' Temps and then reset to 'Print/Bed Temps' for Layer:1
         layer_0_list.insert(1, f"M104 S{round(matl_print_temp_0)}                   ; FpF Print Temp\nM140 S{round(matl_bed_temp_0)}                    ; FpF Bed Temp")
         layer_0_list.insert(len(layer_0_list)-2, f"M104 S{round(self.matl_print_temp)}                   ; FpF Print Temp\nM140 S{round(matl_bed_temp)}                    ; FpF Bed Temp")
         layer_0_str = "\n".join(layer_0_list)
 
-        # Remove the TIME_ELAPSED lines from the new Layer 0 (re-ordering renders them incorrect.)
+        # Remove the TIME_ELAPSED lines from the new Layer 0.
         layer_0_str = self._RemoveTimeElapsedLines(layer_0_str)
 
         # Insert the layer_0_string at the beginning of the file as the new Layer:0.
         data.insert(2, layer_0_str)
+
+        # Renumber the TIME_ELAPSED lines
+        data = self._RewriteTimeElapsedLines(data)
 
         # Insert an XY lateral move line and a Z height line before the start of each layer.
         data = self._AddTravelLines(data)
@@ -190,8 +195,8 @@ class FootPrintsFirst(Script):
                         indices_to_delete.append(ldex)
                     if ";LAYER_COUNT:" in line:
                         lines[ldex] = f"M104 S{round(self.matl_print_temp)}                   ; FpF Print Temp\n" + line
-                except IndexError:
-                    Logger.warning(f"[Foot Prints First] IndexError while stripping temperature line at index {ldex}")
+                except:
+                    IndexError
             # Step backwards through the list and delete the temperature lines to avoid skips
             if indices_to_delete != []:
                 for ddex in sorted(indices_to_delete, reverse=True):
@@ -209,9 +214,6 @@ class FootPrintsFirst(Script):
                 if ";LAYER:" in line:
                     lines[index] = f";LAYER:{consecutive_lay_num}"
                     consecutive_lay_num += 1
-                if ";TIME_ELAPSED:" in line:
-                    time_val = float(line.split(":")[1].split(".")[0])
-                    lines[index] = f";TIME_ELAPSED:{round(time_val,1)}"
             alt_data[num] = "\n".join(lines)
         return alt_data
 
@@ -229,16 +231,16 @@ class FootPrintsFirst(Script):
     def _Layer0String(self, alt_data):
         # Pull any raft layers and the layer:0's and morph them into a single layer ala 'All at Once'.
         layer_0_str = ""
-        layer_0_index_list = []
+        self.layer_0_index_list = []
         for index, layer in enumerate(alt_data):
             if ";LAYER:-" in layer:
                 layer_0_str += alt_data[index]
-                layer_0_index_list.append(index)
+                self.layer_0_index_list.append(index)
             if ";LAYER:0" in alt_data[index]:
                 layer_0_str += alt_data[index]
-                layer_0_index_list.append(index)
+                self.layer_0_index_list.append(index)
         # Sort in descending order to delete from back to front
-        for i in sorted(layer_0_index_list, reverse=True):
+        for i in sorted(self.layer_0_index_list, reverse=True):
             del alt_data[i]
         return layer_0_str, alt_data
 
@@ -278,10 +280,9 @@ class FootPrintsFirst(Script):
                 if "[FootPrintsFirst]" in post_proc:
                     footprintsfirst_index = index
                 if "add_filament_use = True" in post_proc:
-                    Message(title = "⚠️[Foot Prints First]⚠️", text = "Is not compatible with Display Info on LCD 'Filament Usage' and could be negative filament use values reported to a print server.").show()
-
-        except (IndexError, ValueError):
-            Logger.warning("[Foot Prints First] Error parsing post_processing_scripts metadata for order check")
+                    Message(title = "[Foot Prints First]", text = "Will confuse 'Display Info on LCD / Filament Usage'.  There could be negative filament amounts reported.").show()
+        except:
+            IndexError, ValueError
         if display_info_index < footprintsfirst_index:
             Message(title = "⚠️[FootprintsFirst]", text = "'FootprintsFirst' should run BEFORE 'DisplayInfoOnLCD' to insure the layer numbers turn out correct.").show()
         return alt_data
@@ -300,19 +301,58 @@ class FootPrintsFirst(Script):
         return alt_data
 
     def _RemoveTimeElapsedLines(self, layer_0_str):
-        time_elapsed_list = []
+        # They aren't needed and having more than one in a layer might affect other processes.
         lines = layer_0_str.split("\n")
-        zero_count = layer_0_str.count(";TIME_ELAPSED:")
+        number_of_models = layer_0_str.count(";TIME_ELAPSED:")
+        time_value = 0.0
+        mesh_count = 0
         for index, timeline in enumerate(lines):
             if ";TIME_ELAPSED:" in timeline:
-                time_value = float(timeline.split(":")[1])
-                self.layer_0_total_time = time_value
-                break
-        self.layer_0_total_time *= zero_count
-        line_to_leave = f";TIME_ELAPSED:{round(self.layer_0_total_time)}"
-        for index, line in enumerate(lines):
-            if ";TIME_ELAPSED:" in line:
-                lines.pop(index)
+                mesh_count += 1
+                time_value += float(timeline.split(":")[1].split()[0])
+                if self.layer_0_total_time == 0.0:
+                    self.layer_0_total_time = float(time_value)
+        # This 'Total Time' is an average and is close when the models are the same.       
+        self.layer_0_total_time *= mesh_count
+        line_to_leave = f";TIME_ELAPSED:{round(float(self.layer_0_total_time),2)}      ; FpF New First Layer Time"
         layer_0_str = "\n".join(lines)
+        layer_0_str = re.sub(";TIME_ELAPSED:(\d.*)\n", "", layer_0_str)
         layer_0_str += line_to_leave + "\n"
         return layer_0_str
+
+    def _AddLayerTimes(self, alt_data):
+        # Because the layers get scrambled a bit, the TIME_ELAPSED are incorrect. This adds LAYER_TIME to each layer indicating the time required for the particular layer to print.  This is done before reordering the new LAYER:0.
+        prev_layer_time = self.layer_0_total_time
+        for index, layer in enumerate(alt_data):
+            if index < 2 or index > len(alt_data)-1:
+                continue
+            if ";TIME_ELAPSED:" in layer:
+                lines = layer.split("\n")
+                for tdel, line in enumerate(lines):
+                    if ";TIME_ELAPSED:" in line:
+                        current_layer_time = float(layer.split(";TIME_ELAPSED:")[1].split()[0])
+                        delta_time = current_layer_time - prev_layer_time
+                        lines[tdel] = f";LAYER_TIME:{round(delta_time,2)}\n{line}"
+                        prev_layer_time = current_layer_time
+                alt_data[index] = "\n".join(lines)
+        return alt_data
+
+    def _RewriteTimeElapsedLines(self, alt_data):
+        # After shuffling the layers around - this function uses the delta times and rewrites the TIME_ELAPSED lines.  It's not exact, but it's pretty close.
+        prev_time = round(self.layer_0_total_time,2)
+        new_time = prev_time
+        for index, layer in enumerate(alt_data):
+            if ";TIME_ELAPSED:" in layer:
+                lines = layer.split("\n")
+                for tdel, line in enumerate(lines):
+                    if ";LAYER_TIME:" in line:
+                        delta_time = float(layer.split(";LAYER_TIME:")[1].split()[0])
+                        new_time = delta_time + prev_time
+                    if ";TIME_ELAPSED:" in line:
+                        lines[tdel] = f";TIME_ELAPSED:{round(new_time,2)}"
+                        prev_time = new_time
+                alt_data[index] = "\n".join(lines)
+            if ";LAYER:0" in layer or ";LAYER:-" in layer:
+                alt_data[index] = re.sub(";LAYER_TIME:(\d.*)\n", "", layer)
+                continue
+        return alt_data
