@@ -167,6 +167,16 @@ class PostProcessingPlugin(QObject, Extension):
                 continue
             self.loadScripts(path)
 
+            # Scripts that are installed by a package are in a sub-folder that is named after that package.
+            try:
+                package_folders = sorted(entry.path for entry in os.scandir(path)
+                                         if entry.is_dir() and not entry.name.startswith((".", "__")))
+            except OSError:
+                Logger.log("w", "Unable to list the script folders of the packages in: " + path)
+                continue
+            for package_folder in package_folders:
+                self.loadScripts(package_folder)
+
     def loadScripts(self, path: str) -> None:
         """Load all scripts from provided path.
 

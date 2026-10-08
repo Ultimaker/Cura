@@ -54,18 +54,30 @@ class CuraPackageManager(PackageManager):
         return cast(Set[str], self._local_packages_ids)
 
     def initialize(self) -> None:
-        self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
-        self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
-        self._installation_dirs_dict["variants"] = Resources.getStoragePath(
-            CuraApplication.ResourceTypes.VariantInstanceContainer)
-        self._installation_dirs_dict["images"] = Resources.getStoragePath(CuraApplication.ResourceTypes.ImageFiles)
+        # The destinations of the folders in the "files" folder of a package, in addition to the "plugins", "themes" and
+        # "definitions" folders that Uranium registers. The folders of the user's own data ("user", "machine_instances",
+        # "definition_changes", "quality_changes" and "setting_visibility") are deliberately not listed, so packages
+        # can't install anything there.
+        resource_types = CuraApplication.ResourceTypes
+        self._installation_dirs_dict["extruders"] = Resources.getStoragePath(resource_types.ExtruderStack)
+        self._installation_dirs_dict["materials"] = Resources.getStoragePath(resource_types.MaterialInstanceContainer)
+        self._installation_dirs_dict["quality"] = Resources.getStoragePath(resource_types.QualityInstanceContainer)
+        self._installation_dirs_dict["variants"] = Resources.getStoragePath(resource_types.VariantInstanceContainer)
+        self._installation_dirs_dict["images"] = Resources.getStoragePath(resource_types.ImageFiles)
+        self._installation_dirs_dict["intent"] = Resources.getStoragePath(resource_types.IntentInstanceContainer)
 
+        # The post processing scripts are loaded from the "scripts" folder in the main resources folder. The scripts
+        # of a package are in a sub-folder named after the package, which the PostProcessingPlugin also searches.
+        self._installation_dirs_dict["scripts"] = os.path.join(Resources.getStoragePath(Resources.Resources), "scripts")
+
+        # Aliases of the destinations above for packages with a different folder name.
         # Due to a bug in Cura 5.1.0 we needed to change the directory structure of the curapackage on the server side (See SD-3871).
         # Although the material intent profiles will be installed in the `intent` folder, the curapackage from the server side will
         # have an `intents` folder. For completeness, we will look in both locations of in the curapackage and map them both to the
         # `intent` folder.
-        self._installation_dirs_dict["intents"] = Resources.getStoragePath(CuraApplication.ResourceTypes.IntentInstanceContainer)
-        self._installation_dirs_dict["intent"] = Resources.getStoragePath(CuraApplication.ResourceTypes.IntentInstanceContainer)
+        self._installation_dirs_dict["intents"] = self._installation_dirs_dict["intent"]
+        self._installation_dirs_dict["qualities"] = self._installation_dirs_dict["quality"]
+        self._installation_dirs_dict["variant"] = self._installation_dirs_dict["variants"]
 
         super().initialize()
 
