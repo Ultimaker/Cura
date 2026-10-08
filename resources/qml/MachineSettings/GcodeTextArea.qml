@@ -79,7 +79,11 @@ Item
 
             Component.onDestruction:
             {
-                propertyProvider.setPropertyValue("value", text)
+                var currentValue = propertyProvider.properties.value ? propertyProvider.properties.value : ""
+                if (currentValue !== text)
+                {
+                    propertyProvider.setPropertyValue("value", text)
+                }
             }
 
             background: Rectangle

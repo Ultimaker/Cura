@@ -109,7 +109,22 @@ UM.ManagementPage
                 maximumWidth: minimumWidth * 3
                 maximumHeight: minimumHeight * 3
                 backgroundColor: UM.Theme.getColor("main_background")
-                selfDestroy: true
+
+                // Do not use selfDestroy so we can commit any active edit first.
+                selfDestroy: false
+                onVisibleChanged:
+                {
+                    if (!visible)
+                    {
+                        // Commit the value of whichever single field currently has focus,
+                        // without triggering it for every field on the page.
+                        if (activeFocusItem && typeof activeFocusItem.editingFinishedFunction === "function")
+                        {
+                            activeFocusItem.editingFinishedFunction()
+                        }
+                        destroy()
+                    }
+                }
             }
         }
 
