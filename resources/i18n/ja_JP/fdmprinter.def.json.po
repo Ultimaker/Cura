@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2026-09-16 16:53+0000\n"
-"PO-Revision-Date: 2026-10-07 17:36+0000\n"
+"PO-Revision-Date: 2026-10-08 13:02+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -66,7 +66,7 @@ msgstr "上面・底面のレイヤーがラインまたはジグザグパター
 
 msgctxt "support_infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angle 0 degrees."
-msgstr "使用する整数線の方向のリスト。リストの要素は、層が進行するにつれて順番に使用され、リストの終わりに達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストであり、デフォルト角度の0度を使用します。"
+msgstr "ライン方向を示す整数のリスト。リストの要素はレイヤーが進むにつれ順番に使用され、リストの最後に到達した後はまた最初に戻ります。リスト項目はカンマで区切り、リストの全体は四角かっこで囲みます。既定は空のリストで、デフォルト角度の0度を使用します。"
 
 msgctxt "support_bottom_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
@@ -86,11 +86,11 @@ msgstr "使用する整数線の方向のリスト。リストの要素は、レ
 
 msgctxt "nozzle_disallowed_areas description"
 msgid "A list of polygons with areas the nozzle is not allowed to enter."
-msgstr "ノズルが入れない領域を持つポリゴンのリスト。"
+msgstr "ノズルの侵入を禁止する領域を持つポリゴンのリスト。"
 
 msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
-msgstr "プリントヘッドの領域を持つポリゴンのリストは入力できません。"
+msgstr "プリントヘッドの侵入を禁止する領域を持つポリゴンのリスト。"
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
@@ -98,7 +98,7 @@ msgstr "枝がサポートポイントからどれくらい移動できるかに
 
 msgctxt "material_delta_temperature_roofing description"
 msgid "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low."
-msgstr "上面レイヤー印刷時に適用される温度差。この設定は、かなり高速に印刷しても表面を滑らかにする効果があります。温度が増分に達することを待つことなく適用されるため、温度が上がらないままであることに注意してください。"
+msgstr "上面レイヤー印刷時に適用される温度差。これにより、高速な印刷で表面を滑らかにする効果を得られます。適用されても対象の温度になるまで待たないため、設定値は低い値に留めておくべきであることに注意してください。"
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -1226,7 +1226,7 @@ msgstr "この長さより短い輪郭の形体は、Small Feature Speedを使�
 
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr "これからもっと充実させていく機能。"
+msgstr "まだ完全に実装されていない機能。"
 
 msgctxt "machine_feeder_wheel_diameter label"
 msgid "Feeder Wheel Diameter"
@@ -1970,7 +1970,7 @@ msgstr "内側ウォール用エクストルーダー"
 
 msgctxt "wall_x_inset label"
 msgid "Inner Wall Inset"
-msgstr "内側ウォールの内側オフセット"
+msgstr "内側ウォールのオフセット"
 
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
@@ -2726,7 +2726,7 @@ msgstr "Z軸ギャップにスキンなし"
 
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr "これまでにないモデルの印刷方法。"
+msgstr "これまでにないモデルのプリント方法。"
 
 msgctxt "adhesion_type option none"
 msgid "None"
@@ -2830,7 +2830,7 @@ msgstr "ブラシ全体をノズルが移動する回数。"
 
 msgctxt "gradual_infill_steps description"
 msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "天井面の表面から遠ざかるごとに、インフィル密度が半減する回数。天井面に近い領域ほど高い密度となり、インフィル密度の設定値まで達します。"
+msgstr "天井面の表面から遠ざかるごとに、インフィル密度が半減する回数。天井面に近い領域ほど高い密度となり、インフィル密度の設定値になるまで高くなります。"
 
 msgctxt "gradual_support_infill_steps description"
 msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
@@ -3166,7 +3166,7 @@ msgstr "底面のラインを一方向に揃えることで、隣接するライ
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
-msgstr "面材構造を印刷するには、モデルの上部がサポートされている必要があります。これを有効にすると、印刷時間と材料の使用量が減少しますが、オブジェクトの強度が不均一になります。"
+msgstr "モデルの上部を支える場合のみ、インフィル構造を印刷します。これを有効にすると印刷時間と材料の使用量が減少しますが、オブジェクトの強度が不均一になります。"
 
 msgctxt "ironing_monotonic description"
 msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
@@ -4610,7 +4610,7 @@ msgstr "ブリッジスキンレイヤーの密度。100以下の場合、スキ
 
 msgctxt "support_bottom_density description"
 msgid "The density of the floors of the support structure. A higher value results in better adhesion of the support on top of the model."
-msgstr "サポート構造のフロアの密度。高い値は、サポートのよりよい接着を促します。"
+msgstr "サポート構造のフロアの密度。高い値にすることで、サポートと造形物上部との接着が向上します。"
 
 msgctxt "support_roof_density description"
 msgid "The density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
@@ -5358,7 +5358,7 @@ msgstr "上層のパターン。"
 
 msgctxt "top_bottom_pattern description"
 msgid "The pattern of the top/bottom layers."
-msgstr "上層/底層のパターン。"
+msgstr "上層・底層のパターン。"
 
 msgctxt "top_bottom_pattern_0 description"
 msgid "The pattern on the bottom of the print on the first layer."
@@ -5598,7 +5598,7 @@ msgstr "上面の表面レイヤーを印刷する際の速度。"
 
 msgctxt "speed_topbottom description"
 msgid "The speed at which top/bottom layers are printed."
-msgstr "トップ/ボトムのレイヤーのプリント速度。"
+msgstr "上面・底面レイヤーのプリント速度。"
 
 msgctxt "speed_travel description"
 msgid "The speed at which travel moves are made."
@@ -5698,7 +5698,7 @@ msgstr "サポートのインフィル材料の厚さ。この値はレイヤー
 
 msgctxt "support_wall_thickness description"
 msgid "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "サポートインフィルを囲むウォールの厚さ。ウォールを追加するとサポートの印刷をより確実にしオーバーハングをより支えられるようになりますが、プリント時間と材料の使用量が増加します。"
+msgstr "サポートインフィルを囲むウォールの厚さ。ウォールを追加するとサポート印刷の信頼性とオーバーハングのサポートが向上しますが、プリント時間と材料の使用量が増加します。"
 
 msgctxt "machine_buildplate_type description"
 msgid "The type of build plate installed on the printer."

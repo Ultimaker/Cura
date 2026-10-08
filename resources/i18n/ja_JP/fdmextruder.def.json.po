@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2026-09-16 16:53+0000\n"
-"PO-Revision-Date: 2026-10-07 16:57+0000\n"
+"PO-Revision-Date: 2026-10-08 13:02+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -210,7 +210,7 @@ msgstr "プリント開始時における主要ノズル地点のZ座標。"
 
 msgctxt "material_type description"
 msgid "The base type of printed material, e.g. PLA or ABS."
-msgstr "ベースとなる印刷材料の種類。例: PLA, ABS"
+msgstr "印刷材料の基本種別。例: PLA, ABS"
 
 msgctxt "material_spool_cost description"
 msgid "The cost of a full spool of material."
@@ -246,7 +246,7 @@ msgstr "このエクストルーダーに関連付けられているプリント
 
 msgctxt "material_density description"
 msgid "The printed material density, in g/cm3."
-msgstr "印刷された材料の密度 (g/cm3)。"
+msgstr "プリント材料の密度 (g/cm3)。"
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
@@ -258,7 +258,7 @@ msgstr "このエクストルーダーに切り替えるとき、開始Gコー�
 
 msgctxt "material_guid description"
 msgid "The unique ID of the material."
-msgstr "材料を一意に識別するID。"
+msgstr "材料の一意な識別子。"
 
 msgctxt "material_spool_weight description"
 msgid "The weight of a full spool of material, in grams."
