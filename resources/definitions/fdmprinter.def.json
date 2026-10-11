@@ -2238,7 +2238,7 @@
                 "infill_pattern":
                 {
                     "label": "Infill Pattern",
-                    "description": "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>\u26a0 Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>",
+                    "description": "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li><li>Bone infill imitates the structure of spongy bone: an organic network of connected plates that changes with every layer and can be lined up with a chosen direction.</li></ul>\u26a0 Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>",
                     "type": "enum",
                     "options":
                     {
@@ -2255,6 +2255,7 @@
                         "lightning": "Lightning",
                         "honeycomb": "Honeycomb",
                         "octagon": "Octagon",
+                        "bone": "Bone",
                         "grid": "Grid",
                         "cubic": "Cubic",
                         "triangles": "Triangles"
@@ -2264,6 +2265,111 @@
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "bone_seed":
+                {
+                    "label": "Bone Structure Seed",
+                    "description": "Selects one of the many possible bone-like structures. Different numbers give different patterns of the same density; the same number always gives the same pattern.",
+                    "type": "int",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "maximum_value": "99999",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_pattern == 'bone'",
+                    "settable_per_mesh": true
+                },
+                "bone_alignment":
+                {
+                    "label": "Bone Alignment",
+                    "description": "How strongly the struts line up with one main direction, like the trabeculae in bone follow the load. 0% gives a structure that is the same in every direction. High values give struts that run mostly along the main direction, with fewer cross-links.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 60,
+                    "minimum_value": "0",
+                    "maximum_value": "97",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_pattern == 'bone'",
+                    "settable_per_mesh": true
+                },
+                "bone_alignment_tilt":
+                {
+                    "label": "Bone Alignment Tilt",
+                    "description": "Tilts the main direction of the struts away from vertical. 0 is straight up, 90 lies flat in the layer.",
+                    "unit": "\u00b0",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_pattern == 'bone' and bone_alignment > 0",
+                    "settable_per_mesh": true
+                },
+                "bone_alignment_azimuth":
+                {
+                    "label": "Bone Alignment Direction",
+                    "description": "The direction in the layer plane that the main direction is tilted towards, counter-clockwise from the X axis. Has no effect when the tilt is 0.",
+                    "unit": "\u00b0",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "360",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_pattern == 'bone' and bone_alignment > 0 and bone_alignment_tilt > 0",
+                    "settable_per_mesh": true
+                },
+                "bone_irregularity":
+                {
+                    "label": "Bone Irregularity",
+                    "description": "How much the thickness and spacing of the struts vary. Low values give a regular, almost repeating structure, high values a more organic and uneven one.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 40,
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_pattern == 'bone'",
+                    "settable_per_mesh": true
+                },
+                "bone_connectivity":
+                {
+                    "label": "Bone Connectivity",
+                    "description": "100% gives one fully connected network of plates, the strongest option. Lower values break it up into separate cells and rods with gaps between them, which is lighter but weaker.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_pattern == 'bone'",
+                    "settable_per_mesh": true
+                },
+                "bone_cortical_width":
+                {
+                    "label": "Bone Dense Zone Width",
+                    "description": "Width of the zone along the walls where the structure is made denser, like the transition from spongy bone to the hard outer shell. Set to 0 to turn it off.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 3,
+                    "minimum_value": "0",
+                    "maximum_value": "20",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_pattern == 'bone'",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "bone_cortical_lines":
+                        {
+                            "label": "Bone Dense Zone Struts",
+                            "description": "How many extra struts are added on each side of every strut in the dense zone along the walls. 1 roughly triples the density there.",
+                            "type": "int",
+                            "default_value": 1,
+                            "minimum_value": "0",
+                            "maximum_value": "3",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_pattern == 'bone' and bone_cortical_width > 0",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "zig_zaggify_infill":
                 {
