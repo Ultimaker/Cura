@@ -89,6 +89,30 @@ UM.Dialog
                     currentIndex: baudIndexFor(manager.manualBaudRate)
                     onActivated: manager.setManualBaudRate(index == 0 ? "" : model[index])
                 }
+
+                UM.Label
+                {
+                    text: catalog.i18nc("@label", "Diagnostics:")
+                    Layout.columnSpan: 3
+                }
+
+                UM.CheckBox
+                {
+                    id: logCheckbox
+                    Layout.columnSpan: 3
+                    text: catalog.i18nc("@option:check", "Log USB communication to file")
+                    checked: manager.logCommunication
+                    onClicked: manager.setLogCommunication(checked)
+                }
+
+                UM.Label
+                {
+                    Layout.columnSpan: 3
+                    Layout.fillWidth: true
+                    wrapMode: Text.WordWrap
+                    font.italic: true
+                    text: manager.logFilePath
+                }
             }
 
             UM.Label

@@ -7,6 +7,7 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter # To get the g-code output.
 from UM.Message import Message # Show an error when already printing.
+from UM.Resources import Resources # To locate the communication log file.
 from UM.PluginRegistry import PluginRegistry # To get the g-code output.
 from UM.Qt.Duration import DurationFormat
 
@@ -20,11 +21,13 @@ from .AutoDetectBaudJob import AutoDetectBaudJob
 from .AvrFirmwareUpdater import AvrFirmwareUpdater
 
 from io import StringIO # To write the g-code output.
+from collections import deque
+from datetime import datetime
 from queue import Queue
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
 from time import time
-from typing import Union, Optional, List, cast, TYPE_CHECKING
+from typing import Union, Optional, List, Deque, cast, TYPE_CHECKING
 
 import re
 import functools  # Used for reduce
@@ -34,6 +37,33 @@ if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
 
 catalog = i18nCatalog("cura")
+
+LOG_COMM_PREFERENCE_KEY = "usb_printing/log_communication"
+
+# How many lines are pushed without waiting for an "ok" when a print starts.
+# Kept at 1: bursting more risks overflowing the small RX buffers of 8-bit
+# boards; a dropped byte corrupts a line mid-print.
+INITIAL_BURST_LINES = 1
+
+# Consecutive readline timeouts (~3 s each) tolerated while printing before the
+# connection is considered dead. "echo:busy:" lines reset the counter, so long
+# moves on firmwares with busy-reporting do not trip this.
+MAX_IDLE_TIMEOUTS_WHILE_PRINTING = 40
+
+# Resend requests inside this window that trigger a pause instead of blindly
+# re-executing old lines forever.
+RESEND_STORM_LIMIT = 10
+RESEND_STORM_WINDOW = 60.0  # seconds
+
+
+def getCommLogPath() -> str:
+    """Filesystem path of the per-session USB serial communication log."""
+    try:
+        base = Resources.getStoragePath(Resources.Preferences)
+    except Exception:
+        import tempfile
+        base = tempfile.gettempdir()
+    return os.path.join(base, "usb-serial.log")
 
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
@@ -76,6 +106,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._paused = False
         self._printer_busy = False  # When printer is preheating and waiting (M190/M109), or when waiting for action on the printer
+
+        self._resend_timestamps = deque()  # type: Deque[float]
+        self._idle_timeouts_while_printing = 0
+        self._last_busy_time = None  # type: Optional[float]
+        self._comm_log_file = None
 
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
 
@@ -170,7 +205,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._print_estimated_time = int(CuraApplication.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))
 
-        for i in range(0, 4):  # Push first 4 entries before accepting other inputs
+        # Send one line up front, then strictly one line per "ok" afterwards.
+        for i in range(0, INITIAL_BURST_LINES):
             self._sendNextGcodeLine()
 
         self._is_printing = True
@@ -210,6 +246,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
         self.setConnectionState(ConnectionState.Connected)
+        self._openCommLog()
         self._update_thread.start()
 
     def _onGlobalContainerStackChanged(self):
@@ -225,12 +262,52 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def close(self):
         super().close()
+        self._closeCommLog()
         if self._serial is not None:
             self._serial.close()
 
         # Re-create the thread so it can be started again later.
         self._update_thread = Thread(target=self._update, daemon=True, name = "USBPrinterUpdate")
         self._serial = None
+
+    def _isCommLoggingEnabled(self) -> bool:
+        try:
+            return bool(CuraApplication.getInstance().getPreferences().getValue(LOG_COMM_PREFERENCE_KEY))
+        except Exception:
+            return False
+
+    def _openCommLog(self) -> None:
+        self._closeCommLog()
+        if not self._isCommLoggingEnabled():
+            return
+        try:
+            self._comm_log_file = open(getCommLogPath(), "w", encoding = "utf-8", errors = "replace")
+            self._logComm("SYS", "--- USB serial log started (port %s, baud %s) ---" % (self._serial_port, self._baud_rate))
+        except Exception:
+            Logger.logException("w", "Could not open USB serial communication log.")
+            self._comm_log_file = None
+
+    def _closeCommLog(self) -> None:
+        try:
+            if self._comm_log_file is not None:
+                self._logComm("SYS", "--- log closed ---")
+                self._comm_log_file.close()
+        except Exception:
+            pass
+        finally:
+            self._comm_log_file = None
+
+    def _logComm(self, direction: str, data) -> None:
+        """Append one timestamped line to the communication log. No-op when disabled."""
+        if self._comm_log_file is None:
+            return
+        try:
+            text = data.decode("utf-8", errors = "replace") if isinstance(data, bytes) else str(data)
+            stamp = datetime.now().strftime("%H:%M:%S.%f")[:-3]
+            self._comm_log_file.write("%s %s %s\n" % (stamp, direction, text.rstrip("\r\n")))
+            self._comm_log_file.flush()
+        except Exception:
+            pass
 
     def sendCommand(self, command: Union[str, bytes]):
         """Send a command to printer."""
@@ -240,9 +317,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         else:
             self._sendCommand(command)
 
-    def _sendCommand(self, command: Union[str, bytes]):
+    def _sendCommand(self, command: Union[str, bytes]) -> bool:
+        """Send a command over serial. Returns True when it was fully written."""
         if self._serial is None or self._connection_state != ConnectionState.Connected:
-            return
+            return False
 
         new_command = cast(bytes, command) if type(command) is bytes else cast(str, command).encode() # type: bytes
         if not new_command.endswith(b"\n"):
@@ -250,12 +328,27 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         try:
             self._command_received.clear()
             self._serial.write(new_command)
+            self._logComm("TX", new_command)
+            return True
         except SerialTimeoutException:
             Logger.log("w", "Timeout when sending command to printer via USB.")
+            self._logComm("TX-TIMEOUT", new_command)
             self._command_received.set()
+            try:
+                # A partial line may be sitting in the firmware RX buffer without its
+                # newline. Flush it so the firmware rejects it cleanly (checksum error
+                # -> resend request) instead of gluing the next line onto it, which
+                # would execute a corrupted move.
+                self._serial.write(b"\n")
+                self._logComm("TX", b"\n")
+            except Exception:
+                pass
+            return False
         except SerialException:
             Logger.logException("w", "An unexpected exception occurred while writing to the serial.")
+            self._logComm("SYS", "serial write error, connection set to Error")
             self.setConnectionState(ConnectionState.Error)
+            return False
 
     def _update(self):
         while self._connection_state == ConnectionState.Connected and self._serial is not None:
@@ -263,86 +356,151 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 line = self._serial.readline()
             except:
                 continue
+            try:
+                self._handleSerialLine(line)
+            except Exception:
+                # A single malformed line must never kill the update thread.
+                Logger.logException("e", "USB printing: error while handling received line.")
 
-            if not self._firmware_name_requested:
-                self._firmware_name_requested = True
-                self.sendCommand("M115")
+    def _handleSerialLine(self, line: bytes) -> None:
+        self._logComm("RX", line if line else b"<timeout>")
 
-            if b"FIRMWARE_NAME:" in line:
-                self._setFirmwareName(line)
+        if not self._firmware_name_requested:
+            self._firmware_name_requested = True
+            self.sendCommand("M115")
 
-            if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
-                # Timeout, or no request has been sent at all.
-                if not self._printer_busy: # Don't flood the printer with temperature requests while it is busy
-                    self.sendCommand("M105")
-                    self._last_temperature_request = time()
+        if b"FIRMWARE_NAME:" in line:
+            self._setFirmwareName(line)
 
-            if re.search(b"[B|T\d*]: ?\d+\.?\d*", line):  # Temperature message. 'T:' for extruder and 'B:' for bed
-                extruder_temperature_matches = re.findall(b"T(\d*): ?(\d+\.?\d*)\s*\/?(\d+\.?\d*)?", line)
-                # Update all temperature values
-                matched_extruder_nrs = []
-                for match in extruder_temperature_matches:
-                    extruder_nr = 0
-                    if match[0] != b"":
-                        extruder_nr = int(match[0])
+        if self._last_temperature_request is None or time() > self._last_temperature_request + self._timeout:
+            # Timeout, or no request has been sent at all.
+            if not self._printer_busy: # Don't flood the printer with temperature requests while it is busy
+                self.sendCommand("M105")
+                self._last_temperature_request = time()
 
-                    if extruder_nr in matched_extruder_nrs:
-                        continue
-                    matched_extruder_nrs.append(extruder_nr)
+        if re.search(b"[B|T\d*]: ?\d+\.?\d*", line):  # Temperature message. 'T:' for extruder and 'B:' for bed
+            extruder_temperature_matches = re.findall(b"T(\d*): ?(\d+\.?\d*)\s*\/?(\d+\.?\d*)?", line)
+            # Update all temperature values
+            matched_extruder_nrs = []
+            for match in extruder_temperature_matches:
+                extruder_nr = 0
+                if match[0] != b"":
+                    extruder_nr = int(match[0])
 
-                    if extruder_nr >= len(self._printers[0].extruders):
-                        Logger.log("w", "Printer reports more temperatures than the number of configured extruders")
-                        continue
+                if extruder_nr in matched_extruder_nrs:
+                    continue
+                matched_extruder_nrs.append(extruder_nr)
 
-                    extruder = self._printers[0].extruders[extruder_nr]
-                    if match[1]:
-                        extruder.updateHotendTemperature(float(match[1]))
-                    if match[2]:
-                        extruder.updateTargetHotendTemperature(float(match[2]))
+                if extruder_nr >= len(self._printers[0].extruders):
+                    Logger.log("w", "Printer reports more temperatures than the number of configured extruders")
+                    continue
 
-                bed_temperature_matches = re.findall(b"B: ?(\d+\.?\d*)\s*\/?(\d+\.?\d*)?", line)
-                if bed_temperature_matches:
-                    match = bed_temperature_matches[0]
-                    if match[0]:
-                        self._printers[0].updateBedTemperature(float(match[0]))
-                    if match[1]:
-                        self._printers[0].updateTargetBedTemperature(float(match[1]))
+                extruder = self._printers[0].extruders[extruder_nr]
+                if match[1]:
+                    extruder.updateHotendTemperature(float(match[1]))
+                if match[2]:
+                    extruder.updateTargetHotendTemperature(float(match[2]))
 
-            if line == b"":
-                # An empty line means that the firmware is idle
-                # Multiple empty lines probably means that the firmware and Cura are waiting
-                # for each other due to a missed "ok", so we keep track of empty lines
-                self._firmware_idle_count += 1
-            else:
-                self._firmware_idle_count = 0
+            bed_temperature_matches = re.findall(b"B: ?(\d+\.?\d*)\s*\/?(\d+\.?\d*)?", line)
+            if bed_temperature_matches:
+                match = bed_temperature_matches[0]
+                if match[0]:
+                    self._printers[0].updateBedTemperature(float(match[0]))
+                if match[1]:
+                    self._printers[0].updateTargetBedTemperature(float(match[1]))
 
-            if line.startswith(b"ok") or self._firmware_idle_count > 1:
-                self._printer_busy = False
-
-                self._command_received.set()
-                if not self._command_queue.empty():
-                    self._sendCommand(self._command_queue.get())
-                elif self._is_printing:
-                    if self._paused:
-                        pass  # Nothing to do!
-                    else:
-                        self._sendNextGcodeLine()
-
-            if line.startswith(b"echo:busy:"):
-                self._printer_busy = True
-
+        if line == b"":
+            # An empty read is a readline timeout, not necessarily an idle firmware:
+            # the printer may just be busy with a long move. While printing we must NOT
+            # treat this as an "ok", otherwise unverified lines pile up in the firmware
+            # buffer and a truncated line can corrupt the next move.
+            self._firmware_idle_count += 1
             if self._is_printing:
-                if line.startswith(b'!!'):
-                    Logger.log('e', "Printer signals fatal error. Cancelling print. {}".format(line))
-                    self.cancelPrint()
-                elif line.lower().startswith(b"resend") or line.startswith(b"rs"):
-                    # A resend can be requested either by Resend, resend or rs.
-                    try:
-                        self._gcode_position = int(line.replace(b"N:", b" ").replace(b"N", b" ").replace(b":", b" ").split()[-1])
-                    except:
-                        if line.startswith(b"rs"):
-                            # In some cases of the RS command it needs to be handled differently.
-                            self._gcode_position = int(line.split()[1])
+                self._idle_timeouts_while_printing += 1
+                if self._idle_timeouts_while_printing >= MAX_IDLE_TIMEOUTS_WHILE_PRINTING:
+                    self._onPrintStalled()
+                    return
+        else:
+            self._firmware_idle_count = 0
+            self._idle_timeouts_while_printing = 0
+
+        if line.startswith(b"ok") or (self._firmware_idle_count > 1 and not self._is_printing):
+            self._printer_busy = False
+
+            self._command_received.set()
+            if not self._command_queue.empty():
+                self._sendCommand(self._command_queue.get())
+            elif self._is_printing:
+                if self._paused:
+                    pass  # Nothing to do!
+                else:
+                    self._sendNextGcodeLine()
+
+        if line.startswith(b"echo:busy:"):
+            self._printer_busy = True
+            self._last_busy_time = time()
+            self._idle_timeouts_while_printing = 0
+
+        if self._is_printing:
+            if line.startswith(b'!!'):
+                Logger.log('e', "Printer signals fatal error. Cancelling print. {}".format(line))
+                self.cancelPrint()
+            elif line.lower().startswith(b"resend") or line.startswith(b"rs"):
+                # A resend can be requested either by Resend, resend or rs.
+                try:
+                    self._gcode_position = int(line.replace(b"N:", b" ").replace(b"N", b" ").replace(b":", b" ").split()[-1])
+                except:
+                    if line.startswith(b"rs"):
+                        # In some cases of the RS command it needs to be handled differently.
+                        self._gcode_position = int(line.split()[1])
+                self._logComm("SYS", "resend requested, rewinding to line %d" % self._gcode_position)
+                self._registerResend()
+
+    def _registerResend(self) -> None:
+        """Track resend requests; pause the print on a resend storm instead of
+        blindly re-executing old lines forever."""
+        now = time()
+        self._resend_timestamps.append(now)
+        while self._resend_timestamps and now - self._resend_timestamps[0] > RESEND_STORM_WINDOW:
+            self._resend_timestamps.popleft()
+        if len(self._resend_timestamps) >= RESEND_STORM_LIMIT:
+            self._onResendStorm()
+
+    def _onResendStorm(self) -> None:
+        self._resend_timestamps.clear()
+        Logger.log("e", "USB printing: %d resend requests within %d seconds, pausing print. Check the USB cable and baud rate." % (RESEND_STORM_LIMIT, int(RESEND_STORM_WINDOW)))
+        self._logComm("SYS", "resend storm, print paused")
+        self._paused = True
+        try:
+            print_job = self._printers[0].activePrintJob
+            if print_job is not None:
+                print_job.updateState("paused")
+        except Exception:
+            pass
+        message = Message(
+            text = catalog.i18nc("@message", "Too many resend requests from the printer over USB. The print has been paused. Check the USB cable and baud rate (Extensions > USB Printing > USB Printing Settings), then resume the print."),
+            title = catalog.i18nc("@message", "USB communication problem"),
+            message_type = Message.MessageType.WARNING)
+        message.show()
+
+    def _onPrintStalled(self) -> None:
+        """Called when no response at all arrives while printing for a long time."""
+        Logger.log("e", "USB printing: no response from printer for %d seconds while printing." % (MAX_IDLE_TIMEOUTS_WHILE_PRINTING * self._timeout))
+        self._logComm("SYS", "print stalled, no response from printer")
+        message = Message(
+            text = catalog.i18nc("@message", "The printer stopped responding over USB. The print cannot continue safely, so the connection was closed."),
+            title = catalog.i18nc("@message", "USB printer not responding"),
+            message_type = Message.MessageType.ERROR)
+        message.show()
+        self._is_printing = False
+        try:
+            self._printers[0].updateActivePrintJob(None)
+        except Exception:
+            pass
+        try:
+            self.setConnectionState(ConnectionState.Error)
+        except Exception:
+            pass
 
     def _setFirmwareName(self, name):
         new_name = re.findall(r"FIRMWARE_NAME:(.*);", str(name))
@@ -406,7 +564,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         checksum = functools.reduce(lambda x, y: x ^ y, map(ord, "N%d%s" % (self._gcode_position, line)))
 
-        self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
+        if not self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum)):
+            # The line was not (fully) written, e.g. serial write timeout. Keep the
+            # position so the exact same line number is retried on the next ack
+            # instead of skipping ahead and desynchronising the firmware.
+            Logger.log("w", "USB printing: line %d not sent, will retry on next ack." % self._gcode_position)
+            self._logComm("SYS", "send failed for line %d, position held" % self._gcode_position)
+            return
 
         print_job = self._printers[0].activePrintJob
         try:

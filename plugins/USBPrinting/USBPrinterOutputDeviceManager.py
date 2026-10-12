@@ -52,6 +52,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
         preferences.addPreference(USB_PRINT_PREFERENCE_KEY, False)
         preferences.addPreference(USB_MANUAL_PORT_PREFERENCE_KEY, "")
         preferences.addPreference(USB_MANUAL_BAUDRATE_PREFERENCE_KEY, "")
+        preferences.addPreference(USBPrinterOutputDevice.LOG_COMM_PREFERENCE_KEY, False)
         self._check_updates = preferences.getValue(USB_PRINT_PREFERENCE_KEY)
 
         self._application.applicationShuttingDown.connect(self.stop)

@@ -13,6 +13,8 @@ from UM.i18n import i18nCatalog
 
 from cura.CuraApplication import CuraApplication
 
+from .USBPrinterOutputDevice import LOG_COMM_PREFERENCE_KEY, getCommLogPath
+
 catalog = i18nCatalog("cura")
 
 # Preference keys. "" means "Auto". Must stay in sync with USBPrinterOutputDeviceManager.
@@ -46,6 +48,7 @@ class USBPrintingExtension(QObject, Extension):
         preferences = CuraApplication.getInstance().getPreferences()
         preferences.addPreference(MANUAL_PORT_PREFERENCE_KEY, "")
         preferences.addPreference(MANUAL_BAUDRATE_PREFERENCE_KEY, "")
+        preferences.addPreference(LOG_COMM_PREFERENCE_KEY, False)
 
         self._dialog = None  # type: ignore
         self._cached_ports = []  # type: List[str]
@@ -147,6 +150,29 @@ class USBPrintingExtension(QObject, Extension):
             Logger.logException("w", "USBPrinting settings: failed to store manual baud rate.")
             return
         self.settingsChanged.emit()
+
+    @pyqtProperty(bool, notify=settingsChanged)
+    def logCommunication(self) -> bool:
+        try:
+            return bool(CuraApplication.getInstance().getPreferences().getValue(LOG_COMM_PREFERENCE_KEY))
+        except Exception:
+            return False
+
+    @pyqtSlot(bool)
+    def setLogCommunication(self, enabled: bool) -> None:
+        try:
+            CuraApplication.getInstance().getPreferences().setValue(LOG_COMM_PREFERENCE_KEY, bool(enabled))
+        except Exception:
+            Logger.logException("w", "USBPrinting settings: failed to store log flag.")
+            return
+        self.settingsChanged.emit()
+
+    @pyqtProperty(str, constant=True)
+    def logFilePath(self) -> str:
+        try:
+            return getCommLogPath()
+        except Exception:
+            return ""
 
     @pyqtSlot()
     def reconnect(self) -> None:

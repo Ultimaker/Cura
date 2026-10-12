@@ -57,6 +57,9 @@ def _make_extension(preferences=None):
     extension = USBPrintingExtension.__new__(USBPrintingExtension)
     extension._dialog = None
     extension._cached_ports = []
+    # Instances built without QObject.__init__ cannot emit real signals.
+    extension.settingsChanged = MagicMock()
+    extension.portsChanged = MagicMock()
     return extension, application
 
 
