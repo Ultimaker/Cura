@@ -43,6 +43,22 @@ UM.TooltipArea
     property var afterOnEditingFinishedFunction: dummy_func
     property var setValueFunction: null
 
+    // When set to a MachineSettingsAction, the selection is staged in it instead of written to the stack.
+    property var draftManager: null
+
+    property var displayedValue:
+    {
+        if (draftManager)
+        {
+            const revision = draftManager.pendingRevision  // Read so that this updates when the staged edits change.
+            if (draftManager.hasPendingValue(containerStackId, settingKey))
+            {
+                return draftManager.pendingValue(containerStackId, settingKey)
+            }
+        }
+        return propertyProvider.properties.value
+    }
+
     // a dummy function for default property values
     function dummy_func() {}
 
@@ -106,7 +122,7 @@ UM.TooltipArea
         textRole: "text"
 
         currentIndex: {
-            const currentValue = propertyProvider.properties.value
+            const currentValue = comboBoxWithOptions.displayedValue
             for (let i = 0; i < model.count; i ++) {
                 if (model.get(i).value === currentValue) {
                     return i;
@@ -117,6 +133,13 @@ UM.TooltipArea
 
         onActivated: function (index) {
             const newValue = model.get(index).value;
+
+            if (draftManager) {
+                if (newValue !== undefined) {
+                    draftManager.setPendingValue(containerStackId, settingKey, newValue);
+                }
+                return;
+            }
 
             if (propertyProvider.properties.value !== newValue && newValue !== undefined) {
                 if (setValueFunction !== null) {
