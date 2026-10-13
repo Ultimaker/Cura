@@ -40,6 +40,13 @@ catalog = i18nCatalog("cura")
 
 LOG_COMM_PREFERENCE_KEY = "usb_printing/log_communication"
 
+# Name of the communication log and of the backup that preserves the previous
+# session. The log is intentionally *not* truncated silently: after a glitch
+# the interesting trace is the previous session's, which a reconnect or a
+# Cura restart would otherwise destroy (see _openCommLog).
+COMM_LOG_FILENAME = "usb-serial.log"
+COMM_LOG_BACKUP_FILENAME = "usb-serial.prev.log"
+
 # How many lines are pushed without waiting for an "ok" when a print starts.
 # Kept at 1: bursting more risks overflowing the small RX buffers of 8-bit
 # boards; a dropped byte corrupts a line mid-print.
@@ -63,7 +70,12 @@ def getCommLogPath() -> str:
     except Exception:
         import tempfile
         base = tempfile.gettempdir()
-    return os.path.join(base, "usb-serial.log")
+    return os.path.join(base, COMM_LOG_FILENAME)
+
+
+def getCommLogBackupPath() -> str:
+    """Filesystem path of the previous session's communication log backup."""
+    return os.path.join(os.path.dirname(getCommLogPath()), COMM_LOG_BACKUP_FILENAME)
 
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
@@ -281,11 +293,36 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if not self._isCommLoggingEnabled():
             return
         try:
-            self._comm_log_file = open(getCommLogPath(), "w", encoding = "utf-8", errors = "replace")
+            log_path = getCommLogPath()
+            self._rotateCommLog(log_path)
+            self._comm_log_file = open(log_path, "w", encoding = "utf-8", errors = "replace")
             self._logComm("SYS", "--- USB serial log started (port %s, baud %s) ---" % (self._serial_port, self._baud_rate))
+            if os.path.isfile(getCommLogBackupPath()):
+                self._logComm("SYS", "--- previous session preserved, see %s ---" % COMM_LOG_BACKUP_FILENAME)
         except Exception:
             Logger.logException("w", "Could not open USB serial communication log.")
             self._comm_log_file = None
+
+    @staticmethod
+    def _rotateCommLog(log_path: str) -> None:
+        """Preserve the previous session's log instead of silently overwriting it.
+
+        The old code truncated the file on every (re)connect, which destroyed
+        exactly the trace needed after a mid-print glitch followed by a
+        reconnect or a Cura restart. Best effort: logging must never break
+        the connection itself.
+        """
+        try:
+            if not os.path.isfile(log_path) or os.path.getsize(log_path) == 0:
+                return
+            backup_path = os.path.join(os.path.dirname(log_path), COMM_LOG_BACKUP_FILENAME)
+            if os.path.abspath(backup_path) == os.path.abspath(log_path):
+                return
+            if os.path.isfile(backup_path):
+                os.remove(backup_path)
+            os.rename(log_path, backup_path)
+        except Exception:
+            Logger.log("w", "Could not rotate USB serial communication log; overwriting it.")
 
     def _closeCommLog(self) -> None:
         try:

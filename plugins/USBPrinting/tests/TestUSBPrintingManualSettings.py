@@ -150,6 +150,21 @@ def test_addOutputDevice_ignores_other_ports_when_manual_port_set():
     assert "COM4" not in manager._usb_output_devices
 
 
+def test_addOutputDevice_closes_existing_device_for_same_port():
+    from .. import USBPrinterOutputDeviceManager as manager_module
+    manager = _make_manager()
+    old_device = MagicMock()
+    manager._usb_output_devices = {"COM1": old_device}
+    device_cls = MagicMock()
+    with patch.object(manager_module.USBPrinterOutputDevice, "USBPrinterOutputDevice", device_cls):
+        manager.addOutputDevice("COM1")
+    # The stale handle is closed before the new device takes its place, so
+    # there is never more than one open handle on the same port.
+    old_device.close.assert_called_once_with()
+    device_cls.assert_called_once_with("COM1", baud_rate=None)
+    assert manager._usb_output_devices["COM1"] is not old_device
+
+
 # ---------------------------------------------------------------------------
 # Manager: reconnect applies the stored settings
 # ---------------------------------------------------------------------------
@@ -162,8 +177,10 @@ def test_reconnectWithManualSettings_closes_stale_and_readds_manual():
     manager._serial_port_list = ["COM9", "COM3"]
     with patch.object(manager, "_addRemovePorts") as add_remove:
         manager.reconnectWithManualSettings()
+    # Both are closed: recreating COM3 without closing it first would leave
+    # two open serial handles on the same port ("Access denied" writes).
     stale.close.assert_called_once_with()
-    current.close.assert_not_called()
+    current.close.assert_called_once_with()
     add_remove.assert_called_once_with(["COM3"])
 
 
@@ -174,7 +191,7 @@ def test_reconnectWithManualSettings_auto_mode_resets_scan_list():
     manager._serial_port_list = ["COM1"]
     with patch.object(manager, "_addRemovePorts") as add_remove:
         manager.reconnectWithManualSettings()
-    device.close.assert_not_called()
+    device.close.assert_called_once_with()
     add_remove.assert_not_called()
     assert manager._serial_port_list == []
 

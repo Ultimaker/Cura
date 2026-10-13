@@ -60,8 +60,10 @@ traced to plausible serial-protocol weaknesses, all mitigated in
 - **Resend-storm guard**: 10 resends within 60 s pause the print with a
   warning (check cable / baud rate) instead of re-executing old lines forever.
 - **Communication log**: when enabled, every TX/RX line is appended with a
-  timestamp to `usb-serial.log` in the Cura config folder (fresh file per
-  connection). Use it to diagnose the next glitch.
+  timestamp to `usb-serial.log` in the Cura config folder. On each new
+  connection the previous session is preserved as `usb-serial.prev.log`
+  (rotation, not truncation), so a mid-print glitch trace survives the
+  reconnect or Cura restart that usually follows it.
 - The update thread also survives single malformed lines (per-line
   try/except via the extracted `_handleSerialLine`).
 
@@ -85,6 +87,7 @@ traced to plausible serial-protocol weaknesses, all mitigated in
 - [x] Manual baud rate skips auto-detection; manual port restricts scanning
 - [x] Unit tests written (`pytest plugins/USBPrinting/tests/ -v`); logic verified with a stub harness where Qt deps were unavailable
 - [x] Serial hardening implemented (pacing, idle guard, timeout retry, resend-storm guard, comm log); handler logic verified with a stub harness executing the real code (9 scenarios)
+- [x] Reconnect closes stale handles (no more double handle / "Access denied" on the same port); comm log rotates to `usb-serial.prev.log` instead of truncating
 - [ ] End-to-end test with a real printer over USB, with comm log enabled to capture the next glitch
 
 ## Local install (Windows, Cura 5.12)
@@ -93,9 +96,9 @@ traced to plausible serial-protocol weaknesses, all mitigated in
 2. Back up `C:\Program Files\UltiMaker Cura 5.12.0\share\cura\plugins\USBPrinting`
    to `USBPrinting.orig` (admin rights required).
 3. Copy this folder's contents over it. For later updates it is enough to
-   re-copy the changed files (currently `USBPrinterOutputDevice.py`,
-   `USBPrinterOutputDeviceManager.py`, `USBPrintingExtension.py`,
-   `USBPrintingSettingsDialog.qml`).
+   re-copy the changed files (currently `__init__.py`,
+   `USBPrinterOutputDevice.py`, `USBPrinterOutputDeviceManager.py`,
+   `USBPrintingExtension.py`, `USBPrintingSettingsDialog.qml`).
 4. Start Cura, enable USB printing in Preferences > General if needed, then
    use Extensions > USB Printing > USB Printing Settings...
 
@@ -104,8 +107,10 @@ traced to plausible serial-protocol weaknesses, all mitigated in
 1. In the settings dialog, tick **Log USB communication to file**.
 2. Print over USB as usual. Every TX/RX line lands with a timestamp in
    `usb-serial.log` inside the Cura config folder
-   (`Help > Show Configuration Folder`), rewritten at each connection.
-3. If the head crashes again, keep the log file: the last lines before the
+   (`Help > Show Configuration Folder`). At each new connection the previous
+   session is kept as `usb-serial.prev.log`, so reconnecting or restarting
+   Cura after a glitch does not destroy the trace.
+3. If the head crashes again, keep **both** log files: the last lines before the
    crash show whether a corrupted line, a resend storm or a silent printer
    caused it. Disable the checkbox afterwards (the file can grow several MB
    on long prints).

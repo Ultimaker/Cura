@@ -178,6 +178,56 @@ def test_comm_log_stays_closed_when_disabled(tmp_path):
     assert device._comm_log_file is None
 
 
+def test_comm_log_rotates_previous_session(tmp_path):
+    device = _make_device()
+    log_path = tmp_path / "usb-serial.log"
+    backup_path = tmp_path / "usb-serial.prev.log"
+    log_path.write_text("18:00:00.000 TX N0G1 X10*115\n", encoding="utf-8")
+    preferences = _make_preferences({device_module.LOG_COMM_PREFERENCE_KEY: True})
+    application = MagicMock()
+    application.getPreferences.return_value = preferences
+    with patch.object(device_module.CuraApplication, "getInstance", return_value=application), \
+         patch.object(device_module, "getCommLogPath", return_value=str(log_path)):
+        device._openCommLog()
+        device._closeCommLog()
+    # The previous session survives the reconnect instead of being truncated.
+    assert backup_path.is_file()
+    assert "N0G1 X10" in backup_path.read_text(encoding="utf-8")
+    new_content = log_path.read_text(encoding="utf-8")
+    assert "USB serial log started" in new_content
+    assert "N0G1 X10" not in new_content
+
+
+def test_comm_log_rotation_replaces_stale_backup(tmp_path):
+    device = _make_device()
+    log_path = tmp_path / "usb-serial.log"
+    backup_path = tmp_path / "usb-serial.prev.log"
+    backup_path.write_text("ancient session\n", encoding="utf-8")
+    log_path.write_text("previous session\n", encoding="utf-8")
+    preferences = _make_preferences({device_module.LOG_COMM_PREFERENCE_KEY: True})
+    application = MagicMock()
+    application.getPreferences.return_value = preferences
+    with patch.object(device_module.CuraApplication, "getInstance", return_value=application), \
+         patch.object(device_module, "getCommLogPath", return_value=str(log_path)):
+        device._openCommLog()
+        device._closeCommLog()
+    assert backup_path.read_text(encoding="utf-8") == "previous session\n"
+
+
+def test_comm_log_rotation_skipped_for_missing_file(tmp_path):
+    device = _make_device()
+    log_path = tmp_path / "usb-serial.log"
+    preferences = _make_preferences({device_module.LOG_COMM_PREFERENCE_KEY: True})
+    application = MagicMock()
+    application.getPreferences.return_value = preferences
+    with patch.object(device_module.CuraApplication, "getInstance", return_value=application), \
+         patch.object(device_module, "getCommLogPath", return_value=str(log_path)):
+        device._openCommLog()
+        device._closeCommLog()
+    assert not (tmp_path / "usb-serial.prev.log").exists()
+    assert "USB serial log started" in log_path.read_text(encoding="utf-8")
+
+
 def test_extension_log_flag_roundtrip():
     extension = extension_module.USBPrintingExtension.__new__(extension_module.USBPrintingExtension)
     extension._dialog = None
