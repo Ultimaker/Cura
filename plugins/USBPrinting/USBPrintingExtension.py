@@ -2,18 +2,27 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-from typing import List
+from typing import List, Optional, Tuple
 
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM.Extension import Extension
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.i18n import i18nCatalog
 
 from cura.CuraApplication import CuraApplication
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 
 from .USBPrinterOutputDevice import LOG_COMM_PREFERENCE_KEY, getCommLogPath
+from .USBMaintenance import (
+    build_prep_script,
+    build_purge_script,
+    build_unload_script,
+    clean_temperature,
+    validate_maintenance_temps,
+)
 
 catalog = i18nCatalog("cura")
 
@@ -44,6 +53,9 @@ class USBPrintingExtension(QObject, Extension):
 
         self.setMenuName(catalog.i18nc("@item:inmenu", "USB Printing"))
         self.addMenuItem(catalog.i18nc("@item:inmenu", "USB Printing Settings..."), self.showSettingsDialog)
+        self.addMenuItem(catalog.i18nc("@item:inmenu", "Maintenance: Prepare + Level..."), self.maintenancePrepare)
+        self.addMenuItem(catalog.i18nc("@item:inmenu", "Maintenance: Purge Nozzle..."), self.maintenancePurge)
+        self.addMenuItem(catalog.i18nc("@item:inmenu", "Maintenance: Unload Filament..."), self.maintenanceUnload)
 
         preferences = CuraApplication.getInstance().getPreferences()
         preferences.addPreference(MANUAL_PORT_PREFERENCE_KEY, "")
@@ -52,6 +64,7 @@ class USBPrintingExtension(QObject, Extension):
 
         self._dialog = None  # type: ignore
         self._cached_ports = []  # type: List[str]
+        self._pending_maintenance = None  # type: Optional[Tuple[str, List[str], int, int]]
         self.refreshSerialPorts()
 
     def showSettingsDialog(self) -> None:
@@ -189,3 +202,143 @@ class USBPrintingExtension(QObject, Extension):
                 Logger.log("w", "USBPrinting settings: manager has no reconnectWithManualSettings().")
         except Exception:
             Logger.logException("e", "USBPrinting settings: reconnect failed.")
+
+    # ------------------------------------------------------------------
+    # Maintenance routines. Temperatures come from the active material
+    # profile (extruder stack) so TPU (unheated bed) and PLA (60 C bed)
+    # behave correctly without hardcoded values.
+    # ------------------------------------------------------------------
+
+    def maintenancePrepare(self) -> None:
+        hotend, bed = self._getMaintenanceTemps()
+        status, reason = validate_maintenance_temps(hotend, bed)
+        if status == "blocked":
+            self._showMaintenanceMessage(reason, Message.MessageType.ERROR)
+            return
+        self._requestMaintenance(
+            catalog.i18nc("@item:inmenu", "Prepare + Level"),
+            build_prep_script(hotend, bed), hotend, bed, status, reason)
+
+    def maintenancePurge(self) -> None:
+        hotend, bed = self._getMaintenanceTemps()
+        status, reason = validate_maintenance_temps(hotend, bed)
+        if status == "blocked":
+            self._showMaintenanceMessage(reason, Message.MessageType.ERROR)
+            return
+        self._requestMaintenance(
+            catalog.i18nc("@item:inmenu", "Purge Nozzle"),
+            build_purge_script(hotend), hotend, bed, status, reason)
+
+    def maintenanceUnload(self) -> None:
+        hotend, bed = self._getMaintenanceTemps()
+        status, reason = validate_maintenance_temps(hotend, bed)
+        if status == "blocked":
+            self._showMaintenanceMessage(reason, Message.MessageType.ERROR)
+            return
+        self._requestMaintenance(
+            catalog.i18nc("@item:inmenu", "Unload Filament"),
+            build_unload_script(hotend), hotend, bed, status, reason)
+
+    def _getMaintenanceTemps(self) -> Tuple[Optional[int], Optional[int]]:
+        """(hotend, bed) in C from the active material profile, None when unavailable."""
+        try:
+            source = None
+            try:
+                from cura.Settings.ExtruderManager import ExtruderManager
+                stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+                if stacks:
+                    source = stacks[0]
+            except Exception:
+                source = None
+            if source is None:
+                source = CuraApplication.getInstance().getGlobalContainerStack()
+            if source is None:
+                return None, None
+            hotend = clean_temperature(source.getProperty("material_print_temperature", "value"))
+            bed = clean_temperature(source.getProperty("material_bed_temperature", "value"))
+            return hotend, bed
+        except Exception:
+            Logger.logException("w", "USB maintenance: could not resolve temperatures.")
+            return None, None
+
+    def _findIdleUsbDevice(self):
+        """Connected, non-printing USB device, or None."""
+        try:
+            from .USBPrinterOutputDeviceManager import USBPrinterOutputDeviceManager
+            from .USBPrinterOutputDevice import USBPrinterOutputDevice
+            manager = USBPrinterOutputDeviceManager.getInstance()
+            if manager is None:
+                return None
+            for device in manager._usb_output_devices.values():
+                if isinstance(device, USBPrinterOutputDevice) \
+                        and device.connectionState == ConnectionState.Connected \
+                        and not device._is_printing:
+                    return device
+        except Exception:
+            Logger.logException("w", "USB maintenance: device lookup failed.")
+        return None
+
+    def _requestMaintenance(self, label: str, script: List[str], hotend: int, bed: int,
+                            status: str, reason: str) -> None:
+        if status == "confirm_bed":
+            # Bed target 0 is valid (TPU) but wrong for most materials: ask first.
+            self._pending_maintenance = (label, script, hotend, bed)
+            message = Message(
+                text=catalog.i18nc("@message",
+                                   "%s: bed target is 0 C (unheated bed, normal for TPU). Run anyway?" % label),
+                title=catalog.i18nc("@message", "USB maintenance"),
+                message_type=Message.MessageType.WARNING,
+                lifetime=0)
+            try:
+                message.addAction("run", catalog.i18nc("@action:button", "Run anyway"), "", "")
+                message.addAction("cancel", catalog.i18nc("@action:button", "Cancel"), "", "")
+                message.actionTriggered.connect(self._onMaintenanceAction)
+            except Exception:
+                # No confirmation possible: fail safe, do not run.
+                self._pending_maintenance = None
+                Logger.logException("w", "USB maintenance: cannot ask for confirmation.")
+                self._showMaintenanceMessage(
+                    catalog.i18nc("@message", "%s: cannot ask for confirmation, cancelled." % label),
+                    Message.MessageType.ERROR)
+                return
+            message.show()
+            return
+        self._startMaintenance(label, script, hotend, bed)
+
+    def _onMaintenanceAction(self, message=None, action_id: str = "") -> None:
+        pending, self._pending_maintenance = self._pending_maintenance, None
+        try:
+            if message is not None:
+                message.hide()
+        except Exception:
+            pass
+        if pending is None or action_id != "run":
+            return
+        label, script, hotend, bed = pending
+        self._startMaintenance(label, script, hotend, bed)
+
+    def _startMaintenance(self, label: str, script: List[str], hotend: int, bed: int) -> None:
+        device = self._findIdleUsbDevice()
+        if device is None:
+            self._showMaintenanceMessage(
+                catalog.i18nc("@message",
+                              "%s: no connected USB printer (or a print is in progress)." % label),
+                Message.MessageType.ERROR)
+            return
+        if not device.runMaintenanceScript(script, label):
+            self._showMaintenanceMessage(
+                catalog.i18nc("@message", "%s: could not start, check the USB connection." % label),
+                Message.MessageType.ERROR)
+            return
+        self._showMaintenanceMessage(
+            catalog.i18nc("@message", "%s started (hotend %d C, bed %d C). Watch the printer." % (label, hotend, bed)),
+            Message.MessageType.POSITIVE)
+
+    @staticmethod
+    def _showMaintenanceMessage(text: str, message_type) -> None:
+        try:
+            Message(text=text,
+                    title=catalog.i18nc("@message", "USB maintenance"),
+                    message_type=message_type).show()
+        except Exception:
+            Logger.log("w", "USB maintenance: %s" % text)

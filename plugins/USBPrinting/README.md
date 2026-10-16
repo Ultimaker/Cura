@@ -75,11 +75,17 @@ traced to plausible serial-protocol weaknesses, all mitigated in
 | `USBPrinterOutputDeviceManager.py` | Port scanning, device lifecycle, manual-settings override (`getManualPort`, `getManualBaudRate`, `resolvePortList`, `reconnectWithManualSettings`) |
 | `USBPrinterOutputDevice.py` | Serial protocol, G-code streaming, temperature parsing, robustness hardening (pacing, idle/timeout/resend guards, comm log) |
 | `AutoDetectBaudJob.py` | Baud-rate probing, used only in `Auto` mode (unchanged) |
-| `USBPrintingExtension.py` | Extension + menu entry, preference access, port listing, log flag for the dialog |
+| `USBPrintingExtension.py` | Extension + menu entry, preference access, port listing, log flag for the dialog, maintenance routines (temps from material profile) |
+| `USBMaintenance.py` | Pure maintenance logic: temp validation + G-code builders (prep+G29, purge, unload), no Qt deps |
 | `USBPrintingSettingsDialog.qml` | Settings dialog (port + baud dropdowns, refresh, reconnect, comm-log checkbox) |
 | `MonitorItem.qml` | Monitor-stage panel (unchanged) |
 | `tests/TestUSBPrintingManualSettings.py` | Unit tests for manual port/baud (17 tests, pytest + `unittest.mock`) |
 | `tests/TestUSBPrintingRobustness.py` | Unit tests for pacing, timeouts, resends, stall detection, comm log |
+| `tests/TestUSBMaintenance.py` | Unit tests for temp validation, script builders, device guards, confirm flow |
+
+## Maintenance routines (custom addition)
+
+Extensions > USB Printing menu: **Prepare + Level** (`M140`/`M104` no-ooze → `G28` → `G29` → `M109`/`M190`), **Purge Nozzle** (relative `E20` extrude) and **Unload Filament** (heat, `E-80` retract, cool down). Temperatures are read from the active material profile (extruder stack), never hardcoded. Safety: routines run only when connected and idle, never during a print; hotend 0 blocks; bed 0 (valid for TPU) asks for confirmation; `M190` is skipped for an unheated bed.
 
 ## Status
 

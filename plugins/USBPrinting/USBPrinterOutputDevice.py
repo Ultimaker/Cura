@@ -387,6 +387,26 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self.setConnectionState(ConnectionState.Error)
             return False
 
+    def runMaintenanceScript(self, lines: List[str], label: str) -> bool:
+        """Queue a short maintenance G-code sequence (not a print).
+
+        Only runs when connected and idle: never during a print. Lines drain
+        through the normal command queue, one per "ok", so M109/M190 blocking
+        waits behave like any other command. Returns True when queued.
+        """
+        if not lines:
+            return False
+        if self._serial is None or self._connection_state != ConnectionState.Connected:
+            Logger.log("w", "USB maintenance '%s': not connected, ignoring." % label)
+            return False
+        if self._is_printing:
+            Logger.log("w", "USB maintenance '%s': a print is in progress, ignoring." % label)
+            return False
+        self._logComm("SYS", "maintenance '%s' started (%d lines)" % (label, len(lines)))
+        for line in lines:
+            self.sendCommand(line)
+        return True
+
     def _update(self):
         while self._connection_state == ConnectionState.Connected and self._serial is not None:
             try:
