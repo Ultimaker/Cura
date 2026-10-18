@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2026-09-16 16:53+0000\n"
-"PO-Revision-Date: 2026-10-08 13:02+0000\n"
+"PO-Revision-Date: 2026-10-17 08:37+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -125,7 +125,7 @@ msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
 msgstr ""
-"インフィル領域の周りにウォールを追加します。追加されたウォールによってトップ/ボトム面の線に生じるたるみを少なくし、トップ/ボトム面の材料を追加した場合と同等の品質で印刷できることになります。\n"
+"インフィル領域の周りにウォールを追加します。追加されたウォールによってトップ・ボトム面の線に生じるたるみを少なくし、トップ/ボトム面の材料を追加した場合と同等の品質で印刷できることになります。\n"
 "この機能はインフィルポリゴン接合と組み合わせて、正しく設定した場合、移動や引き戻しなしに全てのインフィル領域を1つの造形パスにまとめることができます。"
 
 msgctxt "platform_adhesion description"
@@ -230,7 +230,7 @@ msgstr "各レイヤーのすべてのポリゴンに適用されるオフセッ
 
 msgctxt "xy_offset_layer_0 description"
 msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
-msgstr "最初のレイヤーのポリゴンに適用されるオフセットの値。マイナスの値はelephant's footと呼ばれる第一層が潰れるを現象を軽減させます。"
+msgstr "最初のレイヤーのポリゴンに適用されるオフセットの値。マイナスの値はelephant's footと呼ばれる第一層が潰れる現象を軽減させます。"
 
 msgctxt "support_offset description"
 msgid "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support."
@@ -346,7 +346,7 @@ msgstr "底面内側ウォールの速度"
 
 msgctxt "wall_x_material_flow_flooring label"
 msgid "Bottom Surface Inner Wall(s) Flow"
-msgstr "底面内側ウォールのフロー"
+msgstr "底面内側ウォール流量"
 
 msgctxt "acceleration_wall_0_flooring label"
 msgid "Bottom Surface Outer Wall Acceleration"
@@ -354,7 +354,7 @@ msgstr "底面外側ウォールの加速度"
 
 msgctxt "wall_0_material_flow_flooring label"
 msgid "Bottom Surface Outer Wall Flow"
-msgstr "底面外側ウォールのフロー"
+msgstr "底面外側ウォール流量"
 
 msgctxt "jerk_wall_0_flooring label"
 msgid "Bottom Surface Outer Wall Jerk"
@@ -374,7 +374,7 @@ msgstr "底面スキン用エクストルーダー"
 
 msgctxt "flooring_material_flow label"
 msgid "Bottom Surface Skin Flow"
-msgstr "底面スキンのフロー"
+msgstr "底面スキン流量"
 
 msgctxt "jerk_flooring label"
 msgid "Bottom Surface Skin Jerk"
@@ -466,7 +466,7 @@ msgstr "ブリッジセカンドスキンのファン速度"
 
 msgctxt "bridge_skin_material_flow_2 label"
 msgid "Bridge Second Skin Flow"
-msgstr "ブリッジセカンドスキンのフロー"
+msgstr "ブリッジセカンドスキン流量"
 
 msgctxt "bridge_skin_speed_2 label"
 msgid "Bridge Second Skin Speed"
@@ -478,7 +478,7 @@ msgstr "ブリッジスキンの密度"
 
 msgctxt "bridge_skin_material_flow label"
 msgid "Bridge Skin Flow"
-msgstr "ブリッジスキンフロー"
+msgstr "ブリッジスキン流量"
 
 msgctxt "bridge_skin_speed label"
 msgid "Bridge Skin Speed"
@@ -498,7 +498,7 @@ msgstr "ブリッジサードスキンのファン速度"
 
 msgctxt "bridge_skin_material_flow_3 label"
 msgid "Bridge Third Skin Flow"
-msgstr "ブリッジサードスキンのフロー"
+msgstr "ブリッジサードスキン流量"
 
 msgctxt "bridge_skin_speed_3 label"
 msgid "Bridge Third Skin Speed"
@@ -510,7 +510,7 @@ msgstr "ブリッジウォールコースティング"
 
 msgctxt "bridge_wall_material_flow label"
 msgid "Bridge Wall Flow"
-msgstr "ブリッジウォールフロー"
+msgstr "ブリッジウォール流量"
 
 msgctxt "bridge_wall_speed label"
 msgid "Bridge Wall Speed"
@@ -710,7 +710,7 @@ msgstr "サポートジグザグ接続"
 
 msgctxt "connect_skin_polygons label"
 msgid "Connect Top/Bottom Polygons"
-msgstr "上層/底層ポリゴンに接合"
+msgstr "上層・底層ポリゴンに接合"
 
 msgctxt "connect_infill_polygons description"
 msgid "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time."
@@ -806,7 +806,7 @@ msgstr "メッシュ切断"
 
 msgctxt "material_flow_temp_graph description"
 msgid "Data linking material flow (in mm3 per second) to temperature (degrees Celsius)."
-msgstr "材料フロー（毎秒3mm）と温度（℃）をリンクします。"
+msgstr "材料の流量（mm³/秒）と温度（℃）を関連付けたデータ。"
 
 msgctxt "machine_acceleration label"
 msgid "Default Acceleration"
@@ -846,7 +846,7 @@ msgstr "フィラメントのモーターのデフォルトジャーク。"
 
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
-msgstr "ブリッジを検出し、ブリッジを印刷しながらて印刷速度、フロー、ファンの設定を変更します。"
+msgstr "ブリッジを検出し、ブリッジを印刷中の速度、流量、ファンの設定を変更します。"
 
 msgctxt "roofing_expansion description"
 msgid "Determines how much the top surfaces are expanded beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces."
@@ -854,7 +854,7 @@ msgstr "重なった面の下にあるレイヤーの表面をどれだけ拡張
 
 msgctxt "scarf_split_distance description"
 msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
-msgstr "スカーフシームに沿って押し出す際のフロー変更における各ステップの長さを決定します。距離が短いほどより精密になりますが、Gコードはより複雑になります。"
+msgstr "スカーフシームに沿って押し出す際の流量変更における各ステップの長さを決定します。距離が短いほどより精密になりますが、Gコードはより複雑になります。"
 
 msgctxt "scarf_joint_seam_length description"
 msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
@@ -986,7 +986,7 @@ msgstr "ドラフトシールドの制限"
 
 msgctxt "draft_shield_dist label"
 msgid "Draft Shield X/Y Distance"
-msgstr "ドラフトシールドとX/Yの距離"
+msgstr "ドラフトシールドとのX/Y距離"
 
 msgctxt "support_mesh_drop_down label"
 msgid "Drop Down Support Mesh"
@@ -998,7 +998,7 @@ msgstr "デュアルエクストルーダー"
 
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
-msgstr "段階的なフローの変化におけるステップごとの継続時間"
+msgstr "段階的な流量変化におけるステップごとの時間"
 
 msgctxt "machine_shape option elliptic"
 msgid "Elliptic"
@@ -1098,7 +1098,7 @@ msgstr "外周の壁（ooze shield）を有効にします。これはモデル�
 
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr "段階的なフローの変化を有効にします。有効にすると、フロー量は目標フローまで段階的に増加/減少します。これは、エクストルーダーモーターの始動/停止時にフローがすぐに変化しないボーデンチューブを備えたプリンターに便利です。"
+msgstr "段階的な流量の変化を有効にします。有効にすると、流量は目標値まで段階的に増加（減少）します。これは、エクストルーダーモーターの始動（停止）時に流量がすぐに変化しないボーデンチューブを持つプリンターに便利です。"
 
 msgctxt "ppr_enable description"
 msgid "Enable print process reporting for setting threshold values for possible fault detection."
@@ -1106,7 +1106,7 @@ msgstr "印刷プロセスのレポートを有効にして、問題の検出の
 
 msgctxt "small_skin_on_surface description"
 msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
-msgstr "最上位のスキンレイヤー（空気にさらされている）上の小さな（最大「小さな上部/下部幅」）領域を、デフォルトパターンの代わりにウォールで埋められるようにします。"
+msgstr "最上位のスキンレイヤー（空気にさらされている）上の小さな（最大「小さな上部・下部幅」）領域を、デフォルトパターンの代わりにウォールで埋められるようにします。"
 
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
@@ -1118,7 +1118,7 @@ msgstr "プリントヘッドのスピード調整を有効にします。加速
 
 msgctxt "cool_fan_enabled description"
 msgid "Enables the print cooling fans while printing. The fans improve print quality on layers with short layer times and bridging / overhangs."
-msgstr "プリント中の冷却ファンを有効にします。ファンは、短いレイヤープリントやブリッジ/オーバーハングのレイヤーがあるプリントの品質が向上します。"
+msgstr "プリント中の冷却ファンを有効にします。ファンは、短い時間のレイヤーや、ブリッジ・オーバーハングがあるレイヤーの品質が向上します。"
 
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
@@ -1210,7 +1210,7 @@ msgstr "押出クールダウン速度変更"
 
 msgctxt "speed_equalize_flow_width_factor description"
 msgid "Extrusion width based correction factor on the speed. At 0% the movement speed is kept constant at the Print Speed. At 100% the movement speed is adjusted so that the flow (in mm³/s) is kept constant, i.e. lines half the normal Line Width are printed twice as fast and lines twice as wide are printed half as fast. A value larger than 100% can help to compensate for the higher pressure required to extrude wide lines."
-msgstr "押出幅に基づく速度の補正係数。0%では、移動速度が一定のプリント速度に保たれます。100%では、フロー（mm³/s単位）が一定になるように移動速度が調整されます。つまり、通常のライン幅の半分のラインは2倍の速さでプリントされ、幅が2倍のラインは半分の速さでプリントされます。100%より大きな値を設定すると、幅広のラインを押し出すのに必要な高い圧力を補うことができます。"
+msgstr "押出幅に基づく速度の補正係数。0%では、移動速度が一定のプリント速度に保たれます。100%では、流量（mm³/s単位）が一定になるように移動速度が調整されます。つまり、通常のライン幅の半分のラインは2倍の速さでプリントされ、幅が2倍のラインは半分の速さでプリントされます。100%より大きな値を設定すると、幅広のラインを押し出すのに必要な高い圧力を補うことができます。"
 
 msgctxt "cool_fan_speed label"
 msgid "Fan Speed"
@@ -1246,15 +1246,15 @@ msgstr "最初のレイヤー用サポートエクストルーダー"
 
 msgctxt "material_flow label"
 msgid "Flow"
-msgstr "フロー"
+msgstr "流量"
 
 msgctxt "speed_equalize_flow_width_factor label"
 msgid "Flow Equalization Ratio"
-msgstr "フロー均一化率"
+msgstr "流量均一化率"
 
 msgctxt "flow_anomaly_limit label"
 msgid "Flow Limit"
-msgstr "フロー制限"
+msgstr "流量制限"
 
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
@@ -1266,99 +1266,99 @@ msgstr "流量補正時の最大抽出オフセット"
 
 msgctxt "material_flow_temp_graph label"
 msgid "Flow Temperature Graph"
-msgstr "フロー温度グラフ"
+msgstr "流量温度グラフ"
 
 msgctxt "flow_warn_limit label"
 msgid "Flow Warning"
-msgstr "フロー警告"
+msgstr "流量警告"
 
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
-msgstr "初期レイヤーの流量補修：初期レイヤーの材料吐出量はこの値の乗算で計算されます。"
+msgstr "初期レイヤーの流量補正：初期レイヤーの材料吐出量はこの値の乗算で計算されます。"
 
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
-msgstr "最初のレイヤーの底面ラインのフロー補正"
+msgstr "最初のレイヤーの底面ラインの流量補正"
 
 msgctxt "wall_x_material_flow_flooring description"
 msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
-msgstr "最も外側を除いた底面ウォールのすべてのラインのフローを補正します。"
+msgstr "最も外側を除いた底面ウォールのすべてのラインの流量を補正します。"
 
 msgctxt "infill_material_flow description"
 msgid "Flow compensation on infill lines."
-msgstr "インフィルのフロー補正。"
+msgstr "インフィルの流量補正。"
 
 msgctxt "support_interface_material_flow description"
 msgid "Flow compensation on lines of support roof or floor."
-msgstr "サポート天井面または床面のフロー補正。"
+msgstr "サポート天井面または床面の流量補正。"
 
 msgctxt "flooring_material_flow description"
 msgid "Flow compensation on lines of the areas at the bottom of the print."
-msgstr "造形物の底におけるラインのフローを補正します。"
+msgstr "造形物の底におけるラインの流量を補正します。"
 
 msgctxt "roofing_material_flow description"
 msgid "Flow compensation on lines of the areas at the top of the print."
-msgstr "印刷物の上部表面のフロー補正。"
+msgstr "造形物の上部表面の流量補正。"
 
 msgctxt "prime_tower_flow description"
 msgid "Flow compensation on prime tower lines."
-msgstr "プライムタワーのフロー補正。"
+msgstr "プライムタワーの流量補正。"
 
 msgctxt "skirt_brim_material_flow description"
 msgid "Flow compensation on skirt or brim lines."
-msgstr "スカートまたはブリムのフロー補正。"
+msgstr "スカートまたはブリムの流量補正。"
 
 msgctxt "support_bottom_material_flow description"
 msgid "Flow compensation on support floor lines."
-msgstr "サポート床面のフロー補正。"
+msgstr "サポート床面ラインの流量補正。"
 
 msgctxt "support_roof_material_flow description"
 msgid "Flow compensation on support roof lines."
-msgstr "サポート天井面のフロー補正。"
+msgstr "サポート天井面ラインの流量補正。"
 
 msgctxt "support_material_flow description"
 msgid "Flow compensation on support structure lines."
-msgstr "サポート構造ラインのフロー補正。"
+msgstr "サポート構造ラインの流量補正。"
 
 msgctxt "wall_0_material_flow_flooring description"
 msgid "Flow compensation on the bottom surface outermost wall line."
-msgstr "最も外側の底面ウォールのラインのフローを補正します。"
+msgstr "最も外側の底面ウォールのラインの流量を補正します。"
 
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "最初のレイヤーの最も外側のウォールライン上のフロー補正。"
+msgstr "最初のレイヤーの最も外側のウォールラインの流量補正。"
 
 msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
-msgstr "最も外側のウォールのフロー補正。"
+msgstr "最も外側のウォールの流量補正。"
 
 msgctxt "wall_0_material_flow_roofing description"
 msgid "Flow compensation on the top surface outermost wall line."
-msgstr "上面の最も外側のウォールラインにおける流量補正。"
+msgstr "上面の最も外側のウォールラインの流量補正。"
 
 msgctxt "wall_x_material_flow_roofing description"
 msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-msgstr "最外のラインを除く、すべてのウォールラインにおける上面ウォールラインのフロー補正。"
+msgstr "最外のラインを除く、すべてのウォールラインにおける上面ウォールラインの流量補正。"
 
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
-msgstr "上面/下面のフロー補正。"
+msgstr "上面・下面ラインの流量補正。"
 
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "最も外側のウォールラインを除くすべてのウォールラインのフロー補正（ただし、最初のレイヤーのみ）"
+msgstr "最も外側のウォールラインを除くすべてのウォールラインの流量補正（ただし、最初のレイヤーのみ）"
 
 msgctxt "wall_x_material_flow description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one."
-msgstr "最も外側以外のウォールのフロー補正。"
+msgstr "最も外側以外のウォールの流量補正。"
 
 msgctxt "wall_material_flow description"
 msgid "Flow compensation on wall lines."
-msgstr "ウォールラインのフロー補正。"
+msgstr "ウォールラインの流量補正。"
 
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
-msgstr "流れの補修：吐出される材料の量は、この値から乗算されます。"
+msgstr "流量補正：吐出される材料の量にこの値が乗算されます。"
 
 msgctxt "meshfix_fluid_motion_angle label"
 msgid "Fluid Motion Angle"
@@ -1382,7 +1382,7 @@ msgstr "フラッシュパージ速度"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr "この値より長い移動の場合、材料フローはパスの目標フローにリセットされます"
+msgstr "この値より長い移動の場合、材料の流量はパスの目標値にリセットされます"
 
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
@@ -1510,15 +1510,15 @@ msgstr "サポートインフィル半減回数"
 
 msgctxt "gradual_flow_discretisation_step_size label"
 msgid "Gradual flow discretisation step size"
-msgstr "段階的なフローの離散化ステップのサイズ"
+msgstr "段階的な流量の離散化ステップのサイズ"
 
 msgctxt "gradual_flow_enabled label"
 msgid "Gradual flow enabled"
-msgstr "段階的なフローが有効"
+msgstr "段階的な流量を有効"
 
 msgctxt "max_flow_acceleration label"
 msgid "Gradual flow max acceleration"
-msgstr "段階的なフローの最大加速度"
+msgstr "段階的な流量の最大加速度"
 
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
@@ -1774,7 +1774,7 @@ msgstr "インフィルエクストルーダー"
 
 msgctxt "infill_material_flow label"
 msgid "Infill Flow"
-msgstr "インフィルフロー"
+msgstr "インフィル流量"
 
 msgctxt "jerk_infill label"
 msgid "Infill Jerk"
@@ -1874,7 +1874,7 @@ msgstr "初期レイヤー加速度"
 
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr "初期レイヤーの底面フロー"
+msgstr "初期レイヤー底面流量"
 
 msgctxt "support_tree_bp_diameter label"
 msgid "Initial Layer Diameter"
@@ -1882,7 +1882,7 @@ msgstr "初期レイヤー直径"
 
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
-msgstr "初期レイヤーフロー"
+msgstr "初期レイヤー流量"
 
 msgctxt "layer_height_0 label"
 msgid "Initial Layer Height"
@@ -1894,7 +1894,7 @@ msgstr "初期レイヤー水平拡張"
 
 msgctxt "wall_x_material_flow_layer_0 label"
 msgid "Initial Layer Inner Wall Flow"
-msgstr "初期レイヤー内側ウォールのフロー"
+msgstr "初期レイヤー内側ウォール流量"
 
 msgctxt "jerk_layer_0 label"
 msgid "Initial Layer Jerk"
@@ -1906,7 +1906,7 @@ msgstr "初期レイヤーのライン幅"
 
 msgctxt "wall_0_material_flow_layer_0 label"
 msgid "Initial Layer Outer Wall Flow"
-msgstr "初期レイヤーにおける外側ウォールのフロー"
+msgstr "初期レイヤー外側ウォール流量"
 
 msgctxt "acceleration_print_layer_0 label"
 msgid "Initial Layer Print Acceleration"
@@ -1958,7 +1958,7 @@ msgstr "初期印刷温度"
 
 msgctxt "layer_0_max_flow_acceleration label"
 msgid "Initial layer max flow acceleration"
-msgstr "初期層の最大フロー加速度"
+msgstr "初期レイヤー最大流量加速度"
 
 msgctxt "acceleration_wall_x label"
 msgid "Inner Wall Acceleration"
@@ -1982,7 +1982,7 @@ msgstr "内側ウォール速度"
 
 msgctxt "wall_x_material_flow label"
 msgid "Inner Wall(s) Flow"
-msgstr "内側ウォールのフロー"
+msgstr "内側ウォール流量"
 
 msgctxt "wall_line_width_x label"
 msgid "Inner Wall(s) Line Width"
@@ -2062,7 +2062,7 @@ msgstr "アイロン加速度"
 
 msgctxt "ironing_flow label"
 msgid "Ironing Flow"
-msgstr "アイロンフロー"
+msgstr "アイロン時流量"
 
 msgctxt "ironing_inset label"
 msgid "Ironing Inset"
@@ -2202,11 +2202,11 @@ msgstr "検出するプリント温度警告の制限。"
 
 msgctxt "flow_anomaly_limit description"
 msgid "Limit on flow anomaly for detection."
-msgstr "検出するフロー異常の制限。"
+msgstr "流量異常を検出する限界値。"
 
 msgctxt "flow_warn_limit description"
 msgid "Limit on the flow warning for detection."
-msgstr "検出するフロー警告の制限。"
+msgstr "流量警告を検出する限界値。"
 
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
@@ -2354,7 +2354,7 @@ msgstr "材料のGUID"
 
 msgctxt "material_max_flowrate label"
 msgid "Material Maximum Flow Rate"
-msgstr "材料に対する最大フロー割合"
+msgstr "材料の最大流量率"
 
 msgctxt "material_type label"
 msgid "Material Type"
@@ -2454,7 +2454,7 @@ msgstr "最大移動解像度"
 
 msgctxt "max_flow_acceleration description"
 msgid "Maximum acceleration for gradual flow changes"
-msgstr "フローを段階的に変化させるための最大加速度"
+msgstr "流量を段階的に変化させるための最大加速度"
 
 msgctxt "machine_max_acceleration_x description"
 msgid "Maximum acceleration for the motor of the X-direction"
@@ -2478,7 +2478,7 @@ msgstr "特殊なサポートタワーにより支えられる小さな領域の
 
 msgctxt "material_max_flowrate description"
 msgid "Maximum flow rate that the printer can extrude for the material"
-msgstr "材料に対してプリンターが吐出できる最大のフロー割合"
+msgstr "材料に対してプリンターが吐出できる最大の流量率"
 
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
@@ -2646,7 +2646,7 @@ msgstr "ブリムサポート穴の最小面積"
 
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr "第1層のフローを段階的に変化させるための最低速度"
+msgstr "最初のレイヤーにおける流量を段階的に変化させるための最低速度"
 
 msgctxt "min_feature_size description"
 msgid "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width."
@@ -2686,7 +2686,7 @@ msgstr "上面の順序一貫性"
 
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr "上面/底面の方向一貫性"
+msgstr "上面・底面の方向一貫性"
 
 msgctxt "multi_material_paint_depth label"
 msgid "Multi-material Depth"
@@ -2938,7 +2938,7 @@ msgstr "外側ウォール用エクストルーダー"
 
 msgctxt "wall_0_material_flow label"
 msgid "Outer Wall Flow"
-msgstr "外側ウォールのフロー"
+msgstr "外側ウォール流量"
 
 msgctxt "wall_0_inset label"
 msgid "Outer Wall Inset"
@@ -2974,7 +2974,7 @@ msgstr "外側ウォールワイプ距離"
 
 msgctxt "group_outer_walls description"
 msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
-msgstr "同じレイヤー内の異なる島の外側ウォールは順次印刷されます。有効にすると、ウォールは1つの種類ずつ印刷されるため、フローの変化量が制限されます。無効にすると、同じ島のウォールがグループ化されるため、島間の移動回数が減少します。"
+msgstr "同じレイヤー内の異なる島の外側ウォールは順次印刷されます。有効にすると、ウォールは1つの種類ずつ印刷されるため、流量の変化量が制限されます。無効にすると、同じ島のウォールがグループ化されるため、島間の移動回数が減少します。"
 
 msgctxt "brim_location option outside"
 msgid "Outside Only"
@@ -3070,7 +3070,7 @@ msgstr "プライムタワーベースの傾斜"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
-msgstr "プライムタワーのフロー"
+msgstr "プライムタワー流量"
 
 msgctxt "jerk_prime_tower label"
 msgid "Prime Tower Jerk"
@@ -3210,7 +3210,7 @@ msgstr "上面のラインを、隣接するラインと常に一定方向に重
 
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr "上面/底面のラインを、隣接するラインと常に一定方向に重なるような順序でプリントします。これによりプリントにかかる時間は少し長くなりますが、平らな面で見た目の一貫性が向上します。"
+msgstr "上面・底面のラインを、隣接するラインと常に一定方向に重なるような順序でプリントします。これによりプリントにかかる時間は少し長くなりますが、平らな面で見た目の一貫性が向上します。"
 
 msgctxt "material_print_temperature label"
 msgid "Printing Temperature"
@@ -3258,7 +3258,7 @@ msgstr "ラフト土台ファン速度"
 
 msgctxt "raft_base_flow label"
 msgid "Raft Base Flow"
-msgstr "ラフト土台フロー量"
+msgstr "ラフト土台流量"
 
 msgctxt "raft_base_infill_overlap_mm label"
 msgid "Raft Base Infill Overlap"
@@ -3310,11 +3310,11 @@ msgstr "ラフトのファン速度"
 
 msgctxt "raft_flow label"
 msgid "Raft Flow"
-msgstr "ラフトフロー"
+msgstr "ラフト流量"
 
 msgctxt "raft_interface_flow label"
 msgid "Raft Interface Flow"
-msgstr "ラフト境界面フロー量"
+msgstr "ラフト境界面流量"
 
 msgctxt "raft_interface_infill_overlap_mm label"
 msgid "Raft Interface Infill Overlap"
@@ -3394,7 +3394,7 @@ msgstr "ラフトスムージング"
 
 msgctxt "raft_surface_flow label"
 msgid "Raft Surface Flow"
-msgstr "ラフト表面のフロー量"
+msgstr "ラフト表面流量"
 
 msgctxt "raft_surface_infill_overlap_mm label"
 msgid "Raft Surface Infill Overlap"
@@ -3486,7 +3486,7 @@ msgstr "標準ファン速度時のレイヤー"
 
 msgctxt "cool_min_layer_time_fan_speed_max label"
 msgid "Regular/Maximum Fan Speed Threshold"
-msgstr "標準/最大ファン速度のしきい値"
+msgstr "標準・最大ファン速度のしきい値"
 
 msgctxt "relative_extrusion label"
 msgid "Relative Extrusion"
@@ -3498,7 +3498,7 @@ msgstr "全穴除去"
 
 msgctxt "remove_empty_first_layers label"
 msgid "Remove Empty First Layers"
-msgstr "空の最初のメッシュの削除"
+msgstr "空の初期レイヤーを削除"
 
 msgctxt "carve_multiple_volumes label"
 msgid "Remove Mesh Intersection"
@@ -3558,7 +3558,7 @@ msgstr "Repetier"
 
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
-msgstr "上部/下部パターンの最も外側の部分を同心円の線で置き換えます。 1つまたは2つの線を使用すると、インフィル材料で開始するトップ部分の造形が改善されます。"
+msgstr "上部・下部パターンの最も外側の部分を同心円の線で置き換えます。 1つまたは2つの線を使用すると、インフィル材料で開始するトップ部分の造形が改善されます。"
 
 msgctxt "ppr description"
 msgid "Reporting events that go out of set thresholds"
@@ -3566,7 +3566,7 @@ msgstr "設定されたしきい値を超えたイベントのレポート"
 
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
-msgstr "フローの継続時間をリセット"
+msgstr "流量の継続時間をリセット"
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
@@ -3726,7 +3726,7 @@ msgstr "表面サポートのファン速度"
 
 msgctxt "skin_support_material_flow label"
 msgid "Skin Support Flow"
-msgstr "表面サポートのフロー"
+msgstr "表面サポート流量"
 
 msgctxt "skin_support_speed label"
 msgid "Skin Support Speed"
@@ -3762,31 +3762,31 @@ msgstr "スカートライン数"
 
 msgctxt "acceleration_skirt_brim label"
 msgid "Skirt/Brim Acceleration"
-msgstr "スカート/ブリム加速度"
+msgstr "スカート・ブリム加速度"
 
 msgctxt "skirt_brim_extruder_nr label"
 msgid "Skirt/Brim Extruder"
-msgstr "スカート/ブリムエクストルーダー"
+msgstr "スカート・ブリム用エクストルーダー"
 
 msgctxt "skirt_brim_material_flow label"
 msgid "Skirt/Brim Flow"
-msgstr "スカート/ブリムのフロー"
+msgstr "スカート・ブリム流量"
 
 msgctxt "jerk_skirt_brim label"
 msgid "Skirt/Brim Jerk"
-msgstr "スカート/ブリムジャーク"
+msgstr "スカート・ブリムのジャーク"
 
 msgctxt "skirt_brim_line_width label"
 msgid "Skirt/Brim Line Width"
-msgstr "スカート/ブリムラインの幅"
+msgstr "スカート・ブリムのライン幅"
 
 msgctxt "skirt_brim_minimal_length label"
 msgid "Skirt/Brim Minimum Length"
-msgstr "スカート/ブリム最小長さ"
+msgstr "スカート・ブリムの最小長"
 
 msgctxt "skirt_brim_speed label"
 msgid "Skirt/Brim Speed"
-msgstr "スカート/ブリム速度"
+msgstr "スカート・ブリム速度"
 
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
@@ -3814,7 +3814,7 @@ msgstr "小さいレイヤーのプリント温度"
 
 msgctxt "small_skin_on_surface label"
 msgid "Small Top/Bottom On Surface"
-msgstr "表面の小さな上部/下部"
+msgstr "表面の小さな上部・下部"
 
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
@@ -3830,7 +3830,7 @@ msgstr "小型形体は通常のプリント速度に対してこの割合でプ
 
 msgctxt "small_skin_width description"
 msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
-msgstr "小さな上部/下部領域は、デフォルトの上部/下部パターンの代わりにウォールで構成されます。これにより、ぎくしゃくした動きを防げます。デフォルトでは最上位の（空気にさらされている）レイヤーはオフになっています（「表面の小さな上部/下部」を参照）。"
+msgstr "小さな上部・下部領域は、デフォルトの上部・下部パターンの代わりにウォールで構成されます。これにより、ぎくしゃくした動きを防げます。デフォルトでは最上位の（空気にさらされている）レイヤーはオフになっています（「表面の小さな上部・下部」を参照）。"
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
@@ -4002,7 +4002,7 @@ msgstr "サポートフロアエクストルーダー"
 
 msgctxt "support_bottom_material_flow label"
 msgid "Support Floor Flow"
-msgstr "サポート床面フロー"
+msgstr "サポート床面流量"
 
 msgctxt "support_bottom_offset label"
 msgid "Support Floor Horizontal Expansion"
@@ -4038,7 +4038,7 @@ msgstr "サポートフロア厚さ"
 
 msgctxt "support_material_flow label"
 msgid "Support Flow"
-msgstr "サポートのフロー"
+msgstr "サポート流量"
 
 msgctxt "support_offset label"
 msgid "Support Horizontal Expansion"
@@ -4106,7 +4106,7 @@ msgstr "サポート境界面用エクストルーダー"
 
 msgctxt "support_interface_material_flow label"
 msgid "Support Interface Flow"
-msgstr "サポート境界面フロー"
+msgstr "サポート境界面流量"
 
 msgctxt "support_interface_offset label"
 msgid "Support Interface Horizontal Expansion"
@@ -4218,7 +4218,7 @@ msgstr "サポートルーフエクストルーダー"
 
 msgctxt "support_roof_material_flow label"
 msgid "Support Roof Flow"
-msgstr "サポート天井面フロー"
+msgstr "サポート天井面流量"
 
 msgctxt "support_roof_offset label"
 msgid "Support Roof Horizontal Expansion"
@@ -4506,19 +4506,19 @@ msgstr "移動中の加速度。"
 
 msgctxt "raft_base_flow description"
 msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr "ラフト土台のプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。フロー量を増やすことで、接着力やラフト構造の強度を向上させることができます。"
+msgstr "ラフト土台のプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。流量を増やすことで、接着力やラフト構造の強度を向上させることができます。"
 
 msgctxt "raft_interface_flow description"
 msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr "ラフト境界面のプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。フローを増やすことで、接着力やラフト構造の強度を向上させることができます。"
+msgstr "ラフト境界面のプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。流量を増やすことで、接着力やラフト構造の強度を向上させることができます。"
 
 msgctxt "raft_flow description"
 msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr "ラフトのプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。フローを増やすことで、接着力やラフト構造の強度を向上させることができます。"
+msgstr "ラフトのプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。流量を増やすことで、接着力やラフト構造の強度を向上させることができます。"
 
 msgctxt "raft_surface_flow description"
 msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr "ラフト表面のプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。フロー量を増やすことで、接着力やラフト構造の強度を向上させることができます。"
+msgstr "ラフト表面のプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。流量を増やすことで、接着力やラフト構造の強度を向上させることができます。"
 
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
@@ -4774,7 +4774,7 @@ msgstr "スカートまたはブリムをプリントする際に使用するエ
 
 msgctxt "adhesion_extruder_nr description"
 msgid "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion."
-msgstr "スカート/ブリム/ラフトをプリントする際のエクストルーダー。複数のエクストルーダーがある場合に使用されます。"
+msgstr "スカート、ブリム、およびラフトをプリントする際のエクストルーダー。複数のエクストルーダーがある場合に使用されます。"
 
 msgctxt "support_extruder_nr description"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
@@ -4982,7 +4982,7 @@ msgstr "削除するスキンエリアの最大幅。この値より小さいす
 
 msgctxt "skin_preshrink description"
 msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr "削除するスキンエリアの最大幅。この値より小さいすべてのスキンエリアは削除されます。これにより、モデルの傾斜表面の上部/下部スキンに費やす時間や材料の量を制限できます。"
+msgstr "削除するスキンエリアの最大幅。この値より小さいすべてのスキンエリアは削除されます。これにより、モデルの傾斜表面の上部・下部スキンに費やす時間や材料の量を制限できます。"
 
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
@@ -5050,7 +5050,7 @@ msgstr "サポート材間におけるX/Y軸方向の最大距離。サポート
 
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to move the filament to compensate for changes in flow rate."
-msgstr "流量の変化を補正するためにフィラメントを移動する最大距離（mm）。"
+msgstr "流量の割合を補正するためにフィラメントを移動する最大距離（mm）。"
 
 msgctxt "meshfix_maximum_extrusion_area_deviation description"
 msgid "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller."
@@ -5738,7 +5738,7 @@ msgstr "外側サポートの土台の幅。この値を増やすことで、土
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
-msgstr "プライムタワーブリム/ベースの幅。ベースを大きくするとビルドプレートへの接着が強化されますが、有効な印刷エリアも減少します。"
+msgstr "プライムタワーのブリム・ベースの幅。ベースを大きくするとビルドプレートへの接着が強化されますが、有効な印刷エリアも減少します。"
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
@@ -5866,7 +5866,7 @@ msgstr "上面内側ウォール速度"
 
 msgctxt "wall_x_material_flow_roofing label"
 msgid "Top Surface Inner Wall(s) Flow"
-msgstr "上面内知側ウォールのフロー"
+msgstr "上面内知側ウォール流量"
 
 msgctxt "acceleration_wall_0_roofing label"
 msgid "Top Surface Outer Wall Acceleration"
@@ -5874,7 +5874,7 @@ msgstr "上面外側ウォール加速度"
 
 msgctxt "wall_0_material_flow_roofing label"
 msgid "Top Surface Outer Wall Flow"
-msgstr "上面外側ウォールのフロー"
+msgstr "上面外側ウォール流量"
 
 msgctxt "jerk_wall_0_roofing label"
 msgid "Top Surface Outer Wall Jerk"
@@ -5894,7 +5894,7 @@ msgstr "上面表層用エクストルーダー"
 
 msgctxt "roofing_material_flow label"
 msgid "Top Surface Skin Flow"
-msgstr "上面表層フロー"
+msgstr "上面表層流量"
 
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
@@ -5930,31 +5930,31 @@ msgstr "この設定より大きい角を持つオブジェクトの上部また
 
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
-msgstr "トップ/ボトム"
+msgstr "トップ・ボトム"
 
 msgctxt "top_bottom label"
 msgid "Top/Bottom"
-msgstr "トップ/ボトム"
+msgstr "トップ・ボトム"
 
 msgctxt "acceleration_topbottom label"
 msgid "Top/Bottom Acceleration"
-msgstr "上面/底面加速度"
+msgstr "上面・底面加速度"
 
 msgctxt "top_bottom_extruder_nr label"
 msgid "Top/Bottom Extruder"
-msgstr "上部/底面エクストルーダー"
+msgstr "上部・底面用エクストルーダー"
 
 msgctxt "skin_material_flow label"
 msgid "Top/Bottom Flow"
-msgstr "上面/下面フロー"
+msgstr "上面・下面流量"
 
 msgctxt "jerk_topbottom label"
 msgid "Top/Bottom Jerk"
-msgstr "上面/下面ジャーク"
+msgstr "上面・下面ジャーク"
 
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
-msgstr "上層/底層ラインの向き"
+msgstr "上層・底層のライン方向"
 
 msgctxt "skin_line_width label"
 msgid "Top/Bottom Line Width"
@@ -5962,15 +5962,15 @@ msgstr "上下面ライン幅"
 
 msgctxt "top_bottom_pattern label"
 msgid "Top/Bottom Pattern"
-msgstr "上層/底層パターン"
+msgstr "上層・底層パターン"
 
 msgctxt "speed_topbottom label"
 msgid "Top/Bottom Speed"
-msgstr "上面/底面速度"
+msgstr "上面・底面速度"
 
 msgctxt "top_bottom_thickness label"
 msgid "Top/Bottom Thickness"
-msgstr "上部/底面の厚さ"
+msgstr "上部・底面の厚さ"
 
 msgctxt "top_bottom_skin_merge_distance label"
 msgid "Top/Bottom/Skin Merge Distance"
@@ -6098,7 +6098,7 @@ msgstr "特殊なタワーを使用して、小規模なオーバーハングエ
 
 msgctxt "infill_mesh description"
 msgid "Use this mesh to modify the infill of other meshes with which it overlaps. Replaces infill regions of other meshes with regions for this mesh. It's suggested to only print one Wall and no Top/Bottom Skin for this mesh."
-msgstr "このメッシュを使用して、重なる他のメッシュのインフィルを変更します。他のメッシュのインフィル領域を新たなメッシュに置き換えます。トップ/ボトムスキンがない1つのウォールだけを印刷する場合のみ設定を推奨します。"
+msgstr "このメッシュを使用して、重なる他のメッシュのインフィルを変更します。他のメッシュのインフィル領域を新たなメッシュに置き換えます。トップ・ボトムスキンがない1つのウォールだけを印刷する場合のみ設定を推奨します。"
 
 msgctxt "support_mesh description"
 msgid "Use this mesh to specify support areas. This can be used to generate support structure."
@@ -6142,7 +6142,7 @@ msgstr "ウォールエクストルーダー"
 
 msgctxt "wall_material_flow label"
 msgid "Wall Flow"
-msgstr "ウォールのフロー"
+msgstr "ウォール流量"
 
 msgctxt "jerk_wall label"
 msgid "Wall Jerk"
@@ -6430,7 +6430,7 @@ msgstr "単一のサポート構造のライン幅。"
 
 msgctxt "skin_line_width description"
 msgid "Width of a single top/bottom line."
-msgstr "上辺/底辺線のライン幅。"
+msgstr "上辺・底辺のライン幅。"
 
 msgctxt "wall_line_width_x description"
 msgid "Width of a single wall line for all wall lines except the outermost one."
