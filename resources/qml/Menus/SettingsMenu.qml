@@ -26,13 +26,13 @@ Cura.Menu
             NozzleMenu
             {
                 title: Cura.MachineManager.activeDefinitionVariantsName
-                shouldBeVisible: activeMachine.hasVariants
+                shouldBeVisible: !!base.activeMachine && base.activeMachine.hasVariants
                 extruderIndex: index
             }
             MaterialMenu
             {
                 title: catalog.i18nc("@title:menu", "&Material")
-                shouldBeVisible: activeMachine.hasMaterials
+                shouldBeVisible: !!base.activeMachine && base.activeMachine.hasMaterials
                 extruderIndex: index
                 updateModels: false
                 onAboutToShow: updateModels = true
@@ -41,7 +41,7 @@ Cura.Menu
 
             Cura.MenuSeparator
             {
-                visible: Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasMaterials
+                visible: !!base.activeMachine && (base.activeMachine.hasVariants || base.activeMachine.hasMaterials)
             }
 
             Cura.MenuItem

@@ -13,7 +13,8 @@ Item
     property bool fullWarning: true  // <- Can you see the warning icon and the text, or is it just the buttons?
     property var simpleModeSettingsManager :CuraApplication.getSimpleModeSettingsManager()
     height: visible ? UM.Theme.getSize("action_button_icon").height : 0
-    width: visible ? childrenRect.width: 0
+    // Not based on childrenRect, since the children are anchored to this item's right edge, which causes a binding loop.
+    width: visible ? resetToDefaultQualityButton.width + buttonsSpacer.width + compareAndSaveButton.width : 0
     visible: Cura.MachineManager.hasUserSettings || (fullWarning && Cura.MachineManager.hasCustomQuality)
 
     Rectangle
