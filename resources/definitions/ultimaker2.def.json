@@ -41,7 +41,7 @@
         ],
         "platform_texture": "Ultimaker2backplate.png",
         "preferred_variant_name": "0.4 mm",
-        "weight": 3
+        "weight": 0
     },
     "overrides":
     {
