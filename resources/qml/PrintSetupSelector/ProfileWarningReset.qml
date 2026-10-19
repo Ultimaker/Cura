@@ -62,7 +62,8 @@ Item
                 {
                     target: warning
                     text: {
-                        var profile_name = Cura.MachineManager.activeQualityChangesGroup.name
+                        var quality_changes_group = Cura.MachineManager.activeQualityChangesGroup
+                        var profile_name = quality_changes_group ? quality_changes_group.name : ""
                         return catalog.i18nc("@info, %1 is the name of the custom profile", "<b>%1</b> custom profile is active and you overwrote some settings.").arg(profile_name)
                     }
                 }
@@ -75,7 +76,8 @@ Item
                 {
                     target: warning
                     text: {
-                        var profile_name = Cura.MachineManager.activeQualityChangesGroup.name
+                        var quality_changes_group = Cura.MachineManager.activeQualityChangesGroup
+                        var profile_name = quality_changes_group ? quality_changes_group.name : ""
                         return catalog.i18nc("@info, %1 is the name of the custom profile", "<b>%1</b> custom profile is overriding some settings.").arg(profile_name)
                     }
                 }

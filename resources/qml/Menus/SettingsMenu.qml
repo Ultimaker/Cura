@@ -26,13 +26,13 @@ Cura.Menu
             NozzleMenu
             {
                 title: Cura.MachineManager.activeDefinitionVariantsName
-                shouldBeVisible: !!base.activeMachine && base.activeMachine.hasVariants
+                shouldBeVisible: !!Cura.MachineManager.activeMachine && Cura.MachineManager.activeMachine.hasVariants
                 extruderIndex: index
             }
             MaterialMenu
             {
                 title: catalog.i18nc("@title:menu", "&Material")
-                shouldBeVisible: !!base.activeMachine && base.activeMachine.hasMaterials
+                shouldBeVisible: !!Cura.MachineManager.activeMachine && Cura.MachineManager.activeMachine.hasMaterials
                 extruderIndex: index
                 updateModels: false
                 onAboutToShow: updateModels = true
@@ -41,7 +41,7 @@ Cura.Menu
 
             Cura.MenuSeparator
             {
-                visible: !!base.activeMachine && (base.activeMachine.hasVariants || base.activeMachine.hasMaterials)
+                visible: !!Cura.MachineManager.activeMachine && (Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasMaterials)
             }
 
             Cura.MenuItem
@@ -64,7 +64,7 @@ Cura.Menu
                 text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(index, false)
                 visible: (extruder === null || extruder === undefined) ? false : extruder.isEnabled
-                enabled: Cura.MachineManager.numberExtrudersEnabled > 1 && extruder.isEnabled
+                enabled: Cura.MachineManager.numberExtrudersEnabled > 1 && (extruder !== null && extruder !== undefined) && extruder.isEnabled
                 height: visible ? implicitHeight: 0
             }
         }
