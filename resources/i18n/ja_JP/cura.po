@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-16 16:53+0200\n"
-"PO-Revision-Date: 2026-10-08 13:02+0000\n"
+"PO-Revision-Date: 2026-10-19 08:36+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -1018,7 +1018,7 @@ msgstr "表示項目設定..."
 
 msgctxt "@action:menu"
 msgid "Configure visible settings..."
-msgstr "表示設定を変更..."
+msgstr "表示項目設定..."
 
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
@@ -1902,7 +1902,7 @@ msgstr "モデルツールハンドルのY軸を反転（* 再起動が必要）
 
 msgctxt "@label:listbox"
 msgid "Flow"
-msgstr "フロー"
+msgstr "流量"
 
 msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
 msgid "Follow the following steps to load the new material profiles to your printer."
@@ -2839,7 +2839,7 @@ msgstr "アカウントにプリンターが見つかりませんか？"
 
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
 msgid "No profiles are available for the selected material/%1 configuration. Please change your configuration."
-msgstr "選択した/%1材料の設定で利用可能なプロファイルがありません。設定を変更してください。"
+msgstr "選択した材料および%1の設定に利用可能なプロファイルがありません。設定を変更してください。"
 
 msgctxt "@message"
 msgid "No results found with current filter"
@@ -3095,7 +3095,7 @@ msgstr[0] "%1個の設定を上書きします。"
 
 msgctxt "@label:category menu label"
 msgid "Overview"
-msgstr "概要"
+msgstr "全体"
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
@@ -3818,7 +3818,7 @@ msgstr "削除"
 
 msgctxt "@action:menu"
 msgid "Remove from visible settings"
-msgstr "表示設定から削除"
+msgstr "表示項目から削除"
 
 msgctxt "@action:button"
 msgid "Remove printers"
@@ -4432,7 +4432,7 @@ msgid ""
 "\n"
 "Click to open the profile manager."
 msgstr ""
-"いくつかの設定/上書きされた値はプロファイルに保存された値と異なります。\n"
+"いくつかの設定・更新された値はプロファイルに保存された値と異なります。\n"
 "\n"
 "クリックするとプロファイルマネージャーを開きます。"
 
@@ -4965,7 +4965,7 @@ msgstr "このプロファイル<filename>{0}</filename>には、正しくない
 
 msgctxt "@action:label"
 msgid "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
-msgstr "このプロファイルはプリンターによりデフォルトを使用、従いこのプロファイルはセッティング/書き換えが以下のリストにありません。"
+msgstr "このプロファイルはプリンターの既定値を使用するため、以下のリストには設定・更新された値はありません。"
 
 msgctxt "@label"
 msgid "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project."
@@ -5058,7 +5058,7 @@ msgstr "全画面表示切替"
 
 msgctxt "@label"
 msgid "Top / Bottom"
-msgstr "トップ/ボトム"
+msgstr "トップ・ボトム"
 
 msgctxt "@label"
 msgid "Top / Bottom - Bridging"
@@ -5366,7 +5366,7 @@ msgstr "既存を更新する"
 
 msgctxt "@action:tooltip"
 msgid "Update profile with current settings/overrides"
-msgstr "プロファイルを現在の設定で更新/上書きする"
+msgstr "プロファイルを現在の設定で更新・上書きする"
 
 msgctxt "@action:button"
 msgid "Update profile."
@@ -5718,7 +5718,7 @@ msgstr "警告"
 
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
-msgstr "警告：現在の構成ではクオリティータイプ「{0}」を使用できないため、プロファイルは表示されません。このクオリティータイプを使用できる材料/ノズルの組み合わせに切り替えてください。"
+msgstr "警告：現在の構成ではクオリティータイプ「{0}」を使用できないため、プロファイルは表示されません。このクオリティータイプを使用できる材料・ノズルの組み合わせに切り替えてください。"
 
 msgctxt "@text:window"
 msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
