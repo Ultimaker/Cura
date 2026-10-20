@@ -343,7 +343,7 @@ Item
                     width: parent.width - (printerNameLabel.width + (3 * UM.Theme.getSize("default_margin").width))
                     validator: RegularExpressionValidator
                     {
-                        regularExpression: printerNameTextField.machineNameValidator.machineNameRegex
+                        regularExpression: new RegExp(printerNameTextField.machineNameValidator.machineNameRegex)
                     }
                     property var machineNameValidator: Cura.MachineNameValidator { }
                 }
