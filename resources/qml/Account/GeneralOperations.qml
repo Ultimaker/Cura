@@ -37,7 +37,6 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignLeft
         text: catalog.i18nc("@text", "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community").split("\n").join("<br/>")
-        textFormat: Text.RichText
         lineHeight: 1.4
         wrapMode: Text.NoWrap
     }
