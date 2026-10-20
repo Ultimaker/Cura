@@ -716,9 +716,9 @@ UM.Window
                     {
                         Layout.alignment: Qt.AlignCenter
                         Layout.fillWidth: true
-                        text: "<ol><li>" + catalog.i18nc("@text", "Click the export material archive button.") + "</li>" +
-                          + "<li>" + catalog.i18nc("@text", "Save the .umm file on a USB stick.") + "</li>" +
-                          + "<li>" + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.") + "</li>"
+                        text: "<ol><li>" + catalog.i18nc("@text", "Click the export material archive button.") + "</li>"
+                          + "<li>" + catalog.i18nc("@text", "Save the .umm file on a USB stick.") + "</li>"
+                          + "<li>" + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.") + "</li></ol>"
                         font: UM.Theme.getFont("medium")
                     }
                 }
