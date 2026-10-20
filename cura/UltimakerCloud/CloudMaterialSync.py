@@ -37,6 +37,12 @@ class _ExportMaterialsToFileJob(Job):
         except Exception as e:
             Logger.logException("e", f"Failed to export material archive to {self.local_path}: {e}")
             self.success = False
+            error_message = Message(
+                text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(self.local_path) + " " + str(e),
+                title = catalog.i18nc("@message:title", "Failed to save material archive"),
+                message_type = Message.MessageType.ERROR
+            )
+            error_message.show()
 
 
 class CloudMaterialSync(QObject):
