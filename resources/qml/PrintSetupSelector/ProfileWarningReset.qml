@@ -13,7 +13,8 @@ Item
     property bool fullWarning: true  // <- Can you see the warning icon and the text, or is it just the buttons?
     property var simpleModeSettingsManager :CuraApplication.getSimpleModeSettingsManager()
     height: visible ? UM.Theme.getSize("action_button_icon").height : 0
-    width: visible ? childrenRect.width: 0
+    // Not based on childrenRect, since the children are anchored to this item's right edge, which causes a binding loop.
+    width: visible ? resetToDefaultQualityButton.width + buttonsSpacer.width + compareAndSaveButton.width : 0
     visible: Cura.MachineManager.hasUserSettings || (fullWarning && Cura.MachineManager.hasCustomQuality)
 
     Rectangle
@@ -61,7 +62,8 @@ Item
                 {
                     target: warning
                     text: {
-                        var profile_name = Cura.MachineManager.activeQualityChangesGroup.name
+                        var quality_changes_group = Cura.MachineManager.activeQualityChangesGroup
+                        var profile_name = quality_changes_group ? quality_changes_group.name : ""
                         return catalog.i18nc("@info, %1 is the name of the custom profile", "<b>%1</b> custom profile is active and you overwrote some settings.").arg(profile_name)
                     }
                 }
@@ -74,7 +76,8 @@ Item
                 {
                     target: warning
                     text: {
-                        var profile_name = Cura.MachineManager.activeQualityChangesGroup.name
+                        var quality_changes_group = Cura.MachineManager.activeQualityChangesGroup
+                        var profile_name = quality_changes_group ? quality_changes_group.name : ""
                         return catalog.i18nc("@info, %1 is the name of the custom profile", "<b>%1</b> custom profile is overriding some settings.").arg(profile_name)
                     }
                 }

@@ -153,7 +153,7 @@ Item
             anchors.right: settingControls.left
             anchors.verticalCenter: parent.verticalCenter
 
-            text: definition ? definition.label : ""
+            text: (definition && definition.label) ? definition.label : ""
             elide: Text.ElideMiddle
             textFormat: Text.PlainText
 
