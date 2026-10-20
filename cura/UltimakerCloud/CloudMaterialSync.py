@@ -178,17 +178,17 @@ class CloudMaterialSync(QObject):
         :return: Whether the archive could be created.
         """
         registry = CuraContainerRegistry.getInstance()
+        error_message = Message(
+            text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(e),
+            title = catalog.i18nc("@message:title", "Failed to save material archive"),
+            message_type = Message.MessageType.ERROR
+        )
 
         # Create empty archive.
         try:
             archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
         except OSError as e:
             Logger.log("e", f"Can't write to destination {file_path.toLocalFile()}: {type(e)} - {str(e)}")
-            error_message = Message(
-                text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(e),
-                title = catalog.i18nc("@message:title", "Failed to save material archive"),
-                message_type = Message.MessageType.ERROR
-            )
             error_message.show()
             return False
 
@@ -213,6 +213,8 @@ class CloudMaterialSync(QObject):
                     archive.writestr(filename, material.serialize())
                 except OSError as e:
                     Logger.log("e", f"An error has occurred while writing the material \'{metadata['id']}\' in the file \'{filename}\': {e}.")
+                    error_message.show()
+                    return False
         return True
 
     exportUploadStatusChanged = pyqtSignal()
