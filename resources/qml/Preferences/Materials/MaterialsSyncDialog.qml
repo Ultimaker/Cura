@@ -750,17 +750,61 @@ UM.Window
 
                         property bool hasExported: false
                         text: materialsSyncDialog.hasExportedUsb ? catalog.i18nc("@button", "Done") : catalog.i18nc("@button", "Export material archive")
+                        enabled: typeof syncModel === "undefined" || !syncModel.isExportingToFile
+                        visible: enabled
                         onClicked:
                         {
                             if(!materialsSyncDialog.hasExportedUsb)
                             {
-                                exportUsbDialog.currentFolder = `${syncModel.getPreferredExportAllPath()}/materials.umm`;
+                                const exportFolder = syncModel.getPreferredExportAllPath();
+                                exportUsbDialog.currentFolder = exportFolder;
+                                exportUsbDialog.currentFile = `${exportFolder}/materials.umm`;
                                 exportUsbDialog.open();
                             }
                             else
                             {
                                 materialsSyncDialog.close();
                             }
+                        }
+                    }
+                    Item
+                    {
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width * 1.5
+                        width: childrenRect.width
+                        height: exportUsbButton.height
+
+                        visible: !exportUsbButton.visible
+
+                        UM.ColorImage
+                        {
+                            id: exportingIcon
+                            height: UM.Theme.getSize("action_button_icon").height
+                            width: height
+                            anchors.verticalCenter: exportingLabel.verticalCenter
+
+                            source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                            color: UM.Theme.getColor("primary")
+
+                            RotationAnimator
+                            {
+                                target: exportingIcon
+                                from: 0
+                                to: 360
+                                duration: 1000
+                                loops: Animation.Infinite
+                                running: true
+                            }
+                        }
+                        UM.Label
+                        {
+                            id: exportingLabel
+                            anchors.left: exportingIcon.right
+                            anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+
+                            text: catalog.i18nc("@info:title", "Saving")
+                            color: UM.Theme.getColor("primary")
+                            font: UM.Theme.getFont("medium")
                         }
                     }
                 }
@@ -786,12 +830,26 @@ UM.Window
     {
         title: catalog.i18nc("@title:window", "Export All Materials")
         nameFilters: ["Material archives (*.umm)", "All files (*)"]
+        defaultSuffix: "umm"
         fileMode: FileDialog.SaveFile
+        parentWindow: materialsSyncDialog  // Without a parent, the native dialog is blocked by this application-modal window.
         onAccepted:
         {
-            syncModel.exportAll(selectedFile);
-            CuraApplication.setDefaultPath("dialog_material_path", folder);
-            materialsSyncDialog.hasExportedUsb = true;
+            CuraApplication.setDefaultPath("dialog_material_path", currentFolder);
+            syncModel.exportAllToFile(selectedFile);
+        }
+    }
+
+    Connections
+    {
+        target: syncModel
+        function onExportToFileFinished(success)
+        {
+            if (success)
+            {
+                materialsSyncDialog.hasExportedUsb = true;
+                materialsSyncDialog.close();
+            }
         }
     }
 }

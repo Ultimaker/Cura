@@ -3,6 +3,7 @@
 
 from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from PyQt6.QtGui import QDesktopServices
+import time
 from typing import Dict, Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
@@ -11,12 +12,31 @@ from UM.Resources import Resources
 from cura.PrinterOutput.UploadMaterialsJob import UploadMaterialsJob, UploadMaterialsError  # To export materials to the output printer.
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from UM.i18n import i18nCatalog
+from UM.Job import Job
 from UM.Logger import Logger
 from UM.Message import Message
 
 if TYPE_CHECKING:
     from UM.Signal import Signal
 catalog = i18nCatalog("cura")
+
+
+class _ExportMaterialsToFileJob(Job):
+    """Writes the material archive to disk on a worker thread so the UI stays responsive."""
+
+    def __init__(self, material_sync: "CloudMaterialSync", file_path: QUrl) -> None:
+        super().__init__()
+        self._material_sync = material_sync
+        self._file_path = file_path
+        self.local_path = file_path.toLocalFile()
+        self.success = False
+
+    def run(self) -> None:
+        try:
+            self.success = self._material_sync.exportAll(self._file_path)
+        except Exception as e:
+            Logger.logException("e", f"Failed to export material archive to {self.local_path}: {e}")
+            self.success = False
 
 
 class CloudMaterialSync(QObject):
@@ -31,6 +51,7 @@ class CloudMaterialSync(QObject):
         self._checkIfNewMaterialsWereInstalled()
         self._export_progress = 0.0
         self._printer_status = {}  # type: Dict[str, str]
+        self._export_to_file_job = None  # type: Optional[_ExportMaterialsToFileJob]
 
     def _checkIfNewMaterialsWereInstalled(self) -> None:
         """
@@ -118,11 +139,37 @@ class CloudMaterialSync(QObject):
         else:  # No removable drives? Use local path.
             return cura_application.getDefaultPath("dialog_material_path")
 
+    exportToFileFinished = pyqtSignal(bool)
+    isExportingToFileChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = isExportingToFileChanged)
+    def isExportingToFile(self) -> bool:
+        return self._export_to_file_job is not None
+
     @pyqtSlot(QUrl)
-    def exportAll(self, file_path: QUrl, notify_progress: Optional["Signal"] = None) -> None:
+    def exportAllToFile(self, file_path: QUrl) -> None:
+        """
+        Export all materials to a file chosen by the user without blocking the UI.
+        Emits exportToFileFinished when done.
+        :param file_path: The path to export the materials to.
+        """
+        if self._export_to_file_job is not None:
+            return
+        self._export_to_file_job = _ExportMaterialsToFileJob(self, file_path)
+        self._export_to_file_job.finished.connect(self._onExportToFileFinished)
+        self.isExportingToFileChanged.emit()
+        self._export_to_file_job.start()
+
+    def _onExportToFileFinished(self, job: "_ExportMaterialsToFileJob") -> None:
+        self._export_to_file_job = None
+        self.isExportingToFileChanged.emit()
+        self.exportToFileFinished.emit(job.success)
+
+    def exportAll(self, file_path: QUrl, notify_progress: Optional["Signal"] = None) -> bool:
         """
         Export all materials to a certain file path.
         :param file_path: The path to export the materials to.
+        :return: Whether the archive could be created.
         """
         registry = CuraContainerRegistry.getInstance()
 
@@ -137,27 +184,30 @@ class CloudMaterialSync(QObject):
                 message_type = Message.MessageType.ERROR
             )
             error_message.show()
-            return
+            return False
 
-        materials_metadata = registry.findInstanceContainersMetadata(type = "material")
-        for index, metadata in enumerate(materials_metadata):
-            if notify_progress is not None:
-                progress = index / len(materials_metadata)
-                notify_progress.emit(progress)
-            if metadata["base_file"] != metadata["id"]:  # Only process base files.
-                continue
-            if metadata["id"] == "empty_material":  # Don't export the empty material.
-                continue
-            # Ignore materials that are marked as not visible for whatever reason
-            if not bool(metadata.get("visible", True)):
-                continue
-            material = registry.findContainers(id = metadata["id"])[0]
-            suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
-            filename = metadata["id"] + "." + suffix
-            try:
-                archive.writestr(filename, material.serialize())
-            except OSError as e:
-                Logger.log("e", f"An error has occurred while writing the material \'{metadata['id']}\' in the file \'{filename}\': {e}.")
+        with archive:
+            materials_metadata = registry.findInstanceContainersMetadata(type = "material")
+            for index, metadata in enumerate(materials_metadata):
+                time.sleep(0.001)  # Release the GIL so the UI (and its spinner) stays responsive while exporting.
+                if notify_progress is not None:
+                    progress = index / len(materials_metadata)
+                    notify_progress.emit(progress)
+                if metadata["base_file"] != metadata["id"]:  # Only process base files.
+                    continue
+                if metadata["id"] == "empty_material":  # Don't export the empty material.
+                    continue
+                # Ignore materials that are marked as not visible for whatever reason
+                if not bool(metadata.get("visible", True)):
+                    continue
+                material = registry.findContainers(id = metadata["id"])[0]
+                suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
+                filename = metadata["id"] + "." + suffix
+                try:
+                    archive.writestr(filename, material.serialize())
+                except OSError as e:
+                    Logger.log("e", f"An error has occurred while writing the material \'{metadata['id']}\' in the file \'{filename}\': {e}.")
+        return True
 
     exportUploadStatusChanged = pyqtSignal()
 
