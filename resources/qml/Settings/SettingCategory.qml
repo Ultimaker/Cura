@@ -118,7 +118,7 @@ Cura.CategoryButton
         hoverColor: UM.Theme.getColor("setting_control_button_hover")
         iconSource: UM.Theme.getIcon("Information")
 
-        onEntered: base.showTooltip(catalog.i18nc("@label","Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."))
+        onEntered: base.showTooltip(catalog.i18nc("@label","Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible.").split("\n").join("<br/>"))
 
         onExited: base.hideTooltip()
     }
