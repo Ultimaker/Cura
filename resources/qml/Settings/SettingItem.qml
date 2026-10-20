@@ -340,7 +340,7 @@ Item
 
                 iconSource: UM.Theme.getIcon("Function")
 
-                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.").split("\n").join("<br/>")) }
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.<br/>Click to restore the calculated value.")) }
                 onExited: base.showTooltip(base.createTooltipText())
             }
         }

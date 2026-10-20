@@ -200,7 +200,7 @@ Item
                 }
                 onEntered:
                 {
-                    var content = catalog.i18nc("@tooltip", "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.").split("\n").join("<br/>")
+                    var content = catalog.i18nc("@tooltip", "Some setting/override values are different from the values stored in the profile.<br/>Click to open the profile manager.")
                     base.showTooltip(intent, Qt.point(-UM.Theme.getSize("default_margin").width, 0), content)
                 }
                 onExited: base.hideTooltip()
