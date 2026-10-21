@@ -141,7 +141,7 @@ msgid "*You will need to restart the application for these changes to have effec
 msgstr "*Vous devez redémarrer l'application pour appliquer ces changements."
 
 msgctxt "@text"
-msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
+msgid "- Add material profiles and plug-ins from the Marketplace<br/>- Back-up and sync your material profiles and plug-ins<br/>- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr "- Ajoutez des profils de matériaux et des plug-ins à partir de la Marketplace- Sauvegardez et synchronisez vos profils de matériaux et vos plug-ins- Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
 
 msgctxt "@heading"
@@ -780,7 +780,7 @@ msgid "Checks models and print configuration for possible printing issues and gi
 msgstr "Vérifie les modèles et la configuration de l'impression pour déceler d'éventuels problèmes d'impression et donne des suggestions."
 
 msgctxt "@label"
-msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgid "Chooses between the techniques available to generate support. <br/><br/>\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. <br/><br/>\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "Choisit entre les stratégies de support disponibles. Le support « Normal » créé une structure de support directement sous les zones en porte-à-faux et fait descendre les supports directement vers le bas. Le support « Arborescent » génère une structure de branches depuis le plateau tout autour du modèle qui vont supporter les portes-à-faux sans toucher le modèle ailleur que les zones supportées."
 
 msgctxt "@action:inmenu menubar:edit"
@@ -1127,7 +1127,7 @@ msgid "Cura has detected material profiles that were not yet installed on the ho
 msgstr "Cura a détecté des profils de matériau qui ne sont pas encore installés sur l'imprimante hôte du groupe {0}."
 
 msgctxt "@info:credit"
-msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
+msgid "Cura is developed by UltiMaker in cooperation with the community.<br/>Cura proudly uses the following open source projects:"
 msgstr "Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker."
 "Cura est fier d'utiliser les projets open source suivants :"
 
@@ -3003,7 +3003,7 @@ msgid "Please give the required permissions when authorizing this application."
 msgstr "Veuillez donner les permissions requises lors de l'autorisation de cette application."
 
 msgctxt "@info"
-msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
+msgid "Please make sure your printer has a connection:<br/>- Check if the printer is turned on.<br/>- Check if the printer is connected to the network.<br/>- Check if you are signed in to discover cloud-connected printers."
 msgstr "Assurez-vous que votre imprimante est connectée:"
 "- Vérifiez si l'imprimante est sous tension."
 "- Vérifiez si l'imprimante est connectée au réseau."
@@ -4133,7 +4133,7 @@ msgid "Solid view"
 msgstr "Vue solide"
 
 msgctxt "@label"
-msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
+msgid "Some hidden settings use values different from their normal calculated value.<br/><br/>Click to make these settings visible."
 msgstr "Certains paramètres masqués utilisent des valeurs différentes de leur valeur normalement calculée."
 "Cliquez pour rendre ces paramètres visibles."
 
@@ -4150,7 +4150,7 @@ msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr "Certaines valeurs de paramètres définies dans <b>%1</b> ont été remplacées."
 
 msgctxt "@tooltip"
-msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
+msgid "Some setting/override values are different from the values stored in the profile.<br/><br/>Click to open the profile manager."
 msgstr "Certaines valeurs de paramètre / forçage sont différentes des valeurs enregistrées dans le profil. "
 "Cliquez pour ouvrir le gestionnaire de profils."
 
@@ -4695,7 +4695,7 @@ msgid "This setting is always shared between all extruders. Changing it here wil
 msgstr "Ce paramètre est toujours partagé par toutes les extrudeuses. Le modifier ici entraînera la modification de la valeur pour toutes les extrudeuses."
 
 msgctxt "@label"
-msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
+msgid "This setting is normally calculated, but it currently has an absolute value set.<br/><br/>Click to restore the calculated value."
 msgstr "Ce paramètre est normalement calculé mais il possède actuellement une valeur absolue définie."
 "Cliquez pour restaurer la valeur calculée."
 

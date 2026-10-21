@@ -151,8 +151,8 @@ msgstr ""
 
 msgctxt "@text"
 msgid ""
-"- Add material profiles and plug-ins from the Marketplace\n"
-"- Back-up and sync your material profiles and plug-ins\n"
+"- Add material profiles and plug-ins from the Marketplace<br/>"
+"- Back-up and sync your material profiles and plug-ins<br/>"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr "- Marketplace'den malzeme profilleri ve eklentiler ekleyin- Malzeme profillerinizi ve eklentilerinizi yedekleyin ve senkronize edin- UltiMaker topluluğunda fikirlerinizi paylaşın ve 48.000'den fazla kullanıcıdan yardım alın"
 
@@ -872,10 +872,10 @@ msgstr "Olası yazdırma sorunlarına karşı modelleri ve yazdırma yapılandı
 
 msgctxt "@label"
 msgid ""
-"Chooses between the techniques available to generate support. \n"
-"\n"
-"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
-"\n"
+"Chooses between the techniques available to generate support. <br/>"
+"<br/>"
+"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. <br/>"
+"<br/>"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "Destek oluşturmak için kullanılabilir teknikler arasından seçim yapar. \"Normal\" destek, çıkıntılı parçaların hemen altında bir destek yapısı oluşturur ve bu alanları dümdüz aşağı indirir. \"Ağaç\"destek, çıkıntılı alanlara doğru dallar oluşturur ve bu dalların uçlarıyla model desteklenir; dallar modelin etrafına sarılarak yapı plakasından olabildiğince destek alır."
 
@@ -1243,7 +1243,7 @@ msgstr "Cura, henüz {0} grubunun ana yazıcısına yüklenmemiş malzeme profil
 
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by UltiMaker in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.<br/>"
 "Cura proudly uses the following open source projects:"
 msgstr "Cura, topluluk iş birliği ile UltiMaker tarafından geliştirilmiştir.Cura aşağıdaki açık kaynak projelerini gururla kullanmaktadır:"
 
@@ -3188,9 +3188,9 @@ msgstr "Lütfen bu başvuruya yetki verirken gerekli izinleri verin."
 
 msgctxt "@info"
 msgid ""
-"Please make sure your printer has a connection:\n"
-"- Check if the printer is turned on.\n"
-"- Check if the printer is connected to the network.\n"
+"Please make sure your printer has a connection:<br/>"
+"- Check if the printer is turned on.<br/>"
+"- Check if the printer is connected to the network.<br/>"
 "- Check if you are signed in to discover cloud-connected printers."
 msgstr "Lütfen yazıcınızda bağlantı olduğundan emin olun:- Yazıcının açık olup olmadığını kontrol edin.- Yazıcının ağa bağlı olup olmadığını kontrol edin.- Buluta bağlı yazıcıları keşfetmek için giriş yapıp yapmadığınızı kontrol edin."
 
@@ -4383,8 +4383,8 @@ msgstr "Gerçek görünüm"
 
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated value.\n"
-"\n"
+"Some hidden settings use values different from their normal calculated value.<br/>"
+"<br/>"
 "Click to make these settings visible."
 msgstr "Gizlenen bazı ayarlar normal hesaplanan değerden farklı değerler kullanır.Bu ayarları görmek için tıklayın."
 
@@ -4402,8 +4402,8 @@ msgstr "<b>1</b> kapsamında tanımlanan bazı ayar değerleri geçersiz kılın
 
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the profile.\n"
-"\n"
+"Some setting/override values are different from the values stored in the profile.<br/>"
+"<br/>"
 "Click to open the profile manager."
 msgstr "Bazı ayar/geçersiz kılma değerleri profilinizde saklanan değerlerden farklıdır.Profil yöneticisini açmak için tıklayın."
 
@@ -4968,8 +4968,8 @@ msgstr "Bu ayar her zaman, tüm ekstrüderler arasında paylaşılır. Buradan d
 
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value set.\n"
-"\n"
+"This setting is normally calculated, but it currently has an absolute value set.<br/>"
+"<br/>"
 "Click to restore the calculated value."
 msgstr "Bu ayar normal olarak yapılır ama şu anda mutlak değer ayarı var.Hesaplanan değeri yenilemek için tıklayın."
 
