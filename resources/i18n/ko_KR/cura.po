@@ -149,8 +149,8 @@ msgstr ""
 
 msgctxt "@text"
 msgid ""
-"- Add material profiles and plug-ins from the Marketplace\n"
-"- Back-up and sync your material profiles and plug-ins\n"
+"- Add material profiles and plug-ins from the Marketplace<br/>"
+"- Back-up and sync your material profiles and plug-ins<br/>"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr "- 재료 설정 및 Marketplace 플러그인 추가- 재료 설정과 플러그인 백업 및 동기화- UltiMaker 커뮤니티에서 48,000명 이상의 사용자와 아이디어를 공유하고 도움 받기"
 
@@ -869,10 +869,10 @@ msgstr "가능한 프린팅 문제를 위해 모델 및 인쇄 구성을 확인�
 
 msgctxt "@label"
 msgid ""
-"Chooses between the techniques available to generate support. \n"
-"\n"
-"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
-"\n"
+"Chooses between the techniques available to generate support. <br/>"
+"<br/>"
+"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. <br/>"
+"<br/>"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "서포트를 생성하는 데 사용할 수 있는 기술 중 하나를 선택합니다. '표준' 서포트는 오버행(경사면) 파트 바로 아래에 서포트 구조물을 생성하고 해당 영역을 바로 아래로 떨어뜨립니다. '트리' 서포트는 모델을 지지하는 브랜치 끝에서 오버행(경사면) 영역을 향해 브랜치를 만들고 빌드 플레이트에서 모델을 지지할 수 있도록 모델을 브랜치로 최대한 감쌉니다."
 
@@ -1240,7 +1240,7 @@ msgstr "Cura가 {0} 그룹의 호스트 프린터에 설치되지 않은 재료 
 
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by UltiMaker in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.<br/>"
 "Cura proudly uses the following open source projects:"
 msgstr "Cura는 커뮤니티와 공동으로 UltiMaker 에 의해 개발되었습니다.Cura는 다음의 오픈 소스 프로젝트를 사용합니다:"
 
@@ -3182,9 +3182,9 @@ msgstr "이 응용 프로그램을 인증할 때 필요한 권한을 제공하�
 
 msgctxt "@info"
 msgid ""
-"Please make sure your printer has a connection:\n"
-"- Check if the printer is turned on.\n"
-"- Check if the printer is connected to the network.\n"
+"Please make sure your printer has a connection:<br/>"
+"- Check if the printer is turned on.<br/>"
+"- Check if the printer is connected to the network.<br/>"
 "- Check if you are signed in to discover cloud-connected printers."
 msgstr "프린터에 연결이 있는지 확인하십시오.⏎- 프린터가 켜져 있는지 확인하십시오.- 프린터가 네트워크에 연결되어 있는지 확인하십시오.⏎- 클라우드로 연결된 프린터를 탐색할 수 있도록 로그인되어 있는지 확인하십시오."
 
@@ -4375,8 +4375,8 @@ msgstr "솔리드 뷰"
 
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated value.\n"
-"\n"
+"Some hidden settings use values different from their normal calculated value.<br/>"
+"<br/>"
 "Click to make these settings visible."
 msgstr "일부 숨겨진 설정은 일반적인 계산 값과 다른 값을 사용합니다.이 설정을 표시하려면 클릭하십시오."
 
@@ -4394,8 +4394,8 @@ msgstr "<b>%1</b>에 정의된 일부 설정 값이 재정의되었습니다."
 
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the profile.\n"
-"\n"
+"Some setting/override values are different from the values stored in the profile.<br/>"
+"<br/>"
 "Click to open the profile manager."
 msgstr "일부 설정/대체 값은 프로파일에 저장된 값과 다릅니다.프로파일 매니저를 열려면 클릭하십시오."
 
@@ -4956,8 +4956,8 @@ msgstr "이 설정은 항상 모든 익스트루더 사이에 공유됩니다. �
 
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value set.\n"
-"\n"
+"This setting is normally calculated, but it currently has an absolute value set.<br/>"
+"<br/>"
 "Click to restore the calculated value."
 msgstr "이 설정은 일반적으로 계산되지만 현재는 절대 값이 설정되어 있습니다.계산 된 값을 복원하려면 클릭하십시오."
 

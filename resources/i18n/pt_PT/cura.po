@@ -151,8 +151,8 @@ msgstr ""
 
 msgctxt "@text"
 msgid ""
-"- Add material profiles and plug-ins from the Marketplace\n"
-"- Back-up and sync your material profiles and plug-ins\n"
+"- Add material profiles and plug-ins from the Marketplace<br/>"
+"- Back-up and sync your material profiles and plug-ins<br/>"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr "- Adicione definições de materiais e plug-ins do Marketplace- Efetue uma cópia de segurança e sincronize as definições de materiais e plug-ins- Partilhe ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade Ultimaker"
 
@@ -872,10 +872,10 @@ msgstr "Verifica potenciais problemas de impressão nos modelos e definições d
 
 msgctxt "@label"
 msgid ""
-"Chooses between the techniques available to generate support. \n"
-"\n"
-"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
-"\n"
+"Chooses between the techniques available to generate support. <br/>"
+"<br/>"
+"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. <br/>"
+"<br/>"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "Escolha entre os tipos de estrutura de suportes disponíveis. ⏎⏎ O tipo \"Normal\" cria uma estrutura de suporte diretamente por baixo das saliências e extrude estas áreas para baixo. A estrutura tipo \"Árvore\" cria ramos em direção às saliências, de forma a que estas sejam suportadas pelas pontas dos ramos, que crescem a partir da base de construção mesmo se for necessário andar em redor do modelos."
 
@@ -1243,7 +1243,7 @@ msgstr "O Cura detetou perfis de material que ainda não estavam instalados na i
 
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by UltiMaker in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.<br/>"
 "Cura proudly uses the following open source projects:"
 msgstr "O Cura foi desenvolvido pela UltiMaker B.V. em colaboração com a comunidade.O Cura tem o prazer de utilizar os seguintes projetos open source:"
 
@@ -3188,9 +3188,9 @@ msgstr "Forneça as permissões necessárias ao autorizar esta aplicação."
 
 msgctxt "@info"
 msgid ""
-"Please make sure your printer has a connection:\n"
-"- Check if the printer is turned on.\n"
-"- Check if the printer is connected to the network.\n"
+"Please make sure your printer has a connection:<br/>"
+"- Check if the printer is turned on.<br/>"
+"- Check if the printer is connected to the network.<br/>"
 "- Check if you are signed in to discover cloud-connected printers."
 msgstr "Certifique-se de que é possível estabelecer ligação com a impressora:- Verifique se a impressora está ligada.- Verifique se a impressora está ligada à rede.- Verifique se tem sessão iniciada para encontrar impressoras ligadas através da cloud."
 
@@ -4383,8 +4383,8 @@ msgstr "Vista Sólidos"
 
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated value.\n"
-"\n"
+"Some hidden settings use values different from their normal calculated value.<br/>"
+"<br/>"
 "Click to make these settings visible."
 msgstr "Algumas das definições invisíveis têm valores diferentes dos valores normais calculados automaticamente.Clique para tornar estas definições visíveis."
 
@@ -4402,8 +4402,8 @@ msgstr "Alguns valores de definição definidos em <b>%1</b> foram substituídos
 
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the profile.\n"
-"\n"
+"Some setting/override values are different from the values stored in the profile.<br/>"
+"<br/>"
 "Click to open the profile manager."
 msgstr "Alguns valores de definição/substituição são diferentes dos valores armazenados no perfil.Clique para abrir o gestor de perfis."
 
@@ -4968,8 +4968,8 @@ msgstr "Esta definição é sempre partilhada entre todos os extrusores. Ao alte
 
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value set.\n"
-"\n"
+"This setting is normally calculated, but it currently has an absolute value set.<br/>"
+"<br/>"
 "Click to restore the calculated value."
 msgstr "Normalmente, o valor desta definição é calculado, mas atualmente tem definido um valor diferente.Clique para restaurar o valor calculado."
 

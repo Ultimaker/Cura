@@ -149,8 +149,8 @@ msgstr ""
 
 msgctxt "@text"
 msgid ""
-"- Add material profiles and plug-ins from the Marketplace\n"
-"- Back-up and sync your material profiles and plug-ins\n"
+"- Add material profiles and plug-ins from the Marketplace<br/>"
+"- Back-up and sync your material profiles and plug-ins<br/>"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr "- 从 Marketplace 添加材料配置文件和插件- 备份和同步材料配置文件和插件- 在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
 
@@ -869,10 +869,10 @@ msgstr "检查模型和打印配置，以了解潜在的打印问题并给出建
 
 msgctxt "@label"
 msgid ""
-"Chooses between the techniques available to generate support. \n"
-"\n"
-"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
-"\n"
+"Chooses between the techniques available to generate support. <br/>"
+"<br/>"
+"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. <br/>"
+"<br/>"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "在可用于产生支撑的方法之间进行选择。“普通”支撑在悬垂部分正下方形成一个支撑结构，并直接垂下这些区域。“树形”支撑形成一些分支，它们朝向在这些分支的尖端上支撑模型的悬垂区域，并使这些分支可缠绕在模型周围以尽可能多地从构建板上支撑它。"
 
@@ -1240,7 +1240,7 @@ msgstr "Cura 已检测到材料配置文件尚未安装到组 {0} 中的主机�
 
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by UltiMaker in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.<br/>"
 "Cura proudly uses the following open source projects:"
 msgstr "Cura 由 Ultimaker B.V. 与社区合作开发。Cura 使用以下开源项目："
 
@@ -3182,9 +3182,9 @@ msgstr "在授权此应用程序时，须提供所需权限。"
 
 msgctxt "@info"
 msgid ""
-"Please make sure your printer has a connection:\n"
-"- Check if the printer is turned on.\n"
-"- Check if the printer is connected to the network.\n"
+"Please make sure your printer has a connection:<br/>"
+"- Check if the printer is turned on.<br/>"
+"- Check if the printer is connected to the network.<br/>"
 "- Check if you are signed in to discover cloud-connected printers."
 msgstr "请确保您的打印机已连接：- 检查打印机是否已启动。- 检查打印机是否连接至网络。- 检查您是否已登录查找云连接的打印机。"
 
@@ -4375,8 +4375,8 @@ msgstr "实体视图"
 
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated value.\n"
-"\n"
+"Some hidden settings use values different from their normal calculated value.<br/>"
+"<br/>"
 "Click to make these settings visible."
 msgstr "一些隐藏设置正在使用有别于一般设置的计算值。单击以使这些设置可见。"
 
@@ -4394,8 +4394,8 @@ msgstr "在 <b>%1</b> 中定义的一些设置值已被覆盖。"
 
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the profile.\n"
-"\n"
+"Some setting/override values are different from the values stored in the profile.<br/>"
+"<br/>"
 "Click to open the profile manager."
 msgstr "某些设置/重写值与存储在配置文件中的值不同。点击打开配置文件管理器。"
 
@@ -4956,8 +4956,8 @@ msgstr "此设置始终在所有挤出机之间共享。在此处更改它将改
 
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value set.\n"
-"\n"
+"This setting is normally calculated, but it currently has an absolute value set.<br/>"
+"<br/>"
 "Click to restore the calculated value."
 msgstr "此设置通常可被自动计算，但其当前已被绝对定义。单击以恢复自动计算的值。"
 
