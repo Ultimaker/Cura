@@ -26,10 +26,10 @@ class _ExportMaterialsToFileJob(Job):
 
     def __init__(self, material_sync: "CloudMaterialSync", file_path: QUrl) -> None:
         super().__init__()
-        self._material_sync = material_sync
-        self._file_path = file_path
-        self.local_path = file_path.toLocalFile()
-        self.success = False
+        self._material_sync: "CloudMaterialSync" = material_sync
+        self._file_path: QUrl = file_path
+        self.local_path: str = file_path.toLocalFile()
+        self.success: bool = False
 
     def run(self) -> None:
         try:
@@ -57,7 +57,7 @@ class CloudMaterialSync(QObject):
         self._checkIfNewMaterialsWereInstalled()
         self._export_progress = 0.0
         self._printer_status = {}  # type: Dict[str, str]
-        self._export_to_file_job = None  # type: Optional[_ExportMaterialsToFileJob]
+        self._export_to_file_job: Optional[_ExportMaterialsToFileJob] = None
 
     def _checkIfNewMaterialsWereInstalled(self) -> None:
         """
