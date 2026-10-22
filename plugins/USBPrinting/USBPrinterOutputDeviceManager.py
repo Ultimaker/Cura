@@ -21,6 +21,10 @@ from . import USBPrinterOutputDevice
 i18n_catalog = i18nCatalog("cura")
 
 USB_PRINT_PREFERENCE_KEY = "usb_printing/enabled"
+USB_MANUAL_PORT_PREFERENCE_KEY = "usb_printing/manual_port"
+USB_MANUAL_BAUDRATE_PREFERENCE_KEY = "usb_printing/manual_baudrate"
+
+ALL_BAUD_RATES = [115200, 250000, 500000, 230400, 76800, 57600, 38400, 19200, 9600]
 
 @signalemitter
 class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
@@ -46,6 +50,9 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
 
         preferences = self._application.getPreferences()
         preferences.addPreference(USB_PRINT_PREFERENCE_KEY, False)
+        preferences.addPreference(USB_MANUAL_PORT_PREFERENCE_KEY, "")
+        preferences.addPreference(USB_MANUAL_BAUDRATE_PREFERENCE_KEY, "")
+        preferences.addPreference(USBPrinterOutputDevice.LOG_COMM_PREFERENCE_KEY, False)
         self._check_updates = preferences.getValue(USB_PRINT_PREFERENCE_KEY)
 
         self._application.applicationShuttingDown.connect(self.stop)
@@ -77,6 +84,63 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
         else:
             self.getOutputDeviceManager().removeOutputDevice(serial_port)
 
+    def getManualPort(self) -> str:
+        try:
+            value = self._application.getPreferences().getValue(USB_MANUAL_PORT_PREFERENCE_KEY)
+        except Exception:
+            return ""
+        return str(value).strip() if value else ""
+
+    def getManualBaudRate(self):
+        """Return the manually configured baud rate as int, or None when set to Auto."""
+        try:
+            value = self._application.getPreferences().getValue(USB_MANUAL_BAUDRATE_PREFERENCE_KEY)
+        except Exception:
+            return None
+        if value is None or str(value).strip() in ("", "0", "Auto", "auto"):
+            return None
+        try:
+            baud_rate = int(str(value).strip())
+        except ValueError:
+            return None
+        if baud_rate not in ALL_BAUD_RATES:
+            return None
+        return baud_rate
+
+    def reconnectWithManualSettings(self) -> None:
+        """Close stale connections and force the scan loop to (re)connect with manual settings.
+
+        Every tracked device is closed first: after a printer reboot the OS
+        invalidates open handles, and creating a new device for a port whose
+        old handle is still open leaves two handles on the same port, which
+        surfaces as "Access denied" write failures.
+        """
+        for device in list(self._usb_output_devices.values()):
+            try:
+                device.close()
+            except Exception:
+                pass
+        manual_port = self.getManualPort()
+        if manual_port:
+            # Force re-adding of the manual port on next pass (or right now).
+            if manual_port in self._serial_port_list:
+                self._serial_port_list.remove(manual_port)
+            self._addRemovePorts([manual_port])
+        else:
+            # Back to auto: force a full rescan on the next update pass.
+            self._serial_port_list = []
+
+    def resolvePortList(self, auto_ports) -> list:
+        """Apply the manual port override to an auto-scanned port list.
+
+        Returns [manual_port] when a manual port is configured, else the
+        auto-scanned list unchanged. Extracted for testability.
+        """
+        manual_port = self.getManualPort()
+        if manual_port:
+            return [manual_port]
+        return list(auto_ports)
+
     def _updateThread(self):
         while self._check_updates:
             container_stack = self._application.getGlobalContainerStack()
@@ -89,6 +153,9 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
                 if "text/x-gcode" in machine_file_formats:
                     # We only limit listing usb on windows is a fix for connecting tty/cu printers on MacOS and Linux
                     port_list = self.getSerialPortList(only_list_usb=Platform.isWindows())
+                    # Only watch the manually selected port when configured. This also avoids
+                    # probing unrelated serial devices every 5 seconds.
+                    port_list = self.resolvePortList(port_list)
             self._addRemovePorts(port_list)
             time.sleep(5)
 
@@ -109,7 +176,21 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
     def addOutputDevice(self, serial_port):
         """Because the model needs to be created in the same thread as the QMLEngine, we use a signal."""
 
-        device = USBPrinterOutputDevice.USBPrinterOutputDevice(serial_port)
+        manual_port = self.getManualPort()
+        if manual_port and serial_port != manual_port:
+            return
+        # Never stack two devices (two open serial handles) on the same port:
+        # the 5 s scan loop and "Reconnect now" can both trigger a re-add while
+        # the old device is still tracked. Closing first also lets the
+        # connection-state handler drop the stale device from Cura.
+        old_device = self._usb_output_devices.get(serial_port)
+        if old_device is not None:
+            try:
+                old_device.close()
+            except Exception:
+                pass
+        manual_baud_rate = self.getManualBaudRate()
+        device = USBPrinterOutputDevice.USBPrinterOutputDevice(serial_port, baud_rate = manual_baud_rate)
         device.connectionStateChanged.connect(self._onConnectionStateChanged)
         self._usb_output_devices[serial_port] = device
         device.connect()
