@@ -1,9 +1,8 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer, QUrl
 from PyQt6.QtGui import QDesktopServices
-import time
 from typing import Dict, Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
@@ -12,37 +11,12 @@ from UM.Resources import Resources
 from cura.PrinterOutput.UploadMaterialsJob import UploadMaterialsJob, UploadMaterialsError  # To export materials to the output printer.
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from UM.i18n import i18nCatalog
-from UM.Job import Job
 from UM.Logger import Logger
 from UM.Message import Message
 
 if TYPE_CHECKING:
     from UM.Signal import Signal
 catalog = i18nCatalog("cura")
-
-
-class _ExportMaterialsToFileJob(Job):
-    """Writes the material archive to disk on a worker thread so the UI stays responsive."""
-
-    def __init__(self, material_sync: "CloudMaterialSync", file_path: QUrl) -> None:
-        super().__init__()
-        self._material_sync: "CloudMaterialSync" = material_sync
-        self._file_path: QUrl = file_path
-        self.local_path: str = file_path.toLocalFile()
-        self.success: bool = False
-
-    def run(self) -> None:
-        try:
-            self.success = self._material_sync.exportAll(self._file_path)
-        except Exception as e:
-            Logger.logException("e", f"Failed to export material archive to {self.local_path}: {e}")
-            self.success = False
-            error_message = Message(
-                text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(self.local_path) + " " + str(e),
-                title = catalog.i18nc("@message:title", "Failed to save material archive"),
-                message_type = Message.MessageType.ERROR
-            )
-            error_message.show()
 
 
 class CloudMaterialSync(QObject):
@@ -52,12 +26,12 @@ class CloudMaterialSync(QObject):
 
     def __init__(self, parent: QObject = None):
         super().__init__(parent)
-        self.sync_all_dialog = None  # type: Optional[QObject]
-        self._export_upload_status = "idle"
+        self.sync_all_dialog: Optional[QObject] = None
+        self._export_upload_status: str = "idle"
         self._checkIfNewMaterialsWereInstalled()
-        self._export_progress = 0.0
-        self._printer_status = {}  # type: Dict[str, str]
-        self._export_to_file_job: Optional[_ExportMaterialsToFileJob] = None
+        self._export_progress: float = 0.0
+        self._printer_status: Dict[str, str] = {}
+        self._is_exporting_to_file: bool = False
 
     def _checkIfNewMaterialsWereInstalled(self) -> None:
         """
@@ -78,10 +52,9 @@ class CloudMaterialSync(QObject):
             qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences",
                                          "Materials", "MaterialsSyncDialog.qml")
             self.sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(
-                qml_path, {})
+                qml_path, {}, {"syncModel": self})
         if self.sync_all_dialog is None:  # Failed to load QML file.
             return
-        self.sync_all_dialog.setProperty("syncModel", self)
         self.sync_all_dialog.setProperty("pageIndex", 0)  # Return to first page.
         self.sync_all_dialog.setProperty("hasExportedUsb", False)  # If the user exported USB before, reset that page.
         self.sync_all_dialog.setProperty("syncStatusText", "")  # Reset any previous error messages.
@@ -150,52 +123,55 @@ class CloudMaterialSync(QObject):
 
     @pyqtProperty(bool, notify = isExportingToFileChanged)
     def isExportingToFile(self) -> bool:
-        return self._export_to_file_job is not None
+        return self._is_exporting_to_file
 
     @pyqtSlot(QUrl)
     def exportAllToFile(self, file_path: QUrl) -> None:
         """
-        Export all materials to a file chosen by the user without blocking the UI.
+        Export all materials to a file chosen by the user.
         Emits exportToFileFinished when done.
+
+        The export itself runs on the main thread and will block the UI, so this first flags the export as started and
+        gives the UI a moment to show that before starting the actual work.
         :param file_path: The path to export the materials to.
         """
-        if self._export_to_file_job is not None:
+        if self._is_exporting_to_file:
             return
-        self._export_to_file_job = _ExportMaterialsToFileJob(self, file_path)
-        self._export_to_file_job.finished.connect(self._onExportToFileFinished)
+        self._is_exporting_to_file = True
         self.isExportingToFileChanged.emit()
-        self._export_to_file_job.start()
+        QTimer.singleShot(100, lambda: self._exportToFile(file_path))
 
-    def _onExportToFileFinished(self, job: "_ExportMaterialsToFileJob") -> None:
-        self._export_to_file_job = None
-        self.isExportingToFileChanged.emit()
-        self.exportToFileFinished.emit(job.success)
-
-    def exportAll(self, file_path: QUrl, notify_progress: Optional["Signal"] = None) -> bool:
-        """
-        Export all materials to a certain file path.
-        :param file_path: The path to export the materials to.
-        :return: Whether the archive could be created.
-        """
-        registry = CuraContainerRegistry.getInstance()
-
-        # Create empty archive.
+    def _exportToFile(self, file_path: QUrl) -> None:
+        error: Optional[Exception] = None
         try:
-            archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
-        except OSError as e:
-            Logger.log("e", f"Can't write to destination {file_path.toLocalFile()}: {type(e)} - {str(e)}")
+            self.exportAll(file_path)
+        except Exception as e:
+            Logger.logException("e", f"Failed to export material archive to {file_path.toLocalFile()}: {e}")
+            error = e
+        self._onExportToFileFinished(file_path, error)
+
+    def _onExportToFileFinished(self, file_path: QUrl, error: Optional[Exception]) -> None:
+        if error is not None:
             error_message = Message(
-                text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(e),
+                text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(error),
                 title = catalog.i18nc("@message:title", "Failed to save material archive"),
                 message_type = Message.MessageType.ERROR
             )
             error_message.show()
-            return False
+        self._is_exporting_to_file = False
+        self.isExportingToFileChanged.emit()
+        self.exportToFileFinished.emit(error is None)
 
-        with archive:
+    def exportAll(self, file_path: QUrl, notify_progress: Optional["Signal"] = None) -> None:
+        """
+        Export all materials to a certain file path.
+        :param file_path: The path to export the materials to.
+        :raises OSError: If the archive could not be created or written.
+        """
+        registry = CuraContainerRegistry.getInstance()
+        with zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED) as archive:
             materials_metadata = registry.findInstanceContainersMetadata(type = "material")
             for index, metadata in enumerate(materials_metadata):
-                time.sleep(0.001)  # Release the GIL so the UI (and its spinner) stays responsive while exporting.
                 if notify_progress is not None:
                     progress = index / len(materials_metadata)
                     notify_progress.emit(progress)
@@ -208,19 +184,7 @@ class CloudMaterialSync(QObject):
                     continue
                 material = registry.findContainers(id = metadata["id"])[0]
                 suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
-                filename = metadata["id"] + "." + suffix
-                try:
-                    archive.writestr(filename, material.serialize())
-                except OSError as e:
-                    Logger.log("e", f"An error has occurred while writing the material \'{metadata['id']}\' in the file \'{filename}\': {e}.")
-                    error_message = Message(
-                        text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(e),
-                        title = catalog.i18nc("@message:title", "Failed to save material archive"),
-                        message_type = Message.MessageType.ERROR
-                    )
-                    error_message.show()
-                    return False
-        return True
+                archive.writestr(metadata["id"] + "." + suffix, material.serialize())
 
     exportUploadStatusChanged = pyqtSignal()
 

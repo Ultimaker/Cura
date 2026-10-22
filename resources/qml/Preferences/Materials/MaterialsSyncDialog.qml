@@ -203,21 +203,21 @@ UM.Window
                         State
                         {
                             name: "idle"
-                            when: typeof syncModel === "undefined" || syncModel.exportUploadStatus == "idle" || syncModel.exportUploadStatus == "uploading"
+                            when: syncModel.exportUploadStatus == "idle" || syncModel.exportUploadStatus == "uploading"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "The following printers will receive the new material profiles:") }
                             PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.NEUTRAL; width: 0 }
                         },
                         State
                         {
                             name: "error"
-                            when: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error"
+                            when: syncModel.exportUploadStatus == "error"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "Something went wrong when sending the materials to the printers.") }
                             PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.ERROR }
                         },
                         State
                         {
                             name: "success"
-                            when: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "success"
+                            when: syncModel.exportUploadStatus == "success"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "Material profiles successfully synced with the following printers:") }
                             PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.POSITIVE }
                         }
@@ -256,7 +256,7 @@ UM.Window
                         id: troubleshootingLink
                         anchors.right: parent.right
                         text: catalog.i18nc("@button", "Troubleshooting")
-                        visible: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error"
+                        visible: syncModel.exportUploadStatus == "error"
                         iconSource: UM.Theme.getIcon("LinkExternal")
                         onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667337567839")
                     }
@@ -381,7 +381,7 @@ UM.Window
                     {
                         width: printerList.width - printerListScrollBar.width
                         height: childrenRect.height + UM.Theme.getSize("default_margin").height
-                        visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0 && typeof syncModel !== "undefined" && syncModel.exportUploadStatus === "idle"
+                        visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0 && syncModel.exportUploadStatus === "idle"
                         Rectangle
                         {
                             anchors.top: parent.top
@@ -508,11 +508,11 @@ UM.Window
                         anchors.right: parent.right
                         text:
                         {
-                            if(typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error")
+                            if(syncModel.exportUploadStatus == "error")
                             {
                                 return catalog.i18nc("@button", "Try again");
                             }
-                            if(typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "success")
+                            if(syncModel.exportUploadStatus == "success")
                             {
                                 return catalog.i18nc("@button", "Done");
                             }
@@ -520,7 +520,7 @@ UM.Window
                         }
                         onClicked:
                         {
-                            if(typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "success")
+                            if(syncModel.exportUploadStatus == "success")
                             {
                                 materialsSyncDialog.close();
                             }
@@ -529,14 +529,7 @@ UM.Window
                                 syncModel.exportUpload();
                             }
                         }
-                        visible:
-                        {
-                            if(!syncModel) //When the dialog is created, this is not set yet.
-                            {
-                                return true;
-                            }
-                            return syncModel.exportUploadStatus != "uploading";
-                        }
+                        visible: syncModel.exportUploadStatus != "uploading"
                     }
                     Item
                     {
@@ -750,7 +743,7 @@ UM.Window
 
                         property bool hasExported: false
                         text: materialsSyncDialog.hasExportedUsb ? catalog.i18nc("@button", "Done") : catalog.i18nc("@button", "Export material archive")
-                        enabled: typeof syncModel === "undefined" || !syncModel.isExportingToFile
+                        enabled: !syncModel.isExportingToFile
                         visible: enabled
                         onClicked:
                         {
