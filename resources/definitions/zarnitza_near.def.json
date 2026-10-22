@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "name": "ZARNITZA Near",
+    "inherits": "zarnitza_base",
+    "metadata":
+    {
+        "visible": false,
+        "quality_definition": "zarnitza_near"
+    }
+}
