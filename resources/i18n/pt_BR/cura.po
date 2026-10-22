@@ -13,260 +13,210 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.4.1\n"
 
-#, fuzzy
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1 & material"
 msgstr "%1 & material"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1 out of %2"
 msgstr "%1 de %2"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
 msgstr[0] "%1 sobreposto"
 msgstr[1] "%1 sobrepostos"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1, %2 override"
 msgid_plural "%1, %2 overrides"
 msgstr[0] "%1, %2 sobreposição"
 msgstr[1] "%1, %2 sobreposições"
 
-#, fuzzy
 msgctxt "@label g for grams"
 msgid "%1g"
 msgstr "%1g"
 
-#, fuzzy
 msgctxt "@label m for meter"
 msgid "%1m"
 msgstr "%1m"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "&Adicionar Impressora..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "&Camera position"
 msgstr "Posição da &câmera"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
 msgstr "&Criar perfil a partir de ajustes/sobreposições atuais..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
 msgstr "&Descartar ajustes atuais"
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "&Editar"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "&Export..."
 msgstr "&Exportar..."
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "Arquivo (&F)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
 msgstr "A&grupar Modelos"
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "Ajuda (&H)"
 
-#, fuzzy
 msgctxt "@title:menu"
 msgid "&Material"
 msgstr "&Material"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
 msgstr "Co&mbinar Modelos"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
 msgstr "&Multiplicar Modelo..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
 msgstr "&Novo Projeto..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
 msgstr "Abrir Arquiv&o(s)..."
 
-#, fuzzy
 msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "Im&pressora"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "Sair (&Q)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "&Refazer"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
 msgstr "&Salvar Projeto..."
 
-#, fuzzy
 msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
 msgid "&Save Universal Cura Project..."
 msgstr "@Salvar Universal Cura Project..."
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "Aju&stes"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "Desfazer (&U)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
 msgstr "At&ualizar perfil com valores e sobreposições atuais"
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&Ver"
 
-#, fuzzy
 msgctxt "@label"
 msgid "*You will need to restart the application for these changes to have effect."
 msgstr "*Você precisa reiniciar a aplicação para que estas alterações tenham efeito."
 
-#, fuzzy
 msgctxt "@text"
 msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr "- Adicione perfis de material e plug-ins do Marketplace"
 "- Faça backup e sincronize seus perfis de materiais e plugins"
 "- Compartilhe ideias e consiga ajuda de mais de 48.000 usuários da comunidade UltiMaker"
 
-#, fuzzy
 msgctxt "@heading"
 msgid "-- incomplete --"
 msgstr "-- incompleto --"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
 msgstr "Transmitância de 1mm (%)"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "3D Model Assistant"
 msgstr "Assistente de Modelo 3D"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "3D View"
 msgstr "Visão &3D"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "3D View"
 msgstr "Visão 3D"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "Arquivo 3MF"
 
-#, fuzzy
 msgctxt "name"
 msgid "3MF Reader"
 msgstr "Leitor de 3MF"
 
-#, fuzzy
 msgctxt "name"
 msgid "3MF Writer"
 msgstr "Gerador de 3MF"
 
-#, fuzzy
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
 msgstr "O complemento de Escrita 3MF está corrompido."
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "3MF file"
 msgstr "Arquivo 3MF"
 
-#, fuzzy
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
 msgstr "<b>%1</b> perfil personalizado está ativo e alguns ajustes foram sobrescritos."
 
-#, fuzzy
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
 msgstr "<b>%1</b> perfil personalizado está sobrepondo alguns ajustes."
 
-#, fuzzy
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr "<b>Somente ajuste alterados por usuário serão salvos no perfil personalizado.</b><br/>Para materiais que o suportam, este novo perfil personalizado herdará propriedades de <b>%1</b>."
 
-#, fuzzy
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>Renderizador da OpenGL: {renderer}</li>"
 
-#, fuzzy
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>Fornecedor da OpenGL: {vendor}</li>"
 
-#, fuzzy
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>Versão da OpenGL: {version}</li>"
 
-#, fuzzy
 msgctxt "@label crash message"
 msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
 msgstr "<p><b>Um erro fatal ocorreu no Cura. Por favor nos envie este Relatório de Falha para consertar o problema</p></b>"
 "            <p>Por favor use o botão \"Enviar relatório\" para publicar um relatório de erro automaticamente em nossos servidores</p>"
 "        "
 
-#, fuzzy
 msgctxt "@label crash message"
 msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
 msgstr "<p><b>Oops, o UltiMaker Cura encontrou algo que não parece estar correto.</p></b>"
@@ -275,7 +225,6 @@ msgstr "<p><b>Oops, o UltiMaker Cura encontrou algo que não parece estar corret
 "                    <p>Por favor nos envie este Relatório de Falha para consertar o problema.</p>"
 "                "
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr "<p>Um ou mais modelos 3D podem não ser impressos otimamente devido ao tamanho e configuração de material:</p>"
@@ -283,3473 +232,2781 @@ msgstr "<p>Um ou mais modelos 3D podem não ser impressos otimamente devido ao t
 "<p>Descubra como assegurar a melhor qualidade de impressão e confiabilidade possível.</p>"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver guia de qualidade de impressão</a></p>"
 
-#, fuzzy
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "Uma impressão USB está em progresso, fechar o Cura interromperá esta impressão. Tem certeza?"
 
-#, fuzzy
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "Conexão de nuvem não está disponível para uma impressora"
 msgstr[1] "Conexão de nuvem não está disponível para algumas impressoras"
 
-#, fuzzy
 msgctxt "@text"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
 msgstr "Uma parte muito densa e forte mas com tempo de impressão maior. Ótimo para partes funcionais."
 
-#, fuzzy
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
 msgstr "Uma impressão ainda está em progresso. O Cura não pode iniciar outra impressão via USB até que a impressão anterior tenha completado."
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "Arquivo AMF"
 
-#, fuzzy
 msgctxt "name"
 msgid "AMF Reader"
 msgstr "Leitor AMF"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Abort"
 msgstr "Abortar"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Abort Print"
 msgstr "Abortar Impressão"
 
-#, fuzzy
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "Abortar impressão"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Aborted"
 msgstr "Abortado"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Aborting..."
 msgstr "Abortando..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Aborting..."
 msgstr "Abortando..."
 
-#, fuzzy
 msgctxt "@title:window The argument is the application name."
 msgid "About %1"
 msgstr "Sobre %1"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
 msgstr "Sobre..."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Accept"
 msgstr "Aceitar"
 
-#, fuzzy
 msgctxt "description"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
 msgstr "Aceita G-Code e o envia a uma impressora. O complemento também pode atualizar o firmware."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Account synced"
 msgstr "Conta sincronizada"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Action required"
 msgstr "Necessária uma ação"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Activate"
 msgstr "Ativar"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Active print"
 msgstr "Impressão ativa"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Add"
 msgstr "Adicionar"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add"
 msgstr "Adicionar"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Add New"
 msgstr "Adicionar Novo"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Adicionar Impressora"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
 msgstr "Adicionar impressora UltiMaker via Digital Factory"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add a Cloud printer"
 msgstr "Adicionar uma impressora de Nuvem"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add a networked printer"
 msgstr "Adicionar uma impressora de rede"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add a non-networked printer"
 msgstr "Adicionar uma impressora local"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Add a script"
 msgstr "Adicionar um script"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Add icon to system tray *"
 msgstr "Adicionar ícone à bandeja do sistema *"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
 msgstr "Adicionar impressora local"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
 msgstr "Adicionar prefixo de máquina ao nome do trabalho"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
 msgstr "Adicionar ajustes de materiais e plugins do Marketplace"
 
-#, fuzzy
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
 msgstr "Adicionar mais materiais ao Marketplace"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add printer"
 msgstr "Adicionar impressora"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
 msgstr "Adicionar impressora"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer by IP"
 msgstr "Adicionar impressora por IP"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer by IP address"
 msgstr "Adicionar impressora por endereço IP"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Adicionar impressora manualmente"
 
-#, fuzzy
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr "Adicionando impressora {name} ({model}) da sua conta"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Address"
 msgstr "Endereço"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Adhesion"
 msgstr "Aderência"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Adhesion Information"
 msgstr "Informação sobre Aderência"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
 msgstr "Ajusta a densidade do preenchimento da impressão."
 
-#, fuzzy
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
 msgstr "Ajusta o posicionamento das estruturas de suporte. Este posicionamento pode ser ajustado à plataforma de impressão ou em todo lugar. Se for escolhido em todo lugar, as estruturas de suporte também se apoiarão no próprio modelo."
 
-#, fuzzy
 msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "Afetado Por"
 
-#, fuzzy
 msgctxt "@label Header for list of settings."
 msgid "Affects"
 msgstr "Afeta"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Agree"
 msgstr "Concordar"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Todos Os Arquivos (*)"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "Todos Os Tipos Suportados ({0})"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
 msgstr "Permitir enviar dados anônimos"
 
-#, fuzzy
 msgctxt "description"
 msgid "Allows loading and displaying G-code files."
 msgstr "Permite carregar e exibir arquivos G-Code."
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Sempre perguntar"
 
-#, fuzzy
 msgctxt "@option:openProject"
 msgid "Always ask me this"
 msgstr "Sempre me perguntar"
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Always discard changed settings"
 msgstr "Sempre descartar alterações da configuração"
 
-#, fuzzy
 msgctxt "@option:openProject"
 msgid "Always import models"
 msgstr "Sempre importar modelos"
 
-#, fuzzy
 msgctxt "@option:openProject"
 msgid "Always open as a project"
 msgstr "Sempre abrir como projeto"
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Always transfer changed settings to new profile"
 msgstr "Sempre transferir as alterações para o novo perfil"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "Um modelo pode ser carregado diminuto se sua unidade for por exemplo em metros ao invés de milímetros. Devem esses modelos ser redimensionados?"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Annealing"
 msgstr "Recozimento"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Anonymous"
 msgstr "Anônimo"
 
-#, fuzzy
 msgctxt "@option:radio"
 msgid "Anonymous crash reports"
 msgstr "Relatórios de falhas anônimos"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "Framework de Aplicações"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Applies on"
 msgstr "Se aplica a"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "Aplicar deslocamentos de Extrusão ao G-Code"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Are you ready for cloud printing?"
 msgstr "Você está pronto para a impressão de nuvem?"
 
-#, fuzzy
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to abort %1?"
 msgstr "Você tem certeza que quer abortar %1?"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "Tem certeza que deseja abortar a impressão?"
 
-#, fuzzy
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to delete %1?"
 msgstr "Você tem certeza que quer remover %1?"
 
-#, fuzzy
 msgctxt "@dialog:info"
 msgid "Are you sure you want to delete this backup? This cannot be undone."
 msgstr "Você tem certeza que deseja apagar este backup? Isto não pode ser desfeito."
 
-#, fuzzy
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
 msgstr "Tem certeza que quer sair de %1?"
 
-#, fuzzy
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
 msgstr "Você tem certeza que quer mover %1 para o topo da fila?"
 
-#, fuzzy
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr "Tem certeza que quer remover {printer_name} temporariamente?"
 
-#, fuzzy
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
 msgstr "Tem certeza que quer iniciar novo projeto? Isto esvaziará a mesa de impressão e quaisquer ajustes não salvos."
 
-#, fuzzy
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Tem certeza que deseja remover %1? Isto não poderá ser desfeito!"
 
-#, fuzzy
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "Tem certeza que deseja remover {0}? Isto não pode ser defeito!"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
 msgstr "Posicionar Todos os Modelos"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models in a grid"
 msgstr "Organizar Todos os Modelos em Grade"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
 msgstr "Posicionar Seleção"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "Ask a question"
 msgstr "Fazer uma pergunta"
 
-#, fuzzy
 msgctxt "@checkbox:description"
 msgid "Auto Backup"
 msgstr "Auto Backup"
 
-#, fuzzy
 msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
 msgstr "Criar um backup automaticamente toda vez que o Cura iniciar."
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Automaticamente fazer os modelos caírem na mesa de impressão"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
 msgstr "Automaticamente atualizar Firmware"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Available networked printers"
 msgstr "Impressoras de rede disponíveis"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "BMP Image"
 msgstr "Imagem BMP"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Back"
 msgstr "Voltar"
 
-#, fuzzy
 msgctxt "@button:tooltip"
 msgid "Back"
 msgstr "Voltar"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Backup"
 msgstr "Backup"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Backup Now"
 msgstr "Backup Agora"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
 msgstr "Salvar e Restabelecer Configuração"
 
-#, fuzzy
 msgctxt "description"
 msgid "Backup and restore your configuration."
 msgstr "Permite backup e restauração da configuração."
 
-#, fuzzy
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
 msgstr "Fazer backup e sincronizar seus ajustes de materiais e plugins"
 
-#, fuzzy
 msgctxt "@description"
 msgid "Backup and synchronize your Cura settings."
 msgstr "Fazer backup e sincronizar os ajustes do Cura."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Backups"
 msgstr "Backups"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Balanced"
 msgstr "Equilibrado"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "Base (mm)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
 msgstr "Visão de Baixo"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Brand"
 msgstr "Marca"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Build Plate Leveling"
 msgstr "Nivelamento da mesa de impressão"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Build Volume"
 msgstr "Volume de Impressão"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Build plate"
 msgstr "Mesa de Impressão"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Build plate shape"
 msgstr "Forma da plataforma de impressão"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Bundled Materials"
 msgstr "Materiais Empacotados"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Bundled Plugins"
 msgstr "Complementos Empacotados"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Buy spool"
 msgstr "Comprar carretel"
 
-#, fuzzy
 msgctxt "@label Is followed by the name of an author"
 msgid "By"
 msgstr "Por"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "C/C++ Binding library"
 msgstr "Biblioteca de Ligações C/C++"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
 msgstr "Câmbio de Ativos Digitais COLLADA"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Calculated"
 msgstr "Calculado"
 
-#, fuzzy
 msgctxt "@window:text"
 msgid "Camera navigation:"
 msgstr "Navegação de câmera:"
 
-#, fuzzy
 msgctxt "@window:text"
 msgid "Camera rendering:"
 msgstr "Renderização de câmera:"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Camera view"
 msgstr "Visão de câmera"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "Não Foi Encontrada Localização"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Não Foi Possível Abrir o Arquivo de Projeto"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Can't connect to your UltiMaker printer?"
 msgstr "Não consegue conectar à sua impressora UltiMaker?"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Não foi possível importar perfil de <filename>{0}</filename> antes de uma impressora ser adicionada."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Não é possível abrir nenhum outro arquivo se G-Code estiver sendo carregado. Pulando importação de {0}"
 
-#, fuzzy
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "Não foi possível escrever no arquivo UFP:"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#, fuzzy
 msgctxt "@button Cancel pre-heating"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Caution message in g-code reader"
 msgstr "Mensagem de alera no leitor de G-Code"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
 msgstr "Ce&ntralizar Modelo na Mesa"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
 msgstr "Centralizar Selecionados"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
 msgstr "Centralizar câmera quanto o item é selecionado"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts."
 msgstr "Alterar scripts de pós-processamento ativos."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
 msgstr "Alterar material %1 de %2 para %3."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
 msgstr "Alterar núcleo de impressão %1 de %2 para %3."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Changes detected from your UltiMaker account"
 msgstr "Alterações detectadas de sua conta UltiMaker"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Changes from your account"
 msgstr "Alterações da sua conta"
 
-#, fuzzy
 msgctxt "@label:textbox"
 msgid "Check all"
 msgstr "Verificar tudo"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Check for account updates"
 msgstr "Verificar atualizações da conta"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Check for updates on start"
 msgstr "Verificar atualizações na inicialização"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Checking..."
 msgstr "Verificando..."
 
-#, fuzzy
 msgctxt "description"
 msgid "Checks for firmware updates."
 msgstr "Verifica por atualizações de firmware."
 
-#, fuzzy
 msgctxt "description"
 msgid "Checks models and print configuration for possible printing issues and give suggestions."
 msgstr "Verifica modelos e configurações de impressão por possíveis problema e dá sugestões."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "Escolhe entre as técnicas disponíveis para a geração de suporte."
 "Suporte \"Normal\"  cria uma estrutura de suporte diretamente abaixo das partes pendentes e continua em linha reta para baixo."
 "Suporte de \"Árvore\" cria galhos em direção às áreas pendentes que suportam o modelo em suas pontas, e permite que os galhos se espalhem em volta do modelo para suportá-lo a partir da plataforma de impressão tanto quanto possível."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "Esvaziar a Mesa de Impressão"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
 msgstr "Limpar a plataforma de impressão antes de carregar modelo em instância única"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Click the export material archive button."
 msgstr "Clique no botão de exportar arquivo de material."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Close"
 msgstr "Fechar"
 
-#, fuzzy
 msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
 msgstr "Fechando %1"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Collapse All Categories"
 msgstr "Encolher Todas As Categorias"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Color"
 msgstr "Cor"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Color Model"
 msgstr "Modelo de Cor"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Color scheme"
 msgstr "Esquema de Cores"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Compare and save."
 msgstr "Comparar e salvar."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Compatibility Mode"
 msgstr "Modo de Compatibilidade"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Compatibility between Python 2 and 3"
 msgstr "Compatibilidade entre Python 2 e 3"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Compatible Printers"
 msgstr "Impressoras Compatíveis"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Compatible material diameter"
 msgstr "Diâmetro de material compatível"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Compatible printers"
 msgstr "Impressoras compatíveis"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Compatible support materials"
 msgstr "Materiais de suporte compatíveis"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Compatible with Material Station"
 msgstr "Compatível com Material Station"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "Câmbio de Ativos Digitais COLLADA Comprimido"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Arquivo de G-Code Comprimido"
 
-#, fuzzy
 msgctxt "name"
 msgid "Compressed G-code Reader"
 msgstr "Leitor de G-Code Comprimido"
 
-#, fuzzy
 msgctxt "name"
 msgid "Compressed G-code Writer"
 msgstr "Gerador de G-Code Comprimido"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Configuration Changes"
 msgstr "Alterações de Configuração"
 
-#, fuzzy
 msgctxt "@error"
 msgid "Configuration not supported"
 msgstr "Configuração não suportada"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Configurations"
 msgstr "Configurações"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Configurations"
 msgstr "Configurações"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
 msgstr "Configurar Cura..."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "Configurar ajustes por Modelo"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Configure group"
 msgstr "Configurar grupo"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Configurar a visibilidade dos ajustes..."
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
 msgstr "Confirmar Mudança de Diâmetro"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "Confirmar Remoção"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Connect"
 msgstr "Conectar"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Connect"
 msgstr "Conectar"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Connect to Networked Printer"
 msgstr "Conectar a Impressora de Rede"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Connect via Network"
 msgstr "Conectar pela rede"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Conectado pela rede"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Connected printers"
 msgstr "Impressoras conectadas"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Connected via USB"
 msgstr "Conectado via USB"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "Conectado pela nuvem"
 
-#, fuzzy
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
 msgstr "Conecta-se à Digital Library, permitindo ao Cura abrir arquivos dela e gravar arquivos nela."
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Consult the UltiMaker Community."
 msgstr "Consultar a Comunidade UltiMaker."
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Convert Image"
 msgstr "Converter Imagem"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Cooling Fan Number"
 msgstr "Número da Ventoinha de Resfriamento"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "Copiar todos os valores alterados para todos os extrusores"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Copy to clipboard"
 msgstr "Copiar para a área de transferência"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "Copiar valor para todos os extrusores"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Cost per Meter"
 msgstr "Custo por Metro"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Could not access update information."
 msgstr "Não foi possível acessar informação de atualização."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Could not connect to device."
 msgstr "Não foi possível conectar ao dispositivo."
 
-#, fuzzy
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Não pude criar arquivo do diretório de dados de usuário: {}"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "Não foi possível encontrar nome de arquivo ao tentar escrever em {device}."
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "Não foi possível importar material <filename>%1</filename>: <message>%2</message>"
 
-#, fuzzy
 msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr "Não foi possível interpretar a resposta de servidor."
 
-#, fuzzy
 msgctxt "@error:load"
 msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
 msgstr "Não foi possível carregar o plugin GCodeWriter. Tente reabilitar o plugin."
 
-#, fuzzy
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "Não foi possível conectar ao Marketplace."
 
-#, fuzzy
 msgctxt "@message"
 msgid "Could not read response."
 msgstr "Não foi possível ler a resposta."
 
-#, fuzzy
 msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
 msgstr "Não foi possível salvar o arquivo de materiais para {}:"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Não foi possível salvar em <filename>{0}</filename>: <message>{1}</message>"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "Não foi possível salvar em unidade removível {0}: {1}"
 
-#, fuzzy
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Não foi possível transferir os dados para a impressora."
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."
 msgstr "Não foi possível iniciar EnginePlugin: {self._plugin_id}"
 "Sem permissão para executar processo."
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"
 msgstr "Não foi possível iniciar EnginePlugin: {self._plugin_id}"
 "O sistema operacional está bloqueando (antivírus?)"
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"
 msgstr "Não foi possível iniciar EnginePlugin: {self._plugin_id}"
 "O recurso está temporariamente indisponível"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Crash Report"
 msgstr "Relatório de Problema"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Create Profile"
 msgstr "Criar Perfil"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "Criar uma conta UltiMaker gratuita"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Create a free UltiMaker account"
 msgstr "Criar uma conta UltiMaker gratuita"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "Cria um volume em que os suportes não são impressos."
 
-#, fuzzy
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
 msgstr "Criar novos"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Create new"
 msgstr "Criar novo"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
 msgstr "Criar novos"
 
-#, fuzzy
 msgctxt "@action:tooltip"
 msgid "Create new profile from current settings/overrides"
 msgstr "Criar novo perfil a partir dos ajustes/sobreposições atuais"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
 msgstr "Cria projetos de impressão na Digital Library."
 
-#, fuzzy
 msgctxt "description"
 msgid "Creates an eraser mesh to block the printing of support in certain places"
 msgstr "Cria uma malha apagadora para bloquear a impressão de suporte em certos lugares"
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
 msgstr "Criando seu backup..."
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura 15.04 profiles"
 msgstr "Perfis do Cura 15.04"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Cura Backups"
 msgstr "Backups do Cura"
 
-#, fuzzy
 msgctxt "name"
 msgid "Cura Backups"
 msgstr "Backups Cura"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Perfil do Cura"
 
-#, fuzzy
 msgctxt "name"
 msgid "Cura Profile Reader"
 msgstr "Leitor de Perfis do Cura"
 
-#, fuzzy
 msgctxt "name"
 msgid "Cura Profile Writer"
 msgstr "Gravador de Perfis do Cura"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "Arquivo de Projeto 3MF do Cura"
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Cura Version"
 msgstr "Versão do Cura"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "O Cura não consegue iniciar"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
 msgstr "O Cura detectou perfis de material que não estão instalados ainda na impressora host do grupo {0}."
 
-#, fuzzy
 msgctxt "@info:credit"
 msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
 msgstr "Cura é desenvolvido pela Ultimaker B.V. em cooperação com a comunidade."
 "Cura orgulhosamente usa os seguintes projetos open-source:"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Cura language"
 msgstr "Linguagem do Cura"
 
-#, fuzzy
 msgctxt "@label Cura version number"
 msgid "Cura version"
 msgstr "Versão do Cura"
 
-#, fuzzy
 msgctxt "name"
 msgid "CuraEngine Backend"
 msgstr "CuraEngine Backend"
 
-#, fuzzy
 msgctxt "description"
 msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
 msgstr "Complemento do CuraEngine para gradualmente suavizar o fluxo para limitar rajadas de fluxo intenso"
 
-#, fuzzy
 msgctxt "name"
 msgid "CuraEngineGradualFlow"
 msgstr "CuraEngineGradualFlow"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Currency:"
 msgstr "Moeda:"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Current"
 msgstr "Atual"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Current changes"
 msgstr "Alterações atuais"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Custom"
 msgstr "Personalizado"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Custom"
 msgstr "Personalizado"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Custom"
 msgstr "Personalizado"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Custom Material"
 msgstr "Material Personalizado"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "Perfil personalizado"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
 msgstr "Nome de perfil personalizado:"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Custom profiles"
 msgstr "Perfis personalizados"
 
-#, fuzzy
 msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "Perfis personalizados"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Cut"
 msgstr "Cortar"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
 msgstr "Malha de corte"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Darker is higher"
 msgstr "Mais escuro é mais alto"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "Dados Enviados"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Data interchange format"
 msgstr "Formato de Intercâmbio de Dados"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Decline"
 msgstr "Recusar"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Decline and close"
 msgstr "Rejeitar e fechar"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Decline and remove from account"
 msgstr "Recusar e remover da conta"
 
-#, fuzzy
 msgctxt "@info:No intent profile selected"
 msgid "Default"
 msgstr "Default"
 
-#, fuzzy
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
 msgstr "Comportamento default para valores de configuração alterados ao mudar para um perfil diferente: "
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Default behavior when opening a project file"
 msgstr "Comportamento default ao abrir um arquivo de projeto"
 
-#, fuzzy
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
 msgstr "Comportamento default ao abrir um arquivo de projeto: "
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Defaults"
 msgstr "Defaults"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Defines the thickness of your part side walls, roof and floor."
 msgstr "Define a espessura das paredes laterais, teto e base da sua peça."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Delete"
 msgstr "Remover"
 
-#, fuzzy
 msgctxt "@dialog:title"
 msgid "Delete Backup"
 msgstr "Apagar o Backup"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Delete Model"
 msgstr "Remover Modelo"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
 msgstr "Remover Selecionados"
 
-#, fuzzy
 msgctxt "@window:title"
 msgid "Delete print job"
 msgstr "Remover trabalho de impressão"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Density"
 msgstr "Densidade"
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Dependency and package manager"
 msgstr "Gestor de pacote e dependência"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Depth (mm)"
 msgstr "Profundidade (mm)"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Derivative from"
 msgstr "Derivado de"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Description"
 msgstr "Descrição"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Description"
 msgstr "Descrição"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Details"
 msgstr "Detalhes"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Diameter"
 msgstr "Diâmetro"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Disable"
 msgstr "Desabilitar"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "Desabilitar Extrusor"
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
 msgstr "Descartar e não perguntar novamente"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Discard changes"
 msgstr "Descartar alterações"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "Descartar ajustes atuais"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Discard or Keep changes"
 msgstr "Descartar ou Manter alterações"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Dismiss"
 msgstr "Dispensar"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Display Name"
 msgstr "Exibir Nome"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Display model errors"
 msgstr "Exibir erros de modelo"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "Exibir seções pendentes"
 
-#, fuzzy
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
 msgstr "Não mostrar essa mensagem novamente"
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
 msgstr "Você quer sincronizar os pacotes de material e software com sua conta?"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
 msgstr "Não exibir resumo do projeto ao salvar novamente"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Don't show this setting"
 msgstr "Não exibir este ajuste"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Don't support overlaps"
 msgstr "Não suportar sobreposições"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Done"
 msgstr "Feito"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Downgrade"
 msgstr "Downgrade"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Downgrading..."
 msgstr "Fazendo downgrade..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Draft"
 msgstr "Rascunho"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Drop All Models to buildplate"
 msgstr "Largar Todos os Modelos na plataforma de impressão"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "Duplicar"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Duplicate Profile"
 msgstr "Duplicar Perfil"
 
-#, fuzzy
 msgctxt "@backup_limit_info"
 msgid "During the preview phase, you'll be limited to 5 visible backups. Remove a backup to see older ones."
 msgstr "Durante a fase de pré-visualização, você estará limitado a 5 backups visíveis. Remova um backup para ver os mais antigos."
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "E&xtensões"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Edit"
 msgstr "Editar"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Eject"
 msgstr "Ejetar"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "Ejetar dispositivo removível {0}"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "{0} ejetado. A unidade agora pode ser removida de forma segura."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Empty"
 msgstr "Vazio"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Enable"
 msgstr "Habilitar"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "Habilitar Extrusor"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
 msgstr "Habilita a impressão de brim ou raft. Adicionará uma área plana em volta do objeto ou abaixo dele que seja fácil de destacar depois. Desabilitar este ajuste resulta em um skirt em volta do objeto por default."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Enabled"
 msgstr "Habilitado"
 
-#, fuzzy
 msgctxt "description"
 msgid "Enables ability to generate printable geometry from 2D image files."
 msgstr "Habilita a geração de geometria imprimível de arquivos de imagem 2D."
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-Code Final"
 
-#, fuzzy
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "Solução completa para impressão 3D com filamento fundido."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "EnginePlugin"
 msgstr "EnginePlugin"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Engineering"
 msgstr "Engenharia"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
 msgstr "Assegurar que os modelos sejam mantidos separados"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
 msgstr "Entre o endereço IP da sua impressora na rede."
 
-#, fuzzy
 msgctxt "@text"
 msgid "Enter your printer's IP address."
 msgstr "Entre o endereço IP de sua impressora."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Error"
 msgstr "Erro"
 
-#, fuzzy
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "Traceback do erro"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Estimated time left"
 msgstr "Tempo restante estimado"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
 msgstr "Sair da Tela Cheia"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Experimental"
 msgstr "Experimental"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Export"
 msgstr "Exportar"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Export All Materials"
 msgstr "Exportar Todos Os Materiais"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Exportar Material"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Export Profile"
 msgstr "Exportar Perfil"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
 msgstr "Exportar Seleção..."
 
-#, fuzzy
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Export Universal Cura Project"
 msgstr "Exportar Universal Cura Project"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Export material archive"
 msgstr "Exportar arquivo de material"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "Exportação concluída"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Perfil exportado para <filename>{0}</filename>"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Extend UltiMaker Cura with plugins and material profiles."
 msgstr "Estende o UltiMaker Cura com complementos e perfis de material."
 
-#, fuzzy
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
 msgstr "Extensão que permite scripts criados por usuários para pós-processamento"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Extruder"
 msgstr "Extrusor"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "Extrusor %1"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "G-Code Final do Extrusor"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Extruder End G-code duration"
 msgstr "Duração do G-code Final do Extrusor"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
 msgstr "G-Code Inicial do Extrusor"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Extruder Start G-code duration"
 msgstr "Duração do G-code Inicial do Extrusor"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Extruder {0}"
 msgstr "Extrusor {0}"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "Extrusor(es) Desabilitado(s)"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Failed"
 msgstr "Falhado"
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
 msgstr "Falha em conectar com a Digital Factory para sincronizar materiais com algumas das impressoras."
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory."
 msgstr "Falha em conectar à Digital Factory."
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr "Falha em criar arquivo de materiais para sincronizar com impressoras."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "Erro ao ejetar {0}. Outro programa pode estar usando a unidade."
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Falha em exportar material para <filename>%1</filename>: <message>%2</message>"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Falha ao exportar perfil para <filename>{0}</filename>: <message>{1}</message>"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "Falha ao exportar perfil para <filename>{0}</filename>: complemento escritor relatou erro."
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Erro ao importar perfil de <filename>{0}</filename>:"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Erro ao importar perfil de <filename>{0}</filename>:"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "Falha ao importar perfil de <filename>{0}</filename>: {1}"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Failed to load packages:"
 msgstr "Falha em carregar pacotes:"
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "Failed to load the archive of materials to sync it with printers."
 msgstr "Falha em carregar o arquivo de materiais para sincronizar com impressoras."
 
-#, fuzzy
 msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "Falha em salvar o arquivo de materiais"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
 msgstr "Falha ao escrever em impressora de nuvem específica: {0} não presente nos clusters remotos."
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr "Favoritos"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Filament Cost"
 msgstr "Custo do Filamento"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Filament length"
 msgstr "Comprimento do Filamento"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Filament weight"
 msgstr "Peso do Filamento"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "O Arquivo Já Existe"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "File Saved"
 msgstr "Arquivo Salvo"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "Arquivo {0} não contém nenhum perfil válido."
 
-#, fuzzy
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "Filtrar..."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "Buscando Localização"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "Achando novos lugares para objetos"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Finish"
 msgstr "Finalizar"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Finished"
 msgstr "Finalizado"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Finishes %1 at %2"
 msgstr "Termina %1 em %2"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Firmware Update"
 msgstr "Atualização do Firmware"
 
-#, fuzzy
 msgctxt "name"
 msgid "Firmware Update Checker"
 msgstr "Verificador de Atualizações de Firmware"
 
-#, fuzzy
 msgctxt "name"
 msgid "Firmware Updater"
 msgstr "Atualizador de Firmware"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
 msgstr "O firmware não pode ser atualizado porque a conexão com a impressora não suporta atualização de firmware."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware can not be updated because there is no connection with the printer."
 msgstr "O firmware não pode ser atualizado porque não há conexão com a impressora."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
 msgstr "O firmware é o software rodando diretamente no maquinário de sua impressora 3D. Este firmware controla os motores de passo, regula a temperatura e é o que faz a sua impressora funcionar."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update completed."
 msgstr "Atualização do Firmware completada."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update failed due to an communication error."
 msgstr "A atualização de firmware falhou devido a um erro de comunicação."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update failed due to an input/output error."
 msgstr "A atualização de firmware falhou devido a um erro de entrada e saída."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update failed due to an unknown error."
 msgstr "A atualização de Firmware falhou devido a um erro desconhecido."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "A atualização de firmware falhou devido a firmware não encontrado."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "Versão do firmware"
 
-#, fuzzy
 msgctxt "@label"
 msgid "First available"
 msgstr "Primeira disponível"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Flow"
 msgstr "Fluxo"
 
-#, fuzzy
 msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
 msgid "Follow the following steps to load the new material profiles to your printer."
 msgstr "Siga os passos seguintes para carregar os perfis de material novos na sua impressora."
 
-#, fuzzy
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
 msgstr "Siga o procedimento para adicionar uma nova impressora"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
 msgstr "Seguindo alguns passos simples, você conseguirá sincronizar todos os seus perfis de material com suas impressoras."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Font"
 msgstr "Fonte"
 
-#, fuzzy
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
 msgstr "Para cada posição; insira um pedaço de papel abaixo do bico e ajuste a altura da mesa de impressão. A altura da mesa de impressão está adequada quando o papel for levemente pressionado pela ponta do bico."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
 msgstr "Para litofanos, um modelo logarítmico simples para translucidez está disponível. Para mapas de altura os valores de pixels correspondem a alturas, linearmente."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model."
 msgstr "Para litofanos, pixels escuros devem corresponder a locais mais espessos para conseguir bloquear mais luz. Para mapas de altura, pixels mais claros significam terreno mais alto, portanto tais pixels devem corresponder a locais mais espessos no modelo 3d gerado."
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "Forçar modo de compatibilidade da visão de camadas (requer reinício)"
 
-#, fuzzy
 msgid "FreeCAD trackpad"
 msgstr "Trackpad do FreeCAD"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "Visão Frontal"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Front View"
 msgstr "Viso de Frente"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "Arquivo G"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "Detalhes do G-Code"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "Arquivo G-Code"
 
-#, fuzzy
 msgctxt "name"
 msgid "G-code Profile Reader"
 msgstr "Leitor de Perfil de G-Code"
 
-#, fuzzy
 msgctxt "name"
 msgid "G-code Reader"
 msgstr "Leitor de G-Code"
 
-#, fuzzy
 msgctxt "name"
 msgid "G-code Writer"
 msgstr "Gerador de G-Code"
 
-#, fuzzy
 msgctxt "@label"
 msgid "G-code flavor"
 msgstr "Sabor de G-Code"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "G-code generator"
 msgstr "Gerador de G-Code"
 
-#, fuzzy
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "O GCodeGzWriter não suporta modo binário."
 
-#, fuzzy
 msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
 msgstr "O GCodeWriter não suporta modo binário."
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "Imagem GIF"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "GUI framework"
 msgstr "Framework Gráfica"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "GUI framework bindings"
 msgstr "Ligações da Framework Gráfica"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "Altura do Eixo"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Geral"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "Gera estrutura que suportarão partes do modelo que têm seções pendentes. Sem estas estruturas, tais partes desabariam durante a impressão."
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Generating Windows installers"
 msgstr "Gerando instaladores Windows"
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Generic"
 msgstr "Genérico"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Get notifications for plugin updates"
 msgstr "Ter notificações para atualizações de complementos"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Get started"
 msgstr "Começar"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Global"
 msgstr "Global"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Ajustes globais"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Graphical user interface"
 msgstr "Interface Gráfica de usuário"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Grid Placement"
 msgstr "Posicionamento em Grade"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "Grupo #{group_nr}"
 
-#, fuzzy
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
 msgstr "Aquecer a mesa antes de imprimir. Você pode continuar ajustando sua impressão enquanto ela está aquecendo, e não terá que esperar o aquecimento quando estiver pronto pra imprimir."
 
-#, fuzzy
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print."
 msgstr "Aquece o hotend com antecedência antes de imprimir. Você pode continuar ajustando sua impressão enquanto está aquecendo e não terá que esperar que o hotend termine o aquecimento quando estiver pronto para imprimir."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "Mesa de Impressão Aquecida (kit Oficial ou auto-construído)"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Heated bed"
 msgstr "Mesa aquecida"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Heated build volume"
 msgstr "Volume de construção aquecido"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Height (mm)"
 msgstr "Altura (mm)"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Helpers"
 msgstr "Assistentes"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Hide all connected printers"
 msgstr "Omitir todas as impressoras conectadas"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Hide settings"
 msgstr "Omitir ajustes"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Hide this setting"
 msgstr "Ocultar este ajuste"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry."
 msgstr "Ressalta superfícies faltantes ou incorretas do modelo usando sinais de alerta. Os caminhos de extrusão frequentemente terão partes da geometria pretendida ausentes."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
 msgstr "Ressaltar áreas sem suporte do modelo em vermelho. Sem suporte, estas áreas não serão impressas corretamente."
 
-#, fuzzy
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
 msgstr "Como carregar novos perfis de material na minha impressora"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "Como atualizar"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "I don't want to send anonymous data"
 msgstr "Recusar enviar dados anônimos"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Idle"
 msgstr "Ocioso"
 
-#, fuzzy
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
 msgstr "Se você está tentando adicionar uma nova impressora UltiMaker ao Cura"
 
-#, fuzzy
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "Se sua impressora não está listada, leia o <a href='%1'>guia de resolução de problemas de impressão em rede</a>"
 
-#, fuzzy
 msgctxt "name"
 msgid "Image Reader"
 msgstr "Leitor de Imagens"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Import"
 msgstr "Importar"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "Importar Material"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Import Profile"
 msgstr "Importar Perfil"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Import all as models"
 msgstr "Importar todos como modelos"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Import models"
 msgstr "Importar modelos"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "In maintenance. Please check the printer"
 msgstr "Em manutenção. Por favor verifique a impressora"
 
-#, fuzzy
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
 msgstr "Para monitorar sua impressão pelo Cura, por favor conecte a impressora."
 
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
 msgstr "Para poder iniciar o uso do Cura você precisará configurar uma impressora."
 
-#, fuzzy
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
 msgstr "Para usar o pacote você precisará reiniciar o Cura"
 
-#, fuzzy
 msgctxt "@option:radio"
 msgid "Include UltiMaker account name"
 msgstr "Incluir nome de conta da Ultimaker"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Infill"
 msgstr "Preenchimento"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Infill"
 msgstr "Preenchimento"
 
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
 msgstr "Densidade de Preenchimento"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Infill Pattern"
 msgstr "Padrão de Preenchimento"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Infill mesh only"
 msgstr "Somente malha de preenchimento"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Infill overlapping with this model is modified."
 msgstr "Preenchimento se sobrepondo a este modelo foi modificado."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Information"
 msgstr "Informação"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Information"
 msgstr "Informação"
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
 msgstr "Inicializando Máquina Ativa..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
 msgstr "Inicializando volume de impressão..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Initializing engine..."
 msgstr "Inicializando motor..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
 msgstr "Inicializando gestor de máquinas..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Inner Wall"
 msgstr "Parede Interna"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Inner Walls"
 msgstr "Paredes Internas"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
 msgstr "Insira o pendrive USB na sua impressora e faça o procedimento de carregar novos perfis de material."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Install"
 msgstr "Instalar"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Install Materials"
 msgstr "Instalar Materiais"
 
-#, fuzzy
 msgctxt "@window:title"
 msgid "Install Package"
 msgstr "Instalar Pacote"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Install Packages"
 msgstr "Instalar Pacotes"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Install Packages"
 msgstr "Instala Pacotes"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Install Plugins"
 msgstr "Instalar Complementos"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Install missing packages"
 msgstr "Instalar pacotes faltantes"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Install missing packages"
 msgstr "Instala pacotes faltantes"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Install missing packages from project file."
 msgstr "Instala pacotes faltantes do arquivo de projeto."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Install pending updates"
 msgstr "Instalação aguardando atualizações"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Installed Materials"
 msgstr "Materiais Instalados"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Installed Plugins"
 msgstr "Complementos Instalados"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Installing..."
 msgstr "Instalando..."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "Objetivo"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Interface"
 msgstr "Interface"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Interprocess communication library"
 msgstr "Biblioteca de comunicação interprocessos"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "Endereço IP inválido"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "URL de arquivo inválida:"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
 msgstr "Inverter a direção da ampliação de câmera."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Is printed as support."
 msgstr "Está impresso como suporte."
 
-#, fuzzy
 msgctxt "@text"
 msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
 msgstr "Parece que você não tem impressoras compatíveis conectadas à Digital Factory. Certifique-se que sua impressora esteja conectada e rodando o firmware mais recente."
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "JPEG Image"
 msgstr "Imagem JPEG"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
 msgstr "Imagem JPG"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
 msgstr "Parser JSON"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Job Name"
 msgstr "Nome do Trabalho"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Jog Distance"
 msgstr "Distância de Trote"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Jog Position"
 msgstr "Posição de Trote"
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Keep and never ask again"
 msgstr "Manter e não perguntar novamente"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Keep changes"
 msgstr "Manter alterações"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Keep printer configurations"
 msgstr "Manter configurações da impressora"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "Manter este ajuste visível"
 
-#, fuzzy
 msgctxt "@label The argument is a timestamp"
 msgid "Last update: %1"
 msgstr "Última atualização: %1"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Layer Thickness"
 msgstr "Espessura de Camada"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "Visão de Camadas"
 
-#, fuzzy
 msgctxt "@button:label"
 msgid "Learn More"
 msgstr "Saiba mais"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Learn how to connect your printer to Digital Factory"
 msgstr "Aprenda como conectar sua impressora à Digital Factory"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Learn how to get started with UltiMaker Cura."
 msgstr "Saiba como começar com o UltiMaker Cura."
 
-#, fuzzy
 msgctxt "@action"
 msgid "Learn more"
 msgstr "Saiba mais"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Learn more"
 msgstr "Saiba mais"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
 msgstr "Saiba mais"
 
-#, fuzzy
 msgctxt "@button:label"
 msgid "Learn more"
 msgstr "Saber mais"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
 msgstr "Saber mais sobre perfis de impressão do Cura"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
 msgstr "Saiba mais sobre adicionar impressoras ao Cura"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Learn more about project packages."
 msgstr "Aprenda mais sobre pacotes de projeto"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
 msgstr "Visão do Lado Esquerdo"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Left View"
 msgstr "Visão à Esquerda"
 
-#, fuzzy
 msgctxt "name"
 msgid "Legacy Cura Profile Reader"
 msgstr "Leitor de Perfis de Cura Legado"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
 msgstr "Deixe os desenvolvedores saberem que algo está errado."
 
-#, fuzzy
 msgctxt "@action"
 msgid "Level build plate"
 msgstr "Nivelar mesa"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
 msgstr "Mais claro é mais alto"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Line Type"
 msgstr "Tipo de Linha"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Line Width"
 msgstr "Largura de Extrusão"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "Linear"
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Linux cross-distribution application deployment"
 msgstr "Implementação de aplicação multidistribuição em Linux"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
 msgstr "Carregar %3 como material %1 (isto não pode ser sobreposto)."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Load more"
 msgstr "Carregar mais"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Loading"
 msgstr "Carregando"
 
-#, fuzzy
 msgctxt "@action:warning"
 msgid "Loading a project will clear all models on the build plate."
 msgstr "Carregar um projeto limpará todos os modelos da mesa de impressão."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Loading available configurations from the printer..."
 msgstr "Carregando configurações disponíveis da impressora..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Carregando interface..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "Carregando máquinas..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Loading..."
 msgstr "Carregando..."
 
-#, fuzzy
 msgctxt "@title"
 msgid "Loading..."
 msgstr "Carregando..."
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Local printers"
 msgstr "Impressoras locais"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Log-in failed"
 msgstr "Login falhou"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Login failed"
 msgstr "Login falhou"
 
-#, fuzzy
 msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "Registros"
 
-#, fuzzy
 msgctxt "description"
 msgid "Logs certain events so that they can be used by the crash reporter"
 msgstr "Registra certos eventos de forma que possam ser usados pelo relator de acidentes"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
 msgstr "A conexão à impressora foi perdida"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Machine Settings"
 msgstr "Ajustes da Máquina"
 
-#, fuzzy
 msgctxt "name"
 msgid "Machine Settings Action"
 msgstr "Ação de Ajustes de Máquina"
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Machines"
 msgstr "Máquinas"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Make sure all your printers are turned ON and connected to Digital Factory."
 msgstr "Certifique-se de que todas as suas impressoras estejam LIGADAS e conectadas à Digital Factory."
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Certifique que o g-code é adequado para sua impressora e configuração antes de enviar o arquivo. A representação de g-code pode não ser acurada."
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
 msgstr "Makerbot Printfile"
 
-#, fuzzy
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
 msgstr "Gerador de Makerbot Printfile"
 
-#, fuzzy
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
 msgstr "MakerbotWriter não conseguiu salvar no caminho designado."
 
-#, fuzzy
 msgctxt "@error:not supported"
 msgid "MakerbotWriter does not support text mode."
 msgstr "MakerbotWriter não suporta modo texto."
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "Administrar Materiais..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "Adm&inistrar Impressoras..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "Administrar perfis..."
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
 msgstr "Gerenciar Visibilidade dos Ajustes..."
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Manage backups"
 msgstr "Gerenciar backups"
 
-#, fuzzy
 msgctxt "@label link to connect manager"
 msgid "Manage in browser"
 msgstr "Gerir no navegador"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Manage packages"
 msgstr "Gerir pacotes"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Manage packages"
 msgstr "Gerir pacotes"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Manage print jobs"
 msgstr "Gerenciar trabalhos de impressão"
 
-#, fuzzy
 msgctxt "@label link to Connect and Cloud interfaces"
 msgid "Manage printer"
 msgstr "Gerir Impressora"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Manage printers"
 msgstr "Gerenciar impressoras"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
 msgstr "Gerencie seu complementos e perfis de materiais do Cura aqui. Se assegure de manter seus complementos atualizados e fazer backup de sua configuração regularmente."
 
-#, fuzzy
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "Gerencia extensões à aplicação e permite navegar extensões do website da UltiMaker."
 
-#, fuzzy
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
 msgstr "Gerencia conexões de rede com as impressoras de rede da UltiMaker."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Fabricante"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "Mercado"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Marketplace"
 msgstr "Mercado"
 
-#, fuzzy
 msgctxt "name"
 msgid "Marketplace"
 msgstr "Marketplace"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Material"
 msgstr "Material"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Material"
 msgstr "Material"
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Material"
 msgstr "Material"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Material Color"
 msgstr "Cor do Material"
 
-#, fuzzy
 msgctxt "name"
 msgid "Material Profiles"
 msgstr "Perfis de Material"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Material Type"
 msgstr "Tipo de Material"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Material color picker"
 msgstr "Seletor de cores do material"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Material estimation"
 msgstr "Estimativa de material"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
 msgstr "Perfis de material sincronizados com sucesso com as seguintes impressoras:"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Material settings"
 msgstr "Ajustes de material"
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Materials"
 msgstr "Materiais"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Materials"
 msgstr "Materiais"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "Materiais"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Materials compatible with active printer:"
 msgstr "Materiais compatíveis com a impressora ativa:"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Mesh Type"
 msgstr "Tipo de Malha"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Mode"
 msgstr "Modo"
 
-#, fuzzy
 msgctxt "name"
 msgid "Model Checker"
 msgstr "Verificador de Modelo"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Model Errors"
 msgstr "Erros de Modelo"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Modify G-Code"
 msgstr "Modificar G-Code"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Modify settings for overlaps"
 msgstr "Modificar ajustes para sobreposições"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "Monitor"
 
-#, fuzzy
 msgctxt "name"
 msgid "Monitor Stage"
 msgstr "Estágio de Monitor"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Monitor print"
 msgstr "Monitorar impressão"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Monitor print jobs and reprint from your print history."
 msgstr "Monitora trabalhos de impressão e reimprime a partir do histórico."
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Monitor printers in Ultimaker Digital Factory."
 msgstr "Monitora as impressoras na Ultimaker Digital Factory."
 
-#, fuzzy
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
 msgstr "Monitora suas impressoras de todo lugar usando a Ultimaker Digital Factory"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
 msgstr "Mais informações em coleção anônima de dados"
 
-#, fuzzy
 msgctxt "@window:title"
 msgid "Move print job to top"
 msgstr "Move o trabalho de impressão para o topo da fila"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Move to Next Position"
 msgstr "Mover pra a Posição Seguinte"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Move to top"
 msgstr "Mover para o topo"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
 msgstr "Move a câmera de modo que o modelo fique no centro da visão quando for selecionado"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
 msgstr "Multiplicar Selecionados"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "Multiplicar Modelo Selecionado"
 msgstr[1] "Multiplicar Modelos Selecionados"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Multiply selected item and place them in a grid of build plate."
 msgstr "Multiplica o item selecionado e o dispõe em grade na plataforma de impressão."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "Multiplicando e colocando objetos"
 
-#, fuzzy
 msgctxt "@title"
 msgid "My Backups"
 msgstr "Meus backups"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "My printers"
 msgstr "Minhas impressoras"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Name"
 msgstr "Nome"
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Network enabled printers"
 msgstr "Impressoras habilitadas pela rede"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Network error"
 msgstr "Erro de rede"
 
-#, fuzzy
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
 msgstr "Novo firmware estável de %s disponível"
 
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
 msgstr "Novo Perfil Personalizado"
 
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr "Novas impressoras UltiMaker podem ser conectadas à Digital Factory e monitoradas remotamente."
 
-#, fuzzy
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
 msgstr "Novos recursos ou consertos de bugs podem estar disponíveis para sua {machine_name}! Se você não o fez ainda, recomenda-se que atualize o firmware de sua impressora para a versão {latest_version}."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "New materials installed"
 msgstr "Novos materiais instalados"
 
-#, fuzzy
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
 msgstr[0] "Nova impressora detectada na sua conta Ultimaker"
 msgstr[1] "Novas impressoras detectadas na sua conta Ultimaker"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "New project"
 msgstr "Novo projeto"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Next"
 msgstr "Próximo"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Next"
 msgstr "Próximo"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Nightly build"
 msgstr "Compilação noturna"
 
-#, fuzzy
 msgctxt "@info"
 msgid "No"
 msgstr "Não"
 
-#, fuzzy
 msgctxt "@info"
 msgid "No compatibility information"
 msgstr "Sem informação de compatibilidade"
 
-#, fuzzy
 msgctxt "@description"
 msgid "No compatible printers, that are currently online, were found."
 msgstr "Não foram encontradas impressoras compatíveis que estivessem online no momento."
 
-#, fuzzy
 msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "Sem estimativa de custo disponível"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "Não há perfil personalizado a importar no arquivo <filename>{0}</filename>"
 
-#, fuzzy
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Sem itens para selecionar"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Não há camadas a exibir"
 
-#, fuzzy
 msgctxt "@message"
 msgid "No more results to load"
 msgstr "Não há mais resultados a carregar"
 
-#, fuzzy
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
 msgstr "Sem permissão para gravar o espaço de trabalho aqui."
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "No printers found"
 msgstr "Nenhuma impressora encontrada"
 
-#, fuzzy
 msgctxt "@label"
 msgid "No printers found in your account?"
 msgstr "Nenhuma impressora encontrada em sua conta?"
 
-#, fuzzy
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
 msgid "No profiles are available for the selected material/%1 configuration. Please change your configuration."
 msgstr "Nenhum perfil está disponível para a configuração selecionada de material/%1. Por favor altere sua configuração."
 
-#, fuzzy
 msgctxt "@message"
 msgid "No results found with current filter"
 msgstr "Não há resultados encontrados com o filtro atual"
 
-#, fuzzy
 msgctxt "@label"
 msgid "No specific value has been set"
 msgstr "Nenhum valor específico foi definido"
 
-#, fuzzy
 msgctxt "@label"
 msgid "No time estimation available"
 msgstr "Sem estimativa de tempo disponível"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
 msgstr "Impressora Não-UltiMaker"
 
-#, fuzzy
 msgctxt "@info No materials"
 msgid "None"
 msgstr "Nenhum"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Normal model"
 msgstr "Modelo normal"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Not a group host"
 msgstr "Não é host de grupo"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Not connected to a printer"
 msgstr "Não conectado a nenhuma impressora"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "Ausente no perfil"
 
-#, fuzzy
 msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "Não sobreposto"
 
-#, fuzzy
 msgctxt "@info:not supported profile"
 msgid "Not supported"
 msgstr "Não Suportado"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Not yet initialized"
 msgstr "Ainda não inicializado"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "Nada está exibido porque você precisa fatiar primeiro."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "Bico"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Nozzle Settings"
 msgstr "Ajustes do Bico"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Nozzle offset X"
 msgstr "Deslocamento X do Bico"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Nozzle offset Y"
 msgstr "Deslocamento Y do Bico"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Tamanho do bico"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Número de Cópias"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Número de Extrusores"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "OK"
 msgstr "Ok"
 
-#, fuzzy
 msgctxt "@label"
 msgid "OS language"
 msgstr "Linguagem do SO"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Object list"
 msgstr "Lista de objetos"
 
-#, fuzzy
 msgctxt "@label:Should be short"
 msgid "Off"
 msgstr "Off"
 
-#, fuzzy
 msgctxt "@label:Should be short"
 msgid "On"
 msgstr "On"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Only Show Top Layers"
 msgstr "Somente Exibir Camadas Superiores"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Somente um arquivo G-Code pode ser carregado por vez. Pulando importação de {0}"
 
-#, fuzzy
 msgctxt "@message"
 msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
 msgstr "Oops! Encontramos um erro inesperado durante seu processo de fatiamento. Esteja assegurado que automaticamente recebemos os registros de falha para análise se você não disabilitou compartilhamento de dados nas suas preferências. Para nos assistir melhor, considere compartilhar detalhes do seu projeto em nosso rastreador de problemas."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open"
 msgstr "Abrir"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "Abrir &Recente"
 
-#, fuzzy
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
 msgid "Open Compressed Triangle Mesh"
 msgstr "Open Compressed Triangle Mesh"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr "Abrir Arquivo(s)"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Open File(s)..."
 msgstr "Abrir Arquivo(s)..."
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open Project"
 msgstr "Abrir Projeto"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Abrir Arquivo de Projeto"
 
-#, fuzzy
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP)"
 msgstr "Abrir Universal Cura Project (UCP)"
 
-#, fuzzy
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP) file"
 msgstr "Abrir arquivo de Universal Cura Project (UCP)"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
 msgstr "Abrir Com"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open as UCP"
 msgstr "Abrir como UCP"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open as project"
 msgstr "Abrir como projeto"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "Abrir arquivo(s)"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open project anyway"
 msgstr "Abrir o projeto mesmo assim"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open project file"
 msgstr "Abrir arquivo de projeto"
 
-#, fuzzy
 msgctxt "@label OpenGL version"
 msgid "OpenGL"
 msgstr "OpenGL"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Opening and saving files"
 msgstr "Abrindo e salvando arquivos"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Optimized for Air Manager"
 msgstr "Otimizado para o Air Manager"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Origin at center"
 msgstr "Origem no centro"
 
-#, fuzzy
 msgid "Orthographic"
 msgstr "Ortográfica"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Orthographic"
 msgstr "Ortográfico"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Other"
 msgstr "Outros"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Other models overlapping with this model are modified."
 msgstr "Outros modelos se sobrepondo a esse modelo foram modificados."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Other printers"
 msgstr "Outras impressoras"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Outer Wall"
 msgstr "Parede Externa"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Overlaps with this model are not supported."
 msgstr "Sobreposições neste modelo não são suportadas."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Override"
 msgstr "Sobrepor"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
 msgstr "Sobrepor irá usar os ajustes especificados com a configuração existente da impressora. Isto pode causar falha da impressão."
 
-#, fuzzy
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
 msgstr[0] "Sobrepõe %1 ajuste."
 msgstr[1] "Sobrepõe %1 ajustes."
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
 msgstr "P&referências"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "PNG Image"
 msgstr "Imagem PNG"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Package details"
 msgstr "Detalhes do pacote"
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Packaging Python-applications"
 msgstr "Empacotamento de aplicações Python"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Interpretando G-Code"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Paste from clipboard"
 msgstr "Colar da área de transferência"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Pause"
 msgstr "Pausar"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Paused"
 msgstr "Pausado"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Paused"
 msgstr "Pausado"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Pausing..."
 msgstr "Pausando..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Pausing..."
 msgstr "Pausando..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Per Model Settings"
 msgstr "Ajustes por Modelo"
 
-#, fuzzy
 msgctxt "name"
 msgid "Per Model Settings Tool"
 msgstr "Ferramenta de Ajustes Por Modelo"
 
-#, fuzzy
 msgid "Perspective"
 msgstr "Perspectiva"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
 msgstr "Perspectiva"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Placement"
 msgstr "Posicionamento"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "Colocando Objeto"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Placing Objects"
 msgstr "Colocando Objetos"
 
-#, fuzzy
 msgctxt "@label Type of platform"
 msgid "Platform"
 msgstr "Plataforma"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please connect your printer to the network."
 msgstr "Por favor conecte sua impressora à rede."
 
-#, fuzzy
 msgctxt "@text"
 msgid "Please enter a valid IP address."
 msgstr "Por favor entre um endereço IP válido."
 
-#, fuzzy
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "Por favor dê as permissões requeridas ao autorizar esta aplicação."
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
 msgstr "Por favor certifique-se que sua impressora está conectada>"
@@ -3757,37 +3014,30 @@ msgstr "Por favor certifique-se que sua impressora está conectada>"
 "- Verifique se ela está conectada à rede."
 "- Verifique se você está logado para descobrir impressoras conectadas à nuvem."
 
-#, fuzzy
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "Por favor dê um nome à sua impressora"
 
-#, fuzzy
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "Por favor prepare o G-Code antes de exportar."
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please provide a name for this profile."
 msgstr "Por favor dê um nome a este perfil."
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please provide a new name."
 msgstr "Por favor, escolha um novo nome."
 
-#, fuzzy
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
 msgstr "Por favor leia e concorde com a licença do complemento."
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Please remove the print"
 msgstr "Por favor remova a impressão"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
 msgstr "Por favor revise os ajustes e verifique se seus modelos:"
@@ -3795,1832 +3045,1468 @@ msgstr "Por favor revise os ajustes e verifique se seus modelos:"
 "- Estão associados a um extrusor habilitado"
 "- Não estão todos configurados como malhas de modificação"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
 msgstr "Por favor selecionar quaisquer atualizações feitas nesta UltiMaker Original"
 
-#, fuzzy
 msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
 msgstr "Por favor se logue para adquirir complementos e materiais verificados para o UltiMaker Cura Enterprise"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
 msgstr "Por favor se conecte à sua conta Ultimaker para permitir o envio de dados não-anônimos."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr "Por favor sincronize os perfis de material com suas impressoras antes de começar a imprimir."
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
 msgstr "Por favor atualize o firmware de sua impressora parar gerir a fila remotamente."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Please wait until the current job has been sent."
 msgstr "Por favor espere até que o trabalho atual tenha sido enviado."
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Plugin License Agreement"
 msgstr "Acordo de Licença do Complemento"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Plugin license agreement"
 msgstr "Acordo de licença do complemento"
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Plugins"
 msgstr "Complementos"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Plugins"
 msgstr "Complementos"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Polygon clipping library"
 msgstr "Biblioteca de recorte de polígonos"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Polygon packing library, developed by Prusa Research"
 msgstr "Biblioteca de empacotamento Polygon, desenvolvido pela Prusa Research"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Post Processing"
 msgstr "Pós-Processamento"
 
-#, fuzzy
 msgctxt "name"
 msgid "Post Processing"
 msgstr "Pós-processamento"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
 msgstr "Complemento de Pós-Processamento"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Post Processing Scripts"
 msgstr "Scripts de Pós-Processamento"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Pre-heat"
 msgstr "Pré-aquecer"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Preparar"
 
-#, fuzzy
 msgctxt "name"
 msgid "Prepare Stage"
 msgstr "Estágio de Preparação"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
 msgstr "Preparando..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Preparing..."
 msgstr "Preparando..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Preset printers"
 msgstr "Impressoras pré-ajustadas"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Preview"
 msgstr "Pré-visualização"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "Pré-visualização"
 
-#, fuzzy
 msgctxt "name"
 msgid "Preview Stage"
 msgstr "Estágio de Pré-visualização"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Prime Tower"
 msgstr "Torre de Prime"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Print"
 msgstr "Imprimir"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Print After"
 msgstr "Imprimir depois"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Print Before"
 msgstr "Imprimir antes"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Print Selected Model With:"
 msgid_plural "Print Selected Models With:"
 msgstr[0] "Imprimir Modelo Selecionado Com:"
 msgstr[1] "Imprimir Modelos Selecionados Com:"
 
-#, fuzzy
 msgctxt "@label %1 is filled in with the name of an extruder"
 msgid "Print Selected Model with %1"
 msgid_plural "Print Selected Models with %1"
 msgstr[0] "Imprimir Modelo Selecionado com %1"
 msgstr[1] "Imprimir Modelos Selecionados com %1"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Print as support"
 msgstr "Imprimir como suporte"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Print error"
 msgstr "Erro de impressão"
 
-#, fuzzy
 msgctxt "@message"
 msgid "Print in Progress"
 msgstr "Impressão em Progresso"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Print job queue is full. The printer can't accept a new job."
 msgstr "A fila de trabalhos de impressão está cheia. A impressora não pode aceitar novo trabalho."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Print job was successfully sent to the printer."
 msgstr "Trabalho de impressão enviado à impressora com sucesso."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Print jobs"
 msgstr "Trabalhos de impressão"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "Print jobs"
 msgstr "Trabalhos de impressão"
 
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Imprimir pela rede"
 
-#, fuzzy
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Imprime pela rede"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Print over network"
 msgstr "Imprimir pela rede"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Print settings"
 msgstr "Ajustes de impressão"
 
-#, fuzzy
 msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "Configuração de Impressão desabilitada. O arquivo de G-Code não pode ser modificado."
 
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print via USB"
 msgstr "Imprimir pela USB"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Print via USB"
 msgstr "Imprimir pela USB"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Print via cloud"
 msgstr "Imprimir pela nuvem"
 
-#, fuzzy
 msgctxt "@properties:tooltip"
 msgid "Print via cloud"
 msgstr "Imprimir pela nuvem"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
 msgstr "Imprimir com"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Printer"
 msgstr "Impressora"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "Endereço da Impressora"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "Grupo de Impressora"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Printer Settings"
 msgstr "Ajustes de Impressora"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Printer control"
 msgstr "Controle da Impressora"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
 msgstr "A impressora não aceita comandos"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Nome da impressora"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Printer selection"
 msgstr "Seleção de impressora"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "Ajustes da impressora"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
 msgstr "Os ajustes de impressora serão atualizados para concordar com os ajustes salvos com o projeto."
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "Impressoras"
 
-#, fuzzy
 msgctxt "info:status"
 msgid "Printers added from Digital Factory:"
 msgstr "Impressoras adicionadas da Digital Factory:"
 
-#, fuzzy
 msgctxt "@text Asking the user whether printers are missing in a list."
 msgid "Printers missing?"
 msgstr "Impressoras faltando?"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Printhead Settings"
 msgstr "Ajustes da Cabeça de Impressão"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Printing"
 msgstr "Imprimindo"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Printing Time"
 msgstr "Tempo de Impressão"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
 msgstr "Imprimindo..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Privacy"
 msgstr "Privacidade"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Processing"
 msgstr "Processando"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "Processando Camadas"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Profile"
 msgstr "Perfil"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Profile"
 msgstr "Perfil"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Profile author"
 msgstr "Autor do perfil"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "Falta um tipo de qualidade ao Perfil."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "Ajustes de perfil"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Profile settings"
 msgstr "Ajustes de perfil"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "O Perfil {0} tem tipo de arquivo desconhecido ou está corrompido."
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Profiles"
 msgstr "Perfis"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Perfis"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "Perfis"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr "Perfis compatíveis com a impressora ativa:"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Programming language"
 msgstr "Linguagem de Programação"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "O arquivo de projeto <filename>{0}</filename> contém um tipo de máquina desconhecido <message>{1}</message>. Não foi possível importar a máquina. Os modelos serão importados ao invés dela."
 
-#, fuzzy
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Arquivo de projeto <filename>{0}</filename> está corrompido: <message>{1}</message>."
 
-#, fuzzy
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "O arquivo de projeto <filename>{0}</filename> foi feito usando perfis que são desconhecidos para esta versão do UltiMaker Cura."
 
-#, fuzzy
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "O arquivo de projeto <filename>{0}</filename> tornou-se subitamente inacessível: <message>{1}</message>."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Properties"
 msgstr "Propriedades"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a machine actions for updating firmware."
 msgstr "Provê ações de máquina para atualização do firmware."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a monitor stage in Cura."
 msgstr "Provê um estágio de monitor no Cura."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a normal solid mesh view."
 msgstr "Provê uma visualização de malha sólida normal."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a prepare stage in Cura."
 msgstr "Provê um estágio de preparação no Cura."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a preview stage in Cura."
 msgstr "Provê uma etapa de pré-visualização ao Cura."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
 msgstr "Provê uma maneira de alterar ajustes de máquina (tais como volume de impressão, tamanho do bico, etc.)."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
 msgstr "Provê capacidade de ler e escrever perfis de material baseado em XML."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
 msgstr "Provê ações de máquina para impressoras da UltiMaker (tais como assistente de nivelamento de mesa, seleção de atualizações, etc.)."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides removable drive hotplugging and writing support."
 msgstr "Provê suporte a escrita e reconhecimento de drives a quente."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Provê suporte à exportação de perfis do Cura."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for importing Cura profiles."
 msgstr "Provê suporte à importação de perfis do Cura."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for importing profiles from g-code files."
 msgstr "Provê suporte a importar perfis de arquivos G-Code."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for importing profiles from legacy Cura versions."
 msgstr "Provê suporte a importação de perfis de versões legadas do Cura."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading 3MF files."
 msgstr "Provê suporte à leitura de arquivos 3MF."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading AMF files."
 msgstr "Provê suporta à leitura de arquivos AMF."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
 msgstr "Provê suporte à leitura de Formatos de Pacote Ultimaker."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading X3D files."
 msgstr "Provê suporte à leitura de arquivos X3D."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading model files."
 msgstr "Provê suporta a ler arquivos de modelo."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing 3MF and UCP files."
 msgstr "Provê suporte a escrever arquivos 3MF e UCP."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
 msgstr "Provê suporte à escrita de Pacotes de Formato MakerBot."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
 msgstr "Provê suporte à escrita de Formatos de Pacote Ultimaker."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides the Per Model Settings."
 msgstr "Provê Ajustes Por Modelo."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides the X-Ray view."
 msgstr "Provê a visão de Raios-X."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides the link to the CuraEngine slicing backend."
 msgstr "Provê a ligação ao backend de fatiamento CuraEngine."
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
 msgstr "Provê a pré-visualização de dados de camada fatiados."
 
-#, fuzzy
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "Versão do PyQt"
 
-#, fuzzy
 msgctxt "@Label Description for application dependency"
 msgid "Python Error tracking library"
 msgstr "Biblioteca de rastreamento de Erros Python"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Python bindings for Clipper"
 msgstr "Ligações de Python pra Clipper"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Python bindings for libnest2d"
 msgstr "Ligações de Python para a libnest2d"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Qt version"
 msgstr "Versão do Qt"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr "Tipo de qualidade '{0}' não é compatível com a definição de máquina ativa atual '{1}'."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Queue Full"
 msgstr "Fila Cheia"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Queued"
 msgstr "Enfileirados"
 
-#, fuzzy
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "Sair de %1"
 
-#, fuzzy
 msgctxt "description"
 msgid "Reads g-code from a compressed archive."
 msgstr "Lê G-Code de um arquivo comprimido."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Recomendado"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Recommended"
 msgstr "Recomendado"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
 msgstr "Ajustes recomendados de impressão"
 
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
 msgstr "Ajustes recomendados (para <b>%1</b>) foram alterados."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Refresh"
 msgstr "Atualizar"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Refresh"
 msgstr "Atualizar"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Refresh"
 msgstr "Atualizar"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Refresh List"
 msgstr "Atualizar Lista"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Refreshing..."
 msgstr "Atualizando..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Release Notes"
 msgstr "Notas de lançamento"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "Reload All Models"
 msgstr "Recarregar Todos Os Modelos"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "Remember my choice"
 msgstr "Lembrar minha escolha"
 
-#, fuzzy
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Unidade Removível"
 
-#, fuzzy
 msgctxt "name"
 msgid "Removable Drive Output Device Plugin"
 msgstr "Complemento de Dispositivo de Escrita Removível"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Remove"
 msgstr "Remover"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "Remover impressoras"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Remove printers?"
 msgstr "Remover impressoras?"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "Renomear"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Rename"
 msgstr "Renomear"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Rename Profile"
 msgstr "Renomear Perfil"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "Relatar um &Bug"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "Report a bug"
 msgstr "Relatar um problema"
 
-#, fuzzy
 msgctxt "@message:button"
 msgid "Report a bug"
 msgstr "Relatar um bug"
 
-#, fuzzy
 msgctxt "@message:description"
 msgid "Report a bug on UltiMaker Cura's issue tracker."
 msgstr "Relatar um bug no issue tracker do UltiMaker Cura."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Requires configuration changes"
 msgstr "Requer mudanças na configuração"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Positions"
 msgstr "Reestabelecer as Posições de Todos Os Modelos"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Transformations"
 msgstr "Remover as Transformações de Todos Os Modelos"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Reset to defaults."
 msgstr "Restaurar aos defaults."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Resolution"
 msgstr "Resolução"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Restore"
 msgstr "Restaurar"
 
-#, fuzzy
 msgctxt "@dialog:title"
 msgid "Restore Backup"
 msgstr "Restaurar Backup"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Restore window position on start"
 msgstr "Restaurar posição da janela no início"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Resume"
 msgstr "Continuar"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Resuming..."
 msgstr "Continuando..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Resuming..."
 msgstr "Continuando..."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr "Retrações"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Retry?"
 msgstr "Tentar novamente?"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Right Side View"
 msgstr "Visão do Lado Direito"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Right View"
 msgstr "Visão à Direita"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "Certificados-Raiz para validar confiança SSL"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Safely Remove Hardware"
 msgstr "Remover Hardware com Segurança"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Safety datasheet"
 msgstr "Ficha de segurança"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save"
 msgstr "Salvar"
 
-#, fuzzy
 msgctxt "@option"
 msgid "Save Cura project"
 msgstr "Salvar o projeto Cura"
 
-#, fuzzy
 msgctxt "@option"
 msgid "Save Cura project and .makerbot print file"
 msgstr "Salvar projeto do Cura e arquivo de impressão .makerbot"
 
-#, fuzzy
 msgctxt "@option"
 msgid "Save Cura project and .ufp print file"
 msgstr "Salvar projeto Cura e arquivo de impressão .ufp"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
 msgstr "Salvar Perfil Personalizado"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Project"
 msgstr "Salvar Projeto"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Save Project..."
 msgstr "Salvar Projeto..."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
 msgstr "Salvar como novo perfil personalizado"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
 msgstr "Salvar alterações"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
 msgstr "Salvar novo perfil"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save project"
 msgstr "Salvar projeto"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
 msgstr "Grava o arquivo .umm em um pendrive USB."
 
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "Salvar em Unidade Removível"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Salvar em Unidade Removível {0}"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "Salvo em Unidade Removível {0} como {1}"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Saving"
 msgstr "Salvando"
 
-#, fuzzy
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "Salvando na Unidade Removível <filename>{0}</filename>"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Scale extremely small models"
 msgstr "Redimensionar modelos minúsculos"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "Redimensionar modelos grandes"
 
-#, fuzzy
 msgctxt "@placeholder"
 msgid "Search"
 msgstr "Buscar"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Search in the browser"
 msgstr "Buscar no navegador"
 
-#, fuzzy
 msgctxt "@label:textbox"
 msgid "Search settings"
 msgstr "Ajustes de busca"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Select All Models"
 msgstr "Selecionar Todos Os Modelos"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Select Printer"
 msgstr "Selecione Impressora"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "Selecionar Ajustes a Personalizar para este modelo"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
 msgstr "Selecione e instale perfis de material otimizados para suas impressoras 3D UltiMaker."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Select configuration"
 msgstr "Selecione configuração"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Select custom firmware"
 msgstr "Selecionar firmware personalizado"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Select models when loaded"
 msgstr "Selecionar modelos ao carregar"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Select settings"
 msgstr "Selecionar ajustes"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Select upgrades"
 msgstr "Selecionar Atualizações"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Select your printer from the list below:"
 msgstr "Selecione sua impressora da lista abaixo:"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr "Enviar informação (anônima) de impressão"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Send G-code"
 msgstr "Enviar G-Code"
 
-#, fuzzy
 msgctxt "@tooltip of G-code command input"
 msgid "Send a custom G-code command to the connected printer. Press 'enter' to send the command."
 msgstr "Enviar comando G-Code personalizado para a impressora conectada. Pressione 'enter' para enviar o comando."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Send crash report to UltiMaker"
 msgstr "Enviar relatório de falha à UltiMaker"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send."
 msgstr "Enviar relatórios de falha com sua conta registrado na Ultimaker e o nome do projeto para o Ultimaker Sentry. Nenhum dado real do modelo é enviado."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Send crash reports without any personally identifiable information or models data to UltiMaker."
 msgstr "Enviar relatórios de falha sem qualquer informação ou dados de modelos pessoalmente identificável para a Ultimaker."
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Send engine crash reports"
 msgstr "Enviar relatórios de falha do engine"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "Enviar relatório"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Sending Print Job"
 msgstr "Enviando Trabalho de Impressão"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Sending materials to printer"
 msgstr "Enviando material para a impressora"
 
-#, fuzzy
 msgctxt "name"
 msgid "Sentry Logger"
 msgstr "Sentinela para Registro"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
 msgstr "Biblioteca de comunicação serial"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
 msgstr "Definir Como Extrusor Ativo"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Setting"
 msgstr "Ajustes"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Setting Visibility"
 msgstr "Visibilidade dos Ajustes"
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Setting up preferences..."
 msgstr "Ajustando preferências..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Configurando cena..."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Setting visibility"
 msgstr "Visibilidade dos ajustes"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Settings"
 msgstr "Ajustes"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Ajustes"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Settings Loaded from UCP file"
 msgstr "Ajustes carregados do arquivo UCP"
 
-#, fuzzy
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
 msgstr "Os ajustes foram alterados para seguir a disponibilidade de extrusores atuais:"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "Ajustes atualizados"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Share ideas and get help from 48,000+ users in the UltiMaker Community"
 msgstr "Compartilhe ideias e consiga ajuda de mais de 48.000 usuários da Comunidade UltiMaker"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Shell"
 msgstr "Perímetro"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
 msgstr "Espessura de Perímetro"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should Cura check for updates when the program is started?"
 msgstr "O Cura deve verificar novas atualizações quando o programa for iniciado?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should Cura open at the location it was closed?"
 msgstr "O Cura deve abrir no lugar onde foi fechado?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should a prefix based on the printer name be added to the print job name automatically?"
 msgstr "Um prefixo baseado no nome da impressora deve ser adicionado ao nome do trabalho de impressão automaticamente?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
 msgstr "Um resumo deve ser exibido ao salvar um arquivo de projeto?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
 msgstr "Uma verificação automática por novos complementos deve ser feita toda vez que o Cura iniciar? É altamente recomendado que não desabilite esta opção!"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
 msgstr "Dados anônimos sobre sua impressão podem ser enviados para a UltiMaker? Nota: nenhuma informação pessoalmente identificável, modelos ou endereços IP são enviados ou armazenados."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
 msgstr "A Visão de Camada deve ser forçada a ficar em modo de compatibilidade?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
 msgstr "Os modelos devem ser redimensionados dentro do volume de impressão se forem muito grandes?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
 msgstr "Os modelos devem ser selecionados após serem carregados?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
 msgstr "Os modelos devem ser movidos pra baixo pra se assentar na plataforma de impressão?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
 msgstr "Os modelos devem ser movidos na plataforma de modo que não se sobreponham?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should opening files from the desktop or external applications open in the same instance of Cura?"
 msgstr "Arquivos da área de trabalho ou de aplicações externas devem ser abertos na mesma instância do Cura?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
 msgstr "Devem falhas de fatiamento serem automaticamente relatadas à Ultimaker? Nota, nenhum dado de modelos, endereços IP ou outros tipos de informação pessoalmente identificável é enviada ou armazenada a não ser que você dê permissão explícita."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
 msgstr "A plataforma de construção deve ser esvaziada antes de carregar um modelo novo na instância única do Cura?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
 msgstr "O comportamento default de ampliação deve ser invertido?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
 msgstr "A ampliação (zoom) deve se mover na direção do mouse?"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Show 5 Detailed Layers On Top"
 msgstr "Exibir 5 Camadas Superiores Detalhadas"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "Exibir Pasta de Configuração"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
 msgstr "Mostrar Personalizado"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Exibir &Documentação Online"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting"
 msgstr "Mostrar Resolução de Problemas Online"
 
-#, fuzzy
 msgctxt "@label:checkbox"
 msgid "Show all"
 msgstr "Exibir tudo"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Show all connected printers"
 msgstr "Mostrar todas as impressoras conectadas"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Show an icon and notifications in the system notification area."
 msgstr "Mostrar um ícone e notificações na área de notificações do sistema."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Show caution message in g-code reader."
 msgstr "Exibir mensagem de alerta no leitor de G-Code."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Show configuration folder"
 msgstr "Mostrar a pasta de configuração"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Show detailed crash report"
 msgstr "Exibir relatório de falha detalhado"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Show settings"
 msgstr "Exibir ajustes"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "Exibir diálogo de resumo ao salvar projeto"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Show your support for Cura with a donation."
 msgstr "Mostre seu suporte ao Cura com uma doação."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sign Out"
 msgstr "Deslogar"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Sign in"
 msgstr "Entrar"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in"
 msgstr "Entrar"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Sign in"
 msgstr "Entrar"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
 msgstr "Fazer login na Ultimaker Digital Factory"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
 msgstr "Fazer login na Digital Factory"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Sign in to the UltiMaker platform"
 msgstr "Entre na plataforma UltiMaker"
 
-#, fuzzy
 msgctxt "name"
 msgid "Simulation View"
 msgstr "Visão Simulada"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Skin"
 msgstr "Contorno"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Skip"
 msgstr "Pular"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Skip"
 msgstr "Pular"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Skirt"
 msgstr "Skirt (Saia)"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Slice"
 msgstr "Fatiar"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Slice automatically"
 msgstr "Fatiar automaticamente"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "Fatiar automaticamente quando mudar ajustes."
 
-#, fuzzy
 msgctxt "name"
 msgid "Slice info"
 msgstr "Informação de fatiamento"
 
-#, fuzzy
 msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "Fatiamento falhado"
 
-#, fuzzy
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "Fatiando..."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Suavização"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Solid"
 msgstr "Sólido"
 
-#, fuzzy
 msgctxt "name"
 msgid "Solid View"
 msgstr "Visão Sólida"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "Visão sólida"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
 msgstr "Alguns ajustes ocultos usam valores diferentes de seu valor calculado normal."
 "Clique para tornar estes ajustes visíveis."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
 msgstr "Alguns dos pacotes usados no arquivo de projeto não estão atualmente instalados no Cura, isto pode produzir resultados de impressão não desejados. Recomendamos fortemente instalar todos os pacotes requeridos pelo MarketPlace."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Some required packages are not installed"
 msgstr "Alguns pacotes requeridos não estão instalados"
 
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr "Alguns valores de ajustes definidos em <b>%1</b> foram sobrepostos."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
 msgstr "Alguns ajustes/sobreposições têm valores diferentes dos que estão armazenados no perfil."
 "Clique para abrir o gerenciador de perfis."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
 msgstr "Alguns ajustes do perfil atual foram sobrescritos."
 
-#, fuzzy
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Algo inesperado aconteceu ao tentar login, por favor tente novamente."
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Something went wrong when sending the materials to the printers."
 msgstr "Algo de errado aconteceu ao enviar os materiais às impressoras."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Something went wrong..."
 msgstr "Alguma coisa deu errado..."
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Speed"
 msgstr "Velocidade"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Sponsor Cura"
 msgstr "Patrocinar o Cura"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "Sponsor Cura"
 msgstr "Patrocinar o Cura"
 
-#, fuzzy
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
 msgstr "Versões estáveis ou beta"
 
-#, fuzzy
 msgctxt "@option:radio"
 msgid "Stable releases only"
 msgstr "Versões estáveis somente"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Stanford Triangle Format"
 msgstr "Formato de Triângulos de Stanford"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Start"
 msgstr "Iniciar"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Start Build Plate Leveling"
 msgstr "Iniciar Nivelamento da Mesa de Impressão"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "G-Code Inicial"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Start the slicing process"
 msgstr "Inicia o processo de fatiamento"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Starts"
 msgstr "Inícios"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
 msgstr "Simplifique seu fluxo de trabalho e personalize sua experiência do UltiMaker Cura com complementos contribuídos por nossa fantástica comunidade de usuários."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Strength"
 msgstr "Força"
 
-#, fuzzy
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
 msgstr "Submete informações de fatiamento anônimas. Pode ser desabilitado nas preferências."
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "Material exportado para <filename>%1</filename> com sucesso"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Material <filename>%1</filename> importado com sucesso"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "Perfil {0} importado com sucesso."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Suggested Material settings"
 msgstr "Ajustes sugeridos de Material"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Suggested Profile settings"
 msgstr "Ajustes sugeridos de Perfil"
 
-#, fuzzy
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "Resumo - Projeto do Cura"
 
-#, fuzzy
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Open Universal Cura Project (UCP)"
 msgstr "Resumo - Abrir Universal Cura Project (UCP)"
 
-#, fuzzy
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
 msgstr "Resumo - Universal Cura Project"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Support"
 msgstr "Suporte"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Support"
 msgstr "Suporte"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Support Blocker"
 msgstr "Bloqueador de Suporte"
 
-#, fuzzy
 msgctxt "name"
 msgid "Support Eraser"
 msgstr "Apagador de Suporte"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Support Infill"
 msgstr "Preenchimento de Suporte"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Support Interface"
 msgstr "Interface de Suporte"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
 msgstr "Tipo de Suporte"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for faster math"
 msgstr "Biblioteca de suporte para matemática acelerada"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Support library for file metadata and streaming"
 msgstr "Biblioteca de suporte para streaming e metadados de arquivo"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Support library for handling 3MF files"
 msgstr "Biblioteca de suporte para manuseamento de arquivos 3MF"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for handling STL files"
 msgstr "Biblioteca de suporte para manuseamento de arquivos STL"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for handling triangular meshes"
 msgstr "Biblioteca de suporte para manuseamento de malhas triangulares"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for scientific computing"
 msgstr "Biblioteca de suporte para computação científica"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for system keyring access"
 msgstr "Biblioteca de suporte para acesso ao chaveiro do sistema"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Sync"
 msgstr "Sincronizar"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sync"
 msgstr "Sincronizar"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Sync material profiles via USB"
 msgstr "Sincronizar perfis de material via USB"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Sync materials"
 msgstr "Sincronizar materiais"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sync materials with USB"
 msgstr "Sincronizar materiais usando USB"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Sync materials with printers"
 msgstr "Sincronizar materiais com impressoras"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Sync materials with printers"
 msgstr "Sincronizar materiais com impressoras"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Sync with Printers"
 msgstr "Sincronizar com Impressoras"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Syncing"
 msgstr "Sincronizando"
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "Syncing..."
 msgstr "Sincronizando..."
 
-#, fuzzy
 msgctxt "@title:groupbox"
 msgid "System information"
 msgstr "Informação do Sistema"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Technical datasheet"
 msgstr "Ficha técnica"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr "A quantidade de suavização para aplicar na imagem."
 
-#, fuzzy
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr "O perfil de recozimento requer pós-processamento em um forno depois da impressão terminar. Este perfil retém a acuidade dimensional da parte impressão depois do recozimento e melhora a força, rigidez e resistência térmica."
 
-#, fuzzy
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
 msgid_plural "The assigned printer, %1, requires the following configuration changes:"
 msgstr[0] "A impressora associada, %1, requer a seguinte alteração de configuração:"
 msgstr[1] "A impressora associada, %1, requer as seguintes alterações de configuração:"
 
-#, fuzzy
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "O backup excede o tamanho máximo de arquivo."
 
-#, fuzzy
 msgctxt "@text"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr "O perfil equilibrado é projetado para conseguir um equilíbrio entre produtividade, qualidade de superfície, propriedades mecânicas e acuidade dimensional."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
 msgstr "A altura-base da mesa de impressão em milímetros."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
 msgstr "A altura do volume de impressão foi reduzida para que o valor da \"Sequência de Impressão\" impeça o eixo de colidir com os modelos impressos."
 
-#, fuzzy
 msgctxt "@status"
 msgid "The cloud connection is currently unavailable. Please check your internet connection."
 msgstr "A conexão de nuvem está indisponível. Por favor verifique sua conexão de internet."
 
-#, fuzzy
 msgctxt "@status"
 msgid "The cloud connection is currently unavailable. Please sign in to connect to the cloud printer."
 msgstr "A conexão de nuvem está indisponível. Por favor se logue para se conectar à impressora de nuvem."
 
-#, fuzzy
 msgctxt "@status"
 msgid "The cloud printer is offline. Please check if the printer is turned on and connected to the internet."
 msgstr "A impressora de nuvem está offline. Por favor verifique se a impressora está ligada e conectada à internet."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The colour of the material in this extruder."
 msgstr "A cor do material neste extrusor."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The configuration of this extruder is not allowed, and prohibits slicing."
 msgstr "A configuração deste extrusor não é permitida e proíbe o fatiamento."
 
-#, fuzzy
 msgctxt "@label"
 msgid "The configurations are not available because the printer is disconnected."
 msgstr "As configurações não estão disponíveis porque a impressora está desconectada."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The current temperature of the heated bed."
 msgstr "A temperatura atual da mesa aquecida."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The current temperature of this hotend."
 msgstr "A temperatura atual deste hotend."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
 msgstr "A profundidade da mesa de impressão em milímetros"
 
-#, fuzzy
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "O perfil de rascunho é projetado para imprimir protótipos iniciais e validações de conceito com o objetivo de redução significativa de tempo de impressão."
 
-#, fuzzy
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "O perfil de engenharia é projetado para imprimir protótipos funcionais e partes de uso final com o objetivo de melhor precisão e tolerâncias mais estritas."
 
-#, fuzzy
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
 msgstr "O carro extrusor usado para imprimir o suporte. Isto é usado em multi-extrusão."
 
-#, fuzzy
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "O arquivo <filename>{0}</filename> já existe. Tem certeza que quer sobrescrevê-lo?"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
 msgstr "O firmware que já vêm embutido nas novas impressoras funciona, mas novas versões costumam ter mais recursos, correções e melhorias."
 
-#, fuzzy
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
 msgstr "O seguinte erro ocorreu ao tentar restaurar um backup do Cura:"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The following packages can not be installed because of an incompatible Cura version:"
 msgstr "Os seguintes pacotes não podem ser instalados por incompatibilidade de versão do Cura:"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The following packages will be added:"
 msgstr "Os seguintes pacotes serão adicionados:"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The following printers in your account have been added in Cura:"
 msgstr "As seguintes impressoras da sua conta foram adicionadas ao Cura:"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
 msgstr "Os seguintes materiais receberão novos perfis de material:"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
 msgstr[0] "O seguinte script está ativo:"
 msgstr[1] "Os seguintes scripts estão ativos:"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
 msgstr "Os seguintes ajustes definem a força de sua peça."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
 msgstr "As áreas ressaltadas indicam superfícies faltantes ou incorretas. Conserte seu modelo e o abra novamente no Cura."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The material in this extruder."
 msgstr "O material neste extrusor."
 
-#, fuzzy
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
 msgstr "O pacote de material associado com este projeto Cura não pôde ser encontrado no Ultimaker Marketplace. Use a definição parcial de perfil de material gravada no arquivo de projeto Cura por seu próprio risco."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The maximum distance of each pixel from \"Base.\""
 msgstr "A distância máxima de cada pixel da \"Base\"."
 
-#, fuzzy
 msgctxt "@label (%1 is a number)"
 msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
 msgstr "O novo diâmetro de filamento está ajustado em %1 mm, que não é compatível com o extrusor atual. Você deseja continuar?"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "O bico inserido neste extrusor."
 
-#, fuzzy
 msgctxt "@label"
 msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr "O padrão do material de preenchimento da impressão:"
@@ -5628,1368 +4514,1097 @@ msgstr "O padrão do material de preenchimento da impressão:"
 "Para partes funcionais não sujeitas a muito stress, recomandos preenchimento de grade, triângulo ou tri-hexágono."
 "Para impressões 3D funcionais que requeiram bastante força em múltiplas direções use cúbico, subdivisão cúbica, quarto cúbico, octeto e giroide."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr "A porcentagem de luz penetrando uma impressão com espessura de 1 milímetro. Abaixar este valor aumenta o contraste em regiões escuras e diminui o contraste em regiões claras da imagem."
 
-#, fuzzy
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The plugin associated with the Cura project could not be found on the Ultimaker Marketplace. As the plugin may be required to slice the project it might not be possible to correctly slice the file."
 msgstr "O complemento associado com o projeto Cura não foi encontrado no Ultimaker Marketplace. Como o complemento pode ser necessário para fatiar o projeto, pode não ser possível corretamente fatiar este arquivo."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
 msgstr "O trabalho de impressão foi submetido com sucesso"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
 msgstr "A impressora %1 está associada, mas o trabalho contém configuração de material desconhecida."
 
-#, fuzzy
 msgctxt "@label"
 msgid "The printer at this address has not responded yet."
 msgstr "A impressora neste endereço ainda não respondeu."
 
-#, fuzzy
 msgctxt "@label"
 msgid "The printer at this address has not yet responded."
 msgstr "A impressora neste endereço ainda não respondeu."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "The printer is not connected."
 msgstr "A impressora não está conectada."
 
-#, fuzzy
 msgctxt "@label"
 msgid "The printer(s) below cannot be connected because they are part of a group"
 msgstr "As impressoras abaixo não podem ser conectadas por serem parte de um grupo"
 
-#, fuzzy
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "O estado provido não está correto."
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "The release notes could not be opened."
 msgstr "As notas de lançamento não puderam ser abertas."
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "The response from Digital Factory appears to be corrupted."
 msgstr "A resposta da Digital Factory parece estar corrompida."
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "The response from Digital Factory is missing important information."
 msgstr "A resposta da Digital Factory veio sem informações importantes."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
 msgstr "A temperatura-alvo da mesa aquecida. A mesa aquecerá ou resfriará para esta temperatura. Se for zero, o aquecimento é desligado."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off."
 msgstr "A temperatura-alvo do hotend. O hotend vai aquecer ou esfriar na direção desta temperatura. Se for zero, o aquecimento de hotend é desligado."
 
-#, fuzzy
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the bed to."
 msgstr "A temperatura em que pré-aquecer a mesa."
 
-#, fuzzy
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "A temperatura com a qual pré-aquecer o hotend."
 
-#, fuzzy
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "O perfil visual é projetado para imprimir protótipos e modelos virtuais com o objetivo de alta qualidade visual e de superfície."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The width in millimeters on the build plate"
 msgstr "A largura em milímetros na plataforma de impressão"
 
-#, fuzzy
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
 msgid "Theme*:"
 msgstr "Tema*:"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "Não há formatos de arquivo disponíveis com os quais escrever!"
 
-#, fuzzy
 msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
 msgstr "Não há trabalhos de impressão na fila. Fatie e envie um trabalho para adicioná-lo."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "There are no profiles matching the configuration of this extruder."
 msgstr "Não há perfis correspondendo à configuração deste extrusor."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "There is no active printer yet."
 msgstr "Não há impressora ativa ainda."
 
-#, fuzzy
 msgctxt "@label"
 msgid "There is no printer found over your network."
 msgstr "Não foi encontrada nenhuma impressora em sua rede."
 
-#, fuzzy
 msgctxt "@error"
 msgid "There is no workspace yet to write. Please add a printer first."
 msgstr "Não existe espaço de trabalho ainda para a escrita. Por favor adicione uma impressora primeiro."
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "There was an error trying to restore your backup."
 msgstr "Houve um erro ao tentar restaurar seu backup."
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "There was an error while creating your backup."
 msgstr "Houve um erro ao criar seu backup."
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "There was an error while uploading your backup."
 msgstr "Houve um erro ao transferir seu backup."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
 msgstr "Esta configuração não está disponível porque %1 não foi reconhecido. Por favor visite %2 para baixar o perfil de materil correto."
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
 msgstr "Este é um arquivo de projeto Universal do Cura. Você gostaria de abri-lo como um projeto do Cura, ou Cura Universal Project, ou importar os modelos dele?"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
 msgstr "Este é um arquivo de projeto do Cura. Gostaria de abri-lo como um projeto ou importar os modelos dele?"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This material is linked to %1 and shares some of its properties."
 msgstr "Este material está vinculado a %1 e compartilha algumas de suas propriedades."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This package will be installed after restarting."
 msgstr "Este pacote será instalado após o reinício."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
 msgstr "Esta impressora não pode ser adicionada porque é uma impressora desconhecida ou porque não é o host do grupo."
 
-#, fuzzy
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "Esta impressora não está ligada à Digital Factory:"
 msgstr[1] "Estas impressoras não estão ligadas à Digital Factory:"
 
-#, fuzzy
 msgctxt "@status"
 msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
 msgstr "Esta impressora não está vinculada à sua conta. Por favor visite a Ultimaker Digital Factory para estabelecer uma conexão."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This printer is not set up to host a group of printers."
 msgstr "Esta impressora não está configurada para hospedar um grupo de impressoras."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "Esta impressora é a hospedeira de um grupo de %1 impressoras."
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "Este perfil <filename>{0}</filename> contém dados incorretos, não foi possível importá-lo."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
 msgstr "Este perfil usa os defaults especificados pela impressora, portanto não tem ajustes/sobreposições na lista abaixo."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project."
 msgstr "Este projeto contém materiais ou complementos que não estão atualmente instalados no Cura.<br/>Instale os pacotes faltantes e abra novamente o projeto."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."
 msgstr "Este ajuste tem um valor que é diferente do perfil."
 "Clique para restaurar o valor do perfil."
 
-#, fuzzy
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
 msgstr "Este ajuste foi omitido para a máquina ativa e não ficará visível."
 
-#, fuzzy
 msgctxt "@item:tooltip %1 is list of setting names"
 msgid "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible."
 msgid_plural "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible."
 msgstr[0] "Este ajuste foi mantido invisível pelo valor de %1. Altere o valor desse ajuste para tornar este ajuste visível."
 msgstr[1] "Este ajuste foi mantido invisível pelos valores de %1. Altere o valor desses ajustes para tornar este ajuste visível."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
 msgstr "Este ajuste é sempre compartilhado entre todos os extrusores. Modificá-lo aqui mudará o valor para todos."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
 msgstr "Este ajuste é normalmente calculado, mas atualmente tem um conjunto absoluto de valores."
 "Clique para restaurar o valor calculado."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
 msgstr "Este ajuste não é usado porque todos os ajustes que ele influencia estão sobrepostos."
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "Este ajuste é resolvido dos valores conflitante específicos de extrusor:"
 
-#, fuzzy
 msgctxt "@tooltip Don't translate 'Universal Cura Project'"
 msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
 msgstr "Este ajuste pode não ter bom desempenho ao exportar para Universal Cura Project, Usuários devem adicioná-lo assumindo o risco."
 
-#, fuzzy
 msgctxt "@tooltip Don't translate 'Universal Cura Project'"
 msgid "This setting may not perform well while exporting to Universal Cura Project. Users are asked to add it at their own risk."
 msgstr "Este ajuste pode não ter bom desempenho ao exportar para Universal Cura Projecto. Usuários devem adicioná-lo assumindo o risco."
 
-#, fuzzy
 msgctxt "@info:warning"
 msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
 msgstr "Esta versão não é pretendida para uso em produção. Se você encontrar quaisquer problemas, por favor relate-os na nossa página de GitHub, mencionando a versão completa {self.getVersion()}"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Time estimation"
 msgstr "Estimativa de tempo"
 
-#, fuzzy
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "Tempo esgotado ao autenticar com o servidor da conta."
 
-#, fuzzy
 msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr "Para automaticamente sincronizar os perfis de material com todas as suas impressoras conectadas à Digital Factory, você precisa estar logado pelo Cura."
 
-#, fuzzy
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr "Para estabelecer uma conexão, por favor visite o {website_link}"
 
-#, fuzzy
 msgctxt "@label"
 msgid "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
 msgstr "Para garantir que suas impressões saiam ótimas, você deve agora ajustar sua mesa de impressão. Quando você clicar em 'Mover para a Posição Seguinte', o bico se moverá para posições diferentes que podem ser ajustadas."
 
-#, fuzzy
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
 msgstr "Para imprimir diretamente na sua impressora pela rede, certifique-se que ela esteja conectada à rede usando um cabo de rede ou conectando sua impressora à sua WIFI. Se você não conectar Cura à sua impressora, você ainda pode usar um drive USB ou SDCard para transferir arquivos G-Code a ela."
 
-#, fuzzy
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr "Para remover {printer_name} permanentemente, visite {digital_factory_link}"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
 msgstr "Alternar Tela Cheia"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Top / Bottom"
 msgstr "Topo / Base"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
 msgstr "Visão Superior"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Top View"
 msgstr "Visão de Cima"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Total print time"
 msgstr "Tempo total de impressão"
 
-#, fuzzy
 msgctxt "@action:tooltip"
 msgid "Track the print in Ultimaker Digital Factory"
 msgstr "Rastrear a impressão na Ultimaker Digital Factory"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Translucency"
 msgstr "Translucidez"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Travel"
 msgstr "Percurso"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Travels"
 msgstr "Percursos"
 
-#, fuzzy
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
 msgstr "Tentativa de restauração de backup do Cura de versão maior que a atual."
 
-#, fuzzy
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
 msgstr "Tentativa de restauração de backup do Cura sem dados ou metadados apropriados."
 
-#, fuzzy
 msgctxt "name"
 msgid "Trimesh Reader"
 msgstr "Leitor Trimesh"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Troubleshooting"
 msgstr "Resolução de problemas"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Troubleshooting"
 msgstr "Resolução de problemas"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Try again"
 msgstr "Tentar novamente"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Type"
 msgstr "Tipo"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Type"
 msgstr "Tipo"
 
-#, fuzzy
 msgctxt "name"
 msgid "UFP Reader"
 msgstr "Leitor UFP"
 
-#, fuzzy
 msgctxt "name"
 msgid "UFP Writer"
 msgstr "Gerador de UFP"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "USB printing"
 msgstr "Impressão USB"
 
-#, fuzzy
 msgctxt "name"
 msgid "USB printing"
 msgstr "Impressão USB"
 
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker Account"
 msgstr "Conta na UltiMaker"
 
-#, fuzzy
 msgctxt "@info"
 msgid "UltiMaker Certified Material"
 msgstr "Material Certificado UltiMaker"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
 msgstr "O UltiMaker Cura coleta dados anônimos para poder aprimorar a qualidade de impressão e experiência do usuário. Abaixo segue um exemplo de todos os dados que são compartilhados:"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "Pacote de Formato da UltiMaker"
 
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
 msgstr "Conexão de Rede UltiMaker"
 
-#, fuzzy
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
 msgstr "Pacote Verificado UltiMaker"
 
-#, fuzzy
 msgctxt "@info"
 msgid "UltiMaker Verified Plug-in"
 msgstr "Complemento Verificado UltiMaker"
 
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker machine actions"
 msgstr "Ações de máquina UltiMaker"
 
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
 msgstr "Impressora UltiMaker"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "UltiMaker support"
 msgstr "Suporte UltiMaker"
 
-#, fuzzy
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
 
-#, fuzzy
 msgctxt "name"
 msgid "Ultimaker Digital Library"
 msgstr "Digital Library da UltiMaker"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to add the profile."
 msgstr "Não foi possível adicionar o perfil."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Não foi possível achar um lugar dentro do volume de construção para todos os objetos"
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
 msgstr "Não foi possível encontrar o executável do servidor local de EnginePlugin para: {self._plugin_id}"
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."
 msgstr "Não foi possível matar o processo EnginePlugin: {self._plugin_id}"
 "Acesso negado."
 
-#, fuzzy
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
 msgstr "Não foi possível contactar o servidor de contas da UltiMaker."
 
-#, fuzzy
 msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "Não foi possível ler o arquivo de dados de exemplo."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "Não foi possível fatiar"
 
-#, fuzzy
 msgctxt "@label:PrintjobStatus"
 msgid "Unable to slice"
 msgstr "Não foi possível fatiar"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "Não foi possível fatiar porque a torre de purga ou posição de purga são inválidas."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "Não foi possível fatiar porque há objetos associados com o Extrusor desabilitado %s."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "Não foi possível fatiar devido a alguns ajustes por modelo. Os seguintes ajustes têm erros em um dos modelos ou mais: {error_labels}"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Não foi possível fatiar com o material atual visto que é incompatível com a máquina ou configuração selecionada."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "Não foi possível fatiar com os ajustes atuais. Os seguintes ajustes têm erros: {0}"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "Não foi possível iniciar processo de login. Verifique se outra tentativa de login ainda está ativa."
 
-#, fuzzy
 msgctxt "@info:error"
 msgid "Unable to write to file: {0}"
 msgstr "Não foi possível escrever para arquivo: {0}"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Unavailable"
 msgstr "Indisponível"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Unavailable printer"
 msgstr "Impressora indisponível"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Desagrupar Modelos"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Uninstall"
 msgstr "Desinstalar"
 
-#, fuzzy
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
 msgstr "Unidade"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Universal Cura Project"
 msgstr "Universal Cura Project"
 
-#, fuzzy
 msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr "Arquivos Universal Cura Project podem ser impressos em impressoras 3D diferentes enquanto retêm dados posicionais e ajustes selecionados. Quando exportados, todos os modelos presentes na plataforma de impressão serão incluídos juntamente à sua posição, orientação e escala atuais. Você pode também selecionar quais ajustes por extrusor ou por modelo devem ser incluídos para assegurar impressão apropriada."
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
 msgstr "Configuração de sistema universal de construção"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#, fuzzy
 msgctxt "@label unknown version of Cura"
 msgid "Unknown"
 msgstr "Desconhecida"
 
-#, fuzzy
 msgctxt "@label:property"
 msgid "Unknown Author"
 msgstr "Autor Desconhecido"
 
-#, fuzzy
 msgctxt "@label:property"
 msgid "Unknown Package"
 msgstr "Pacote Desconhecido"
 
-#, fuzzy
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
 msgstr "Código de erro desconhecido ao transferir trabalho de impressão: {0}"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Unknown error."
 msgstr "Erro desconhecido."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Unlink Material"
 msgstr "Desvincular Material"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Unreachable"
 msgstr "Inacessivel"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Untitled"
 msgstr "Sem Título"
 
-#, fuzzy
 msgctxt "@text Print job name"
 msgid "Untitled"
 msgstr "Sem Título"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Update"
 msgstr "Atualizar"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Update Firmware"
 msgstr "Atualizar Firmware"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Update Firmware"
 msgstr "Atualizar Firmware"
 
-#, fuzzy
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
 msgstr "Atualizar existentes"
 
-#, fuzzy
 msgctxt "@action:tooltip"
 msgid "Update profile with current settings/overrides"
 msgstr "Atualizar perfil com ajustes/sobreposições atuais"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Update profile."
 msgstr "Atualizar perfil."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Update your printer"
 msgstr "Atualize sua impressora"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Updates"
 msgstr "Atualizações"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Updating firmware."
 msgstr "Atualizando firmware."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Updating..."
 msgstr "Atualizando..."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
 msgstr "Atualiza configurações do Cura 2.1 para o Cura 2.2."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
 msgstr "Atualiza configurações do Cura 2.2 para o Cura 2.4."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
 msgstr "Atualiza configurações do Cura 2.5 para o Cura 2.6."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
 msgstr "Atualiza configurações do Cura 2.6 para o Cura 2.7."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
 msgstr "Atualiza configuração do Cura 2.7 para o Cura 3.0."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
 msgstr "Atualiza configurações do Cura 3.0 para o Cura 3.1."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
 msgstr "Atualiza configurações do Cura 3.2 para o Cura 3.3."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
 msgstr "Atualiza configuração do Cura 3.3 para o Cura 3.4."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
 msgstr "Atualiza configurações do Cura 3.4 para o Cura 3.5."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
 msgstr "Atualiza configuração do Cura 3.5 para o Cura 4.0."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
 msgstr "Atualiza configurações do Cura 4.0 para o Cura 4.1."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
 msgstr "Atualiza configurações do Cura 4.1 para o Cura 4.2."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
 msgstr "Atualiza configurações do Cura 4.11 para o Cura 4.12."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
 msgstr "Atualiza configurações do Cura 4.13 para o Cura 5.0."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
 msgstr "Atualiza configurações do Cura 4.2 para o Cura 4.3."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
 msgstr "Atualiza configurações do Cura 4.3 para o Cura 4.4."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
 msgstr "Atualiza configurações do Cura 4.4 para o Cura 4.5."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
 msgstr "Atualiza configurações do Cura 4.5 para o Cura 4.6."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
 msgstr "Atualiza configurações do Cura 4.6.0 para o Cura 4.6.2."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
 msgstr "Atualiza configurações do Cura 4.6.2 para o Cura 4.7."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
 msgstr "Atualiza configurações do Cura 4.7 para o Cura 4.8."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
 msgstr "Atualiza configurações do Cura 4.8 para o Cura 4.9."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
 msgstr "Atualiza configurações do Cura 4.9 para o Cura 4.10."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
 msgstr "Atualiza configurações do Cura 5.2 para o Cura 5.3."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
 msgstr "Atualiza configurações do Cura 5.3 para o Cura 5.4."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
 msgstr "Atualiza configurações do Cura 5.4 para o Cura 5.5."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
 msgstr "Atualiza configurações do Cura 5.6 para o Cura 5.7."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Carregar Firmware personalizado"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Uploading print job to printer."
 msgstr "Transferindo trabalho de impressão para a impressora."
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "Uploading your backup..."
 msgstr "Enviando seu backup..."
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Use a single instance of Cura"
 msgstr "Usar uma única instância do Cura"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
 msgstr "Use cola para melhor aderência com essa combinação de materiais."
 
-#, fuzzy
 msgctxt "@label"
 msgid "User Agreement"
 msgstr "Contrato de Usuário"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Utility functions, including an image loader"
 msgstr "Funções de utilidade, incluindo um carregador de imagem"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
 msgstr "Biblioteca de utilidade, incluindo geração Voronoi"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Value"
 msgstr "Valor"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
 msgstr "Atualização de Versão de 2.1 para 2.2"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.2 to 2.4"
 msgstr "Atualização de Versão de 2.2 para 2.4"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.5 to 2.6"
 msgstr "Atualização de Versão de 2.5 para 2.6"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.6 to 2.7"
 msgstr "Atualização de Versão de 2.6 para 2.7"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.7 to 3.0"
 msgstr "Atualização de Versão de 2.7 para 3.0"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.0 to 3.1"
 msgstr "Atualização de Versão 3.0 para 3.1"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
 msgstr "Atualização de Versão de 3.2 para 3.3"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
 msgstr "Atualização de Versão de 3.3 para 3.4"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.4 to 3.5"
 msgstr "Atualização de Versão de 3.4 para 3.5"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.5 to 4.0"
 msgstr "Atualização de Versão de 3.5 para 4.0"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.0 to 4.1"
 msgstr "Atualização de Versão de 4.0 para 4.1"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.1 to 4.2"
 msgstr "Atualização de Versão de 4.1 para 4.2"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.11 to 4.12"
 msgstr "Atualização de Versão de 4.11 para 4.12"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.13 to 5.0"
 msgstr "Atualização de Versão de 4.13 para 5.0"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.2 to 4.3"
 msgstr "Atualização de Versão de 4.2 para 4.3"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
 msgstr "Atualização de Versão de 4.3 para 4.4"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.4 to 4.5"
 msgstr "Atualização de Versão de 4.4 para 4.5"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.5 to 4.6"
 msgstr "Atualização de Versão de 4.5 para 4.6"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.6.0 to 4.6.2"
 msgstr "Atualização de Versão de 4.6.0 para 4.6.2"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.6.2 to 4.7"
 msgstr "Atualização de Versão de 4.6.2 para 4.7"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.7 to 4.8"
 msgstr "Atualização de Versão de 4.7 para 4.8"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.8 to 4.9"
 msgstr "Atualização de Versão de 4.8 para 4.9"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.9 to 4.10"
 msgstr "Atualização de Versão de 4.9 para 4.10"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "Atualização de Versão de 5.2 para 5.3"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
 msgstr "Atualização de Versão de 5.3 para 5.4"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
 msgstr "Atualização de Versão de 5.4 para 5.5"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.6 to 5.7"
 msgstr "Atualização de Versão de 5.6 para 5.7"
 
-#, fuzzy
 msgctxt "@button"
 msgid "View printers in Digital Factory"
 msgstr "Ver impressoras na Digital Factory"
 
-#, fuzzy
 msgctxt "@label"
 msgid "View type"
 msgstr "Tipo de Visão"
 
-#, fuzzy
 msgctxt "@label link to technical assistance"
 msgid "View user manuals online"
 msgstr "Ver manuais de usuário online"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Viewport behavior"
 msgstr "Comportamento da área de visualização"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Visible Settings"
 msgstr "Ajustes Visíveis"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Visit plug-in website"
 msgstr "Visitar sítio web de complementos"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Visit the UltiMaker website."
 msgstr "Visita o website da UltiMaker."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Visual"
 msgstr "Visual"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Waiting for"
 msgstr "Esperando por"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Waiting for Cloud response"
 msgstr "Aguardando resposta da Nuvem"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
 msgstr "Esperando por novas impressoras"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Want more?"
 msgstr "Quer mais?"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Aviso"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr "Alerta: o perfil não está visível porque seu tipo de qualidade '{0}' não está disponível para a configuração atual. Altere para uma combinação de material/bico que possa usar este tipo de qualidade."
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
 msgstr "Encontramos um ou mais arquivos de G-Code entre os arquivos que você selecionou. Você só pode abrir um arquivo de G-Code por vez. Se você quiser abrir um arquivo de G-Code, por favor selecione somente um."
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?"
 msgstr "Encontramos um ou mais arquivo(s) de projeto entre os arquivos que você selecionou. Você só pode abrir um arquivo de projeto por vez. Sugerimos que somente importe modelos destes arquivos. Gostaria de prosseguir?"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
 msgstr "Fontes de webcam para impressoras de nuvem não podem ser vistas pelo UltiMaker Cura. Clique em \"Gerenciar impressora\" para visitar a Ultimaker Digital Factory e visualizar esta webcam."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Website"
 msgstr "Sítio web"
 
-#, fuzzy
 msgctxt "@label"
 msgid "What printer would you like to setup?"
 msgstr "Que impressora você gostaria de configurar?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "What type of camera navigation should be used?"
 msgstr "Que tipo de navegação de câmera deve ser usada?"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
 msgstr "Que tipo de renderização de câmera deve ser usada?"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
 msgstr "Novidades"
 
-#, fuzzy
 msgctxt "@label"
 msgid "What's New"
 msgstr "O Que Há de Novo"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "What's New"
 msgstr "Novidades"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "When checking for updates, check for both stable and for beta releases."
 msgstr "Ao procurar por atualizações, fazer para versões estáveis ou beta."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "When checking for updates, only check for stable releases."
 msgstr "Ao procurar por atualizações, somente o fazer para versões estáveis."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
 msgstr "Quando você faz alterações em um perfil e troca para um diferent, um diálogo aparecerá perguntando se você quer manter ou aplicar suas modificações, ou você pode forçar um comportamento default e não ter o diálogo."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Why do I need to sync material profiles?"
 msgstr "Por que eu preciso sincronizar perfis de material?"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Width (mm)"
 msgstr "Largura (mm)"
 
-#, fuzzy
 msgctxt "description"
 msgid "Writes g-code to a compressed archive."
 msgstr "Escreve em formato G-Code comprimido."
 
-#, fuzzy
 msgctxt "description"
 msgid "Writes g-code to a file."
 msgstr "Escreve em formato G-Code."
 
-#, fuzzy
 msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (largura)"
 
-#, fuzzy
 msgctxt "@label"
 msgid "X max"
 msgstr "X máx"
 
-#, fuzzy
 msgctxt "@label"
 msgid "X min"
 msgstr "X mín"
 
-#, fuzzy
 msgctxt "name"
 msgid "X-Ray View"
 msgstr "Visão de Raios-X"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "Visão de Raios-X"
 
-#, fuzzy
 msgctxt "@label"
 msgid "X/Y"
 msgstr "X/Y"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "Arquivo X3D"
 
-#, fuzzy
 msgctxt "name"
 msgid "X3D Reader"
 msgstr "Leitor de X3D"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Y (Depth)"
 msgstr "Y (Profundidade)"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Y max"
 msgstr "Y máx"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Y min"
 msgstr "Y mín"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Yes"
 msgstr "Sim"
 
-#, fuzzy
 msgctxt "@label"
 msgid "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
 msgstr "Você está prestes a remover todas as impressoras do Cura. Esta ação não pode ser desfeita."
 "Tem certeza que quer continuar?"
 
-#, fuzzy
 msgctxt "@label"
 msgid "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?"
 msgid_plural "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
 msgstr[0] "Você está prestes a remover {0} impressora do Cura. Esta ação não pode ser desfeita.\nTem certeza que quer continuar?"
 msgstr[1] "Você está prestes a remover {0} impressoras do Cura. Esta ação não pode ser desfeita.\nTem certeza que quer continuar?"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Você está tentando conectar a uma impressora que não está rodando UltiMaker Connect. Por favor atualize a impressora para o firmware mais recente."
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
 msgstr "Você está tentando conectar a {0} mas ele não é host de um grupo. Você pode visitar a página web para configurá-lo como host de grupo."
 
-#, fuzzy
 msgctxt "@empty_state"
 msgid "You don't have any backups currently. Use the 'Backup Now' button to create one."
 msgstr "Você não tem nenhum backup atualmente. Use o botão 'Backup Agora' para criar um."
 
-#, fuzzy
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
 msgstr "Você personalizou alguns ajustes de perfil. Gostaria de manter estes ajustes alterados após trocar perfis? Alternativamente, você pode descartar as alterações para carregar os defaults de '%1'."
 
-#, fuzzy
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
 msgstr "Você precisa aceitar a licença para que o pacote possa ser instalado"
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "You need to quit and restart {} before changes have effect."
 msgstr "Você precisa sair e reiniciar {} para que as alterações tenham efeito."
 
-#, fuzzy
 msgctxt "@dialog:info"
 msgid "You will need to restart Cura before your backup is restored. Do you want to close Cura now?"
 msgstr "Você precisará reiniciar o Cura antes que seu backup seja restaurado. Deseja fechar o Cura agora?"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "You will receive a confirmation via email when the print job is approved"
 msgstr "Você receberá uma confirmação por email quando o trabalho de impressão for aprovado"
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "Your backup has finished uploading."
 msgstr "Seu backup terminou de ser enviado."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Your current settings match the selected profile."
 msgstr "Seus ajustes atuais coincidem com o perfil selecionado."
 
-#, fuzzy
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
 msgstr "Sua nova impressora vai automaticamente aparecer no Cura"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
 msgstr "Sua impressora <b>{printer_name}</b> poderia estar conectada via nuvem."
 " Gerencie sua fila de impressão e monitore suas impressoras de qualquer lugar conectando sua impressora à Digital Factory"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Z"
 msgstr "Z"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (Altura)"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "ZeroConf discovery library"
 msgstr "Biblioteca de descoberta 'ZeroConf'"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "Ampliar na direção do mouse"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthographic perspective."
 msgstr "Ampliar com o mouse não é suportado na perspectiva ortográfica."
 
-#, fuzzy
 msgctxt "@text Placeholder for the username if it has been deleted"
 msgid "deleted user"
 msgstr "usuário removido"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "glTF Binary"
 msgstr "Binário glTF"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "glTF Embedded JSON"
 msgstr "glTF Embutido JSON"
 
-#, fuzzy
 msgctxt "@label"
 msgid "max"
 msgstr "máx"
 
-#, fuzzy
 msgctxt "@label"
 msgid "min"
 msgstr "mín"
 
-#, fuzzy
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
 
-#, fuzzy
 msgctxt "@label"
 msgid "s"
 msgstr "s"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "today"
 msgstr "hoje"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "tomorrow"
 msgstr "amanhã"
 
-#, fuzzy
 msgctxt "@label"
 msgid "version: %1"
 msgstr "versão: %1"
 
-#, fuzzy
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr "{printer_name} será removida até a próxima sincronização de conta."
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} complementos falharam em baixar"
@@ -7046,7 +5661,6 @@ msgctxt "@title:label"
 msgid "Extruder Prestart G-code"
 msgstr "G-Code de Pré-Início do Extrusor"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Flip model's toolhandle Y axis (restart required)"
 msgstr ""
@@ -7107,7 +5721,6 @@ msgctxt "@action:button"
 msgid "Avoid"
 msgstr "Evitar"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "BambuLab 3MF file"
 msgstr ""
@@ -7120,7 +5733,6 @@ msgctxt "@label"
 msgid "Brush Size"
 msgstr "Tamanho do Pincel"
 
-#, fuzzy
 msgctxt "@info:error"
 msgid "Can't write GCode to 3MF file"
 msgstr ""
@@ -7245,7 +5857,6 @@ msgctxt "@action:button"
 msgid "Seam"
 msgstr "Costura"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Select a single model to start painting"
 msgstr ""
@@ -7294,7 +5905,6 @@ msgctxt "@label"
 msgid "*User Adjusted"
 msgstr "*Ajustado Pelo Usuário"
 
-#, fuzzy
 msgctxt "@label"
 msgid "<html>The pattern of the infill material of the print:<ul><li>For quick prints of non-functional models, choose Line, Zig Zag or Lightning infill.</li><li>For functional parts not subjected to a lot of stress we recommend Grid, Triangle, or Tri-Hexagon.</li><li>For functional 3D prints requiring high strength in multiple directions use Honeycomb, Cubic, Cubic Subdivision, Quarter Cubic, Octet, Gyroid, and Octagon.</li></ul>⚠ Grid, Triangle, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<html>"
 msgstr ""
@@ -7303,7 +5913,6 @@ msgctxt "@message"
 msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
 msgstr "<html>Não foi possível fatiar pois há objetos associados com pelo menos um extrusor desabilitado:"
 
-#, fuzzy
 msgctxt "solid intent description"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
 msgstr "Uma parte muito densa e forte mas com tempo de impressão maior. Ótimo para partes funcionais."
@@ -7316,7 +5925,6 @@ msgctxt "@action:label"
 msgid "Abort upload"
 msgstr "Aborta o upload"
 
-#, fuzzy
 msgctxt "annealing intent label"
 msgid "Annealing"
 msgstr "Recozimento"
@@ -7325,12 +5933,10 @@ msgctxt "@label"
 msgid "Automatically enable the required extruder(s)"
 msgstr "Automaticamente habilitar o(s) extrusor(es) requerido(s)"
 
-#, fuzzy
 msgctxt "default intent label"
 msgid "Balanced"
 msgstr "Equilibrado"
 
-#, fuzzy
 msgctxt "quick intent label"
 msgid "Draft"
 msgstr "Rascunho"
@@ -7339,7 +5945,6 @@ msgctxt "@button"
 msgid "Enable required extruder(s)"
 msgstr "Habilitar extrusor(es) requerido(s)"
 
-#, fuzzy
 msgctxt "engineering intent label"
 msgid "Engineering"
 msgstr "Engenharia"
@@ -7348,7 +5953,6 @@ msgctxt "@action:inmenu menubar:help"
 msgid "Open Cura Log File"
 msgstr "Abrir Arquivo de Log do Cura"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
 msgstr "Por favor revise os ajustes e verifique se seus modelos:"
@@ -7363,27 +5967,22 @@ msgctxt "@label"
 msgid "Select a single ungrouped model to start painting"
 msgstr "Selecione um único modelo não-agrupado para começar a pintar"
 
-#, fuzzy
 msgctxt "solid intent label"
 msgid "Solid"
 msgstr "Sólido"
 
-#, fuzzy
 msgctxt "annealing intent description"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr "O perfil de recozimento requer pós-processamento em um forno depois da impressão terminar. Este perfil retém a acuidade dimensional da parte impressão depois do recozimento e melhora a força, rigidez e resistência térmica."
 
-#, fuzzy
 msgctxt "default intent description"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr "O perfil equilibrado é projetado para conseguir um equilíbrio entre produtividade, qualidade de superfície, propriedades mecânicas e acuidade dimensional."
 
-#, fuzzy
 msgctxt "quick intent description"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "O perfil de rascunho é projetado para imprimir protótipos iniciais e validações de conceito com o objetivo de redução significativa de tempo de impressão."
 
-#, fuzzy
 msgctxt "engineering intent description"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "O perfil de engenharia é projetado para imprimir protótipos funcionais e partes de uso final com o objetivo de melhor precisão e tolerâncias mais estritas."
@@ -7392,7 +5991,6 @@ msgctxt "@info:message"
 msgid "The send-print-job process was aborted. Please try again."
 msgstr "O processo enviar-trabalho-de-impressão foi abortado. Por favor tente novamente."
 
-#, fuzzy
 msgctxt "visual intent description"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "O perfil visual é projetado para imprimir protótipos e modelos virtuais com o objetivo de alta qualidade visual e de superfície."
@@ -7405,12 +6003,10 @@ msgctxt "name"
 msgid "Version Upgrade 5.11 to 5.12"
 msgstr "Atualização de Versão de 5.11 para 5.12"
 
-#, fuzzy
 msgctxt "visual intent label"
 msgid "Visual"
 msgstr "Visual"
 
-#, fuzzy
 msgctxt "@label"
 msgid "<html>The pattern of the infill material of the print:<ul><li>For quick prints of non-functional models, choose Line, Zig Zag or Lightning infill.</li><li>For functional parts not subjected to a lot of stress we recommend Grid, Triangle, or Tri-Hexagon.</li><li>For functional 3D prints requiring high strength in multiple directions use Honeycomb, Cubic, Cubic Subdivision, Quarter Cubic, Octet, Gyroid, and Octagon.</li></ul>⚠ Grid, Triangle, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.</html>"
 msgstr "<html>O padrão do material de preenchimento do material da impressão:<ul><li>Para impressões rápidas de modelos não-funcionais, escolha Linha, Ziguezague ou preenchimento Relâmpago.</li><li>Para partes funcionais não sujeitas a muito stress recomendamos Grade, Triângulo ou Tri-Hexágono.</li><li>Para impressões 3D funcionais requerendo força grande em direções múltiplas use Colmeia, Cúbico, Subdivisão Cúbica, Quarto Cúbico, Octeto, Giróide e Octágono.</li></ul>⚠ Padrões de reenchimento Grade, Triângulo e Cúbico contêm filetes cruzados, o que pode fazer seu bico topar em filetes impressos e sua impressora vibrar. Use com cuidado.</html>"
