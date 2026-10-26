@@ -145,8 +145,8 @@ msgstr "*Você precisa reiniciar a aplicação para que estas alterações tenha
 msgctxt "@text"
 msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr ""
-"- Adicione perfis de material e complementos do Marketplace"
-"- Faça backup e sincronize seus perfis de materiais e complementos"
+"- Adicione perfis de material e complementos do Marketplace\n"
+"- Faça backup e sincronize seus perfis de materiais e complementos\n"
 "- Compartilhe ideias e consiga ajuda de mais de 48.000 usuários da comunidade UltiMaker"
 
 msgctxt "@heading"
