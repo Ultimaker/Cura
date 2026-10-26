@@ -70,7 +70,7 @@ class LicensePresenter(QObject):
                 "licenseModel": self._license_model,
                 "handler": self
             }
-            self._dialog = self._app.createQmlComponent(path, context_properties)
+            self._dialog = self._app.createQmlSubWindow(path, context_properties, manage_lifecycle = False)
         self._presentCurrentPackage()
         self._presented = True
 
@@ -134,6 +134,4 @@ class LicensePresenter(QObject):
             if self._dialog:
                 self._dialog.close()
             self.licenseAnswers.emit(self._package_models)
-
-
 

@@ -8,15 +8,12 @@ import QtQuick.Window 2.2
 import UM 1.5 as UM
 import Cura 1.1 as Cura
 
-Window
+UM.Dialog
 {
-    UM.I18nCatalog { id: catalog; name: "cura" }
-
     id: baseDialog
+    property variant catalog: UM.I18nCatalog { name: "cura" }
     title: catalog.i18nc("@title:window", "More information on anonymous data collection")
     visible: false
-
-    modality: Qt.ApplicationModal
 
     minimumWidth: 500 * screenScaleFactor
     minimumHeight: 400 * screenScaleFactor

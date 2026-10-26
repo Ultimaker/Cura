@@ -80,7 +80,7 @@ class WorkspaceDialog(QObject):
         three_mf_reader_path = PluginRegistry.getInstance().getPluginPath("3MFReader")
         if three_mf_reader_path:
             path = os.path.join(three_mf_reader_path, "WorkspaceDialog.qml")
-            self._view = CuraApplication.getInstance().createQmlSubWindow(path, initial_properties = {"manager": self})
+            self._view = CuraApplication.getInstance().createQmlSubWindow(path, initial_properties = {"manager": self}, manage_lifecycle = False)
             self._view.show()
 
     machineConflictChanged = pyqtSignal()

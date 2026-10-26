@@ -11,35 +11,39 @@ import Cura 1.1 as Cura
 import "components"
 import "pages"
 
-Window
+UM.Dialog
 {
     id: curaDriveDialog
     minimumWidth: Math.round(UM.Theme.getSize("modal_window_minimum").width)
     minimumHeight: Math.round(UM.Theme.getSize("modal_window_minimum").height)
     maximumWidth: Math.round(minimumWidth * 1.2)
     maximumHeight: Math.round(minimumHeight * 1.2)
-    modality: Qt.ApplicationModal
     width: minimumWidth
     height: minimumHeight
     color: UM.Theme.getColor("main_background")
     title: catalog.i18nc("@title:window", "Cura Backups")
 
-    // Globally available.
-    UM.I18nCatalog
+    Item
     {
-        id: catalog
-        name: "cura"
-    }
+        anchors.fill: parent
 
-    WelcomePage
-    {
-        id: welcomePage
-        visible: !Cura.API.account.isLoggedIn
-    }
+        // Globally available.
+        UM.I18nCatalog
+        {
+            id: catalog
+            name: "cura"
+        }
 
-    BackupsPage
-    {
-        id: backupsPage
-        visible: Cura.API.account.isLoggedIn
+        WelcomePage
+        {
+            id: welcomePage
+            visible: !Cura.API.account.isLoggedIn
+        }
+
+        BackupsPage
+        {
+            id: backupsPage
+            visible: Cura.API.account.isLoggedIn
+        }
     }
 }

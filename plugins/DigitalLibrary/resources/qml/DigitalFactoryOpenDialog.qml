@@ -10,51 +10,53 @@ import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
 
-Window
+UM.Dialog
 {
     id: digitalFactoryOpenDialogBase
     title: "Open file from Library"
 
-    modality: Qt.ApplicationModal
     width: 800 * screenScaleFactor
     height: 600 * screenScaleFactor
     minimumWidth: 800 * screenScaleFactor
     minimumHeight: 600 * screenScaleFactor
 
-    Shortcut
+    Item
     {
-        sequence: "Esc"
-        onActivated: digitalFactoryOpenDialogBase.close()
-    }
-    color: UM.Theme.getColor("main_background")
+        anchors.fill: parent
 
-    SelectProjectPage
-    {
-        visible: manager.selectedProjectIndex == -1
-        createNewProjectButtonVisible: false
-    }
-
-    OpenProjectFilesPage
-    {
-        visible: manager.selectedProjectIndex >= 0
-        onOpenFilePressed: digitalFactoryOpenDialogBase.close()
-    }
-
-
-    BusyIndicator
-    {
-        // Shows up while Cura is waiting to receive the user's projects from the digital factory library
-        id: retrievingProjectsBusyIndicator
-
-        anchors {
-            verticalCenter: parent.verticalCenter
-            horizontalCenter: parent.horizontalCenter
+        Shortcut
+        {
+            sequence: "Esc"
+            onActivated: digitalFactoryOpenDialogBase.close()
+        }
+        SelectProjectPage
+        {
+            visible: manager.selectedProjectIndex == -1
+            createNewProjectButtonVisible: false
         }
 
-        width: parent.width / 4
-        height: width
-        visible: manager.retrievingProjectsStatus == DF.RetrievalStatus.InProgress
-        running: visible
-        palette.dark: UM.Theme.getColor("text")
+        OpenProjectFilesPage
+        {
+            visible: manager.selectedProjectIndex >= 0
+            onOpenFilePressed: digitalFactoryOpenDialogBase.close()
+        }
+
+        BusyIndicator
+        {
+            // Shows up while Cura is waiting to receive the user's projects from the digital factory library
+            id: retrievingProjectsBusyIndicator
+
+            anchors {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+            }
+
+            width: parent.width / 4
+            height: width
+            visible: manager.retrievingProjectsStatus == DF.RetrievalStatus.InProgress
+            running: visible
+            palette.dark: UM.Theme.getColor("text")
+        }
     }
+    color: UM.Theme.getColor("main_background")
 }

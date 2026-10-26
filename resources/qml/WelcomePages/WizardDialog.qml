@@ -13,14 +13,10 @@ import Cura 1.1 as Cura
 // This is a dialog for showing a set of processes that's defined in a WelcomePagesModel or some other Qt ListModel with
 // a compatible interface.
 //
-Window
+UM.Dialog
 {
-    UM.I18nCatalog { id: catalog; name: "cura" }
-
     id: dialog
-
-    flags: Qt.Dialog
-    modality: Qt.ApplicationModal
+    property variant catalog: UM.I18nCatalog { name: "cura" }
 
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
@@ -32,26 +28,23 @@ Window
     property var model: null  // Needs to be set by whoever is using this dialog.
     property alias progressBarVisible: wizardPanel.progressBarVisible
 
-    WizardPanel
+    Item
     {
-        id: wizardPanel
         anchors.fill: parent
-        model: dialog.model
-        visible: dialog.visible
-    }
 
-    // Close this dialog when there's no more page to show
-    Connections
-    {
-        target: model
-        function onAllFinished() { dialog.hide() }
-    }
-
-    onVisibleChanged:
-    {
-        if(!visible)
+        WizardPanel
         {
-            destroy();
+            id: wizardPanel
+            anchors.fill: parent
+            model: dialog.model
+            visible: dialog.visible
+        }
+
+        // Close this dialog when there's no more page to show
+        Connections
+        {
+            target: model
+            function onAllFinished() { dialog.hide() }
         }
     }
 }

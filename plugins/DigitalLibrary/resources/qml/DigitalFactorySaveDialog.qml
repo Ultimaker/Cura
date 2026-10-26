@@ -10,52 +10,54 @@ import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
 
-Window
+UM.Dialog
 {
     id: digitalFactorySaveDialogBase
     title: "Save Cura project to Library"
 
-    modality: Qt.ApplicationModal
     width: 800 * screenScaleFactor
     height: 600 * screenScaleFactor
     minimumWidth: 800 * screenScaleFactor
     minimumHeight: 600 * screenScaleFactor
 
-    Shortcut
+    Item
     {
-        sequence: "Esc"
-        onActivated: digitalFactorySaveDialogBase.close()
-    }
-    color: UM.Theme.getColor("main_background")
+        anchors.fill: parent
 
-    SelectProjectPage
-    {
-        visible: manager.selectedProjectIndex == -1
-        createNewProjectButtonVisible: true
-    }
-
-    SaveProjectFilesPage
-    {
-        visible: manager.selectedProjectIndex >= 0
-        onSavePressed: digitalFactorySaveDialogBase.close()
-        onSelectDifferentProjectPressed: manager.clearProjectSelection()
-    }
-
-
-    BusyIndicator
-    {
-        // Shows up while Cura is waiting to receive the user's projects from the digital factory library
-        id: retrievingProjectsBusyIndicator
-
-        anchors {
-            verticalCenter: parent.verticalCenter
-            horizontalCenter: parent.horizontalCenter
+        Shortcut
+        {
+            sequence: "Esc"
+            onActivated: digitalFactorySaveDialogBase.close()
+        }
+        SelectProjectPage
+        {
+            visible: manager.selectedProjectIndex == -1
+            createNewProjectButtonVisible: true
         }
 
-        width: parent.width / 4
-        height: width
-        visible: manager.retrievingProjectsStatus == DF.RetrievalStatus.InProgress
-        running: visible
-        palette.dark: UM.Theme.getColor("text")
+        SaveProjectFilesPage
+        {
+            visible: manager.selectedProjectIndex >= 0
+            onSavePressed: digitalFactorySaveDialogBase.close()
+            onSelectDifferentProjectPressed: manager.clearProjectSelection()
+        }
+
+        BusyIndicator
+        {
+            // Shows up while Cura is waiting to receive the user's projects from the digital factory library
+            id: retrievingProjectsBusyIndicator
+
+            anchors {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+            }
+
+            width: parent.width / 4
+            height: width
+            visible: manager.retrievingProjectsStatus == DF.RetrievalStatus.InProgress
+            running: visible
+            palette.dark: UM.Theme.getColor("text")
+        }
     }
+    color: UM.Theme.getColor("main_background")
 }

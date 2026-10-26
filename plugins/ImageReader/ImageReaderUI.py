@@ -84,7 +84,7 @@ class ImageReaderUI(QObject):
         if self._ui_view is None:
             Logger.log("d", "Creating ImageReader config UI")
             path = os.path.join(PluginRegistry.getInstance().getPluginPath("ImageReader"), "ConfigUI.qml")
-            self._ui_view = Application.getInstance().createQmlComponent(path, {"manager": self})
+            self._ui_view = Application.getInstance().createQmlSubWindow(path, {"manager": self}, manage_lifecycle = False)
             self._ui_view.setFlags(self._ui_view.flags() & ~Qt.WindowType.WindowCloseButtonHint & ~Qt.WindowType.WindowMinimizeButtonHint & ~Qt.WindowType.WindowMaximizeButtonHint)
             self._disable_size_callbacks = False
 
