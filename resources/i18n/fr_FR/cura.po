@@ -112,7 +112,7 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "&Rétablir"
 
-msgctxt "@title:menu menubar:file"
+msgctxt "@action:inmenu menubar:file"
 msgid "&Save Project..."
 msgstr "&Enregistrer le projet..."
 
@@ -1762,6 +1762,10 @@ msgstr "Pour les lithophanies, les pixels foncés doivent correspondre à des em
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "Forcer l'affichage de la couche en mode de compatibilité (redémarrage requis)"
+
+msgctxt "@action:inmenu menubar:file"
+msgid "From Disk"
+msgstr "À partir du disque"
 
 msgid "FreeCAD trackpad"
 msgstr "Pavé tactile de FreeCAD"
