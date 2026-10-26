@@ -275,11 +275,11 @@ class PackageList(ListModel):
 
         # create a QML component for the license dialog
         license_dialog_component_path = os.path.join(plugin_path, "resources", "qml", "LicenseDialog.qml")
-        dialog = CuraApplication.getInstance().createQmlSubWindow(license_dialog_component_path, {
+        dialog = CuraApplication.getInstance().createQmlComponent(license_dialog_component_path, {
             "licenseContent": license_content,
             "packageId": package_id,
             "handler": self
-        }, manage_lifecycle = False)
+        })
         dialog.show()
         # place dialog in class such that it does not get remove by garbage collector
         self._license_dialogs[package_id] = dialog

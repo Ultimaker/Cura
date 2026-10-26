@@ -51,8 +51,8 @@ class CloudMaterialSync(QObject):
         if self.sync_all_dialog is None:
             qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences",
                                          "Materials", "MaterialsSyncDialog.qml")
-            self.sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlSubWindow(
-                qml_path, {}, {"syncModel": self}, manage_lifecycle = False)
+            self.sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(
+                qml_path, {}, {"syncModel": self})
         if self.sync_all_dialog is None:  # Failed to load QML file.
             return
         self.sync_all_dialog.setProperty("pageIndex", 0)  # Return to first page.

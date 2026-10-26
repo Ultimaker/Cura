@@ -29,13 +29,12 @@ class UCPDialog(QObject):
         plugin_path = os.path.dirname(__file__)
         dialog_path = os.path.join(plugin_path, 'UCPDialog.qml')
         self._model = SettingsExportModel()
-        self._view = CuraApplication.getInstance().createQmlSubWindow(
+        self._view = CuraApplication.getInstance().createQmlComponent(
             dialog_path,
             {
                 "manager": self,
                 "settingsExportModel": self._model
-            },
-            manage_lifecycle = False
+            }
         )
         self._view.accepted.connect(self._onAccepted)
         self._view.rejected.connect(self._onRejected)

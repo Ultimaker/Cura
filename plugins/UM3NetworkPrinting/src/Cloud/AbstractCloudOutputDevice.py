@@ -111,7 +111,7 @@ class AbstractCloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def _openChoosePrinterDialog(self) -> None:
         if self._on_print_dialog is None:
             qml_path = Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Dialogs", "ChoosePrinterDialog.qml")
-            self._on_print_dialog = CuraApplication.getInstance().createQmlSubWindow(qml_path, {}, manage_lifecycle = False)
+            self._on_print_dialog = CuraApplication.getInstance().createQmlComponent(qml_path, {})
         if self._on_print_dialog is None:  # Failed to load QML file.
             return
         self._on_print_dialog.setProperty("manager", self)
