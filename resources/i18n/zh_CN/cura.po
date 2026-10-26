@@ -115,7 +115,7 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "重做(&R)"
 
-msgctxt "@title:menu menubar:file"
+msgctxt "@action:inmenu menubar:file"
 msgid "&Save Project..."
 msgstr "保存项目(&S)..."
 
@@ -1907,6 +1907,10 @@ msgstr "在影像浮雕中，为了阻挡更多光源通过，深色像素应对
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (* restart required)"
 msgstr "强制启用图层视图兼容模式（* 需要重启）"
+
+msgctxt "@action:inmenu menubar:file"
+msgid "From Disk"
+msgstr "从磁盘"
 
 msgid "FreeCAD trackpad"
 msgstr "FreeCAD 触控板"
