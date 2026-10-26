@@ -1258,7 +1258,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "A Cura-t az UltiMaker B.V fejlesztette ki a közösséggel együttműködésben. A Cura büszkén használja a következő nyílt forráskódú projekteket:"
+msgstr "A Cura-t az UltiMaker B.V fejlesztette ki a közösséggel együttműködésben.\nA Cura büszkén használja a következő nyílt forráskódú projekteket:"
 
 msgctxt "@label"
 msgid "Cura language"

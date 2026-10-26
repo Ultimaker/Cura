@@ -1441,7 +1441,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr "Příkazy G-kódu, které mají být provedeny od samého začátku - oddělené \\ n."
+msgstr "Příkazy G-kódu, které mají být provedeny od samého začátku - oddělené \n."
 
 msgctxt "machine_start_gcode description"
 msgid ""
