@@ -394,7 +394,6 @@ UM.Dialog
                                 border.width: UM.Theme.getSize("default_lining").width
                                 anchors.topMargin: UM.Theme.getSize("default_margin").height
                                 height: childrenRect.height + 2 * UM.Theme.getSize("thick_margin").height
-
                                 color: "transparent"
 
                                 GridLayout
@@ -423,7 +422,7 @@ UM.Dialog
                                         Layout.fillWidth: true
                                         Layout.alignment: Qt.AlignVCenter
                                         text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
-                                          + "\n"
+                                          + "<br/>"
                                           + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
                                         font: UM.Theme.getFont("medium")
                                         elide: Text.ElideRight
@@ -712,9 +711,9 @@ UM.Dialog
                         {
                             Layout.alignment: Qt.AlignCenter
                             Layout.fillWidth: true
-                            text: "1. " + catalog.i18nc("@text", "Click the export material archive button.")
-                              + "\n2. " + catalog.i18nc("@text", "Save the .umm file on a USB stick.")
-                              + "\n3. " + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.")
+                            text: "<ol><li>" + catalog.i18nc("@text", "Click the export material archive button.") + "</li>"
+                              + "<li>" + catalog.i18nc("@text", "Save the .umm file on a USB stick.") + "</li>"
+                              + "<li>" + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.") + "</li></ol>"
                             font: UM.Theme.getFont("medium")
                         }
                     }
