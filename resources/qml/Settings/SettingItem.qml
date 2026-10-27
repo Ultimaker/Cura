@@ -67,7 +67,7 @@ Item
         {
             if(affected_by[i].label != "")
             {
-                affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+                affected_by_list += "<li>%1</li>".arg(affected_by[i].label)
             }
         }
 
@@ -76,11 +76,11 @@ Item
         {
             if(affects[i].label != "")
             {
-                affects_list += "<li>%1</li>\n".arg(affects[i].label)
+                affects_list += "<li>%1</li>".arg(affects[i].label)
             }
         }
 
-        var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition ? definition.label : "").arg(definition ? definition.description : "")
+        var tooltip = "<b>%1</b><p>%2</p>".arg(definition ? definition.label : "").arg(definition ? definition.description : "")
 
         if(!propertyProvider.isValueUsed)
         {
@@ -340,7 +340,7 @@ Item
 
                 iconSource: UM.Theme.getIcon("Function")
 
-                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.<br/><br/>Click to restore the calculated value.")) }
                 onExited: base.showTooltip(base.createTooltipText())
             }
         }

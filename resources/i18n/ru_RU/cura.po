@@ -155,8 +155,8 @@ msgstr ""
 
 msgctxt "@text"
 msgid ""
-"- Add material profiles and plug-ins from the Marketplace\n"
-"- Back-up and sync your material profiles and plug-ins\n"
+"- Add material profiles and plug-ins from the Marketplace<br/>"
+"- Back-up and sync your material profiles and plug-ins<br/>"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr "- Добавляйте настройки материалов и плагины из Marketplace  - Выполняйте резервное копирование и синхронизацию своих настроек материалов и плагинов  - Делитесь идеями и получайте помощь от 48 000 пользователей в сообществе Ultimaker"
 
@@ -878,10 +878,10 @@ msgstr "Проверка моделей и конфигурации печати
 
 msgctxt "@label"
 msgid ""
-"Chooses between the techniques available to generate support. \n"
-"\n"
-"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
-"\n"
+"Chooses between the techniques available to generate support. <br/>"
+"<br/>"
+"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. <br/>"
+"<br/>"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "Выберите одну из доступных техник создания поддержки. Поддержка со стандартной структурой создается непосредственно под выступающими деталями, и затем опускает эти области вниз линейно. У поддержки с древовидной структурой ветви тянутся к выступающим областям и модель опирается на концы этих ветвей, которые охватывают модель с разных сторон, чтобы таким образом максимально поддерживать ее по всей площади печатной пластины."
 
@@ -1249,7 +1249,7 @@ msgstr "Cura обнаружены профили материалов, кото�
 
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by UltiMaker in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.<br/>"
 "Cura proudly uses the following open source projects:"
 msgstr "Cura разработана компанией UltiMaker B.V. совместно с сообществом.Cura использует следующие проекты с открытым исходным кодом:"
 
@@ -3200,9 +3200,9 @@ msgstr "Дайте необходимые разрешения при автор
 
 msgctxt "@info"
 msgid ""
-"Please make sure your printer has a connection:\n"
-"- Check if the printer is turned on.\n"
-"- Check if the printer is connected to the network.\n"
+"Please make sure your printer has a connection:<br/>"
+"- Check if the printer is turned on.<br/>"
+"- Check if the printer is connected to the network.<br/>"
 "- Check if you are signed in to discover cloud-connected printers."
 msgstr "Проверьте наличие подключения к принтеру:- Убедитесь, что принтер включен.- Убедитесь, что принтер подключен к сети.- Убедитесь, что вы вошли в систему (это необходимо для поиска принтеров, подключенных к облаку)."
 
@@ -4399,8 +4399,8 @@ msgstr "Просмотр модели"
 
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated value.\n"
-"\n"
+"Some hidden settings use values different from their normal calculated value.<br/>"
+"<br/>"
 "Click to make these settings visible."
 msgstr "Некоторые из скрытых параметров используют значения, отличающиеся от их вычисленных значений.Щёлкните, чтобы сделать эти параметры видимыми."
 
@@ -4418,8 +4418,8 @@ msgstr "Некоторые определенные в <b>%1</b> значени�
 
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the profile.\n"
-"\n"
+"Some setting/override values are different from the values stored in the profile.<br/>"
+"<br/>"
 "Click to open the profile manager."
 msgstr "Значения некоторых параметров отличаются от значений профиля.Нажмите для открытия менеджера профилей."
 
@@ -4992,8 +4992,8 @@ msgstr "Данная настройка всегда используется с
 
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value set.\n"
-"\n"
+"This setting is normally calculated, but it currently has an absolute value set.<br/>"
+"<br/>"
 "Click to restore the calculated value."
 msgstr "Обычно это значение вычисляется, но в настоящий момент было установлено явно.Щёлкните для восстановления вычисленного значения."
 
