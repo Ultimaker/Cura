@@ -32,6 +32,7 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
 
         plugin_path = os.path.dirname(os.path.dirname(__file__))
         self._dialog_path = os.path.join(plugin_path, "resources", "qml", "DigitalFactorySaveDialog.qml")
+        self._dialog = None
 
         # Connect the write signals
         self._controller.uploadStarted.connect(self._onWriteStarted)
@@ -67,18 +68,27 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
 
+        self.loadWindow()
+
         if self._account.isLoggedIn and self._controller.userAccountHasLibraryAccess():
             self._controller.nodes = nodes
 
             df_workspace_information = self._current_workspace_information.getPluginMetadata("digital_factory")
             self._controller.initialize(preselected_project_id = df_workspace_information.get("library_project_id"))
 
-            self.loadWindow()
+            if not self._dialog:
+                Logger.log("e", "Unable to create the Digital Library Save dialog.")
+                return
+            self._dialog.show()
 
     def loadWindow(self) -> None:
         """
         Create the GUI window for the Digital Library Save dialog. If the window is already open, bring the focus on it.
         """
+        if self._dialog:  # Dialogue is already open.
+            self._dialog.requestActivate()  # Bring the focus on the dialogue.
+            return
+
         if not self._controller.file_handlers:
             self._controller.file_handlers = {
                 "3mf": CuraApplication.getInstance().getWorkspaceFileHandler(),
@@ -86,10 +96,8 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
                 "makerbot": CuraApplication.getInstance().getMeshFileHandler()
             }
 
-        dialog = CuraApplication.getInstance().createQmlSubWindow(self._dialog_path, {"manager": self._controller})
-        if dialog:
-            dialog.show()
-        else:
+        self._dialog = CuraApplication.getInstance().createQmlComponent(self._dialog_path, {"manager": self._controller})
+        if not self._dialog:
             Logger.log("e", "Unable to create the Digital Library Save dialog.")
 
     def _onUserAccessStateChanged(self, logged_in: bool) -> None:

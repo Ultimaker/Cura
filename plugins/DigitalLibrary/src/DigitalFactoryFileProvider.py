@@ -19,6 +19,7 @@ class DigitalFactoryFileProvider(FileProvider):
         self.shortcut = "Ctrl+Shift+O"
         plugin_path = os.path.dirname(os.path.dirname(__file__))
         self._dialog_path = os.path.join(plugin_path, "resources", "qml", "DigitalFactoryOpenDialog.qml")
+        self._dialog = None
 
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
         self._controller.userAccessStateChanged.connect(self._onUserAccessStateChanged)
@@ -29,20 +30,27 @@ class DigitalFactoryFileProvider(FileProvider):
         """
         Function called every time the 'From Digital Factory' option of the 'Open File(s)' submenu is triggered
         """
+        self.loadWindow()
+
         if self._account.isLoggedIn and self._controller.userAccountHasLibraryAccess():
             self._controller.initialize()
-            self.loadWindow()
+
+            if not self._dialog:
+                Logger.log("e", "Unable to create the Digital Library Open dialog.")
+                return
+            self._dialog.show()
 
     def loadWindow(self) -> None:
         """
-        Create the GUI window for the Digital Library Open dialog and shows it.
+        Create the GUI window for the Digital Library Open dialog. If the window is already open, bring the focus on it.
         """
 
-        dialog = CuraApplication.getInstance().createQmlSubWindow(self._dialog_path, {"manager": self._controller})
+        if self._dialog:  # Dialogue is already open.
+            self._dialog.requestActivate()  # Bring the focus on the dialogue.
+            return
 
-        if dialog:
-            dialog.show()
-        else:
+        self._dialog = CuraApplication.getInstance().createQmlComponent(self._dialog_path, {"manager": self._controller})
+        if not self._dialog:
             Logger.log("e", "Unable to create the Digital Library Open dialog.")
 
     def _onUserAccessStateChanged(self, logged_in: bool) -> None:
