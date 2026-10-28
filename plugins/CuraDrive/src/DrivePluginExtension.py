@@ -44,7 +44,6 @@ class DrivePluginExtension(QObject, Extension):
         Extension.__init__(self)
 
         # Local data caching for the UI.
-        self._drive_window = None  # type: Optional[QObject]
         self._backups = []  # type: List[Dict[str, Any]]
         self._is_restoring_backup = False
         self._is_creating_backup = False
@@ -56,7 +55,6 @@ class DrivePluginExtension(QObject, Extension):
 
         # Attach signals.
         CuraApplication.getInstance().getCuraAPI().account.loginStateChanged.connect(self._onLoginStateChanged)
-        CuraApplication.getInstance().applicationShuttingDown.connect(self._onApplicationShuttingDown)
         self._drive_api_service.restoringStateChanged.connect(self._onRestoringStateChanged)
         self._drive_api_service.creatingStateChanged.connect(self._onCreatingStateChanged)
 
@@ -72,17 +70,13 @@ class DrivePluginExtension(QObject, Extension):
         CuraApplication.getInstance().engineCreatedSignal.connect(self._autoBackup)
 
     def showDriveWindow(self) -> None:
-        if not self._drive_window:
-            plugin_dir_path = cast(str, CuraApplication.getInstance().getPluginRegistry().getPluginPath(self.getPluginId())) # We know this plug-in exists because that's us, so this always returns str.
-            path = os.path.join(plugin_dir_path, "src", "qml", "main.qml")
-            self._drive_window = CuraApplication.getInstance().createQmlComponent(path, {"CuraDrive": self})
         self.refreshBackups()
-        if self._drive_window:
-            self._drive_window.show()
 
-    def _onApplicationShuttingDown(self):
-        if self._drive_window:
-            self._drive_window.hide()
+        plugin_dir_path = cast(str, CuraApplication.getInstance().getPluginRegistry().getPluginPath(self.getPluginId())) # We know this plug-in exists because that's us, so this always returns str.
+        path = os.path.join(plugin_dir_path, "src", "qml", "main.qml")
+        drive_window = CuraApplication.getInstance().createQmlSubWindow(path, {"CuraDrive": self})
+        if drive_window:
+            drive_window.show()
 
     def _autoBackup(self) -> None:
         preferences = CuraApplication.getInstance().getPreferences()

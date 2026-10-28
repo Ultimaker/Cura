@@ -10,7 +10,7 @@ import QtQuick.Window 2.1
 import Cura 1.1 as Cura
 import UM 1.6 as UM
 
-UM.Window
+UM.Dialog
 {
     id: materialsSyncDialog
     property variant catalog: UM.I18nCatalog { name: "cura" }
@@ -20,7 +20,6 @@ UM.Window
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
     height: minimumHeight
-    modality: Qt.ApplicationModal
     color: UM.Theme.getColor("main_background")
 
     property variant syncModel

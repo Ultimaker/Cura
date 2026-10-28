@@ -58,7 +58,6 @@ class SliceInfo(QObject, Extension):
         self._application.getPreferences().addPreference("info/send_slice_info", True)
         self._application.getPreferences().addPreference("info/asked_send_slice_info", False)
 
-        self._more_info_dialog = None
         self._example_data_content = None
 
     def messageActionTriggered(self, message_id, action_id):
@@ -72,15 +71,9 @@ class SliceInfo(QObject, Extension):
         self.send_slice_info_message.hide()
 
     def showMoreInfoDialog(self):
-        if self._more_info_dialog is None:
-            self._more_info_dialog = self._createDialog("MoreInfoWindow.qml")
-        self._more_info_dialog.show()
-
-    def _createDialog(self, qml_name):
-        Logger.log("d", "Creating dialog [%s]", qml_name)
-        file_path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), qml_name)
-        dialog = self._application.createQmlComponent(file_path, {"manager": self})
-        return dialog
+        file_path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "MoreInfoWindow.qml")
+        dialog = self._application.createQmlSubWindow(file_path, {"manager": self})
+        dialog.show()
 
     @pyqtSlot(result = str)
     def getExampleData(self) -> Optional[str]:

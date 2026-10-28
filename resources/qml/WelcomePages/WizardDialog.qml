@@ -13,14 +13,11 @@ import Cura 1.1 as Cura
 // This is a dialog for showing a set of processes that's defined in a WelcomePagesModel or some other Qt ListModel with
 // a compatible interface.
 //
-Window
+UM.Dialog
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
     id: dialog
-
-    flags: Qt.Dialog
-    modality: Qt.ApplicationModal
 
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
@@ -45,13 +42,5 @@ Window
     {
         target: model
         function onAllFinished() { dialog.hide() }
-    }
-
-    onVisibleChanged:
-    {
-        if(!visible)
-        {
-            destroy();
-        }
     }
 }

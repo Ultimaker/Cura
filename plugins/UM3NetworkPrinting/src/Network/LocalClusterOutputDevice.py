@@ -51,7 +51,6 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._timeout_time = 30
         self._cluster_api = None  # type: Optional[ClusterApiClient]
         self._active_exported_job = None  # type: Optional[ExportFileJob]
-        self._printer_select_dialog = None  # type: Optional[QObject]
 
         # We don't have authentication over local networking, so we're always authenticated.
         self.setAuthenticationState(AuthState.Authenticated)
@@ -187,12 +186,11 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def _showPrinterSelectionDialog(self) -> None:
         """Shows a dialog allowing the user to select which printer in a group to send a job to."""
 
-        if not self._printer_select_dialog:
-            plugin_path = CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or ""
-            path = os.path.join(plugin_path, "resources", "qml", "PrintWindow.qml")
-            self._printer_select_dialog = CuraApplication.getInstance().createQmlComponent(path, {"OutputDevice": self})
-        if self._printer_select_dialog is not None:
-            self._printer_select_dialog.show()
+        plugin_path = CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or ""
+        path = os.path.join(plugin_path, "resources", "qml", "PrintWindow.qml")
+        dialog = CuraApplication.getInstance().createQmlSubWindow(path, {"OutputDevice": self})
+        if dialog is not None:
+            dialog.show()
 
     def _startPrintJobUpload(self, unique_name: str = None) -> None:
         """Upload the print job to the group."""
