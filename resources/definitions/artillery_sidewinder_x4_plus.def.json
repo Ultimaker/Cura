@@ -1,0 +1,17 @@
+{
+    "name": "Artillery Sidewinder X4 Plus",
+    "version": 2,
+    "inherits": "artillery_base",
+    "overrides": {
+        "machine_name": { "default_value": "Artillery Sidewinder X4 Plus" },
+        "machine_width": { "default_value": 300 },
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 400 },
+		"gantry_height": { "value": 400 },
+        "machine_start_gcode": { "default_value": "G28 ; home all axes\nG92 E0 ; reset extruder\nG1 Z1.0 F3000 ; move z up little to prevent scratching of surface\nG1 X2 Y20 Z0.3 F5000.0 ; move to start-line position\nG1 X2 Y200.0 Z0.3 F1500.0 E15 ; draw 1st line\nG1 X2 Y200.0 Z0.4 F5000.0 ; move to side a little\nG1 X2 Y20 Z0.4 F1500.0 E30 ; draw 2nd line\nG92 E0 ; reset extruder\nG1 Z1.0 F3000 ; move z up little to prevent scratching of surface"}
+    },
+    "metadata": {
+        "quality_definition": "artillery_base",
+        "visible": true
+    }
+}
