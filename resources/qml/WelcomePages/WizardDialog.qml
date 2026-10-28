@@ -28,23 +28,18 @@ UM.Dialog
     property var model: null  // Needs to be set by whoever is using this dialog.
     property alias progressBarVisible: wizardPanel.progressBarVisible
 
-    Item
+    WizardPanel
     {
+        id: wizardPanel
         anchors.fill: parent
+        model: dialog.model
+        visible: dialog.visible
+    }
 
-        WizardPanel
-        {
-            id: wizardPanel
-            anchors.fill: parent
-            model: dialog.model
-            visible: dialog.visible
-        }
-
-        // Close this dialog when there's no more page to show
-        Connections
-        {
-            target: model
-            function onAllFinished() { dialog.hide() }
-        }
+    // Close this dialog when there's no more page to show
+    Connections
+    {
+        target: model
+        function onAllFinished() { dialog.hide() }
     }
 }

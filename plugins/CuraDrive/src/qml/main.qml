@@ -23,27 +23,22 @@ UM.Dialog
     color: UM.Theme.getColor("main_background")
     title: catalog.i18nc("@title:window", "Cura Backups")
 
-    Item
+    // Globally available.
+    UM.I18nCatalog
     {
-        anchors.fill: parent
+        id: catalog
+        name: "cura"
+    }
 
-        // Globally available.
-        UM.I18nCatalog
-        {
-            id: catalog
-            name: "cura"
-        }
+    WelcomePage
+    {
+        id: welcomePage
+        visible: !Cura.API.account.isLoggedIn
+    }
 
-        WelcomePage
-        {
-            id: welcomePage
-            visible: !Cura.API.account.isLoggedIn
-        }
-
-        BackupsPage
-        {
-            id: backupsPage
-            visible: Cura.API.account.isLoggedIn
-        }
+    BackupsPage
+    {
+        id: backupsPage
+        visible: Cura.API.account.isLoggedIn
     }
 }
