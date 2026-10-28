@@ -90,7 +90,7 @@ msgstr "Die Funktion Anpassschichten berechnet die Schichthöhe je nach Form des
 
 msgctxt "infill_wall_line_count description"
 msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "Fügen Sie zusätzliche Wände um den Füllbereich hinzu. Derartige Wände können zu einem verringerten Absacken der oberen/unteren Außenhautlinien beitragen, was bedeutet, dass Sie weniger Außenhautschichten oben/unten bei derselben Qualität von Kosten für zusätzliches Material benötigen."
+msgstr "Fügen Sie zusätzliche Wände um den Füllbereich hinzu. Derartige Wände können zu einem verringerten Absacken der oberen/unteren Außenhautlinien beitragen, was bedeutet, dass Sie weniger Außenhautschichten oben/unten bei derselben Qualität von Kosten für zusätzliches Material benötigen.\n"
 " Diese Funktion ist verknüpfbar mit „Füllungspolygone verbinden“, um alle Füllungen mit einem einzigen Extrusionspfad zu verbinden, ohne dass hierzu Vorwärtsbewegungen oder Rückzüge erforderlich sind, sofern die richtige Konfiguration gewählt wurde."
 
 msgctxt "platform_adhesion description"
@@ -1223,12 +1223,12 @@ msgstr "G-Code-Variante"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch "
+msgstr "G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch \\ n"
 "."
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch "
+msgstr "G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch \\ n"
 "."
 
 msgctxt "material_guid description"
@@ -1993,7 +1993,7 @@ msgstr "Bevorzugen Sie eine absolute Einzugsposition des Extruders anstelle eine
 
 msgctxt "layer_0_z_overlap description"
 msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
-msgstr "Lassen Sie die erste und zweite Ebene des Modells in Z-Richtung überlappen, um das im Luftspalt verlorene Filament auszugleichen. Alle Modelle oberhalb der ersten Modellebene werden um diesen Betrag nach unten verschoben."
+msgstr "Lassen Sie die erste und zweite Ebene des Modells in Z-Richtung überlappen, um das im Luftspalt verlorene Filament auszugleichen. Alle Modelle oberhalb der ersten Modellebene werden um diesen Betrag nach unten verschoben.\n"
 "Es kann vorkommen, dass aufgrund dieser Einstellung die zweite Ebene unterhalb der ersten Ebene gedruckt wird. Dieses Verhalten ist beabsichtigt."
 
 msgctxt "meshfix description"
@@ -4182,7 +4182,7 @@ msgstr "Der horizontale Abstand zwischen der ersten Brim-Linie und der Kontur de
 
 msgctxt "skirt_gap description"
 msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "Der horizontale Abstand zwischen dem Skirt und der ersten Schicht des Drucks."
+msgstr "Der horizontale Abstand zwischen dem Skirt und der ersten Schicht des Drucks.\n"
 "Es handelt sich dabei um den Mindestabstand. Ab diesem Abstand werden mehrere Skirt-Linien in äußerer Richtung angebracht."
 
 msgctxt "lightning_infill_straightening_angle description"
