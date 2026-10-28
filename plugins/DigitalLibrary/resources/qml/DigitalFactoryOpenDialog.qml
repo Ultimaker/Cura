@@ -25,6 +25,7 @@ UM.Dialog
         sequence: "Esc"
         onActivated: digitalFactoryOpenDialogBase.close()
     }
+    color: UM.Theme.getColor("main_background")
 
     SelectProjectPage
     {
@@ -54,6 +55,4 @@ UM.Dialog
         running: visible
         palette.dark: UM.Theme.getColor("text")
     }
-
-    color: UM.Theme.getColor("main_background")
 }

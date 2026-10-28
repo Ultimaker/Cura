@@ -15,8 +15,9 @@ import Cura 1.1 as Cura
 //
 UM.Dialog
 {
+    UM.I18nCatalog { id: catalog; name: "cura" }
+
     id: dialog
-    property variant catalog: UM.I18nCatalog { name: "cura" }
 
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
