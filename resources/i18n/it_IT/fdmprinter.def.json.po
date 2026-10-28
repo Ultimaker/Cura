@@ -1223,12 +1223,12 @@ msgstr "Versione codice G"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "I comandi codice G da eseguire alla fine, separati da \n"
+msgstr "I comandi codice G da eseguire alla fine, separati da \\ n"
 "."
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "I comandi codice G da eseguire all’avvio, separati da \n"
+msgstr "I comandi codice G da eseguire all’avvio, separati da \\ n"
 "."
 
 msgctxt "material_guid description"

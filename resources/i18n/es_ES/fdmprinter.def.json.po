@@ -1223,12 +1223,12 @@ msgstr "Tipo de GCode"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "Los comandos de GCode que se ejecutarán justo al final separados por -\n"
+msgstr "Los comandos de GCode que se ejecutarán justo al final separados por -\\ n"
 "."
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "Los comandos de GCode que se ejecutarán justo al inicio separados por - \n"
+msgstr "Los comandos de GCode que se ejecutarán justo al inicio separados por - \\ n"
 "."
 
 msgctxt "material_guid description"

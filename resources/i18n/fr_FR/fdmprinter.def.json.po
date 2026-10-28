@@ -1223,12 +1223,12 @@ msgstr "Parfum G-Code"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "Commandes G-Code à exécuter tout à la fin, séparées par \n"
+msgstr "Commandes G-Code à exécuter tout à la fin, séparées par \\ n"
 "."
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "Commandes G-Code à exécuter au tout début, séparées par \n"
+msgstr "Commandes G-Code à exécuter au tout début, séparées par \\ n"
 "."
 
 msgctxt "material_guid description"
