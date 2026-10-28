@@ -112,7 +112,7 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "&Rétablir"
 
-msgctxt "@title:menu menubar:file"
+msgctxt "@action:inmenu menubar:file"
 msgid "&Save Project..."
 msgstr "&Enregistrer le projet..."
 
@@ -142,7 +142,7 @@ msgstr "*Vous devez redémarrer l'application pour appliquer ces changements."
 
 msgctxt "@text"
 msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr "- Ajoutez des profils de matériaux et des plug-ins à partir de la Marketplace- Sauvegardez et synchronisez vos profils de matériaux et vos plug-ins- Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
+msgstr "- Ajoutez des profils de matériaux et des plug-ins à partir de la Marketplace\n- Sauvegardez et synchronisez vos profils de matériaux et vos plug-ins\n- Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
 
 msgctxt "@heading"
 msgid "-- incomplete --"
@@ -210,23 +210,23 @@ msgstr "<li>Version OpenGL: {version}</li>"
 
 msgctxt "@label crash message"
 msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
-msgstr "<p><b>Une erreur fatale est survenue dans Cura. Veuillez nous envoyer ce rapport d'incident pour résoudre le problème</p></b>"
-"            <p>Veuillez utiliser le bouton « Envoyer rapport » pour publier automatiquement un rapport d'erreur sur nos serveurs</p>"
+msgstr "<p><b>Une erreur fatale est survenue dans Cura. Veuillez nous envoyer ce rapport d'incident pour résoudre le problème</p></b>\n"
+"            <p>Veuillez utiliser le bouton « Envoyer rapport » pour publier automatiquement un rapport d'erreur sur nos serveurs</p>\n"
 "        "
 
 msgctxt "@label crash message"
 msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
-msgstr "<p><b>Oups, un problème est survenu dans UltiMaker Cura.</p></b>"
-"                    <p>Une erreur irrécupérable est survenue lors du démarrage. Elle peut avoir été causée par des fichiers de configuration incorrects. Nous vous suggérons de sauvegarder et de réinitialiser votre configuration.</p>"
-"                    <p>Les sauvegardes se trouvent dans le dossier de configuration.</p>"
-"                    <p>Veuillez nous envoyer ce rapport d'incident pour que nous puissions résoudre le problème.</p>"
+msgstr "<p><b>Oups, un problème est survenu dans UltiMaker Cura.</p></b>\n"
+"                    <p>Une erreur irrécupérable est survenue lors du démarrage. Elle peut avoir été causée par des fichiers de configuration incorrects. Nous vous suggérons de sauvegarder et de réinitialiser votre configuration.</p>\n"
+"                    <p>Les sauvegardes se trouvent dans le dossier de configuration.</p>\n"
+"                    <p>Veuillez nous envoyer ce rapport d'incident pour que nous puissions résoudre le problème.</p>\n"
 "                "
 
 msgctxt "@info:status"
 msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>Un ou plusieurs modèles 3D peuvent ne pas s'imprimer de manière optimale en raison de la taille du modèle et de la configuration matérielle:</p>"
-"<p>{model_names}</p>"
-"<p>Découvrez comment optimiser la qualité et la fiabilité de l'impression.</p>"
+msgstr "<p>Un ou plusieurs modèles 3D peuvent ne pas s'imprimer de manière optimale en raison de la taille du modèle et de la configuration matérielle:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Découvrez comment optimiser la qualité et la fiabilité de l'impression.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">Consultez le guide de qualité d'impression</a></p>"
 
 msgctxt "@label"
@@ -781,7 +781,7 @@ msgstr "Vérifie les modèles et la configuration de l'impression pour déceler 
 
 msgctxt "@label"
 msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr "Choisit entre les stratégies de support disponibles. Le support « Normal » créé une structure de support directement sous les zones en porte-à-faux et fait descendre les supports directement vers le bas. Le support « Arborescent » génère une structure de branches depuis le plateau tout autour du modèle qui vont supporter les portes-à-faux sans toucher le modèle ailleur que les zones supportées."
+msgstr "Choisit entre les stratégies de support disponibles.\n\nLe support « Normal » créé une structure de support directement sous les zones en porte-à-faux et fait descendre les supports directement vers le bas.\n\nLe support « Arborescent » génère une structure de branches depuis le plateau tout autour du modèle qui vont supporter les portes-à-faux sans toucher le modèle ailleur que les zones supportées."
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
@@ -1025,17 +1025,17 @@ msgstr "Impossible de transférer les données à l'imprimante."
 
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."
-msgstr "Impossible de démarrer EnginePlugin : {self._plugin_id}"
+msgstr "Impossible de démarrer EnginePlugin : {self._plugin_id}\n"
 "Il n'y a pas d'autorisation pour exécuter le processus."
 
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"
-msgstr "Impossible de démarrer EnginePlugin : {self._plugin_id}"
+msgstr "Impossible de démarrer EnginePlugin : {self._plugin_id}\n"
 "Le système d'exploitation le bloque (antivirus ?)"
 
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"
-msgstr "Impossible de démarrer EnginePlugin : {self._plugin_id}"
+msgstr "Impossible de démarrer EnginePlugin : {self._plugin_id}\n"
 "La ressource est temporairement indisponible"
 
 msgctxt "@title:window"
@@ -1128,7 +1128,7 @@ msgstr "Cura a détecté des profils de matériau qui ne sont pas encore install
 
 msgctxt "@info:credit"
 msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
-msgstr "Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker."
+msgstr "Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker.\n"
 "Cura est fier d'utiliser les projets open source suivants :"
 
 msgctxt "@label"
@@ -1762,6 +1762,10 @@ msgstr "Pour les lithophanies, les pixels foncés doivent correspondre à des em
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "Forcer l'affichage de la couche en mode de compatibilité (redémarrage requis)"
+
+msgctxt "@action:inmenu menubar:file"
+msgid "From Disk"
+msgstr "À partir du disque"
 
 msgid "FreeCAD trackpad"
 msgstr "Pavé tactile de FreeCAD"
@@ -3004,9 +3008,9 @@ msgstr "Veuillez donner les permissions requises lors de l'autorisation de cette
 
 msgctxt "@info"
 msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
-msgstr "Assurez-vous que votre imprimante est connectée:"
-"- Vérifiez si l'imprimante est sous tension."
-"- Vérifiez si l'imprimante est connectée au réseau."
+msgstr "Assurez-vous que votre imprimante est connectée:\n"
+"- Vérifiez si l'imprimante est sous tension.\n"
+"- Vérifiez si l'imprimante est connectée au réseau.\n"
 "- Vérifiez si vous êtes connecté pour découvrir les imprimantes connectées au cloud."
 
 msgctxt "@text"
@@ -3035,9 +3039,9 @@ msgstr "Supprimez l'imprimante"
 
 msgctxt "@info:status"
 msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
-msgstr "Veuillez vérifier les paramètres et si vos modèles:"
-"- S'intègrent dans le volume de fabrication"
-"- Sont affectés à un extrudeur activé"
+msgstr "Veuillez vérifier les paramètres et si vos modèles:\n"
+"- S'intègrent dans le volume de fabrication\n"
+"- Sont affectés à un extrudeur activé\n"
 "- N sont pas tous définis comme des mailles de modificateur"
 
 msgctxt "@label"
@@ -4134,7 +4138,7 @@ msgstr "Vue solide"
 
 msgctxt "@label"
 msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
-msgstr "Certains paramètres masqués utilisent des valeurs différentes de leur valeur normalement calculée."
+msgstr "Certains paramètres masqués utilisent des valeurs différentes de leur valeur normalement calculée.\n\n"
 "Cliquez pour rendre ces paramètres visibles."
 
 msgctxt "@info:status"
@@ -4151,7 +4155,7 @@ msgstr "Certaines valeurs de paramètres définies dans <b>%1</b> ont été remp
 
 msgctxt "@tooltip"
 msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
-msgstr "Certaines valeurs de paramètre / forçage sont différentes des valeurs enregistrées dans le profil. "
+msgstr "Certaines valeurs de paramètre / forçage sont différentes des valeurs enregistrées dans le profil.\n\n"
 "Cliquez pour ouvrir le gestionnaire de profils."
 
 msgctxt "@action:label"
@@ -4504,9 +4508,9 @@ msgstr "Buse insérée dans cet extrudeur."
 
 msgctxt "@label"
 msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr "Motif de remplissage de la pièce :"
-"Pour l'impression rapide de modèles 3D non fonctionnels, choisissez un remplissage de type ligne, zigzag ou éclair."
-"Pour les parties fonctionnelles soumises à de faibles contraintes, nous recommandons un remplissage de type grille, triangle ou trihexagonal."
+msgstr "Motif de remplissage de la pièce :\n\n"
+"Pour l'impression rapide de modèles 3D non fonctionnels, choisissez un remplissage de type ligne, zigzag ou éclair.\n\n"
+"Pour les parties fonctionnelles soumises à de faibles contraintes, nous recommandons un remplissage de type grille, triangle ou trihexagonal.\n\n"
 "Pour les impressions 3D fonctionnelles qui nécessitent une résistance élevée dans plusieurs directions, utilisez un remplissage de type cubique, subdivision cubique, quart cubique, octaédrique ou gyroïde."
 
 msgctxt "@info:tooltip"
@@ -4677,7 +4681,7 @@ msgstr "Ce projet comporte des contenus ou des plugins qui ne sont pas installé
 
 msgctxt "@label"
 msgid "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."
-msgstr "Ce paramètre possède une valeur qui est différente du profil."
+msgstr "Ce paramètre possède une valeur qui est différente du profil.\n\n"
 "Cliquez pour restaurer la valeur du profil."
 
 msgctxt "@item:tooltip"
@@ -4696,7 +4700,7 @@ msgstr "Ce paramètre est toujours partagé par toutes les extrudeuses. Le modif
 
 msgctxt "@label"
 msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
-msgstr "Ce paramètre est normalement calculé mais il possède actuellement une valeur absolue définie."
+msgstr "Ce paramètre est normalement calculé mais il possède actuellement une valeur absolue définie.\n\n"
 "Cliquez pour restaurer la valeur calculée."
 
 msgctxt "@label"
@@ -4893,7 +4897,7 @@ msgstr "L'exécutable du serveur EnginePlugin local est introuvable pour : {sel
 
 msgctxt "@info:plugin_failed"
 msgid "Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."
-msgstr "L'EnginePlugin en cours d'exécution ne peut pas être arrêté : {self._plugin_id}"
+msgstr "L'EnginePlugin en cours d'exécution ne peut pas être arrêté : {self._plugin_id}\n"
 "L'accès est refusé."
 
 msgctxt "@info"
@@ -5478,7 +5482,7 @@ msgstr "Oui"
 
 msgctxt "@label"
 msgid "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgstr "Vous êtes sur le point de supprimer toutes les imprimantes de Cura. Cette action est irréversible."
+msgstr "Vous êtes sur le point de supprimer toutes les imprimantes de Cura. Cette action est irréversible.\n"
 "Voulez-vous vraiment continuer?"
 
 msgctxt "@label"
@@ -5535,7 +5539,7 @@ msgstr "Votre nouvelle imprimante apparaîtra automatiquement dans Cura"
 
 msgctxt "@info:status"
 msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr "Votre imprimante <b>{printer_name} </b> pourrait être connectée via le cloud."
+msgstr "Votre imprimante <b>{printer_name} </b> pourrait être connectée via le cloud.\n"
 " Gérez votre file d'attente d'impression et surveillez vos impressions depuis n'importe où en connectant votre imprimante à Digital Factory"
 
 msgctxt "@label"
@@ -5948,7 +5952,7 @@ msgstr "Ouvrir le fichier journal Cura"
 
 msgctxt "@info:status"
 msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
-msgstr "Veuillez vérifier les paramètres et si vos modèles:- S'intègrent dans le volume de fabrication- N sont pas tous définis comme des mailles de modificateur"
+msgstr "Veuillez vérifier les paramètres et si vos modèles:\n- S'intègrent dans le volume de fabrication\n- N sont pas tous définis comme des mailles de modificateur"
 
 msgctxt "@label"
 msgid "Print Time Estimation Factor"

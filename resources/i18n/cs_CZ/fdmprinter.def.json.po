@@ -1448,7 +1448,7 @@ msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
 msgstr ""
-"Příkazy G-kódu, které mají být provedeny na samém konci - oddělené\n"
+"Příkazy G-kódu, které mají být provedeny na samém konci - oddělené \\ n"
 "."
 
 msgctxt "material_guid description"

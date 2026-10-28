@@ -10,7 +10,7 @@ import QtQuick.Window 2.1
 import Cura 1.1 as Cura
 import UM 1.6 as UM
 
-UM.Window
+UM.Dialog
 {
     id: materialsSyncDialog
     property variant catalog: UM.I18nCatalog { name: "cura" }
@@ -20,7 +20,6 @@ UM.Window
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
     height: minimumHeight
-    modality: Qt.ApplicationModal
     color: UM.Theme.getColor("main_background")
 
     property variant syncModel
@@ -203,21 +202,21 @@ UM.Window
                         State
                         {
                             name: "idle"
-                            when: typeof syncModel === "undefined" || syncModel.exportUploadStatus == "idle" || syncModel.exportUploadStatus == "uploading"
+                            when: syncModel.exportUploadStatus == "idle" || syncModel.exportUploadStatus == "uploading"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "The following printers will receive the new material profiles:") }
                             PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.NEUTRAL; width: 0 }
                         },
                         State
                         {
                             name: "error"
-                            when: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error"
+                            when: syncModel.exportUploadStatus == "error"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "Something went wrong when sending the materials to the printers.") }
                             PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.ERROR }
                         },
                         State
                         {
                             name: "success"
-                            when: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "success"
+                            when: syncModel.exportUploadStatus == "success"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "Material profiles successfully synced with the following printers:") }
                             PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.POSITIVE }
                         }
@@ -256,7 +255,7 @@ UM.Window
                         id: troubleshootingLink
                         anchors.right: parent.right
                         text: catalog.i18nc("@button", "Troubleshooting")
-                        visible: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error"
+                        visible: syncModel.exportUploadStatus == "error"
                         iconSource: UM.Theme.getIcon("LinkExternal")
                         onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667337567839")
                     }
@@ -381,7 +380,7 @@ UM.Window
                     {
                         width: printerList.width - printerListScrollBar.width
                         height: childrenRect.height + UM.Theme.getSize("default_margin").height
-                        visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0 && typeof syncModel !== "undefined" && syncModel.exportUploadStatus === "idle"
+                        visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0 && syncModel.exportUploadStatus === "idle"
                         Rectangle
                         {
                             anchors.top: parent.top
@@ -420,7 +419,7 @@ UM.Window
                                     Layout.fillWidth: true
                                     Layout.alignment: Qt.AlignVCenter
                                     text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
-                                      + "\n"
+                                      + "<br/>"
                                       + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
                                     font: UM.Theme.getFont("medium")
                                     elide: Text.ElideRight
@@ -508,11 +507,11 @@ UM.Window
                         anchors.right: parent.right
                         text:
                         {
-                            if(typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error")
+                            if(syncModel.exportUploadStatus == "error")
                             {
                                 return catalog.i18nc("@button", "Try again");
                             }
-                            if(typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "success")
+                            if(syncModel.exportUploadStatus == "success")
                             {
                                 return catalog.i18nc("@button", "Done");
                             }
@@ -520,7 +519,7 @@ UM.Window
                         }
                         onClicked:
                         {
-                            if(typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "success")
+                            if(syncModel.exportUploadStatus == "success")
                             {
                                 materialsSyncDialog.close();
                             }
@@ -529,14 +528,7 @@ UM.Window
                                 syncModel.exportUpload();
                             }
                         }
-                        visible:
-                        {
-                            if(!syncModel) //When the dialog is created, this is not set yet.
-                            {
-                                return true;
-                            }
-                            return syncModel.exportUploadStatus != "uploading";
-                        }
+                        visible: syncModel.exportUploadStatus != "uploading"
                     }
                     Item
                     {
@@ -716,9 +708,9 @@ UM.Window
                     {
                         Layout.alignment: Qt.AlignCenter
                         Layout.fillWidth: true
-                        text: "1. " + catalog.i18nc("@text", "Click the export material archive button.")
-                          + "\n2. " + catalog.i18nc("@text", "Save the .umm file on a USB stick.")
-                          + "\n3. " + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.")
+                        text: "<ol><li>" + catalog.i18nc("@text", "Click the export material archive button.") + "</li>"
+                          + "<li>" + catalog.i18nc("@text", "Save the .umm file on a USB stick.") + "</li>"
+                          + "<li>" + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.") + "</li></ol>"
                         font: UM.Theme.getFont("medium")
                     }
                 }
@@ -750,17 +742,61 @@ UM.Window
 
                         property bool hasExported: false
                         text: materialsSyncDialog.hasExportedUsb ? catalog.i18nc("@button", "Done") : catalog.i18nc("@button", "Export material archive")
+                        enabled: !syncModel.isExportingToFile
+                        visible: enabled
                         onClicked:
                         {
                             if(!materialsSyncDialog.hasExportedUsb)
                             {
-                                exportUsbDialog.currentFolder = `${syncModel.getPreferredExportAllPath()}/materials.umm`;
+                                const exportFolder = syncModel.getPreferredExportAllPath();
+                                exportUsbDialog.currentFolder = exportFolder;
+                                exportUsbDialog.currentFile = `${exportFolder}/materials.umm`;
                                 exportUsbDialog.open();
                             }
                             else
                             {
                                 materialsSyncDialog.close();
                             }
+                        }
+                    }
+                    Item
+                    {
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width * 1.5
+                        width: childrenRect.width
+                        height: exportUsbButton.height
+
+                        visible: !exportUsbButton.visible
+
+                        UM.ColorImage
+                        {
+                            id: exportingIcon
+                            height: UM.Theme.getSize("action_button_icon").height
+                            width: height
+                            anchors.verticalCenter: exportingLabel.verticalCenter
+
+                            source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                            color: UM.Theme.getColor("primary")
+
+                            RotationAnimator
+                            {
+                                target: exportingIcon
+                                from: 0
+                                to: 360
+                                duration: 1000
+                                loops: Animation.Infinite
+                                running: true
+                            }
+                        }
+                        UM.Label
+                        {
+                            id: exportingLabel
+                            anchors.left: exportingIcon.right
+                            anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+
+                            text: catalog.i18nc("@info:title", "Saving")
+                            color: UM.Theme.getColor("primary")
+                            font: UM.Theme.getFont("medium")
                         }
                     }
                 }
@@ -786,12 +822,26 @@ UM.Window
     {
         title: catalog.i18nc("@title:window", "Export All Materials")
         nameFilters: ["Material archives (*.umm)", "All files (*)"]
+        defaultSuffix: "umm"
         fileMode: FileDialog.SaveFile
+        parentWindow: materialsSyncDialog  // Without a parent, the native dialog is blocked by this application-modal window.
         onAccepted:
         {
-            syncModel.exportAll(selectedFile);
-            CuraApplication.setDefaultPath("dialog_material_path", folder);
-            materialsSyncDialog.hasExportedUsb = true;
+            CuraApplication.setDefaultPath("dialog_material_path", currentFolder);
+            syncModel.exportAllToFile(selectedFile);
+        }
+    }
+
+    Connections
+    {
+        target: syncModel
+        function onExportToFileFinished(success)
+        {
+            if (success)
+            {
+                materialsSyncDialog.hasExportedUsb = true;
+                materialsSyncDialog.close();
+            }
         }
     }
 }

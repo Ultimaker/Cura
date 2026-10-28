@@ -90,7 +90,7 @@ msgstr "Gli strati adattivi calcolano l’altezza degli strati in base alla form
 
 msgctxt "infill_wall_line_count description"
 msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "Aggiunge pareti supplementari intorno alla zona di riempimento. Queste pareti possono ridurre l’abbassamento delle linee del rivestimento esterno superiore/inferiore, pertanto saranno necessari meno strati di rivestimento esterno superiore/inferiore per ottenere la stessa qualità al costo del materiale supplementare."
+msgstr "Aggiunge pareti supplementari intorno alla zona di riempimento. Queste pareti possono ridurre l’abbassamento delle linee del rivestimento esterno superiore/inferiore, pertanto saranno necessari meno strati di rivestimento esterno superiore/inferiore per ottenere la stessa qualità al costo del materiale supplementare.\n"
 "Questa funzione può essere abbinata a Collega poligoni riempimento per collegare tutto il riempimento in un unico percorso di estrusione senza necessità di avanzamenti o arretramenti, se configurata correttamente."
 
 msgctxt "platform_adhesion description"
@@ -1223,12 +1223,12 @@ msgstr "Versione codice G"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "I comandi codice G da eseguire alla fine, separati da "
+msgstr "I comandi codice G da eseguire alla fine, separati da \\ n"
 "."
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "I comandi codice G da eseguire all’avvio, separati da "
+msgstr "I comandi codice G da eseguire all’avvio, separati da \\ n"
 "."
 
 msgctxt "material_guid description"
@@ -1993,7 +1993,7 @@ msgstr "Rende la posizione di innesco estrusore assoluta anziché relativa rispe
 
 msgctxt "layer_0_z_overlap description"
 msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
-msgstr "Il primo e il secondo strato del modello vanno sovrapposti nella direzione Z per compensare il filamento perso nello spazio vuoto. Tutti i modelli al di sopra del primo strato saranno spostati verso il basso da questa quantità."
+msgstr "Il primo e il secondo strato del modello vanno sovrapposti nella direzione Z per compensare il filamento perso nello spazio vuoto. Tutti i modelli al di sopra del primo strato saranno spostati verso il basso da questa quantità.\n"
 "Si può notare che a volte il secondo strato viene stampato al di sotto dello strato iniziale a causa di questa impostazione. Si tratta di un comportamento previsto."
 
 msgctxt "meshfix description"
@@ -4182,7 +4182,7 @@ msgstr "Distanza orizzontale tra la linea del primo brim e il profilo del primo 
 
 msgctxt "skirt_gap description"
 msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "Indica la distanza orizzontale tra lo skirt ed il primo strato della stampa."
+msgstr "Indica la distanza orizzontale tra lo skirt ed il primo strato della stampa.\n"
 "Questa è la distanza minima. Più linee di skirt aumenteranno tale distanza."
 
 msgctxt "lightning_infill_straightening_angle description"

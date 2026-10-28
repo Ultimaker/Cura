@@ -192,7 +192,7 @@ ListView
                         PropertyChanges
                         {
                             target: loadMoreLabel
-                            text: catalog.i18nc("@button", "Failed to load packages:") + " " + packages.model.errorMessage + "\n" + catalog.i18nc("@button", "Retry?")
+                            text: catalog.i18nc("@button", "Failed to load packages:") + " " + packages.model.errorMessage + "<br/>" + catalog.i18nc("@button", "Retry?")
                         }
                     },
                     State
