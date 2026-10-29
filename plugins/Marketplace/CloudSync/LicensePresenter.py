@@ -134,6 +134,3 @@ class LicensePresenter(QObject):
             if self._dialog:
                 self._dialog.close()
             self.licenseAnswers.emit(self._package_models)
-
-
-

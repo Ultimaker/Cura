@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-from typing import Optional
 
 from PyQt6.QtCore import QObject
 
@@ -24,14 +23,13 @@ class DiscrepanciesPresenter(QObject):
 
         self._app = app
         self._package_manager = app.getPackageManager()
-        self._dialog: Optional[QObject] = None
         self._compatibility_dialog_path = "resources/qml/CompatibilityDialog.qml"
 
     def present(self, plugin_path: str, model: SubscribedPackagesModel) -> None:
         path = os.path.join(plugin_path, self._compatibility_dialog_path)
-        self._dialog = self._app.createQmlComponent(path, {"subscribedPackagesModel": model, "handler": self})
-        assert self._dialog
-        self._dialog.accepted.connect(lambda: self._onConfirmClicked(model))
+        dialog = self._app.createQmlSubWindow(path, {"subscribedPackagesModel": model, "handler": self})
+        assert dialog
+        dialog.accepted.connect(lambda: self._onConfirmClicked(model))
 
     def _onConfirmClicked(self, model: SubscribedPackagesModel) -> None:
         # If there are incompatible packages - automatically dismiss them

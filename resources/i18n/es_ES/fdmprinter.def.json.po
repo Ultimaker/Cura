@@ -90,8 +90,7 @@ msgstr "Las capas de adaptación calculan las alturas de las capas dependiendo d
 
 msgctxt "infill_wall_line_count description"
 msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "Agregar paredes adicionales alrededor del área de relleno. Estas paredes pueden hacer que las líneas del forro superior/inferior se aflojen menos, lo que significa que necesitaría menos capas de forro superior/inferior para obtener la misma calidad utilizando algo más de material."
-"Puede utilizar esta función junto a la de Conectar polígonos de relleno para conectar todo el relleno en una única trayectoria de extrusión sin necesidad de desplazamientos ni retracciones si se configura correctamente."
+msgstr "Agregar paredes adicionales alrededor del área de relleno. Estas paredes pueden hacer que las líneas del forro superior/inferior se aflojen menos, lo que significa que necesitaría menos capas de forro superior/inferior para obtener la misma calidad utilizando algo más de material.\nPuede utilizar esta función junto a la de Conectar polígonos de relleno para conectar todo el relleno en una única trayectoria de extrusión sin necesidad de desplazamientos ni retracciones si se configura correctamente."
 
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
@@ -1223,13 +1222,11 @@ msgstr "Tipo de GCode"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "Los comandos de GCode que se ejecutarán justo al final separados por -"
-"."
+msgstr "Los comandos de GCode que se ejecutarán justo al final - separados por \\n."
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "Los comandos de GCode que se ejecutarán justo al inicio separados por - "
-"."
+msgstr "Los comandos de GCode que se ejecutarán justo al inicio - separados por \\n."
 
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
@@ -1993,8 +1990,7 @@ msgstr "La posición de preparación del extrusor se considera absoluta, en luga
 
 msgctxt "layer_0_z_overlap description"
 msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
-msgstr "Haga que la primera y la segunda capa del modelo se solapen en la dirección Z para compensar el filamento perdido en el entrehierro. Todos los modelos situados por encima de la primera capa del modelo se desplazarán hacia abajo en esta medida."
-"Cabe señalar que a veces la segunda capa se imprime por debajo de la capa inicial debido a este ajuste. Este es el comportamiento previsto."
+msgstr "Haga que la primera y la segunda capa del modelo se solapen en la dirección Z para compensar el filamento perdido en el entrehierro. Todos los modelos situados por encima de la primera capa del modelo se desplazarán hacia abajo en esta medida.\nCabe señalar que a veces la segunda capa se imprime por debajo de la capa inicial debido a este ajuste. Este es el comportamiento previsto."
 
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
@@ -4182,8 +4178,7 @@ msgstr "La distancia horizontal entre la primera línea de borde y el contorno d
 
 msgctxt "skirt_gap description"
 msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "La distancia horizontal entre la falda y la primera capa de la impresión."
-"Se trata de la distancia mínima. Múltiples líneas de falda se extenderán hacia el exterior a partir de esta distancia."
+msgstr "La distancia horizontal entre la falda y la primera capa de la impresión.\nSe trata de la distancia mínima. Múltiples líneas de falda se extenderán hacia el exterior a partir de esta distancia."
 
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."

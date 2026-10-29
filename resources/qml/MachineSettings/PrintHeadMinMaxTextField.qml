@@ -67,28 +67,30 @@ NumericTextFieldWithUnit
 
     editingFinishedFunction: function()
     {
-        var polygon = JSON.parse(propertyProvider.properties.value)
         var newValue = parseFloat(valueText.replace(',', '.'))
+        if (newValue != axisValue)
+        {
+            var polygon = JSON.parse(propertyProvider.properties.value)
 
-        if (axisName == "x")  // x min/x max
-        {
-            var start_i1 = (axisMinOrMax == "min") ? 0 : 2
-            polygon[start_i1][0] = newValue
-            polygon[start_i1 + 1][0] = newValue
+            if (axisName == "x")  // x min/x max
+            {
+                var start_i1 = (axisMinOrMax == "min") ? 0 : 2
+                polygon[start_i1][0] = newValue
+                polygon[start_i1 + 1][0] = newValue
+            }
+            else  // y min/y max
+            {
+                var start_i1 = (axisMinOrMax == "min") ? 1 : 0
+                polygon[start_i1][1] = newValue
+                polygon[start_i1 + 2][1] = newValue
+            }
+            var polygon_string = JSON.stringify(polygon)
+            if (polygon_string != propertyProvider.properties.value)
+            {
+                propertyProvider.setPropertyValue("value", polygon_string)
+                forceUpdateOnChangeFunction()
+            }
         }
-        else  // y min/y max
-        {
-            var start_i1 = (axisMinOrMax == "min") ? 1 : 0
-            polygon[start_i1][1] = newValue
-            polygon[start_i1 + 2][1] = newValue
-        }
-        var polygon_string = JSON.stringify(polygon)
-        if (polygon_string != propertyProvider.properties.value)
-        {
-            propertyProvider.setPropertyValue("value", polygon_string)
-            forceUpdateOnChangeFunction()
-        }
-
         // Recreate the binding to show the correct value.
         valueText = Qt.binding(function() { return axisValue })
     }

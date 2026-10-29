@@ -42,7 +42,7 @@
         "supports_usb_connection": false,
         "variants_name": "Print Core",
         "variants_name_has_translation": true,
-        "weight": -2
+        "weight": 0
     },
     "overrides":
     {

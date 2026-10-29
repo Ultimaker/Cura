@@ -60,7 +60,7 @@ RecommendedSettingSection
                 width: parent.width
                 settingName: "infill_pattern"
                 updateAllExtruders: true
-                hideOptions: ["ultimaker_factor4"].includes(Cura.MachineManager.activeMachine.definition.id) ? ["grid", "triangles", "cubic"] : []
+                hideOptions: (Cura.MachineManager.activeMachine && ["ultimaker_factor4"].includes(Cura.MachineManager.activeMachine.definition.id)) ? ["grid", "triangles", "cubic"] : []
             }
         },
         RecommendedSettingItem
