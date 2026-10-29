@@ -43,6 +43,9 @@ jobs:
 
           git fetch origin "refs/heads/$RELEASE_BRANCH:refs/remotes/origin/release-to-merge"
 
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           set +e
           git merge --no-ff --no-commit origin/release-to-merge
           merge_status=$?
