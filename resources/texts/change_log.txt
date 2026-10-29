@@ -1,7 +1,5 @@
 [5.14]
 
-[5.14]
-
 * New features and improvements:
 - Paint-on-Support: Define custom support areas manually by painting regions to enforce, avoid, or auto-generate supports using an interactive overhang angle slider
 - Paint Surface: Select entire contiguous faces or curved features in a single click to apply paint on support, contributed by @wawanbreton and @HellAholic
