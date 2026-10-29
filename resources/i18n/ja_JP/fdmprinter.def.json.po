@@ -6189,8 +6189,8 @@ msgid "Walls"
 msgstr "ウォール"
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
-msgstr "この角度を超えるオーバーハングとなるウォールは、オーバーハングの設定を用いてプリントされます。値が90の場合、どのウォールもオーバーハングとして扱われません。サポートにより支えられているオーバーハングについてもオーバーハングとして扱われません。さらに、半分未満がオーバーハングとなっているラインもまたオーバーハングとして扱われません。"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "この角度を超えるオーバーハングとなるウォールは、オーバーハングの設定を用いてプリントされます。値が90の場合、どのウォールもオーバーハングとして扱われません。さらに、半分未満がオーバーハングとなっているラインもまたオーバーハングとして扱われません。"
 
 msgctxt "minimum_infill_line_length description"
 msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
@@ -6803,10 +6803,6 @@ msgstr "移動経路"
 #~ msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
 #~ msgid "Walls and Lines"
 #~ msgstr "ウォールとライン"
-
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "この角度以上に張り出した壁は、オーバーハング壁設定を使用してプリントされます。値が90の場合は、オーバーハング壁として処理されません。サポートによってサポートされているオーバーハングも、オーバーハングとして処理されません。"
 
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."

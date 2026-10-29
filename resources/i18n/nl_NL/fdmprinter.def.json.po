@@ -6183,8 +6183,8 @@ msgid "Walls"
 msgstr "Wanden"
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
-msgstr "Wanden die meer oversteken dan deze hoek worden afgedrukt met behulp van de instellingen voor overhangende wanden. Als de waarde 90 is, worden er geen wanden behandeld als overhangend. Overhangen die ondersteund worden door ondersteuning worden ook niet behandeld als overhang. Daarnaast wordt elke lijn die voor minder dan de helft overhangt ook niet behandeld als overhang."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "Wanden die meer oversteken dan deze hoek worden afgedrukt met behulp van de instellingen voor overhangende wanden. Als de waarde 90 is, worden er geen wanden behandeld als overhangend. Daarnaast wordt elke lijn die voor minder dan de helft overhangt ook niet behandeld als overhang."
 
 msgctxt "minimum_infill_line_length description"
 msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
@@ -6793,10 +6793,6 @@ msgstr "beweging"
 #~ msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
 #~ msgid "Walls and Lines"
 #~ msgstr "Wanden en lijnen"
-
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "Wanden die overhangen in een hoek groter dan deze waarde, worden geprint met instellingen voor overhangende wanden. Wanneer de waarde 90 is, wordt een wand niet als een overhangende wand gezien. Een overhang die wordt ondersteund door ondersteuning wordt ook niet als overhang gezien."
 
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."

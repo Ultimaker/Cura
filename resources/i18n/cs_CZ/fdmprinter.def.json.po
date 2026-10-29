@@ -6194,7 +6194,7 @@ msgid "Walls"
 msgstr "Stěny"
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
 msgstr ""
 
 msgctxt "minimum_infill_line_length description"
@@ -6792,10 +6792,6 @@ msgstr "cestování"
 #~ msgctxt "support_brim_width description"
 #~ msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 #~ msgstr "Šířka okraje pro tisk pod podpěrou. Větší okraj zvyšuje přilnavost ke podložce za cenu nějakého dalšího materiálu."
-
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "Stěny, které přesahují více než tento úhel, budou vytištěny pomocí nastavení převislých stěn. Pokud je hodnota 90, nebudou se žádné stěny považovat za převislé. Převis, který je podporován podporou, nebude považován ani za převis."
 
 #~ msgctxt "support_interface_skip_height description"
 #~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
