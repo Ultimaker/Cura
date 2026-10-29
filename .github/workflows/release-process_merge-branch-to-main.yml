@@ -80,17 +80,13 @@ jobs:
             done
           fi
 
-      - name: Commit and push merge
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: Merge ${{ inputs.release_branch }} into default branch
+          if git rev-parse -q --verify MERGE_HEAD >/dev/null; then
+            git commit -m "Merge $RELEASE_BRANCH into $TARGET_BRANCH"
+          else
+            echo "Release branch is already up to date with $TARGET_BRANCH."
+          fi
 
-      - name: Report merge success
-        env:
-          RELEASE_BRANCH: ${{ inputs.release_branch }}
-          REPOSITORY: ${{ matrix.repository }}
-        run: |
-          TARGET_BRANCH="$(git branch --show-current)"
+          git push origin "HEAD:$TARGET_BRANCH"
           {
             echo "### Merge succeeded for $REPOSITORY"
             echo "Merged \`$RELEASE_BRANCH\` into \`$TARGET_BRANCH\` and pushed the result."
