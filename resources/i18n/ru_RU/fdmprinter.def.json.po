@@ -6183,8 +6183,8 @@ msgid "Walls"
 msgstr "Стенки"
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
-msgstr "Стены, которые нависают больше, чем на этот угол, будут напечатаны с использованием настроек для нависающих стен. Если значение равно 90, ни одна стенка не будет считаться нависающей. Нависание, поддерживаемое опорой, также не будет считаться нависанием. Кроме того, любая линия, которая нависает меньше, чем на половину, также не будет считаться нависанием."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "Стены, которые нависают больше, чем на этот угол, будут напечатаны с использованием настроек для нависающих стен. Если значение равно 90, ни одна стенка не будет считаться нависающей. Кроме того, любая линия, которая нависает меньше, чем на половину, также не будет считаться нависанием."
 
 msgctxt "minimum_infill_line_length description"
 msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
