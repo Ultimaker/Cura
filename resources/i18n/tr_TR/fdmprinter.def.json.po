@@ -6794,10 +6794,6 @@ msgstr "hareket"
 #~ msgid "Walls and Lines"
 #~ msgstr "Duvarlar ve Hatlar"
 
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "Bu açıdan daha yüksek çıkıntıya sahip duvarlar çıkıntılı duvar ayarları kullanılarak basılacaktır. Değer 90 ise hiçbir duvarda çıkıntı olmadığı varsayılacaktır. Destek ile desteklenen çıkıntılar da çıkıntı olarak değerlendirilmeyecektir."
-
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
 #~ msgstr "Etkin olduğunda, z dikişi koordinatları her parçanın merkezine göre hizalıdır. Devre dışı olduğunda, koordinatlar yapı levhası üzerinde mutlak bir pozisyonu belirtir."

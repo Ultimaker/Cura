@@ -6794,10 +6794,6 @@ msgstr "beweging"
 #~ msgid "Walls and Lines"
 #~ msgstr "Wanden en lijnen"
 
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "Wanden die overhangen in een hoek groter dan deze waarde, worden geprint met instellingen voor overhangende wanden. Wanneer de waarde 90 is, wordt een wand niet als een overhangende wand gezien. Een overhang die wordt ondersteund door ondersteuning wordt ook niet als overhang gezien."
-
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
 #~ msgstr "Als deze optie ingeschakeld is, zijn de Z-naadcoördinaten relatief ten opzichte van het midden van elk deel. Als de optie uitgeschakeld is, staan de coördinaten voor een absolute positie op het platform."

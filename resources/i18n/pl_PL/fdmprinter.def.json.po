@@ -6754,10 +6754,6 @@ msgstr "ruch jałowy"
 #~ msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 #~ msgstr "Szerokość obrysu, który ma być wydrukowany pod podporami. Szerszy obrys to większa przyczepność do stołu, kosztem zużytego materiału."
 
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "Ściany, które wystają więcej niż zadany kont, zostaną wydrukowane przy użyciu ustawień wystających ścian. Gdy wartość wynosi 90, żadne ściany nie będą traktowane jako wystające. Zwis, który jest obsługiwany przez podpory, nie będzie również traktowany jako zwis."
-
 #~ msgctxt "support_interface_skip_height description"
 #~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
 #~ msgstr "Sprawdzając, czy model znajduje się powyżej czy poniżej podpory, wykonaj stopnie o danej wysokości. Niższe wartości będą cięte wolniej, podczas gdy wyższe wartości mogą powodować drukowanie zwykłej podpory w niektórych miejscach, w których powinno istnieć połączenie."

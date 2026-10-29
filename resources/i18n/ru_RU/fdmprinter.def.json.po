@@ -6794,10 +6794,6 @@ msgstr "перемещение"
 #~ msgid "Walls and Lines"
 #~ msgstr "Стенки и линии"
 
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "Стенки, выступающие под углом больше указанного, будут напечатаны с использованием настроек выступающей стенки. Если значение составляет 90, стенки не считаются выступающими. Выступающие элементы, для которых имеется поддержка, также не считаются выступающими."
-
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
 #~ msgstr "Когда включено, координаты Z шва привязаны к центру каждой части. Когда отключено, координаты определяются от абсолютной позиции на столе."

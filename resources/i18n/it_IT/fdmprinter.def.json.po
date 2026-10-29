@@ -5301,10 +5301,6 @@ msgctxt "shell label"
 msgid "Walls"
 msgstr "Pareti"
 
-msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
-msgstr "Le pareti con uno sbalzo superiore a quest'angolo saranno stampate con le impostazioni per le pareti a sbalzo. Se il valore è 90, nessuna parete sarà trattata come parete a sbalzo."
-
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
 msgstr "Se questa opzione è abilitata, i percorsi utensile vengono corretti per le stampanti con pianificatori del movimento regolare. I piccoli movimenti che deviano dalla direzione del percorso utensile generale vengono risistemati per migliorare i movimenti del fluido."

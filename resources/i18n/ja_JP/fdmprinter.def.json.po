@@ -6804,10 +6804,6 @@ msgstr "移動経路"
 #~ msgid "Walls and Lines"
 #~ msgstr "ウォールとライン"
 
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "この角度以上に張り出した壁は、オーバーハング壁設定を使用してプリントされます。値が90の場合は、オーバーハング壁として処理されません。サポートによってサポートされているオーバーハングも、オーバーハングとして処理されません。"
-
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
 #~ msgstr "有効時は、Zシームは各パーツの真ん中に設定されます。無効時はプラットフォームのサイズによって設定されます。"

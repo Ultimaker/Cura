@@ -6794,10 +6794,6 @@ msgstr "deslocação"
 #~ msgid "Walls and Lines"
 #~ msgstr "Paredes e linhas"
 
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "As paredes com saliências que ultrapassem este ângulo serão impressas utilizando definições de parede de saliências. Quando o valor é 90, nenhuma parede é considerada como sendo uma saliência. As saliências suportadas por suporte também não serão consideradas como saliências."
-
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
 #~ msgstr "Quando ativado, as coordenadas da junta-Z são relativas ao centro de cada peça. Quando desativado, as coordenadas definem uma posição absoluta na base de construção."

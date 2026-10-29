@@ -6794,10 +6794,6 @@ msgstr "이동"
 #~ msgid "Walls and Lines"
 #~ msgstr "벽 및 선"
 
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "이 각도보다 놓은 오버행(경사면)의 벽은 오버행 벽 설정을 사용해 인쇄됩니다. 값이 90이면 오버행(경사면)으로 처리되는 벽이 없습니다. 서포트로 지지되는 오버행(경사면)도 오버행(경사면)으로 처리되지 않습니다."
-
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
 #~ msgstr "활성화 된 경우 z 솔기 좌표는 각 부품의 중심을 기준으로합니다. 비활성화 된 경우 좌표는 빌드 플레이트의 절대 위치를 정의합니다."

@@ -6794,10 +6794,6 @@ msgstr "空驶"
 #~ msgid "Walls and Lines"
 #~ msgstr "墙体和线条"
 
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "悬垂超过此角度的壁将使用悬垂壁设置打印。该值为 90 时，不会将任何壁视为悬垂。受到支撑支持的悬垂也不会被视为悬垂。"
-
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
 #~ msgstr "启用时，Z 缝坐标为相对于各个部分中心的值。 禁用时，坐标定义打印平台上的一个绝对位置。"
