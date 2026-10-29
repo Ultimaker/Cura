@@ -348,6 +348,26 @@ pycharm_targets:
 
 pip_requirements_core:
   any_os:
+    grpcio:
+      version: "1.85.0"
+      hashes:
+        - sha256:55cee7cfe71b29f6b377681936f9a5f35e59f5c941a4d84e2712cb309753e7a9 # cp313 manylinux x86_64
+        - sha256:4ddfe8b667889b9be5990ae674b13f0db0a9eb61972306038d0140a1da0f0b87 # cp312 manylinux x86_64
+        - sha256:ba535a7b78d5049101a896efbb4ef9edd471c322ea4fc0cc8245545b184ff687 # cp311 manylinux x86_64
+        - sha256:dbd651df4cf258f2073f8a10f878cee9b8723986ca69206a0da67a2f1651ae86 # cp310 win_amd64
+        - sha256:2dd69ec2998c2285c323bfa2e3acbd7f475881db97aa9359f2edcbf9ae284169 # cp311 win_amd64
+        - sha256:d6c43a06a059a95f03013aa5fce9106a6a2b6b78cfff4003a53e0eb410c0e1d7 # cp312 win_amd64
+        - sha256:09ab4af4c4c74baa9b17f9a6fcdcef5be98357774417d624191ec41690df4bb3 # cp313 win_amd64
+        - sha256:ed8ca34cc644a82602097249bdd9af2526f2fe93c641439a19351f3ed2e91de3 # cp310 macos universal2
+        - sha256:299b13839203e82be15216ae4c3379801a3ad216feff05b165f14962f0939b0c # cp311 macos universal2
+        - sha256:b10f0f0a34ce6b122dbf5dcf8226cbe41509c602af926b1e55113ad9e49cc5f7 # cp312 macos universal2
+        - sha256:874af68625a2ff2585cb112e7583c19a7cb463ab638a7fe5b8a58f76e6d4e7c2 # cp313 macos universal2
+    protobuf:
+      version: "7.35.1"
+      hashes:
+        - sha256:74758715c53d7158fb76caf4f0cfdacc5329a4b1bb994f865d6cf302d413a1c4 # manylinux x86_64
+        - sha256:230a75ddfc2de4806e56696ce9640c1cdfdb6543b7cfce98d42a4c0a0e7bdb87 # win_amd64
+        - sha256:24f857477359a85c0c235261b8ba905fd51b2562f4a64ca1df5473f29850cbf6 # macos universal2
     charon:
       url: "git+https://github.com/ultimaker/libcharon@cura_main#egg=charon"
     certifi:

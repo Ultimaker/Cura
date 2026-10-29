@@ -110,7 +110,7 @@ class ProcessSlicedLayersJob(Job):
         min_layer_number = sys.maxsize
         negative_layers = 0
         for layer in self._layers:
-            if layer.repeatedMessageCount("path_segment") > 0:
+            if len(layer.path_segment) > 0:
                 if layer.id < min_layer_number:
                     min_layer_number = layer.id
                 if layer.id < 0:
@@ -136,8 +136,7 @@ class ProcessSlicedLayersJob(Job):
             layer_data.setLayerHeight(abs_layer_number, layer.height)
             layer_data.setLayerThickness(abs_layer_number, layer.thickness)
 
-            for p in range(layer.repeatedMessageCount("path_segment")):
-                polygon = layer.getRepeatedMessage("path_segment", p)
+            for polygon in layer.path_segment:
 
                 extruder = polygon.extruder
 

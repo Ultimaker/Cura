@@ -8,7 +8,7 @@ import time
 from typing import Any, cast, Dict, List, Optional, Set, Tuple
 import re
 import json
-import pyArcus as Arcus  # For typing.
+from cura.CuraEngineProtocol import Cura_pb2 as CuraProto
 from PyQt6.QtCore import QCoreApplication
 
 from UM.Job import Job
@@ -49,11 +49,11 @@ class StartJobResult(IntEnum):
 class StartSliceJob(Job):
     """Job class that builds up the message of scene data to send to CuraEngine."""
 
-    def __init__(self, slice_message: Arcus.PythonMessage) -> None:
+    def __init__(self, slice_message: CuraProto.Slice) -> None:
         super().__init__()
 
         self._scene: Scene = CuraApplication.getInstance().getController().getScene()
-        self._slice_message: Arcus.PythonMessage = slice_message
+        self._slice_message: CuraProto.Slice = slice_message
         self._is_cancelled: bool = False
         self._build_plate_number: Optional[int] = None
         self._associated_disabled_extruders: List[int] = []
@@ -61,7 +61,7 @@ class StartSliceJob(Job):
         # cache for all setting values from all stacks (global & extruder) for the current machine
         self._all_extruders_settings: Optional[Dict[str, Any]] = None
 
-    def getSliceMessage(self) -> Arcus.PythonMessage:
+    def getSliceMessage(self) -> CuraProto.Slice:
         return self._slice_message
 
     def getAssociatedDisabledExtruders(self) -> List[int]:
@@ -293,7 +293,7 @@ class StartSliceJob(Job):
                 # also be used. For instance, if you have two plugins and each of them support a_generate and b_generate
                 # only one of each can actually be used (eg; plugin 1 does both, plugin 1 does a_generate and 2 does
                 # b_generate, etc).
-                plugin_message = self._slice_message.addRepeatedMessage("engine_plugins")
+                plugin_message = self._slice_message.engine_plugins.add()
                 plugin_message.id = slot
                 plugin_message.address = plugin.getAddress()
                 plugin_message.port = plugin.getPort()
@@ -301,7 +301,7 @@ class StartSliceJob(Job):
                 plugin_message.plugin_version = plugin.getVersion()
 
         for group in filtered_object_groups:
-            group_message = self._slice_message.addRepeatedMessage("object_lists")
+            group_message = self._slice_message.object_lists.add()
             parent = group[0].getParent()
             if parent is not None and parent.callDecoration("isGroup"):
                 self._handlePerObjectSettings(cast(CuraSceneNode, parent), group_message)
@@ -322,7 +322,7 @@ class StartSliceJob(Job):
                 verts[:, [1, 2]] = verts[:, [2, 1]]
                 verts[:, 1] *= -1
 
-                obj = group_message.addRepeatedMessage("objects")
+                obj = group_message.objects.add()
                 obj.id = id(object)
                 obj.name = object.getName()
                 indices = mesh_data.getIndices()
@@ -331,11 +331,11 @@ class StartSliceJob(Job):
                 else:
                     flat_verts = numpy.array(verts)
 
-                obj.vertices = flat_verts
+                obj.vertices = flat_verts.tobytes()
 
                 uv_coordinates = mesh_data.getUVCoordinates()
                 if uv_coordinates is not None:
-                    obj.uv_coordinates = uv_coordinates.flatten()
+                    obj.uv_coordinates = uv_coordinates.flatten().tobytes()
 
                 packed_texture = object.callDecoration("packTexture")
                 if packed_texture is not None:
@@ -463,7 +463,7 @@ class StartSliceJob(Job):
     def _buildExtruderMessage(self, stack: ContainerStack) -> None:
         """Create extruder message from stack"""
 
-        message = self._slice_message.addRepeatedMessage("extruders")
+        message = self._slice_message.extruders.add()
         message.id = int(stack.getMetaDataEntry("position"))
         if not self._all_extruders_settings:
             self._cacheAllExtruderSettings()
@@ -489,7 +489,7 @@ class StartSliceJob(Job):
                 not settable_per_extruder_own:
                 continue
 
-            setting = message.getMessage("settings").addRepeatedMessage("settings")
+            setting = message.settings.settings.add()
             setting.name = key
             setting.value = str(value).encode("utf-8")
             Job.yieldThread()
@@ -530,7 +530,7 @@ class StartSliceJob(Job):
 
         # Add all sub-messages for each individual setting.
         for key, value in settings.items():
-            setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
+            setting_message = self._slice_message.global_settings.settings.add()
             setting_message.name = key
             setting_message.value = str(value).encode("utf-8")
             Job.yieldThread()
@@ -548,12 +548,12 @@ class StartSliceJob(Job):
         for key in stack.getAllKeys():
             extruder_position = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
             if extruder_position >= 0:  # Set to a specific extruder.
-                setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
+                setting_extruder = self._slice_message.limit_to_extruder.add()
                 setting_extruder.name = key
                 setting_extruder.extruder = extruder_position
             Job.yieldThread()
 
-    def _handlePerObjectSettings(self, node: CuraSceneNode, message: Arcus.PythonMessage):
+    def _handlePerObjectSettings(self, node: CuraSceneNode, message: CuraProto.ObjectList | CuraProto.Object):
         """Check if a node has per object settings and ensure that they are set correctly in the message
 
         :param node: Node to check.
@@ -581,7 +581,7 @@ class StartSliceJob(Job):
 
         # Get values for all changed settings
         for key in changed_setting_keys:
-            setting = message.addRepeatedMessage("settings")
+            setting = message.settings.add()
             setting.name = key
             extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
 

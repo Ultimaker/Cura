@@ -179,3 +179,28 @@ message SliceUUID {
 
 message SlicingFinished {
 }
+
+// CuraEngine opens a persistent bidirectional stream to Cura. Engine output
+// uses the request direction; Cura sends slice jobs on the response direction.
+message CuraClientMessage {
+  oneof message {
+    Slice slice = 1;
+  }
+}
+
+message CuraEngineMessage {
+  oneof message {
+    Progress progress = 1;
+    Layer layer = 2;
+    LayerOptimized layer_optimized = 3;
+    GCodeLayer gcode_layer = 4;
+    SliceUUID slice_uuid = 5;
+    PrintTimeMaterialEstimates print_time_material_estimates = 6;
+    InitialExtruder initial_extruder = 7;
+    SlicingFinished slicing_finished = 8;
+  }
+}
+
+service CuraEngineCommunication {
+  rpc Communicate(stream CuraEngineMessage) returns (stream CuraClientMessage);
+}
