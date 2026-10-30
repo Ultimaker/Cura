@@ -8,7 +8,6 @@ import time
 from typing import Any, cast, Dict, List, Optional, Set, Tuple
 import re
 import json
-from cura.CuraEngineProtocol import Cura_pb2 as CuraProto
 from PyQt6.QtCore import QCoreApplication
 
 from UM.Job import Job
@@ -31,6 +30,7 @@ from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.CuraVersion import CuraVersion
 
+from plugins.CuraEngineBackend.protocol import Cura_pb2 as CuraProto
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
 

@@ -32,8 +32,8 @@ from .ProcessSlicedLayersJob import ProcessSlicedLayersJob
 from .StartSliceJob import StartSliceJob, StartJobResult
 
 from UM.Backend.GrpcBackendServer import GrpcBackendServer
-from cura.CuraEngineProtocol import Cura_pb2 as CuraProto
-from cura.CuraEngineProtocol import Cura_pb2_grpc as CuraGrpc
+from plugins.CuraEngineBackend.protocol import Cura_pb2 as CuraProto
+from plugins.CuraEngineBackend.protocol import Cura_pb2_grpc as CuraGrpc
 
 if TYPE_CHECKING:
     from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
