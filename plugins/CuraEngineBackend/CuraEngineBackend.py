@@ -164,6 +164,8 @@ class CuraEngineBackend(QObject, Backend):
         # Listeners for receiving messages from the back-end.
         self._start_slice_job: Optional[StartSliceJob] = None
         self._start_slice_job_build_plate: Optional[int] = None
+        self._pending_slice_envelope: Optional[CuraProto.CuraClientMessage] = None
+        self._pending_slice_job: Optional[StartSliceJob] = None
         self._slicing: bool = False  # Are we currently slicing?
         self._restart: bool = False  # Back-end is currently restarting?
         self._tool_active: bool = False  # If a tool is active, some tasks do not have to do anything
@@ -439,6 +441,8 @@ class CuraEngineBackend(QObject, Backend):
         Start the engine process after preparing its gRPC endpoint.
         """
         self._slicing = False
+        self._pending_slice_envelope = None
+        self._pending_slice_job = None
         self._stored_layer_data = []
         if self._start_slice_job_build_plate in self._stored_optimized_layer_data:
             del self._stored_optimized_layer_data[self._start_slice_job_build_plate]
@@ -612,23 +616,30 @@ class CuraEngineBackend(QObject, Backend):
             self._invokeSlice()
             return
 
-        # Preparation completed, send it to the backend.
-        immediate_success = self._grpc_server.send_message(CuraProto.CuraClientMessage(slice=job.getSliceMessage()))
-        if (not CuraApplication.getInstance().getUseExternalBackend()) and (not immediate_success):
-            error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try again, or contact support.")
+        # Keep the prepared slice on the backend until an engine stream is connected.
+        self._pending_slice_envelope = CuraProto.CuraClientMessage(slice=job.getSliceMessage())
+        self._pending_slice_job = job
+        self._sendPendingSlice()
 
+    def _sendPendingSlice(self) -> None:
+        if self._pending_slice_envelope is None or self._grpc_server is None:
+            return
+
+        if not self._grpc_server.send_message(self._pending_slice_envelope):
+            error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try again, or contact support.")
             self._error_message = Message(error_txt,
                                           title=catalog.i18nc("@info:title", "Unable to slice"),
                                           message_type=Message.MessageType.WARNING)
             self._error_message.show()
             self.setState(BackendState.Error)
-            self.backendError.emit(job)
+            self.backendError.emit(self._pending_slice_job)
+            self._pending_slice_envelope = None
+            self._pending_slice_job = None
             return
 
-        # Notify the user that it's now up to the backend to do its job
+        self._pending_slice_envelope = None
+        self._pending_slice_job = None
         self.setState(BackendState.Processing)
-
-        # Handle time reporting.
         self._time_send_message = time()
         if self._time_start_process:
             Logger.log("d", "Sending slice message took %s seconds", self._time_send_message - self._time_start_process)
@@ -916,6 +927,7 @@ class CuraEngineBackend(QObject, Backend):
     def _onEngineConnected(self) -> None:
         super()._onEngineConnected()
         Logger.log("d", "CuraEngine connected to the gRPC service on port %s", self._port)
+        self._sendPendingSlice()
 
     def _onEngineMessage(self, envelope: CuraProto.CuraEngineMessage) -> None:
         message_case = envelope.WhichOneof("message")
