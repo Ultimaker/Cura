@@ -180,11 +180,15 @@ message SliceUUID {
 message SlicingFinished {
 }
 
+message ExitEngine {
+}
+
 // CuraEngine opens a persistent bidirectional stream to Cura. Engine output
 // uses the request direction; Cura sends slice jobs on the response direction.
 message CuraClientMessage {
   oneof message {
     Slice slice = 1;
+    ExitEngine exit_engine = 2;
   }
 }
 

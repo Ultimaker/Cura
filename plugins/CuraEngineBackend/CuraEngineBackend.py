@@ -886,13 +886,17 @@ class CuraEngineBackend(QObject, Backend):
 
             self._startProcessSlicedLayersJob(active_build_plate)
         # self._onActiveViewChanged()
-        self._start_slice_job_build_plate = None
-
         Logger.log("d", "See if there is more to slice...")
         # Call slice again using the timer, allowing the backend to restart
         if self._build_plates_to_be_sliced:
             self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
             self._invokeSlice()
+        elif self._grpc_server is not None:
+            exit_message = CuraProto.CuraClientMessage(exit_engine=CuraProto.ExitEngine())
+            if not self._grpc_server.send_message(exit_message):
+                Logger.log("e", "Could not queue CuraEngine exit instruction after slicing finished")
+                self._slicing_error_message.show()
+                self.setState(BackendState.Error)
 
     def _onGCodeLayerMessage(self, message: CuraProto.GCodeLayer) -> None:
         """Called when a g-code message is received from the engine.
