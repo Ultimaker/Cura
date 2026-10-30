@@ -14,9 +14,9 @@ AppDir:
     - amd64
     allow_unauthenticated: true
     sources:
-      - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
-      - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
-      - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
+      - sourceline: deb http://archive.ubuntu.com/ubuntu/ noble main restricted universe multiverse
+      - sourceline: deb http://archive.ubuntu.com/ubuntu/ noble-updates main restricted universe multiverse
+      - sourceline: deb http://security.ubuntu.com/ubuntu noble-security main restricted universe multiverse
     include:
       - xdg-desktop-portal-kde
       - libgtk-3-0
@@ -48,33 +48,33 @@ AppDir:
       QML2_IMPORT_PATH: "$APPDIR/qt/qml"
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
       QT_QPA_PLATFORM: xcb
+      QT_QPA_FONTDIR: /usr/share/fonts
+      QT_XKB_CONFIG_ROOT: /usr/share/X11/xkb
+      # If this variable is inherited from the host (e.g. Zorin OS 16) Cura crashes on launch.
+      QT_STYLE_OVERRIDE: ""
       GDK_PIXBUF_MODULEDIR: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
       GDK_PIXBUF_MODULE_FILE: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
     path_mappings:
       - /usr/share:$APPDIR/usr/share
   test:
-    fedora-30:
-      image: appimagecrafters/tests-env:fedora-30
+    ubuntu:
+      image: ubuntu:24.04
       command: ./AppRun
       use_host_x: True
-    debian-stable:
-      image: appimagecrafters/tests-env:debian-stable
+    debian:
+      image: debian:stable
       command: ./AppRun
       use_host_x: True
-    archlinux-latest:
-      image: appimagecrafters/tests-env:archlinux-latest
+    fedora:
+      image: fedora:latest
       command: ./AppRun
       use_host_x: True
-    centos-7:
-      image: appimagecrafters/tests-env:centos-7
-      command: ./AppRun
-      use_host_x: True
-    ubuntu-xenial:
-      image: appimagecrafters/tests-env:ubuntu-xenial
+    archlinux:
+      image: archlinux:latest
       command: ./AppRun
       use_host_x: True
 AppImage:
   arch: {{ arch }}
   file_name: {{ file_name }}
-  update-information: guess
   comp: gzip
+
