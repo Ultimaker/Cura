@@ -9997,6 +9997,46 @@
                     "settable_per_extruder": true,
                     "settable_per_mesh": true
                 },
+                "arc_fitting_enable":
+                {
+                    "label": "Arc Fitting",
+                    "description": "Write curves as circular arcs (G2 and G3 commands) instead of many short straight moves. This makes the G-code smaller and replaces polygons by exact circles; the printer firmware still divides the arcs into short moves itself. The printer firmware must support arcs: for example Marlin needs ARC_SUPPORT and Klipper needs a [gcode_arcs] section.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "machine_gcode_flavor in ['RepRap (Marlin/Sprinter)', 'RepRap (Volumetric)', 'RepRap (RepRap)', 'Repetier']",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "children":
+                    {
+                        "arc_fitting_tolerance":
+                        {
+                            "label": "Arc Fitting Tolerance",
+                            "description": "The largest distance an arc is allowed to deviate from the original path. Larger values replace more segments with arcs but follow the shape less exactly.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.05,
+                            "minimum_value": "0.005",
+                            "maximum_value": "1",
+                            "maximum_value_warning": "0.2",
+                            "enabled": "arc_fitting_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "arc_fitting_max_radius":
+                        {
+                            "label": "Arc Fitting Maximum Radius",
+                            "description": "Arcs with a larger radius are written as straight lines. Very large, almost straight arcs are not worth the risk of rounding errors in the printer firmware.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 1000,
+                            "minimum_value": "1",
+                            "maximum_value": "100000",
+                            "enabled": "arc_fitting_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
+                },
                 "minimum_infill_line_length":
                 {
                     "label": "Minimum Infill Line Length",
