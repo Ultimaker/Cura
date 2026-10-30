@@ -52,11 +52,11 @@
 
 * Bugs resolved since the Beta release
 
-- Enforced speed limits for the Z direction in the Cheetah G-code flavor
+- Enforced maximum acceleration of the long Z travel when moving up and down between multiple one-at-a-time objects in the Cheetah G-code flavor
 - Prevented tree support from being printed twice in the same spot in some specific cases
 - Fixed a bug with the Material Export saving flow for macOS
-- Made sure the License Agreement windows for Linux users pop up in the center of the screen
-- Fixed the line breaks and truncation for the Digital Factory window in languages other than English
+- Made sure the windows for Linux users pop up in the center of the screen
+- Fixed the line breaks and truncation for a number of windows in languages other than English
 - Restored some translation in menu options
 - Fixed some exceptions where overhang settings were not applied correctly
 - Resolved an issue where the support base was not applied correctly and would result in a missing support first layer
