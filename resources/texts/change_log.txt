@@ -64,6 +64,7 @@
 * Printer definitions, profiles and materials:
 - Generic Definitions: Cleaned up the fdmprinter base definition by fixing initial bottom layer formula calculations and simplifying division expressions. Provided sensible fallback parameters for skin support when bridging settings are disabled.
 - UltiMaker Factor 4+: Tuned default print profiles to deliver better overhang surface quality, optimized bridging, hidden Z-seam alignment, and higher tree support stability.
+- UltiMaker Factor 4 and 4+: Improved the Z distance for some material+support combinations  
 - UltiMaker S3 & S5: Resolved circular speed formula dependencies in profiles.
 - UltiMaker S8: Corrected a typo in the gradual_flow_enabled parameter.
 - MakerBot Sketch Sprint: Fixed top surface expansion edge cases to improve top layer finish.
