@@ -41,12 +41,13 @@ import time
 import datetime
 import math
 from UM.Message import Message
+from UM.Logger import Logger
 
 class DisplayInfoOnLCD(Script):
- 
+
     minimumCuraVersion = 5110
- 
-    def initialize(self) -> None:        
+
+    def initialize(self) -> None:
         super().initialize()
         cura_version = Application.getInstance().getVersion()
         cura_version_str = cura_version.split("-")[0]
@@ -63,7 +64,7 @@ class DisplayInfoOnLCD(Script):
                 self._instance.setProperty("time_adj_percentage", "value", cura_adjust_percent)
         except (AttributeError, KeyError):
             # Handle cases where the global container stack or its properties are not accessible
-            cura_adjust_percent = 100       
+            cura_adjust_percent = 100
 
     def getSettingDataString(self):
         return """{
@@ -260,11 +261,54 @@ class DisplayInfoOnLCD(Script):
                     "label": "Printer Power Usage",
                     "description": "Average power usage of the 3D printer in Watts.  The actual wattage has many variables.  50% of the power supply rating would be a ballpark figure.",
                     "type": "float",
-                    "default_value": 175,
-                    "minimum_value": 0,
+                    "default_value": 275,
+                    "minimum_value": 50,
                     "unit": "Watts  "
+                },
+                "add_filament_use":
+                {
+                    "label": "Filament Runout Message",
+                    "description": "Adds a line at the end of each layer (in the G-Code) indicating the amount of filament (Extruder 1 (T0) only) that is required to finish the print from that point.  If 'Add M118 Line' is checked - a second M118 line will be the Filament Indicator line.  (The LCD is too short to handle all the information when M117 is used).  Only M118 is used to send the message to your print server (or Octoprint).",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "display_option == 'display_progress'"
+                },
+                "minimum_filament":
+                {
+                    "label": "    Filament to Go",
+                    "description": "Subtracts the amount of filament-used from the total-filament for the print.  It is the amount left to go.  When the filament use of Extruder 1 (T0) gets down to this amount (in meters) you can add a beep at the layer change.  If you go through the Gcode and find the 'M300' you could add a pause which allows you to change filament.  When 'Enable Finish Time Message' is selected the Filament Runout message will be included.",
+                    "type": "float",
+                    "default_value": 3.5,
+                    "minimum_value": 1,
+                    "unit": "Meters ",
+                    "enabled": "display_option == 'display_progress' and add_filament_use"
+                },
+                "beep_at_runout":
+                {
+                    "label": "    Beep at Runout",
+                    "description": "Adds an M300 when the filament gets down to 'Warn At'.  If you aren't around the machine, you'll miss it.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "display_option == 'display_progress' and add_filament_use"
+                },
+                "beep_tone_duration":
+                {
+                    "label": "    Beep Duration",
+                    "description": "How long should the beep be (in seconds). A 5 second beep is really annoying if you are there to hear it, and useless if you are not.",
+                    "type": "float",
+                    "default_value": 1,
+                    "minimum_value": 0.1,
+                    "unit": "Sec's  ",
+                    "enabled": "display_option == 'display_progress' and add_filament_use and beep_at_runout"
+                },
+                "pause_at_runout":
+                {
+                    "label": "    Add Pause",
+                    "description": "Adds a generic pause command (M0) and head parking gcode at the 'Warn At' point of filament runout.  Open the Gcode to edit and search for 'PAUSE' to check the code.  You would need to change the M0 line to 'PAUSE', 'M25', 'M600', or whatever your firmware might require.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "display_option == 'display_progress' and add_filament_use and beep_at_runout"
                 }
-
             }
         }"""
 
@@ -280,8 +324,33 @@ class DisplayInfoOnLCD(Script):
         self.add_m73_time = self.getSettingValueByKey("add_m73_time")
         self.add_m73_percent = self.getSettingValueByKey("add_m73_percent")
         self.m73_str = ""
-        para_1 = data[0].split("\n")
-        for line in para_1:
+        self.beep_at_runout = self.getSettingValueByKey("beep_at_runout")
+        # 'beep_layer_count' Limits the insertion of M300 lines to 1 layer
+        self.beep_layer_count = 1
+        self.beep_tone_duration = self.getSettingValueByKey("beep_tone_duration")
+        # The amount of filament left in the print that will trigger the Beep insertion
+        self.runout_min_filament = int(self.getSettingValueByKey("minimum_filament") * 1000)
+        # A list of strings to insert to indicate the 'filament required'.
+        self.filament_list = []
+        # A trigger that can cause a message to pop up regarding the layer # where runout_min_filament is reached.
+        self.pause_layer = None
+        self.add_filament_use = self.getSettingValueByKey("add_filament_use")
+        extruder = self.global_stack.extruderList
+        self.filament_x_section = (float(extruder[0].getProperty("material_diameter", "value") / 2)**2) * math.pi
+        # Convert from gm/cm³ to gr/mm³
+        self.material_density = float(extruder[0].material.getMetaDataEntry("properties", {}).get("density", 0)) / 1000
+        # The total filament used in the print.  Only T0 (Extruder 1) is considered.
+        self.total_filament_reqd = Application.getInstance().getPrintInformation().materialLengths[0]
+        # Whether or not Relative Extrusion is enabled.
+        self.absolute_extrusion = not bool(self.global_stack.getProperty("relative_extrusion", "value"))
+
+        if self.absolute_extrusion:
+            data = self._Abs_Filament_Use(data)
+        else:
+            data = self._Rel_Filament_Use(data)
+
+        opening_paragraph = data[0].split("\n")
+        for line in opening_paragraph:
             if line.startswith(";TIME:") or line.startswith(";PRINT.TIME:"):
                 self.time_total = int(line.split(":")[1])
                 break
@@ -350,7 +419,7 @@ class DisplayInfoOnLCD(Script):
             final_lines = "\n".join(lines)
             data[layer_index] = final_lines
         if bool(self.getSettingValueByKey("enable_end_message")):
-            message_str = self._message_to_user(self.getSettingValueByKey("time_adj_percentage") / 100)
+            message_str = self._message_to_user(data, self.getSettingValueByKey("time_adj_percentage") / 100, "")
             Message(title = "Display Info on LCD - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3]).show()
         return data
 
@@ -492,9 +561,9 @@ class DisplayInfoOnLCD(Script):
                         line = lines[line_index]
                         if line.startswith(";TIME_ELAPSED:"):
                             # update time_elapsed for the NEXT layer and exit the loop
-                            time_elapsed = int(float(line.split(":")[1]))
+                            time_elapsed = int(float(line.split("TIME_ELAPSED:")[1].split()[0]))
                             break
-            # insert the text AFTER the first line of the layer (in case other scripts use ";LAYER:")
+            # Insert the text AFTER the first line of the layer (in case other scripts use ";LAYER:")
             for l_index, line in enumerate(lines):
                 if line.startswith(";LAYER:"):
                     if self.add_m117_line:
@@ -505,7 +574,22 @@ class DisplayInfoOnLCD(Script):
                             m118_text += "A1 "
                         if self.add_m118_p0:
                             m118_text += "P0 "
-                        lines[l_index] += m118_text + display_text
+                        try:
+                            lines[l_index] += m118_text + display_text + (str(self.filament_list[current_layer]) if self.add_filament_use else "")
+                            if "M300 S" in self.filament_list[current_layer]:
+                                if self.pause_layer is None:
+                                    # Get the layer number from the data
+                                    self.pause_layer = line.split(":")[1].split()[0]
+                        except IndexError:
+                            # The length of the 'filament_list' was a moving target in debug depending on what other pp's were running.
+                            lines[l_index] += m118_text + display_text + (str(self.filament_list[len(self.filament_list)-1]) if self.add_filament_use else "")
+                    if not self.add_m118_line and self.add_filament_use:
+                        lines[l_index] += f"{str(self.filament_list[current_layer-1])}"
+                        if "M300 S" in self.filament_list[current_layer-1]:
+                            if self.pause_layer is None:
+                                # Get the layer number from the data
+                                self.pause_layer = line.split(":")[1].split()[0]
+
                     # add M73 line
                     if display_remaining_time:
                         mins = int(60 * h + m)
@@ -545,6 +629,8 @@ class DisplayInfoOnLCD(Script):
 
             # Make the adjustments to the M117 (and M118) lines that are prior to a pause
             for num in range (2, len(data) - 1):
+                if not ";LAYER:" in data[num]:
+                    continue
                 layer = data[num]
                 lines = layer.split("\n")
                 for line in lines:
@@ -556,14 +642,24 @@ class DisplayInfoOnLCD(Script):
                         if line.startswith("M118") and "|" in line and "P" in time_list[num]:
                             time_to_go = self._get_time_to_go(time_list[num])
                             M118_line = line.split("|")[0] + "| TP " + time_to_go
+                            if self.add_filament_use:
+                                M118_line += f"{self.filament_list[num]}"
+                                if "M300 S" in self.filament_list[current_layer]:
+                                    if self.pause_layer is None:
+                                        self.pause_layer = data[num].split(";LAYER:")[1].split()[0]
                             layer = layer.replace(line, M118_line)
                     except:
                         continue
                 data[num] = layer
         if bool(self.getSettingValueByKey("enable_end_message")):
             message_str = self._message_to_user(data, time_adj_percentage, pause_cmd)
+            runout_msg = ""
+            if self.pause_layer is not None:
+                runout_msg = f"\n\nThe filament will run out around Gcode LAYER:{self.pause_layer}.  You might want to find the location of the first Beep (M300) in the Gcode and add a 'filament change' pause there.  This script can add a generic pause."
             electric_use = self.getElectricCostLine()
-            Message(title = "[Display Info on LCD] - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3] + "\n" + electric_use).show()
+            Message(title = "[Display Info on LCD] - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3] + "\n" + electric_use + runout_msg).show()
+        if bool(self.getSettingValueByKey("pause_at_runout")) and self.beep_at_runout:
+            data = self._PauseAtRunout(data)
         return data
 
     def _message_to_user(self, data: str, time_adj_percentage: float, pause_cmd: str) -> str:
@@ -745,3 +841,138 @@ class DisplayInfoOnLCD(Script):
         total_cost_electricity = (printer_power_usage / 1000) * (self.time_total / 3600) * electricity_cost
         electric_line = f"Electric Cost: {currency_unit}{total_cost_electricity:.2f}"
         return electric_line
+
+    def _Rel_Filament_Use(self, alt_data):
+        # Track the E values
+        total_filament = 0.0
+        total_material = Application.getInstance().getPrintInformation().materialLengths
+        for num in range(0, 1): #extruder_count
+            total_filament += round(total_material[num],2)
+        self.total_amount = round(total_filament * 1000, 2)
+        total_e = 0.0
+        layer_e = 0.0
+        for layindex, layer in enumerate(alt_data):
+            # This can happen in one-at-a-time mode
+            if not ";LAYER:" in layer:
+                continue
+            if 1 < layindex >= len(alt_data)-2:
+                continue
+            lines = layer.split("\n")
+            layer_filament_total = 0.0
+            e_before_reset = 0
+            current_e = 0
+            for line in lines:
+                if line[0:3] in ["G1 ", "G2 ", "G3 "] and " X" in line and " Y" in line and " E" in line:
+                    layer_e +=  self.getValue(line, "E")
+            total_e += layer_e
+            self.total_amount -= layer_e
+            if self.total_amount < 0:
+                self.total_amount = 0.0
+            weight_extruded = 0.0
+            weight_extruded = self.total_amount * self.filament_x_section * self.material_density
+
+            msg_amt = f"\nM118 Filament Req'd: {round(self.total_amount/1000, 2)}m|Wt:{round(weight_extruded, 2)}gr"
+            if self.beep_at_runout and self.total_amount < self.runout_min_filament and self.beep_layer_count > 0:
+                beep_line = f"\nM300 S{self.beep_tone_duration}"
+                self.beep_layer_count -= 1
+            else:
+                beep_line = ""
+
+            # Add the message to print server line for layer to the list
+            self.filament_list.append(f"{msg_amt}" + beep_line)
+            layer_e = 0.0
+
+        # The total_filament_list is missing the initial line so insert it here
+        weight_extruded = float(self.total_filament_reqd * 1000) * self.filament_x_section * self.material_density
+        first_msg_amount = f"\nM118 Filament Req'd: {round(self.total_filament_reqd, 2)}m|Wt:{round(weight_extruded, 2)}gr"
+        self.filament_list.insert(0, f"{first_msg_amount}")
+        return alt_data
+
+    def _Abs_Filament_Use(self, alt_data):
+        # Create an 'Average filament per extrusion' list by finding the number of extrusions per layer and the total number in the print and then determining the average.  Not the same as actually measuring the amount of each extrusion, but close enough for government work.
+        # A list of the number of extrusion lines (G1, G2, G3) in each layer in the Gcode.
+        line_length_list = [0, 0, 0]
+        # The 'temp_Length' is used to count down the remaining filament needed for the print.
+        temp_length = self.total_filament_reqd * 1000
+        # Filament array is a list of the calculated 'filament remaining' numbers using the number of lines, and the average mm/line
+        filament_array = [self.total_filament_reqd * 1000]
+        for index, layer in enumerate(alt_data):
+            counter = 0
+            # Ignore the startup and ending.
+            if 2 <= index >= len(alt_data)-1:
+                continue
+            if ";LAYER:" in layer:
+                lines = layer.split("\n")
+                for line in lines:
+                    if line.startswith("G1 ") or line.startswith("G2 ") or line.startswith("G3 "):
+                        counter += 1
+                line_length_list.append(counter)
+            # This happens with One-at-a-Time mode.
+            elif not ";LAYER:" in layer:
+                continue#line_length_list.append(0.0)
+        # The lines that are actual extrusions. No retracts or primes.
+        total_extrusion_lines = sum(line_length_list)
+        # 'particle_e' is in 'mm of filament / line of Gcode'
+        try:
+            particle_e = (self.total_filament_reqd * 1000) / total_extrusion_lines
+        except ZeroDivisionError:
+            particle_e = 0
+
+        # Calculate the amount of filament needed to finish the print.
+        for extrusion_length in line_length_list:
+            temp_length -= extrusion_length * particle_e
+            if temp_length < 0:
+                temp_length = 0.0
+            filament_array.append(round(temp_length / 1000, 2))
+
+            weight_extruded = 0.0
+            weight_extruded = temp_length * self.filament_x_section * self.material_density
+            msg_amt = f"\nM118 Filament Req'd: {round(temp_length/1000, 2)}m|Wt:{round(weight_extruded, 2)}gr"
+            if self.beep_at_runout and temp_length < self.runout_min_filament and self.beep_layer_count > 0:
+                beep_line = f"\nM300 S{self.beep_tone_duration}"
+                self.beep_layer_count -= 1
+            else:
+                beep_line = ""
+            self.filament_list.append(f"{msg_amt}" + beep_line)
+        return alt_data
+
+    def _PauseAtRunout(self, alt_data):
+        if self.beep_at_runout:
+            extruder = self.global_stack.extruderList
+            speed_z_hop = round(extruder[0].getProperty("speed_z_hop", "value") * 60)
+            speed_travel = round(extruder[0].getProperty("speed_travel", "value") * 60)
+            retraction_enabled = extruder[0].getProperty("retraction_enable", "value")
+            retract_amount = extruder[0].getProperty("retraction_amount", "value")
+            speed_retract = round(extruder[0].getProperty("retraction_retract_speed", "value") * 60)
+            machine_depth = self.global_stack.getProperty("machine_depth", "value")
+            pause_code = None
+            x_return = 0.0
+            y_return = 0.0
+
+            for index, layer in enumerate(alt_data):
+                if "M300 S" in layer:
+                    prev_lines = alt_data[index-1].split("\n")
+                    prev_lines.reverse()
+                    for line_index, line in enumerate(prev_lines):
+                        if " X" in line and " Y" in line:
+                            x_return = self.getValue(line, "X")
+                            y_return = self.getValue(line, "Y")
+                            break
+                    lines = layer.split("\n")
+                    for line_index, line in enumerate(lines):
+                        if "M300 S" in line:
+                            pause_code = f";Pause code\nG91 ;Relative movement\nG0 F{speed_z_hop} Z5 ;Move up\nG90 ;Absolute movement\nG0 F{speed_travel} X0 Y{machine_depth} ;Park the head\n{line} ;Beep\nM0 PAUSE ;Pause command - edit as needed\nG0 F{speed_travel} X{x_return} Y{y_return} ;Return to print\nG91 ;Relative movement\nG0 F{speed_z_hop} Z-5 ;Move down\nG90 ;Absolute movement"
+                            if retraction_enabled:
+                                pause_code += f"\nM83 ;Relative extrusion\nG1 F{speed_retract} E-{retract_amount} ;Retract after filament change"
+                                if self.absolute_extrusion:
+                                    pause_code += "\nM82 ;Absolute extrusion\n;End of Pause"
+                                else:
+                                    pause_code += "\n;End of Pause"
+                            else:
+                                pause_code += f"\n;End of Pause"
+                            lines[line_index] = pause_code
+                            alt_data[index] = "\n".join(lines)
+                            break
+                if pause_code is not None:
+                    break
+        return alt_data
