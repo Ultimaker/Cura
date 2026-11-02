@@ -6183,8 +6183,8 @@ msgid "Walls"
 msgstr "墙"
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
-msgstr "超过此角度的悬垂墙将使用悬垂墙设置打印。当值为 90 时,没有墙会被视为悬垂。得到支撑的悬垂也不会被视为悬垂。此外,任何少于一半悬垂的线也不会被视为悬垂。"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "超过此角度的悬垂墙将使用悬垂墙设置打印。当值为 90 时,没有墙会被视为悬垂。此外,任何少于一半悬垂的线也不会被视为悬垂。"
 
 msgctxt "minimum_infill_line_length description"
 msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
@@ -6793,10 +6793,6 @@ msgstr "空驶"
 #~ msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
 #~ msgid "Walls and Lines"
 #~ msgstr "墙体和线条"
-
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "悬垂超过此角度的壁将使用悬垂壁设置打印。该值为 90 时，不会将任何壁视为悬垂。受到支撑支持的悬垂也不会被视为悬垂。"
 
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."

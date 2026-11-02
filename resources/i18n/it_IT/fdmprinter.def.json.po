@@ -5301,10 +5301,6 @@ msgctxt "shell label"
 msgid "Walls"
 msgstr "Pareti"
 
-msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr "Le pareti con uno sbalzo superiore a quest'angolo saranno stampate con le impostazioni per le pareti a sbalzo. Se il valore è 90, nessuna parete sarà trattata come parete a sbalzo. Nemmeno lo sbalzo supportato dal supporto sarà trattato come tale."
-
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
 msgstr "Se questa opzione è abilitata, i percorsi utensile vengono corretti per le stampanti con pianificatori del movimento regolare. I piccoli movimenti che deviano dalla direzione del percorso utensile generale vengono risistemati per migliorare i movimenti del fluido."
@@ -6011,8 +6007,8 @@ msgid "Walls and Lines"
 msgstr "Pareti e linee"
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
-msgstr "Le pareti che sporgono più di questo angolo verranno stampate utilizzando le impostazioni per le pareti sporgenti. Con un valore di 90, nessun muro verrà considerato come sporgente. Anche le sporgenze sostenute da un supporto non verranno trattate come tali. Infine, qualsiasi linea che sia meno della metà della sporgenza non verrà gestita come tale."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "Le pareti che sporgono più di questo angolo verranno stampate utilizzando le impostazioni per le pareti sporgenti. Con un valore di 90, nessun muro verrà considerato come sporgente. Infine, qualsiasi linea che sia meno della metà della sporgenza non verrà gestita come tale."
 
 msgctxt "flooring_angles description"
 msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."

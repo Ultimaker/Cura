@@ -5301,10 +5301,6 @@ msgctxt "shell label"
 msgid "Walls"
 msgstr "Paredes"
 
-msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr "Las paredes con un ángulo de voladizo mayor que este se imprimirán con los ajustes de voladizo de pared. Cuando el valor sea 90, no se aplicará la condición de voladizo a la pared. El voladizo que se apoya en el soporte tampoco se tratará como voladizo."
-
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
 msgstr "Cuando está activado, las trayectorias de las herramientas se corrigen para impresoras con planificadores de movimiento suave. Los pequeños movimientos que se desvían de la dirección general de la trayectoria de la herramienta se suavizan para mejorar los movimientos fluidos."
@@ -6010,8 +6006,8 @@ msgid "Walls and Lines"
 msgstr "Muros y líneas"
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
-msgstr "Los muros que sobresalgan más de este ángulo se imprimirán utilizando la configuración de muros en voladizo. Cuando el valor es 90, ningún muro se tratará como saliente. Los salientes que se apoyen en soportes tampoco se tratarán como salientes. Además, cualquier línea que tenga menos de la mitad de saliente tampoco se tratará como saliente."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "Los muros que sobresalgan más de este ángulo se imprimirán utilizando la configuración de muros en voladizo. Cuando el valor es 90, ningún muro se tratará como saliente. Además, cualquier línea que tenga menos de la mitad de saliente tampoco se tratará como saliente."
 
 msgctxt "flooring_angles description"
 msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
