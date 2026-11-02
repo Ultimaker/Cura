@@ -123,8 +123,11 @@ class StartSliceJob(Job):
             return
 
         # Wait for error checker to be done.
-        while CuraApplication.getInstance().getMachineErrorChecker().needToWaitForResult:
+        machine_error_checker = CuraApplication.getInstance().getMachineErrorChecker()
+        machine_error_checker.enableLargeBatchSize(True)
+        while machine_error_checker.needToWaitForResult:
             time.sleep(0.1)
+        machine_error_checker.enableLargeBatchSize(False)
 
         # Don't slice if there is a setting with an error value.
         if CuraApplication.getInstance().getMachineErrorChecker().hasError:

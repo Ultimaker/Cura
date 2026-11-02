@@ -13,8 +13,6 @@ Item
 {
     id: prepareMenu
 
-    property var fileProviderModel: CuraApplication.getFileProviderModel()
-
     UM.I18nCatalog
     {
         id: catalog
@@ -40,7 +38,7 @@ Item
 
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width + openFileButton.width + openFileMenu.width
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width + (openFileButton.visible ? openFileButton.width : 0) + (openFileMenu.visible ? openFileMenu.width : 0)
             property int machineSelectorWidth: Math.round((width - printSetupSelectorItem.width) / 3)
 
             height: parent.height
@@ -124,7 +122,7 @@ Item
         Cura.ExpandablePopup
         {
             id: openFileMenu
-            visible: prepareMenu.fileProviderModel.count > 1
+            visible: Cura.Actions.hasExtraOpenFileActions
 
             contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
             headerCornerSide: Cura.RoundedRectangle.Direction.All
@@ -133,7 +131,7 @@ Item
             enabled: visible
 
             height: parent.height
-            width: visible ? (headerPadding * 3 + UM.Theme.getSize("button_icon").height + iconSize) : 0
+            width: headerPadding * 3 + UM.Theme.getSize("button_icon").height + iconSize
 
             headerItem: UM.ColorImage
             {
@@ -174,9 +172,11 @@ Item
                     Repeater
                     {
                         id: fileProviderRepeater
-                        model: prepareMenu.fileProviderModel
+                        model: [Cura.Actions.open].concat(Cura.Actions.extraOpenFileActions)
                         delegate: Button
                         {
+                            required property var modelData
+
                             leftPadding: UM.Theme.getSize("default_margin").width
                             rightPadding: UM.Theme.getSize("default_margin").width
                             width: openProviderColumn.width
@@ -185,7 +185,7 @@ Item
 
                             contentItem: UM.Label
                             {
-                                text: model.displayText
+                                text: modelData.text
                                 font: UM.Theme.getFont("medium")
                                 width: contentWidth
                                 height: parent.height
@@ -193,14 +193,7 @@ Item
 
                             onClicked:
                             {
-                                if(model.index == 0) //The 0th element is the "From Disk" option, which should activate the open local file dialog.
-                                {
-                                    Cura.Actions.open.trigger();
-                                }
-                                else
-                                {
-                                    prepareMenu.fileProviderModel.trigger(model.name);
-                                }
+                                modelData.trigger();
                             }
 
                             background: Rectangle
@@ -219,12 +212,11 @@ Item
         Button
         {
             id: openFileButton
-            visible: prepareMenu.fileProviderModel.count <= 1
+            visible: !Cura.Actions.hasExtraOpenFileActions
 
             height: parent.height
-            width: visible ? height : 0 //Square button (and don't take up space if invisible).
+            width: height // Square button
             onClicked: Cura.Actions.open.trigger()
-            enabled: visible && prepareMenu.fileProviderModel.count > 0
             hoverEnabled: true
 
             contentItem: Item

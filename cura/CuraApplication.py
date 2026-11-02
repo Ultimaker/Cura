@@ -102,6 +102,7 @@ from cura.Settings.MachineManager import MachineManager
 from cura.Settings.MachineNameValidator import MachineNameValidator
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
+from cura.Settings.TabbedSettingsManager import TabbedSettingsManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
@@ -217,6 +218,7 @@ class CuraApplication(QtApplication):
         self._setting_visibility_presets_model = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
+        self._tabbed_settings_manager = None
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
@@ -934,7 +936,7 @@ class CuraApplication(QtApplication):
         self._output_device_manager.start()
 
         # Initialize the FileProviderModel
-        self._file_provider_model.initialize(self._onFileProviderEnabledChanged)
+        self._file_provider_model.initialize()
 
         # Detect in which mode to run and execute that mode
         if self._is_headless:
@@ -1067,22 +1069,22 @@ class CuraApplication(QtApplication):
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
         return self._setting_visibility_presets_model
 
-    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
+    @deprecated("This shouldn't be called anymore, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getWelcomePagesModel(self, *args) -> "WelcomePagesModel":
         return WelcomePagesModel()
 
-    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
+    @deprecated("This shouldn't be called anymore, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getAddPrinterPagesModel(self, *args) -> "AddPrinterPagesModel":
         return AddPrinterPagesModel()
 
-    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
+    @deprecated("This shouldn't be called anymore, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getAddPrinterPagesModelWithoutCancel(self, *args) -> "AddPrinterPagesModel":
         return AddPrinterPagesModel()
 
-    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
+    @deprecated("This shouldn't be called anymore, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getWhatsNewPagesModel(self, *args) -> "WhatsNewPagesModel":
         return WhatsNewPagesModel()
@@ -1207,9 +1209,6 @@ class CuraApplication(QtApplication):
     def getFileProviderModel(self) -> FileProviderModel:
         return self._file_provider_model
 
-    def _onFileProviderEnabledChanged(self):
-        self._file_provider_model.update()
-
     def event(self, event):
         """Handle Qt events"""
 
@@ -1299,6 +1298,8 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
         engine.rootContext().setContextProperty("CuraSDKVersion", ApplicationMetadata.CuraSDKVersion)
+        self._tabbed_settings_manager = TabbedSettingsManager(machine_manager=self.getMachineManager(), parent=self)
+        engine.rootContext().setContextProperty("TabbedSettingsManager", self._tabbed_settings_manager)
 
         self.processEvents()
         qmlRegisterUncreatableMetaObject(CuraApplication.staticMetaObject, "Cura", 1, 0, "ResourceTypes", "ResourceTypes is an enum-only type")

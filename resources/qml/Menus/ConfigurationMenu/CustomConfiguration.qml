@@ -49,6 +49,7 @@ Item
         anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         visible: extrudersModel.count > 1
+        z: 1 // Render above the content rectangle so the active tab can cover its top border
 
         Repeater
         {
@@ -191,7 +192,7 @@ Item
                     {
                         target: enabledCheckbox
                         property: "checked"
-                        value: Cura.MachineManager.activeStack.isEnabled
+                        value: Cura.MachineManager.activeStack ? Cura.MachineManager.activeStack.isEnabled : false
                         when: Cura.MachineManager.activeStack != null
                     }
 

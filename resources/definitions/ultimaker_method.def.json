@@ -85,7 +85,7 @@
         "variant_definition": "ultimaker_method",
         "variants_name": "Extruder",
         "variants_name_has_translation": true,
-        "weight": -1
+        "weight": 0
     },
     "overrides":
     {

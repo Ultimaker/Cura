@@ -12,7 +12,7 @@
         "machine_extruder_trains": { "0": "ultimaker2_extended_extruder_0" },
         "platform_texture": "Ultimaker2Extendedbackplate.png",
         "quality_definition": "ultimaker2",
-        "weight": 3
+        "weight": 0
     },
     "overrides":
     {

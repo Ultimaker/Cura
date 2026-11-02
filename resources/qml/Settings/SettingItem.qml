@@ -67,7 +67,7 @@ Item
         {
             if(affected_by[i].label != "")
             {
-                affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+                affected_by_list += "<li>%1</li>".arg(affected_by[i].label)
             }
         }
 
@@ -76,11 +76,11 @@ Item
         {
             if(affects[i].label != "")
             {
-                affects_list += "<li>%1</li>\n".arg(affects[i].label)
+                affects_list += "<li>%1</li>".arg(affects[i].label)
             }
         }
 
-        var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition ? definition.label : "").arg(definition ? definition.description : "")
+        var tooltip = "<b>%1</b><p>%2</p>".arg(definition ? definition.label : "").arg(definition ? definition.description : "")
 
         if(!propertyProvider.isValueUsed)
         {
@@ -149,11 +149,11 @@ Item
             id: label
 
             anchors.left: parent.left
-            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition ? definition.depth : 0) - 1) * UM.Theme.getSize("default_margin").width) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition ? definition.depth : 0) - 1) * UM.Theme.getSize("default_margin").width) : UM.Theme.getSize("narrow_margin").width
             anchors.right: settingControls.left
             anchors.verticalCenter: parent.verticalCenter
 
-            text: definition ? definition.label : ""
+            text: (definition && definition.label) ? definition.label : ""
             elide: Text.ElideMiddle
             textFormat: Text.PlainText
 
@@ -340,7 +340,7 @@ Item
 
                 iconSource: UM.Theme.getIcon("Function")
 
-                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.").split("\n").join("<br/>")) }
                 onExited: base.showTooltip(base.createTooltipText())
             }
         }

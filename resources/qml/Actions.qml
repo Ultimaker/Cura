@@ -5,7 +5,7 @@ pragma Singleton
 
 import QtQuick 2.10
 import QtQuick.Controls 2.4
-import UM 1.1 as UM
+import UM 1.3 as UM
 import Cura 1.5 as Cura
 
 Item
@@ -84,6 +84,14 @@ Item
     property alias cut: cutAction
     property alias exportProjectForSupport: exportProjectForSupportAction
     property alias showFileLocation: showFileLocationAction
+
+    property list<Action> extraOpenFileActions: []
+    property bool hasExtraOpenFileActions: extraOpenFileActions.some((x) => x.enabled)
+
+    property list<Action> saveWorkspaceActions: []
+    property bool hasExtraSaveWorkspaceActions: saveWorkspaceActions.filter((x) => x.enabled).length > 1
+
+    property list<Action> setExtruderActions: []
 
     readonly property bool copy_paste_enabled: {
         const all_enabled_packages = CuraApplication.getPackageManager().allEnabledPackages;
@@ -513,14 +521,9 @@ Item
     Action
     {
         id: openAction
-        property var fileProviderModel: CuraApplication.getFileProviderModel()
-
-        text: catalog.i18nc("@action:inmenu menubar:file", "&Open File(s)...")
+        text: catalog.i18nc("@action:inmenu menubar:file", "From Disk")
         icon.name: "document-open"
-        // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
-        // enabled instead, and Ctrl+O is assigned to the local file provider
-        shortcut: fileProviderModel.count == 1 ? StandardKey.Open : ""
-        enabled: fileProviderModel.count == 1
+        shortcut: StandardKey.Open
     }
 
     Action

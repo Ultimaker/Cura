@@ -89,7 +89,7 @@ Cura.Menu
                 genericMenu.insertItem(index, object);
                 if (Qt.platform.os == "osx") object.text += " ";
             }
-            onObjectRemoved: function(index, object) { genericMenu.removeItem(index); }
+            onObjectRemoved: function(index, object) { genericMenu.removeItem(object); }
         }
     }
 
@@ -113,8 +113,9 @@ Cura.Menu
             materialMenu.insertMenu(index + 4, object);
             if (Qt.platform.os == "osx") object.title += " ";
         }
-        onObjectRemoved: function(index, object) {
-            materialMenu.removeMenu(index);
+        onObjectRemoved: function(index, object)
+        {
+            materialMenu.removeMenu(object)
         }
     }
 

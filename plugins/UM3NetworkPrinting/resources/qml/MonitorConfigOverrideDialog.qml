@@ -86,7 +86,7 @@ UM.Dialog
             {
                 topLine = catalog.i18nc("@label", "The printer %1 is assigned, but the job contains an unknown material configuration.").arg(printer.name)
             }
-            var result = "<p>" + topLine +"</p>\n\n"
+            var result = "<p>" + topLine +"</p><br/><br/>"
             for (var i = 0; i < printer.activePrintJob.configurationChanges.length; i++)
             {
                 var change = printer.activePrintJob.configurationChanges[i]
@@ -105,10 +105,10 @@ UM.Dialog
                     default:
                         text = "unknown"
                 }
-                result += "<p><b>" + text + "</b></p>\n\n"
+                result += "<p><b>" + text + "</b></p><br/><br/>"
             }
             var bottomLine = catalog.i18nc("@label", "Override will use the specified settings with the existing printer configuration. This may result in a failed print.")
-            result += "<p>" + bottomLine + "</p>\n\n"
+            result += "<p>" + bottomLine + "</p><br/><br/>"
             return result
         }
     }
