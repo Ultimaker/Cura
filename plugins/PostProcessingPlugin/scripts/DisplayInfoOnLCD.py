@@ -165,14 +165,6 @@ class DisplayInfoOnLCD(Script):
                     "default_value": false,
                     "enabled": "add_m118_line"
                 },
-                "add_m118_p0":
-                {
-                    "label": "    Add P0 to M118 Line",
-                    "description": "Adds P0 parameter.  P0 has the printer send the response out through all it's ports.  Octoprint may require this.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "add_m118_line"
-                },
                 "add_m73_line":
                 {
                     "label": "Add M73 Line(s)",
@@ -318,8 +310,7 @@ class DisplayInfoOnLCD(Script):
         self.add_m117_line = self.getSettingValueByKey("add_m117_line")
         self.add_m118_line = self.getSettingValueByKey("add_m118_line")
         self.add_m118_a1 = self.getSettingValueByKey("add_m118_a1")
-        self.add_m118_p0 = self.getSettingValueByKey("add_m118_p0")
-        self.m118_text = "M118 "
+        self.m118_text = "M118 E1 P0 "
         self.add_m73_line = self.getSettingValueByKey("add_m73_line")
         self.add_m73_time = self.getSettingValueByKey("add_m73_time")
         self.add_m73_percent = self.getSettingValueByKey("add_m73_percent")
@@ -366,7 +357,7 @@ class DisplayInfoOnLCD(Script):
         max_layer = 0
         format_option = self.getSettingValueByKey("format_option")
         lcd_text = "M117 "
-        octo_text = "M118 "
+        octo_text = "M118 E1 P0 "
         if self.getSettingValueByKey("file_name") != "":
             file_name = self.getSettingValueByKey("file_name")
         else:
@@ -411,9 +402,7 @@ class DisplayInfoOnLCD(Script):
                         lines.insert(line_index + 1, display_text)
                     if self.add_m118_line:
                         if self.add_m118_a1:
-                            self.m118_text = self.m118_text.replace("M118 ","M118 A1 ")
-                        if self.add_m118_p0:
-                            self.m118_text = self.m118_text.replace("M118 ","M118 P0 ")
+                            self.m118_text += " A1"
                         lines.insert(line_index + 2, self.m118_text)
                     i += 1
             final_lines = "\n".join(lines)
@@ -463,7 +452,7 @@ class DisplayInfoOnLCD(Script):
                 orig_hr = round(orig_hhh // 1)
                 orig_mmm = math.floor((orig_hhh % 1) * 60)
                 if self.add_m118_line:
-                    lines.insert(len(lines) - 2, f"M118 Adjusted Print Time is {hr} hr {mmm} min")
+                    lines.insert(len(lines) - 2, f"M118 E1 P0 Adjusted Print Time is {hr} hr {mmm} min")
                 if self.add_m117_line:
                     lines.insert(len(lines) - 2, f"M117 ET {hr} hr {mmm} min")
                 # Add M73 line at beginning
@@ -500,7 +489,7 @@ class DisplayInfoOnLCD(Script):
                 if self.add_m117_line:
                     data[len(data)-1] += "M117 Orig Cura Est " + str(orig_hr) + "hr " + str(orig_mmm) + "min\n"
                 if self.add_m118_line:
-                    data[len(data)-1] += "M118 Est w/FudgeFactor  " + str(time_adj_percentage * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
+                    data[len(data)-1] += "M118 E1 P0 Est w/FudgeFactor  " + str(time_adj_percentage * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
         if not display_total_layers or not display_remaining_time:
             base_display_text = "layer "
         else:
@@ -569,11 +558,9 @@ class DisplayInfoOnLCD(Script):
                     if self.add_m117_line:
                         lines[l_index] += "\nM117 " + display_text
                     if self.add_m118_line:
-                        m118_text = "\nM118 "
+                        m118_text = "\nM118 E1 P0 "
                         if self.add_m118_a1:
                             m118_text += "A1 "
-                        if self.add_m118_p0:
-                            m118_text += "P0 "
                         try:
                             lines[l_index] += m118_text + display_text + (str(self.filament_list[current_layer]) if self.add_filament_use else "")
                             if "Beep at Runout" in self.filament_list[current_layer]:
@@ -871,7 +858,7 @@ class DisplayInfoOnLCD(Script):
             weight_extruded = 0.0
             weight_extruded = self.total_amount * self.filament_x_section * self.material_density
 
-            msg_amt = f"\nM118 Filament Req'd: {round(self.total_amount/1000, 2)}m|Wt:{round(weight_extruded, 2)}gr"
+            msg_amt = f"\nM118 E1 P0 Filament Req'd: {round(self.total_amount/1000, 2)}m|Wt:{round(weight_extruded, 2)}gr"
             if self.beep_at_runout and self.total_amount < self.runout_min_filament and self.beep_layer_count > 0:
                 # This script searches for the M300 line to add a pause, so it needs a specific comment to differentiate
                 beep_line = f"\nM300 P{self.beep_tone_duration} ; Beep at Runout"
@@ -885,7 +872,7 @@ class DisplayInfoOnLCD(Script):
 
         # The total_filament_list is missing the initial line so insert it here
         weight_extruded = float(self.total_filament_reqd * 1000) * self.filament_x_section * self.material_density
-        first_msg_amount = f"\nM118 Filament Req'd: {round(self.total_filament_reqd, 2)}m|Wt:{round(weight_extruded, 2)}gr"
+        first_msg_amount = f"\nM118 E1 P0 Filament Req'd: {round(self.total_filament_reqd, 2)}m|Wt:{round(weight_extruded, 2)}gr"
         self.filament_list.insert(0, f"{first_msg_amount}")
         return alt_data
 
@@ -928,7 +915,7 @@ class DisplayInfoOnLCD(Script):
 
             weight_extruded = 0.0
             weight_extruded = temp_length * self.filament_x_section * self.material_density
-            msg_amt = f"\nM118 Filament Req'd: {round(temp_length/1000, 2)}m|Wt:{round(weight_extruded, 2)}gr"
+            msg_amt = f"\nM118 E1 P0{' A1' if self.add_m118_a1 else ""} Filament Req'd: {round(temp_length/1000, 2)}m|Wt:{round(weight_extruded, 2)}gr"
             if self.beep_at_runout and temp_length < self.runout_min_filament and self.beep_layer_count > 0:
                 beep_line = f"\nM300 P{self.beep_tone_duration} ; Beep at Runout"
                 self.beep_layer_count -= 1
