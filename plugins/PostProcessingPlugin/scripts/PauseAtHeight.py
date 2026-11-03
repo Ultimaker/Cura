@@ -168,7 +168,7 @@ class PauseAtHeight(Script):
                         "custom": "Custom Command"
                         },
                     "default_value": "marlin",
-                    "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name or \\\"Flying Bear Ghost 4S\\\" in machine_name  else \\\"marlin\\\"",
+                    "value": "'griffin' if (machine_gcode_flavor=='Griffin' or machine_gcode_flavor=='Cheetah') else 'reprap' if machine_gcode_flavor=='RepRap (RepRap)' else 'repetier' if machine_gcode_flavor=='Repetier' else 'bq' if 'BQ' in machine_name or 'Flying Bear Ghost 4S' in machine_name  else 'marlin'",
                     "enabled": "enable_pause_at_height"
                 },
                 "g4_dwell_time":
@@ -372,7 +372,7 @@ class PauseAtHeight(Script):
                     "unit": "°C   ",
                     "type": "int",
                     "default_value": 200,
-                    "enabled": "enable_pause_at_height and pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
+                    "enabled": "enable_pause_at_height and pause_method not in ['griffin', 'repetier']"
                 },
                 "tool_temp_override_enable":
                 {
@@ -400,7 +400,7 @@ class PauseAtHeight(Script):
                         "m109_cmd_r": "M109 R",
                         "m109_cmd_s": "M109 S"},
                     "default_value": "m104_cmd",
-                    "enabled": "enable_pause_at_height and pause_method not in [\\\"griffin\\\", \\\"repetier\\\"] and not tool_temp_override"
+                    "enabled": "enable_pause_at_height and pause_method not in ['griffin', 'repetier'] and not tool_temp_override"
                 },
                 "resume_print_temperature":
                 {
@@ -409,7 +409,7 @@ class PauseAtHeight(Script):
                     "unit": "°C   ",
                     "type": "int",
                     "default_value": 200,
-                    "enabled": "enable_pause_at_height and pause_method not in [\\\"griffin\\\", \\\"repetier\\\"] and not tool_temp_override"
+                    "enabled": "enable_pause_at_height and pause_method not in ['griffin', 'repetier'] and not tool_temp_override"
                 },
                 "display_text":
                 {
@@ -417,7 +417,7 @@ class PauseAtHeight(Script):
                     "description": "Text that should appear on the display while paused. If left empty, there will not be any message.  Please note:  It is possible that the message will be immediately overridden by another message sent by the firmware.  If 'M0 w/message' is chosen as the pause command then the message is added to the pause command. You may have as many messages as pauses.  Delimit with a comma",
                     "type": "str",
                     "default_value": "",
-                    "enabled": "enable_pause_at_height and pause_method != \\\"repetier\\\""
+                    "enabled": "enable_pause_at_height and pause_method != 'repetier'"
                 },
                 "custom_gcode_before_pause":
                 {
