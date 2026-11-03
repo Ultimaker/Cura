@@ -8663,6 +8663,17 @@
                     "settable_per_extruder": false,
                     "enabled": "print_sequence == 'one_at_a_time'"
                 },
+                "skip_mesh_enabled":
+                {
+                    "label": "Enable Skip Mesh On Printer",
+                    "description": "Allows skipping parts of the print (for example, when single a model is failing, but others are printing fine).",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "print_sequence != 'one_at_a_time' and numUsedExtruders() <= 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "enabled": "print_sequence != 'one_at_a_time' and numUsedExtruders() <= 1"
+                },
                 "infill_mesh":
                 {
                     "label": "Infill Mesh",

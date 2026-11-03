@@ -445,6 +445,7 @@ class CuraApplication(QtApplication):
 
         self._cura_formula_functions = CuraFormulaFunctions(self)
 
+        SettingFunction.registerOperator("numUsedExtruders", self._cura_formula_functions.getNumUsedExtruders)
         SettingFunction.registerOperator("extruderValue", self._cura_formula_functions.getValueInExtruder)
         SettingFunction.registerOperator("extruderValues", self._cura_formula_functions.getValuesInAllExtruders)
         SettingFunction.registerOperator("anyExtruderWithMaterial", self._cura_formula_functions.getExtruderPositionWithMaterial)
