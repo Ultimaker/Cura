@@ -78,7 +78,7 @@ class CuraFormulaFunctions:
 
         return result
 
-    def getNumUsedExtruders(self, context: Optional["PropertyEvaluationContext"] = None) -> int:
+    def getNumUsedExtruders(self) -> int:
         return len(self._application.getExtruderManager().getUsedExtruderStacks())
 
     # Gets all extruder values as a list for the given property.

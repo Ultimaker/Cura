@@ -228,7 +228,7 @@ class ExtruderManager(QObject):
         number_active_extruders = len([extruder for extruder in self.getActiveExtruderStacks() if extruder.isEnabled])
 
         # Get the extruders of all printable meshes in the scene
-        nodes = [node for node in DepthFirstIterator(scene_root) if node.isSelectable() and not node.callDecoration("isAntiOverhangMesh") and not  node.callDecoration("isSupportMesh")] #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        nodes = [node for node in DepthFirstIterator(scene_root) if node.isSelectable() and not node.callDecoration("isAntiOverhangMesh")] #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
 
         for node in nodes:
             extruder_stack_id = node.callDecoration("getActiveExtruder")
@@ -241,6 +241,9 @@ class ExtruderManager(QObject):
                 # We're already done. Stop looking.
                 # Especially with a lot of models on the buildplate, this will speed up things rather dramatically.
                 break
+
+            if node.callDecoration("isSupportMesh"):
+                continue
 
             # Get whether any of them use support.
             stack_to_use = node.callDecoration("getStack")  # if there is a per-mesh stack, we use it
