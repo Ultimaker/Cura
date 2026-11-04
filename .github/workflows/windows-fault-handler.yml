@@ -1,0 +1,37 @@
+name: Windows fault handler regression
+
+on:
+  pull_request:
+    paths:
+      - 'cura_app.py'
+      - 'cura/FaultHandler.py'
+      - 'tests/TestFaultHandler.py'
+      - 'conanfile.py'
+      - '.github/workflows/windows-fault-handler.yml'
+  push:
+    branches: [main, 'CURA-*', '[0-9]+.[0-9]+']
+    paths:
+      - 'cura_app.py'
+      - 'cura/FaultHandler.py'
+      - 'tests/TestFaultHandler.py'
+      - 'conanfile.py'
+      - '.github/workflows/windows-fault-handler.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  native-exception:
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.12.2', '3.12.7']
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+      - name: Verify native exception diagnostics
+        run: python tests/TestFaultHandler.py
