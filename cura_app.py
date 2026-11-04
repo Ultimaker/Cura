@@ -13,7 +13,6 @@ if "" in sys.path:
     sys.path.remove("")
 
 import argparse
-import faulthandler
 import os
 
 # set the environment variable QT_QUICK_FLICKABLE_WHEEL_DECELERATION to 5000 as mentioned in qt6.6 update log to overcome scroll related issues
@@ -30,6 +29,7 @@ from UM.Platform import Platform
 from cura import ApplicationMetadata
 from cura.ApplicationMetadata import CuraAppName
 from cura.CrashHandler import CrashHandler
+from cura.FaultHandler import enableFaultHandler
 
 try:
     import sentry_sdk
@@ -188,11 +188,7 @@ def exceptHook(hook_type, value, traceback):
 
 # Set exception hook to use the crash dialog handler
 sys.excepthook = exceptHook
-# Enable dumping traceback for all threads
-if sys.stderr and not sys.stderr.closed:
-    faulthandler.enable(file = sys.stderr, all_threads = True)
-elif sys.stdout and not sys.stdout.closed:
-    faulthandler.enable(file = sys.stdout, all_threads = True)
+enableFaultHandler()
 
 from cura.CuraApplication import CuraApplication
 
