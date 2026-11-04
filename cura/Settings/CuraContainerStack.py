@@ -234,7 +234,7 @@ class CuraContainerStack(ContainerStack):
 
         :param key: The key of the setting to set.
         :param property_name: The name of the property to set.
-        :param new_value: The new value to set the property to.
+        :param property_value: The new value to set the property to.
         """
 
         CachedMemberFunctions.clearInstanceCache(self)

@@ -1118,8 +1118,7 @@ class BuildVolume(SceneNode):
     def _calculateBedAdhesionSize(self, used_extruders):
         """Get the bed adhesion size for the global container stack and used extruders
 
-        :param adhesion_override: override adhesion type.
-          Use None to use the global stack default, "none" for no adhesion, "brim" for brim etc.
+        :param used_extruders: The extruder stacks that are used in the print.
         """
         if self._global_container_stack is None:
             return None

@@ -124,7 +124,7 @@ class Backup:
     def _findRedownloadablePlugins(self, available_remote_plugins: frozenset) -> (frozenset[str], frozenset[str]):
         """ Find all plugins that should be able to be reinstalled from the Marketplace.
 
-        :param plugins_path: Path to all plugins in the user-space.
+        :param available_remote_plugins: The IDs of the plugins that are available for download from the Marketplace.
         :return: Tuple of a set of plugin-ids and a set of plugin-paths.
         """
         plugin_reg = PluginRegistry.getInstance()

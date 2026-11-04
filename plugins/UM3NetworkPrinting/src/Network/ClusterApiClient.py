@@ -128,8 +128,6 @@ class ClusterApiClient:
 
         :param path: Part added to the base-endpoint forming the total request URL (the path from the endpoint to the requested resource).
         :param content_type: The type of the body contents.
-        :param method: The HTTP method to use, such as GET, POST, PUT, etc.
-        :param skip_auth: Skips the authentication step if set; prevents a loop on request of authentication token.
         """
         url = QUrl("http://" + self._address + path)
         request = QNetworkRequest(url)

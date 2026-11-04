@@ -26,7 +26,7 @@ class ToolPathUploader:
                  ) -> None:
         """Creates a mesh upload object.
 
-        :param manager: The network access manager that will handle the HTTP requests.
+        :param http: The HTTP request manager that will handle the HTTP requests.
         :param print_job: The print job response that was returned by the cloud after registering the upload.
         :param data: The mesh bytes to be uploaded.
         :param on_finished: The method to be called when done.

@@ -117,7 +117,8 @@ class CuraProfileReader(ProfileReader):
 
         :param serialized: The profile data to convert.
         :param profile_id: The name of the profile.
-        :param source_version: The profile version of 'serialized'.
+        :param main_version: The main profile format version of 'serialized'.
+        :param setting_version: The setting version of 'serialized'.
         :return: List of serialized profile strings and matching profile names.
         """
 
