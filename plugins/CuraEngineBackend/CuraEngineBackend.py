@@ -9,7 +9,7 @@ from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSlot
 import sys
 import grpc
 from time import time
-from typing import Any, cast, Dict, List, Optional, Set, Iterable, TYPE_CHECKING
+from typing import Any, cast, Dict, List, Optional, Set, Iterable, Tuple, Callable, TYPE_CHECKING
 
 from PyQt6.QtGui import QDesktopServices, QImage
 
@@ -37,6 +37,7 @@ from plugins.CuraEngineBackend.protocol import Cura_pb2 as CuraProto
 from plugins.CuraEngineBackend.protocol import Cura_pb2_grpc as CuraGrpc
 
 if TYPE_CHECKING:
+    from grpc.framework.interfaces.base.base import Servicer as GrpcServicer
     from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
     from cura.Machines.MachineErrorChecker import MachineErrorChecker
     from UM.Scene.Scene import Scene
@@ -161,6 +162,17 @@ class CuraEngineBackend(QObject, Backend):
         self._global_container_stack: Optional[ContainerStack] = None
 
         # Listeners for receiving messages from the back-end.
+        self._message_handlers = {
+            "layer": self._onLayerMessage,
+            "layer_optimized": self._onOptimizedLayerMessage,
+            "progress": self._onProgressMessage,
+            "gcode_layer": self._onGCodeLayerMessage,
+            "slice_uuid": self._onSliceUUIDMessage,
+            "print_time_material_estimates": self._onPrintTimeMaterialEstimates,
+            "initial_extruder": self._onInitialExtruder,
+            "slicing_finished": self._onSlicingFinishedMessage,
+        }
+
         self._start_slice_job: Optional[StartSliceJob] = None
         self._start_slice_job_build_plate: Optional[int] = None
         self._pending_messages: deque = deque()
@@ -220,17 +232,6 @@ class CuraEngineBackend(QObject, Backend):
         self._resetLastSliceTimeStats()
         self._snapshot: Optional[QImage] = None
         self._last_grpc_error: Optional[BaseException] = None
-
-        self._message_handlers = {
-            "layer": self._onLayerMessage,
-            "layer_optimized": self._onOptimizedLayerMessage,
-            "progress": self._onProgressMessage,
-            "gcode_layer": self._onGCodeLayerMessage,
-            "slice_uuid": self._onSliceUUIDMessage,
-            "print_time_material_estimates": self._onPrintTimeMaterialEstimates,
-            "initial_extruder": self._onInitialExtruder,
-            "slicing_finished": self._onSlicingFinishedMessage,
-        }
 
         application.initializationFinished.connect(self.initialize)
 
@@ -425,7 +426,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self.stopSlicing()
         if self._process is None:  # type: ignore
-            self._prepareBackendServer()
+            self.startEngine()
         self._engine_is_fresh = False  # Yes we're going to use the engine
 
         self.processingProgress.emit(0.0)
@@ -632,9 +633,7 @@ class CuraEngineBackend(QObject, Backend):
             Logger.log("d", "Sending slice message took %s seconds", self._time_send_message - self._time_start_process)
 
     def sendPendingMessages(self) -> None:
-        Logger.debug(f"{len(self._pending_messages)} message(s) to send")
         while len(self._pending_messages) != 0 and self._grpc_server is not None and self._grpc_server.connected:
-            Logger.debug("send engine message")
             if not self._grpc_server.send_message(self._pending_messages.popleft()):
                 error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try again, or contact support.")
                 self._error_message = Message(error_txt,
@@ -913,20 +912,8 @@ class CuraEngineBackend(QObject, Backend):
         application = CuraApplication.getInstance()
         application.getPrintInformation().slice_uuid = message.slice_uuid
 
-    def _prepareBackendServer(self) -> None:
-        """Ensure the Cura gRPC endpoint exists and start an internal engine if needed."""
-        if self._grpc_server is None:
-            service = _CuraEngineService(self)
-            self._grpc_server = self._createGrpcBackendServer(
-                service,
-                CuraGrpc.add_CuraEngineCommunicationServicer_to_server,
-            )
-            self._grpc_server._on_stream_connected = self._onEngineConnected
-            self._grpc_server._on_stream_ended = self._onGrpcStreamEnded
-            self._grpc_server.messageReceived.connect(self._onEngineMessage)
-        elif self._process is None and not CuraApplication.getInstance().getUseExternalBackend():
-            self.startEngine()
-        self._engine_is_fresh = True
+    def _makeGrpcServicerAndAdder(self) -> Tuple["GrpcServicer", Callable[["GrpcServicer", grpc.server], None]]:
+        return _CuraEngineService(self), CuraGrpc.add_CuraEngineCommunicationServicer_to_server
 
     def _onEngineConnected(self) -> None:
         super()._onEngineConnected()
@@ -934,7 +921,6 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onEngineMessage(self, envelope: CuraProto.CuraEngineMessage) -> None:
         message_case = envelope.WhichOneof("message")
-        Logger.debug(f"Received message {message_case}")
         handler = self._message_handlers.get(message_case)
 
         if handler is None:
@@ -1074,7 +1060,8 @@ class CuraEngineBackend(QObject, Backend):
         # Restart engine as soon as possible, we know we want to slice afterwards
         if not self._engine_is_fresh:
             self._terminate()
-            self._prepareBackendServer()
+            self.startEngine()
+            self._engine_is_fresh = True
 
     def _onToolOperationStopped(self, tool: Tool) -> None:
         """Called when the user stops using some tool.
@@ -1135,8 +1122,6 @@ class CuraEngineBackend(QObject, Backend):
                     Logger.log("d", "Backend finished slicing. Resetting process.")
                     self.stopPlugins()
                 self._process = None # type: ignore
-                if self._grpc_server and not self._grpc_server.connected:
-                    self._prepareBackendServer()
 
     def _reportBackendError(self, _message_id: str, _action_id: str) -> None:
         """
