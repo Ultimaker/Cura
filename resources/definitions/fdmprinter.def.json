@@ -8666,7 +8666,7 @@
                 "skip_mesh_enabled":
                 {
                     "label": "Enable Skip Mesh On Printer",
-                    "description": "Allows skipping parts of the print (for example, when single a model is failing, but others are printing fine).",
+                    "description": "Allows skipping parts of the print (for example, when a single model is failing, but others are printing fine).",
                     "type": "bool",
                     "default_value": false,
                     "value": "print_sequence != 'one_at_a_time' and numUsedExtruders() <= 1",
