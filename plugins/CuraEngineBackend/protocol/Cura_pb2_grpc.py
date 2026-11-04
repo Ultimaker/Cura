@@ -26,7 +26,9 @@ if _version_not_supported:
 
 
 class CuraEngineCommunicationStub:
-    """Missing associated documentation comment in .proto file."""
+    """Create a service with a single method that acts as a long-term communication channel. Because the attributes are
+    tagged as "stream", calling the method creates two channels, one for each direction, and keeps them alive.
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -42,7 +44,9 @@ class CuraEngineCommunicationStub:
 
 
 class CuraEngineCommunicationServicer:
-    """Missing associated documentation comment in .proto file."""
+    """Create a service with a single method that acts as a long-term communication channel. Because the attributes are
+    tagged as "stream", calling the method creates two channels, one for each direction, and keeps them alive.
+    """
 
     def Communicate(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
@@ -67,7 +71,9 @@ def add_CuraEngineCommunicationServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class CuraEngineCommunication:
-    """Missing associated documentation comment in .proto file."""
+    """Create a service with a single method that acts as a long-term communication channel. Because the attributes are
+    tagged as "stream", calling the method creates two channels, one for each direction, and keeps them alive.
+    """
 
     @staticmethod
     def Communicate(request_iterator,
