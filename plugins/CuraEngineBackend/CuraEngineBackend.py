@@ -48,14 +48,11 @@ catalog = i18nCatalog("cura")
 
 
 class _CuraEngineService(CuraGrpc.CuraEngineCommunicationServicer):
-    def __init__(self, backend: "CuraEngineBackend") -> None:
-        self._backend = backend
+    def __init__(self, server: GrpcBackendServer) -> None:
+        self._grpc_server = server
 
     def Communicate(self, request_iterator: Iterable[CuraProto.CuraEngineMessage], context: grpc.ServicerContext):
-        server = self._backend._grpc_server
-        if server is None:
-            return
-        yield from server.run_stream(request_iterator, context, self._backend._onEngineMessage)
+        yield from self._grpc_server.run_stream(request_iterator, context)
 
 
 class CuraEngineBackend(QObject, Backend):
@@ -742,9 +739,14 @@ class CuraEngineBackend(QObject, Backend):
 
         self._invokeSlice()
 
+    def _prepareBackendServer(self) -> None:
+        super()._prepareBackendServer()
+        self._grpc_server.streamEnded.connect(self._onGrpcStreamEnded)
+
     def _onGrpcStreamEnded(self, error: Optional[BaseException]) -> None:
         if CuraApplication.getInstance().isShuttingDown() or not error:
             return
+
         self._last_grpc_error = error
         Logger.log("w", "Cura Engine gRPC stream ended: %s", str(error))
         if self._slicing:
@@ -913,7 +915,7 @@ class CuraEngineBackend(QObject, Backend):
         application.getPrintInformation().slice_uuid = message.slice_uuid
 
     def _makeGrpcServicerAndAdder(self) -> Tuple["GrpcServicer", Callable[["GrpcServicer", grpc.server], None]]:
-        return _CuraEngineService(self), CuraGrpc.add_CuraEngineCommunicationServicer_to_server
+        return _CuraEngineService(self._grpc_server), CuraGrpc.add_CuraEngineCommunicationServicer_to_server
 
     def _onEngineConnected(self) -> None:
         super()._onEngineConnected()
