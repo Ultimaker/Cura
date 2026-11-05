@@ -43,6 +43,7 @@ import os.path
 from typing import Optional, TYPE_CHECKING, List, cast
 
 if TYPE_CHECKING:
+    from cura.LayerData import LayerData
     from UM.Scene.SceneNode import SceneNode
     from UM.Scene.Scene import Scene
     from UM.Settings.ContainerStack import ContainerStack
@@ -100,6 +101,8 @@ class SimulationView(CuraView):
         self._max_flow_rate = sys.float_info.min
         self._cumulative_line_duration_layer: Optional[int] = None
         self._cumulative_line_duration: List[float] = []
+        self._color_scheme_data_sources: Optional[tuple["LayerData", ...]] = None
+        self._color_scheme_visibility: Optional[tuple[bool, bool, bool, bool]] = None
 
         # Cache for layer heights to avoid recalculating on every query
         self._layer_heights_cache: dict[int, float] = {}
@@ -664,6 +667,19 @@ class SimulationView(CuraView):
         """
         Calculates the limits of the colour schemes, depending on the layer view data that is visible to the user.
         """
+        # LayerData is immutable. Scene children also change when footprints or
+        # tool visuals are replaced, which does not invalidate these statistics.
+        data_sources = tuple(
+            data for node in DepthFirstIterator(self.getController().getScene().getRoot())
+            if (data := node.callDecoration("getLayerData")) is not None
+        )
+        visibility = (self.getShowSkin(), self.getShowInfill(), self.getShowHelpers(), self.getShowTravelMoves())
+        previous_sources = self._color_scheme_data_sources
+        if (previous_sources is not None and len(data_sources) == len(previous_sources)
+                and all(current is previous for current, previous in zip(data_sources, previous_sources))
+                and visibility == self._color_scheme_visibility):
+            return
+
         # Before we start, save the old values so that we can tell if any of the spectrums need to change.
         old_min_feedrate = self._min_feedrate
         old_max_feedrate = self._max_feedrate
@@ -705,11 +721,7 @@ class SimulationView(CuraView):
             visible_line_types.append(LayerPolygon.MoveWhileRetractingType)
             visible_line_types.append(LayerPolygon.MoveWhileUnretractingType)
 
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            layer_data = node.callDecoration("getLayerData")
-            if not layer_data:
-                continue
-
+        for layer_data in data_sources:
             for layer_index in layer_data.getLayers():
                 for polyline in layer_data.getLayer(layer_index).polygons:
                     is_visible = numpy.isin(polyline.types, visible_line_types)
@@ -738,6 +750,8 @@ class SimulationView(CuraView):
                         # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding the zero) can't be calculated.
                         Logger.log("w", "Min thickness can't be calculated because all the values are zero")
 
+        self._color_scheme_data_sources = data_sources
+        self._color_scheme_visibility = visibility
         if old_min_feedrate != self._min_feedrate or old_max_feedrate != self._max_feedrate \
                 or old_min_linewidth != self._min_line_width or old_max_linewidth != self._max_line_width \
                 or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness \
