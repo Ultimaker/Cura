@@ -189,10 +189,14 @@ def exceptHook(hook_type, value, traceback):
 # Set exception hook to use the crash dialog handler
 sys.excepthook = exceptHook
 # Enable dumping traceback for all threads
+# Windows can invoke the native exception handler without the GIL while
+# other Python threads are running. Dumping their changing frames can
+# itself crash Cura (see #21121). Keep faulting-thread diagnostics there.
+all_threads = sys.platform != "win32"
 if sys.stderr and not sys.stderr.closed:
-    faulthandler.enable(file = sys.stderr, all_threads = True)
+    faulthandler.enable(file = sys.stderr, all_threads = all_threads)
 elif sys.stdout and not sys.stdout.closed:
-    faulthandler.enable(file = sys.stdout, all_threads = True)
+    faulthandler.enable(file = sys.stdout, all_threads = all_threads)
 
 from cura.CuraApplication import CuraApplication
 
