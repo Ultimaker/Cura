@@ -66,6 +66,8 @@ UM.PreferencesPage
 
     function reset()
     {
+        UM.Preferences.resetPreference("general/block_windows_accessibility_queries")
+        blockWindowsAccessibilityCheckbox.checked = boolCheck(UM.Preferences.getValue("general/block_windows_accessibility_queries"))
         UM.Preferences.resetPreference("general/language")
         var defaultLanguage = UM.Preferences.getValue("general/language")
         setDefaultLanguage(defaultLanguage)
@@ -364,6 +366,22 @@ UM.PreferencesPage
                     onClicked: UM.Preferences.setValue("general/use_tray_icon", checked)
 
                     text: catalog.i18nc("@option:check", "Add icon to system tray (* restart required)");
+                }
+            }
+
+            UM.TooltipArea
+            {
+                visible: Qt.platform.os === "windows"
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Prevent other applications from requesting Windows accessibility objects from Cura. This can improve responsiveness when accessibility requests are frequent. Screen readers, voice control, and UI automation cannot inspect Cura while this option is enabled.")
+
+                UM.CheckBox
+                {
+                    id: blockWindowsAccessibilityCheckbox
+                    checked: boolCheck(UM.Preferences.getValue("general/block_windows_accessibility_queries"))
+                    onClicked: UM.Preferences.setValue("general/block_windows_accessibility_queries", checked)
+                    text: catalog.i18nc("@option:check", "Block Windows accessibility queries")
                 }
             }
 
