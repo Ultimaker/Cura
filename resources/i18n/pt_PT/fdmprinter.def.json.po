@@ -6183,8 +6183,8 @@ msgid "Walls"
 msgstr "Paredes"
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
-msgstr "As paredes com um excedente que ultrapassa este ângulo serão impressas utilizando as definições de parede excendente. Quando o valor é igual a 90, nenhuma parede será tratada como excedente. O excedente suportado pelo suporte também não será tratado como excedente. Adicionalmente, qualquer linha que seja inferior à metade excedente também não será tratada como excedente."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "As paredes com um excedente que ultrapassa este ângulo serão impressas utilizando as definições de parede excendente. Quando o valor é igual a 90, nenhuma parede será tratada como excedente. Adicionalmente, qualquer linha que seja inferior à metade excedente também não será tratada como excedente."
 
 msgctxt "minimum_infill_line_length description"
 msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
@@ -6793,10 +6793,6 @@ msgstr "deslocação"
 #~ msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
 #~ msgid "Walls and Lines"
 #~ msgstr "Paredes e linhas"
-
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "As paredes com saliências que ultrapassem este ângulo serão impressas utilizando definições de parede de saliências. Quando o valor é 90, nenhuma parede é considerada como sendo uma saliência. As saliências suportadas por suporte também não serão consideradas como saliências."
 
 #~ msgctxt "z_seam_relative description"
 #~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
