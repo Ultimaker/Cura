@@ -8,7 +8,6 @@ import time
 from typing import Any, cast, Dict, List, Optional, Set, Tuple
 import re
 import json
-import pyArcus as Arcus  # For typing.
 from PyQt6.QtCore import QCoreApplication
 
 from UM.Job import Job
@@ -19,6 +18,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingRelation import SettingRelation #For typing.
+from UM.Signal import Signal
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Scene import Scene #For typing.
@@ -30,7 +30,9 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.CuraVersion import CuraVersion
+from cura.Settings.GlobalStack import GlobalStack
 
+from plugins.CuraEngineBackend.protocol import Cura_pb2 as CuraProto
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
 
@@ -49,11 +51,10 @@ class StartJobResult(IntEnum):
 class StartSliceJob(Job):
     """Job class that builds up the message of scene data to send to CuraEngine."""
 
-    def __init__(self, slice_message: Arcus.PythonMessage) -> None:
+    def __init__(self) -> None:
         super().__init__()
 
         self._scene: Scene = CuraApplication.getInstance().getController().getScene()
-        self._slice_message: Arcus.PythonMessage = slice_message
         self._is_cancelled: bool = False
         self._build_plate_number: Optional[int] = None
         self._associated_disabled_extruders: List[int] = []
@@ -61,8 +62,7 @@ class StartSliceJob(Job):
         # cache for all setting values from all stacks (global & extruder) for the current machine
         self._all_extruders_settings: Optional[Dict[str, Any]] = None
 
-    def getSliceMessage(self) -> Arcus.PythonMessage:
-        return self._slice_message
+        self.messageReady = Signal()
 
     def getAssociatedDisabledExtruders(self) -> List[int]:
         return self._associated_disabled_extruders
@@ -106,6 +106,103 @@ class StartSliceJob(Job):
 
         return False
 
+    def _prepareGroupMessage(self, group: List[SceneNode]) -> None:
+        group_message = CuraProto.MeshGroup()
+        parent = group[0].getParent()
+        if parent is not None and parent.callDecoration("isGroup"):
+            self._handlePerObjectSettings(cast(CuraSceneNode, parent), group_message)
+
+        self.messageReady.emit(CuraProto.CuraClientMessage(mesh_group=group_message))
+
+    def _prepareObjectMessage(self, object: SceneNode) -> None:
+
+        mesh_data = object.getMeshData()
+        if mesh_data is None:
+            return
+
+        rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
+        translate = object.getWorldTransformation().getData()[:3, 3]
+
+        # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
+        verts = mesh_data.getVertices()
+        verts = verts.dot(rot_scale)
+        verts += translate
+
+        # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
+        verts[:, [1, 2]] = verts[:, [2, 1]]
+        verts[:, 1] *= -1
+
+        object_message = CuraProto.Object()
+        object_message.id = id(object)
+        object_message.name = object.getName()
+        indices = mesh_data.getIndices()
+        if indices is not None:
+            flat_verts = numpy.take(verts, indices.flatten(), axis=0)
+        else:
+            flat_verts = numpy.array(verts)
+
+        object_message.vertices = flat_verts.tobytes()
+
+        uv_coordinates = mesh_data.getUVCoordinates()
+        if uv_coordinates is not None:
+            object_message.uv_coordinates = uv_coordinates.flatten().tobytes()
+
+        packed_texture = object.callDecoration("packTexture")
+        if packed_texture is not None:
+            object_message.texture = packed_texture
+
+        self._handlePerObjectSettings(cast(CuraSceneNode, object), object_message)
+
+        self.messageReady.emit(CuraProto.CuraClientMessage(object=object_message))
+
+        Job.yieldThread()
+
+    def _prepareSliceMessage(self, global_stack: GlobalStack) -> None:
+        slice_message = CuraProto.Slice()
+
+        self._buildGlobalSettingsMessage(slice_message)
+        self._buildGlobalInheritsStackMessage(global_stack, slice_message)
+
+        user_id = uuid.getnode()  # On all of Cura's supported platforms, this returns the MAC address which is pseudonymical information (!= anonymous).
+        user_id %= 2 ** 16  # So to make it anonymous, apply a bitmask selecting only the last 16 bits. This prevents it from being traceable to a specific user but still gives somewhat of an idea of whether it's just the same user hitting the same crash over and over again, or if it's widespread.
+        slice_message.sentry_id = f"{user_id}"
+        slice_message.cura_version = CuraVersion
+
+        # Add the project name to the message if the user allows for non-anonymous crash data collection.
+        account = CuraApplication.getInstance().getCuraAPI().account
+        if account and account.isLoggedIn and not CuraApplication.getInstance().getPreferences().getValue(
+                "info/anonymous_engine_crash_report"):
+            slice_message.project_name = CuraApplication.getInstance().getPrintInformation().baseName
+            slice_message.user_name = account.userName
+
+        # Build messages for extruder stacks
+        for extruder_stack in global_stack.extruderList:
+            self._buildExtruderMessage(extruder_stack, slice_message)
+
+        backend_plugins = CuraApplication.getInstance().getBackendPlugins()
+
+        # Sort backend plugins by name. Not a very good strategy, but at least it is repeatable. This will be improved later.
+        backend_plugins = sorted(backend_plugins, key=lambda backend_plugin: backend_plugin.getId())
+
+        for plugin in backend_plugins:
+            if not plugin.usePlugin():
+                continue
+            for slot in plugin.getSupportedSlots():
+                # Right now we just send the message for every slot that we support. A single plugin can support
+                # multiple slots
+                # In the future the frontend will need to decide what slots that a plugin actually supports should
+                # also be used. For instance, if you have two plugins and each of them support a_generate and b_generate
+                # only one of each can actually be used (eg; plugin 1 does both, plugin 1 does a_generate and 2 does
+                # b_generate, etc).
+                plugin_message = slice_message.engine_plugins.add()
+                plugin_message.id = slot
+                plugin_message.address = plugin.getAddress()
+                plugin_message.port = plugin.getPort()
+                plugin_message.plugin_name = plugin.getPluginId()
+                plugin_message.plugin_version = plugin.getVersion()
+
+        self.messageReady.emit(CuraProto.CuraClientMessage(slice=slice_message))
+
     def run(self) -> None:
         """Runs the job that initiates the slicing."""
 
@@ -113,8 +210,8 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.Error)
             return
 
-        stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if not stack:
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack:
             self.setResult(StartJobResult.Error)
             return
 
@@ -140,7 +237,7 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 
-        for extruder_stack in stack.extruderList:
+        for extruder_stack in global_stack.extruderList:
             material = extruder_stack.findContainer({"type": "material"})
             if not extruder_stack.isEnabled:
                 continue
@@ -167,7 +264,7 @@ class StartSliceJob(Job):
 
         # Get the objects in their groups to print.
         object_groups = []
-        if stack.getProperty("print_sequence", "value") == "one_at_a_time":
+        if global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
             modifier_mesh_nodes = []
 
             for node in DepthFirstIterator(self._scene.getRoot()):
@@ -223,15 +320,11 @@ class StartSliceJob(Job):
             if temp_list:
                 object_groups.append(temp_list)
 
-        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if not global_stack:
-            return
         extruders_enabled = [stack.isEnabled for stack in global_stack.extruderList]
         filtered_object_groups = []
         has_model_with_disabled_extruders = False
         associated_disabled_extruders = set()
         for group in object_groups:
-            stack = global_stack
             skip_group = False
             for node in group:
                 # Anti-overhang meshes don't use any extruder, so skip the extruder check for them
@@ -260,90 +353,13 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.NothingToSlice)
             return
 
-        self._buildGlobalSettingsMessage(stack)
-        self._buildGlobalInheritsStackMessage(stack)
-
-        user_id = uuid.getnode()  # On all of Cura's supported platforms, this returns the MAC address which is pseudonymical information (!= anonymous).
-        user_id %= 2 ** 16  # So to make it anonymous, apply a bitmask selecting only the last 16 bits. This prevents it from being traceable to a specific user but still gives somewhat of an idea of whether it's just the same user hitting the same crash over and over again, or if it's widespread.
-        self._slice_message.sentry_id = f"{user_id}"
-        self._slice_message.cura_version = CuraVersion
-
-        # Add the project name to the message if the user allows for non-anonymous crash data collection.
-        account = CuraApplication.getInstance().getCuraAPI().account
-        if account and account.isLoggedIn and not CuraApplication.getInstance().getPreferences().getValue("info/anonymous_engine_crash_report"):
-            self._slice_message.project_name = CuraApplication.getInstance().getPrintInformation().baseName
-            self._slice_message.user_name = account.userName
-
-        # Build messages for extruder stacks
-        for extruder_stack in global_stack.extruderList:
-            self._buildExtruderMessage(extruder_stack)
-
-        backend_plugins = CuraApplication.getInstance().getBackendPlugins()
-
-        # Sort backend plugins by name. Not a very good strategy, but at least it is repeatable. This will be improved later.
-        backend_plugins = sorted(backend_plugins, key=lambda backend_plugin: backend_plugin.getId())
-
-        for plugin in backend_plugins:
-            if not plugin.usePlugin():
-                continue
-            for slot in plugin.getSupportedSlots():
-                # Right now we just send the message for every slot that we support. A single plugin can support
-                # multiple slots
-                # In the future the frontend will need to decide what slots that a plugin actually supports should
-                # also be used. For instance, if you have two plugins and each of them support a_generate and b_generate
-                # only one of each can actually be used (eg; plugin 1 does both, plugin 1 does a_generate and 2 does
-                # b_generate, etc).
-                plugin_message = self._slice_message.addRepeatedMessage("engine_plugins")
-                plugin_message.id = slot
-                plugin_message.address = plugin.getAddress()
-                plugin_message.port = plugin.getPort()
-                plugin_message.plugin_name = plugin.getPluginId()
-                plugin_message.plugin_version = plugin.getVersion()
+        self._prepareSliceMessage(global_stack)
 
         for group in filtered_object_groups:
-            group_message = self._slice_message.addRepeatedMessage("object_lists")
-            parent = group[0].getParent()
-            if parent is not None and parent.callDecoration("isGroup"):
-                self._handlePerObjectSettings(cast(CuraSceneNode, parent), group_message)
+            self._prepareGroupMessage(group)
 
             for object in group:
-                mesh_data = object.getMeshData()
-                if mesh_data is None:
-                    continue
-                rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
-                translate = object.getWorldTransformation().getData()[:3, 3]
-
-                # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
-                verts = mesh_data.getVertices()
-                verts = verts.dot(rot_scale)
-                verts += translate
-
-                # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
-                verts[:, [1, 2]] = verts[:, [2, 1]]
-                verts[:, 1] *= -1
-
-                obj = group_message.addRepeatedMessage("objects")
-                obj.id = id(object)
-                obj.name = object.getName()
-                indices = mesh_data.getIndices()
-                if indices is not None:
-                    flat_verts = numpy.take(verts, indices.flatten(), axis=0)
-                else:
-                    flat_verts = numpy.array(verts)
-
-                obj.vertices = flat_verts
-
-                uv_coordinates = mesh_data.getUVCoordinates()
-                if uv_coordinates is not None:
-                    obj.uv_coordinates = uv_coordinates.flatten()
-
-                packed_texture = object.callDecoration("packTexture")
-                if packed_texture is not None:
-                    obj.texture = packed_texture
-
-                self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
-
-                Job.yieldThread()
+                self._prepareObjectMessage(object)
 
         self.setResult(StartJobResult.Finished)
 
@@ -460,10 +476,10 @@ class StartSliceJob(Job):
             self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokensExtruderStack(extruder_stack, material_preference_values)
             QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
-    def _buildExtruderMessage(self, stack: ContainerStack) -> None:
+    def _buildExtruderMessage(self, stack: ContainerStack, slice_message: CuraProto.Slice) -> None:
         """Create extruder message from stack"""
 
-        message = self._slice_message.addRepeatedMessage("extruders")
+        message = slice_message.extruders.add()
         message.id = int(stack.getMetaDataEntry("position"))
         if not self._all_extruders_settings:
             self._cacheAllExtruderSettings()
@@ -489,12 +505,12 @@ class StartSliceJob(Job):
                 not settable_per_extruder_own:
                 continue
 
-            setting = message.getMessage("settings").addRepeatedMessage("settings")
+            setting = message.settings.settings.add()
             setting.name = key
             setting.value = str(value).encode("utf-8")
             Job.yieldThread()
 
-    def _buildGlobalSettingsMessage(self, stack: ContainerStack) -> None:
+    def _buildGlobalSettingsMessage(self, slice_message: CuraProto.Slice) -> None:
         """Sends all global settings to the engine.
 
         The settings are taken from the global stack. This does not include any
@@ -530,12 +546,12 @@ class StartSliceJob(Job):
 
         # Add all sub-messages for each individual setting.
         for key, value in settings.items():
-            setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
+            setting_message = slice_message.global_settings.settings.add()
             setting_message.name = key
             setting_message.value = str(value).encode("utf-8")
             Job.yieldThread()
 
-    def _buildGlobalInheritsStackMessage(self, stack: ContainerStack) -> None:
+    def _buildGlobalInheritsStackMessage(self, stack: ContainerStack, slice_message: CuraProto.Slice) -> None:
         """Sends for some settings which extruder they should fallback to if not set.
 
         This is only set for settings that have the limit_to_extruder
@@ -548,12 +564,12 @@ class StartSliceJob(Job):
         for key in stack.getAllKeys():
             extruder_position = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
             if extruder_position >= 0:  # Set to a specific extruder.
-                setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
+                setting_extruder = slice_message.limit_to_extruder.add()
                 setting_extruder.name = key
                 setting_extruder.extruder = extruder_position
             Job.yieldThread()
 
-    def _handlePerObjectSettings(self, node: CuraSceneNode, message: Arcus.PythonMessage):
+    def _handlePerObjectSettings(self, node: CuraSceneNode, message: CuraProto.MeshGroup | CuraProto.Object):
         """Check if a node has per object settings and ensure that they are set correctly in the message
 
         :param node: Node to check.
@@ -581,7 +597,7 @@ class StartSliceJob(Job):
 
         # Get values for all changed settings
         for key in changed_setting_keys:
-            setting = message.addRepeatedMessage("settings")
+            setting = message.settings.add()
             setting.name = key
             extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
 
