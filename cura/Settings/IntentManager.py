@@ -64,7 +64,7 @@ class IntentManager(QObject):
         parameters. Note that the 'default' category is always available.
 
         :param definition_id: ID of the printer.
-        :param nozzle_name: Name of the nozzle.
+        :param nozzle_id: Name of the nozzle.
         :param material_id: ID of the material.
         :return: A set of intent category names.
         """

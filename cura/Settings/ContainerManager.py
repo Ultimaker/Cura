@@ -230,7 +230,7 @@ class ContainerManager(QObject):
     def importMaterialContainer(self, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
         """Imports a profile from a file
 
-        :param file_url: A URL that points to the file to import.
+        :param file_url_or_string: A URL, or a file path as a string, that points to the file to import.
 
         :return: :type{Dict} dict with a 'status' key containing the string 'success' or 'error', and a 'message' key
             containing a message for the user
@@ -375,7 +375,7 @@ class ContainerManager(QObject):
     def unlinkMaterial(self, material_node: "MaterialNode") -> None:
         """Unlink a material from all other materials by creating a new GUID
 
-        :param material_id: :type{str} the id of the material to create a new GUID for.
+        :param material_node: The node representing the material to create a new GUID for.
         """
         # Get the material group
         if material_node.container is None:  # Failed to lazy-load this container.
