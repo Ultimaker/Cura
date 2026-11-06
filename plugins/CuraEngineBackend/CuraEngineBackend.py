@@ -9,7 +9,7 @@ from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSlot
 import sys
 import grpc
 from time import time
-from typing import Any, cast, Dict, List, Optional, Set, Iterable, Tuple, Callable, TYPE_CHECKING
+from typing import Any, cast, Dict, Iterator, List, Optional, Set, Tuple, Callable, TYPE_CHECKING
 
 from PyQt6.QtGui import QDesktopServices, QImage
 
@@ -50,7 +50,11 @@ class _CuraEngineService(CuraGrpc.CuraEngineCommunicationServicer):
     def __init__(self, server: GrpcBackendServer) -> None:
         self._grpc_server = server
 
-    def Communicate(self, request_iterator: Iterable[CuraProto.CuraEngineMessage], context: grpc.ServicerContext):
+    def Communicate(
+        self,
+        request_iterator: Iterator[CuraProto.CuraEngineMessage],
+        context: grpc.ServicerContext,
+    ) -> Iterator[CuraProto.CuraClientMessage]:
         yield from self._grpc_server.run_stream(request_iterator, context)
 
 
@@ -171,7 +175,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self._start_slice_job: Optional[StartSliceJob] = None
         self._start_slice_job_build_plate: Optional[int] = None
-        self._pending_messages: deque = deque()
+        self._pending_messages: deque[CuraProto.CuraClientMessage] = deque()
         self._slicing: bool = False  # Are we currently slicing?
         self._restart: bool = False  # Back-end is currently restarting?
         self._tool_active: bool = False  # If a tool is active, some tasks do not have to do anything
@@ -475,7 +479,7 @@ class CuraEngineBackend(QObject, Backend):
                 # Terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
 
-    def _sendMessage(self, message) -> None:
+    def _sendMessage(self, message: CuraProto.CuraClientMessage) -> None:
         # Keep the prepared slice on the backend until an engine stream is connected.
         self._pending_messages.append(message)
         self.sendPendingMessages()
@@ -905,7 +909,7 @@ class CuraEngineBackend(QObject, Backend):
         application = CuraApplication.getInstance()
         application.getPrintInformation().slice_uuid = message.slice_uuid
 
-    def _makeGrpcServicerAndAdder(self) -> Tuple["GrpcServicer", Callable[["GrpcServicer", grpc.server], None]]:
+    def _makeGrpcServicerAndAdder(self) -> Tuple["GrpcServicer", Callable[["GrpcServicer", grpc.Server], None]]:
         return _CuraEngineService(self._grpc_server), CuraGrpc.add_CuraEngineCommunicationServicer_to_server
 
     def _onEngineConnected(self) -> None:
