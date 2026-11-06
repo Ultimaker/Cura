@@ -6195,7 +6195,7 @@ msgid "Walls"
 msgstr ""
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
 msgstr ""
 
 msgctxt "minimum_infill_line_length description"
@@ -6753,10 +6753,6 @@ msgstr "ruch jałowy"
 #~ msgctxt "support_brim_width description"
 #~ msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 #~ msgstr "Szerokość obrysu, który ma być wydrukowany pod podporami. Szerszy obrys to większa przyczepność do stołu, kosztem zużytego materiału."
-
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "Ściany, które wystają więcej niż zadany kont, zostaną wydrukowane przy użyciu ustawień wystających ścian. Gdy wartość wynosi 90, żadne ściany nie będą traktowane jako wystające. Zwis, który jest obsługiwany przez podpory, nie będzie również traktowany jako zwis."
 
 #~ msgctxt "support_interface_skip_height description"
 #~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
