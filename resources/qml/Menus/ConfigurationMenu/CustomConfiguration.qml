@@ -192,7 +192,7 @@ Item
                     {
                         target: enabledCheckbox
                         property: "checked"
-                        value: Cura.MachineManager.activeStack.isEnabled
+                        value: Cura.MachineManager.activeStack ? Cura.MachineManager.activeStack.isEnabled : false
                         when: Cura.MachineManager.activeStack != null
                     }
 

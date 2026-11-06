@@ -5,7 +5,7 @@ pragma Singleton
 
 import QtQuick 2.10
 import QtQuick.Controls 2.4
-import UM 1.1 as UM
+import UM 1.3 as UM
 import Cura 1.5 as Cura
 
 Item
