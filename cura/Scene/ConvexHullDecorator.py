@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, Qt
 
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
@@ -186,7 +186,17 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def recomputeConvexHullDelayed(self) -> None:
         """The same as recomputeConvexHull, but using a timer if it was set."""
         if self._recompute_convex_hull_timer is not None:
-            self._recompute_convex_hull_timer.start()
+            timer = self._recompute_convex_hull_timer
+            if self._convex_hull_node is not None and self._convex_hull_node.getTranslationDelta() is not None:
+                # The cached footprint follows translation at render time.
+                timer.setInterval(200)
+                timer.start()
+            else:
+                # Shape changes need fresh geometry during continuous motion.
+                # Do not restart an already pending frame-rate update.
+                timer.setTimerType(Qt.TimerType.PreciseTimer)
+                if not timer.isActive() or timer.remainingTime() > 16:
+                    timer.start(16)
         else:
             from cura.CuraApplication import CuraApplication
             if not self._timer_scheduled_to_be_created:
@@ -204,6 +214,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return
 
         if self._convex_hull_node:
+            self._convex_hull_node.getWatchedNode().decoratorsChanged.disconnect(self._convex_hull_node._onNodeDecoratorsChanged)
             self._convex_hull_node.setParent(None)
         hull_node = ConvexHullNode.ConvexHullNode(self._node, self.getPrintingArea(), self._raft_thickness, self._root)
         self._convex_hull_node = hull_node
