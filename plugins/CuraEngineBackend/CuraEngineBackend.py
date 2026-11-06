@@ -19,7 +19,6 @@ from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
-from UM.Qt.Duration import DurationFormat
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.SettingInstance import SettingInstance #For typing.
@@ -228,7 +227,6 @@ class CuraEngineBackend(QObject, Backend):
 
         self._resetLastSliceTimeStats()
         self._snapshot: Optional[QImage] = None
-        self._last_grpc_error: Optional[BaseException] = None
 
         application.initializationFinished.connect(self.initialize)
 
@@ -747,7 +745,6 @@ class CuraEngineBackend(QObject, Backend):
         if CuraApplication.getInstance().isShuttingDown() or not error:
             return
 
-        self._last_grpc_error = error
         Logger.log("w", "Cura Engine gRPC stream ended: %s", str(error))
         if self._slicing:
             if self._process is not None:
@@ -887,16 +884,13 @@ class CuraEngineBackend(QObject, Backend):
             self._startProcessSlicedLayersJob(active_build_plate)
         # self._onActiveViewChanged()
         Logger.log("d", "See if there is more to slice...")
+
         # Call slice again using the timer, allowing the backend to restart
         if self._build_plates_to_be_sliced:
             self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
             self._invokeSlice()
         elif self._grpc_server is not None:
-            exit_message = CuraProto.CuraClientMessage(exit_engine=CuraProto.ExitEngine())
-            if not self._grpc_server.send_message(exit_message):
-                Logger.log("e", "Could not queue CuraEngine exit instruction after slicing finished")
-                self._slicing_error_message.show()
-                self.setState(BackendState.Error)
+            self._sendMessage(CuraProto.CuraClientMessage(exit_engine=CuraProto.ExitEngine()))
 
     def _onGCodeLayerMessage(self, message: CuraProto.GCodeLayer) -> None:
         """Called when a g-code message is received from the engine.

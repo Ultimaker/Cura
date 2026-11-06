@@ -749,10 +749,6 @@ class CuraConan(ConanFile):
             cura_private_data = self.dependencies["cura_private_data"].cpp_info
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
-        # Make engine communication protobuf objects
-        proto_file = f"{self.source_folder}/plugins/CuraEngineBackend/protocol/Cura.proto"
-        self.run(command = f"""python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. {proto_file}""", cwd = self.source_folder, env = "virtual_python_env")
-
         if self.options.i18n_extract:
             vb = VirtualBuildEnv(self)
             vb.generate()
