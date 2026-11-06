@@ -737,10 +737,6 @@ class CuraEngineBackend(QObject, Backend):
 
         self._invokeSlice()
 
-    def _prepareBackendServer(self) -> None:
-        super()._prepareBackendServer()
-        self._grpc_server.streamEnded.connect(self._onGrpcStreamEnded)
-
     def _onGrpcStreamEnded(self, error: Optional[BaseException]) -> None:
         if CuraApplication.getInstance().isShuttingDown() or not error:
             return
@@ -890,6 +886,7 @@ class CuraEngineBackend(QObject, Backend):
             self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
             self._invokeSlice()
         elif self._grpc_server is not None:
+            self._grpc_server.streamEnded.disconnect(self._onGrpcStreamEnded)
             self._sendMessage(CuraProto.CuraClientMessage(exit_engine=CuraProto.ExitEngine()))
 
     def _onGCodeLayerMessage(self, message: CuraProto.GCodeLayer) -> None:
@@ -913,6 +910,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onEngineConnected(self) -> None:
         super()._onEngineConnected()
+        self._grpc_server.streamEnded.connect(self._onGrpcStreamEnded)
         self.sendPendingMessages()
 
     def _onEngineMessage(self, envelope: CuraProto.CuraEngineMessage) -> None:
