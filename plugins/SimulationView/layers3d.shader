@@ -148,7 +148,12 @@ vertex41core =
         gl_Position = world_space_vert;
         // shade the color depending on the extruder index stored in the alpha component of the color
 
-        switch (u_layer_view_type) {
+        int base_line_type = int(a_line_type + 0.5) & 31;
+        bool is_travel_move = (base_line_type == 8) || (base_line_type == 9) || (base_line_type == 12) || (base_line_type == 13);
+
+        if (is_travel_move) {
+            v_color = a_color;
+        } else switch (u_layer_view_type) {
             case 0:  // "Material color"
                 v_color = a_material_color;
                 break;
