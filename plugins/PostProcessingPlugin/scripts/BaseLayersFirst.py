@@ -47,6 +47,7 @@ class BaseLayersFirst(Script):
         if ";POSTPROCESSED" in data[0]:
             return data
 
+        # Definitions
         self.global_stack = Application.getInstance().getGlobalContainerStack()
         extruder = self.global_stack.extruderList
 
@@ -56,20 +57,22 @@ class BaseLayersFirst(Script):
         else:
             one_at_a_time = False
 
-        # Exit logic: If "one at a time" is not enabled then exit the script.
+        # If "one at a time" is not enabled then exit the script.
         if not one_at_a_time:
             Message(title = "⚠️ [Base Layers First] Did NOT run ⚠️", text = "Print Sequence must be set to 'One at a Time'.").show()
             Logger.info("[Base Layers First] Did NOT run. Print Sequence must be set to 'One at a Time'.")
             data[0] += ";  [Base Layers First] Did not run.  Print Sequence must be 'One At A Time'.\n"
             return data
 
-        # Initialize some variables
+        # Find out if the bed adhesion is 'Raft'.
         if self.global_stack.getProperty("adhesion_type", "value") == "raft":
             raft_enabled = True
         else:
             raft_enabled = False
 
-        speed_z_hop = int(self.global_stack.getProperty("speed_z_hop", "value")) * 60
+        # Define additional variables.
+        self.speed_z_hop = int(self.global_stack.getProperty("speed_z_hop", "value")) * 60
+        self.layer_height_0 = str(self.global_stack.getProperty("layer_height_0", "value"))
         self.z_hops_enabled = bool(extruder[0].getProperty("retraction_hop_enabled", "value"))
         self.speed_travel = int(extruder[0].getProperty("speed_travel", "value")) * 60
         self.matl_print_temp_0 = extruder[0].getProperty("material_print_temperature_layer_0", "value")
@@ -92,20 +95,19 @@ class BaseLayersFirst(Script):
         if self._PostProcessorOrderWarning(criteria):
             Message(title = "[Base Layers First]", text = "Should run BEFORE 'DisplayInfoOnLCD' to insure the layer numbers turn out correctly. Check the preview of the Gcode File to insure it is correct.").show()
 
-        # If in Absolute Extrusion mode - enter 'G92 E' lines at the beginning of each layer to insure the E will be synced prior to shuffling the layers
+        # When using Absolute Extrusion - insert 'G92 E' lines at the beginning of each layer to insure the E will stay synced when the layers are shuffled.
         if absolute_extrusion:
             data = self._AdjustELocations(data)
 
-        # If adaptive layers are enabled then the Layer:1 Height must be checked to get it right
+        # If adaptive layers are enabled then the Layer:1 Height must be checked implicitly to get it right
         layer_1_height = self._RealLayer1Height(data)
-        self.init_layer_height_line = self._format_string(f"G1 F{speed_z_hop} Z{layer_1_height}; Base Layers First Move Z")
+        self.init_layer_height_line = self._FormatString(f"G1 F{self.speed_z_hop} Z{layer_1_height}; BlF Move Z")
 
         # Get the "from" location for the initial extrusion of each layer:0.
         data = self._ExtrudeFromLocation(data)
 
         # If rafts are enabled the travel between prints must be ortho so any intervening rafts doesn't get hit.
-        if raft_enabled:
-            data = self._OrthogonalTravel(data)
+        data = self._OrthogonalTravel(data)
 
         # Strip the temperature lines as they get disordered by the layer shuffling
         data = self._StripTemperatureLines(data)
@@ -122,10 +124,12 @@ class BaseLayersFirst(Script):
         data = layer_0_result[1]
 
         # Go through the new combined LAYER:0 and remove any extraneous Layer:0 lines.
-        data = self._FixTimes(data, layer_0_str)
+        new_code = self._FixInitLayerTimes(data, layer_0_str, raft_enabled)
+        layer_0_str = new_code[0]
+        data = new_code[1]
 
-        # Set the temperatures for Layer:0 to 'Initial Layer Print' and 'Initial Layer Bed' Temps and then reset to 'Print/Bed Temps' for Layer:1
-        layer_0_str = self._SetTemperatures(layer_0_str)
+        # Set the temperatures for Layer:0 to 'Initial Layer Print' and 'Initial Layer Bed' Temps and then reset to 'Print/Bed Temps' for Layer:1. Also, replace the original LAYER:0 with the new one.
+        data[2] = self._SetTemperatures(layer_0_str)
 
         # Remove the delta time from the layer:0 elapsed time line
         data[2] = self._FixTimeLine(data[2])
@@ -133,10 +137,10 @@ class BaseLayersFirst(Script):
         # Add the extra travel lines between prints
         data = self._AddTravelLines(data)
 
-        # Re-number the layers to so the Cura preview will be in 'One-at-a-Time' mode.
+        # Re-number the layers so the Cura preview will be in 'One-at-a-Time' mode.
         data = self._RenumberLayers(data)
 
-        # A message regarding the print_time of the new combined layer_0.
+        # Display a message to inform the user of the print_time of the new combined layer_0.
         c_minutes, c_seconds = divmod(self.layer_0_total_time, 60)
         Message(title = "[Base Layers First]", text = f"The new 'Combined Initial Layer' will take {round(c_minutes)}min {round(c_seconds)}sec to print.").show()
         return data
@@ -191,7 +195,7 @@ class BaseLayersFirst(Script):
                 if line.startswith("G1 ") and " E" in line:
                     if self.getValue(line, "E") is not None:
                         cur_e_value = self.getValue(line, "E")
-                        cur_e_string = self._format_string(f"G92 E{cur_e_value}; Base Layers First Set E")
+                        cur_e_string = self._FormatString(f"G92 E{cur_e_value}; BlF Set E")
             e_list.append(cur_e_string)
         # Make the insertions
         for index, layer in enumerate(alt_data):
@@ -238,7 +242,7 @@ class BaseLayersFirst(Script):
                         prev_x = self.getValue(line, "X")
                         prev_y = self.getValue(line, "Y")
                         break
-                new_travel_line = self._format_string(f"G0 F{self.speed_travel} X{prev_x} Y{prev_y}; Base Layers First Travel")
+                new_travel_line = self._FormatString(f"G0 F{self.speed_travel} X{prev_x} Y{prev_y}; BlF Travel")
                 self.new_travel_list.append(new_travel_line)
         return alt_data
 
@@ -252,7 +256,7 @@ class BaseLayersFirst(Script):
                 if line.startswith("G0 ") and " X" in line and " Y" in line and " Z" in line:
                     xy_move = line.split(" Z")[0]
                     z_move = line.split(" Z")[1].split()[0]
-                    lines[ddex] = self._format_string(f"{xy_move}; Base Layers First XY Ortho\nG0 Z{z_move}; Base Layers First Z Ortho")
+                    lines[ddex] = self._FormatString(f"{xy_move}; BlF XY Ortho\nG0 Z{z_move}; BlF Z Ortho")
                     break
             alt_data[index] = "\n".join(lines)
         return alt_data
@@ -269,7 +273,7 @@ class BaseLayersFirst(Script):
                     if lines[ldex].startswith("M104 S") or lines[ldex].startswith("M140"):
                         indices_to_delete.append(ldex)
                     if ";LAYER_COUNT:" in line:
-                        lines[ldex] = self._format_string(f"M104 S{round(self.matl_print_temp)}; Base Layers First Print Temp\n") + line
+                        lines[ldex] = self._FormatString(f"M104 S{round(self.matl_print_temp)}; BlF Print Temp\n") + line
                 except:
                     IndexError
             # Step backwards through the list and delete the temperature lines to avoid skips
@@ -347,13 +351,16 @@ class BaseLayersFirst(Script):
         alt_data.insert(2, layer_0_str)
         return layer_0_str, alt_data
 
-    def _FixTimes(self, alt_data, layer_0_str):
+    def _FixInitLayerTimes(self, alt_data, layer_0_str, raft_enabled):
         # Go through the new Initial Layer and fix all the other Time Elapsed lines
         start_now = False
         layer_0_list = layer_0_str.split("\n")
         for ldex, line in enumerate(layer_0_list):
             if (";LAYER:0" in line or ";LAYER:-" in line) and start_now:
-                layer_0_list.pop(ldex)
+                if raft_enabled:
+                    layer_0_list.pop(ldex)
+                else:
+                    layer_0_list[ldex] = self._FormatString(f"G1 F{self.speed_z_hop} Z{self.layer_height_0}; BlF Adjust Z to initial layer height")
             if ";LAYER:0" in line or ";LAYER:-" in line:
                 start_now = True
         running_time = self.layer_0_total_time
@@ -368,7 +375,8 @@ class BaseLayersFirst(Script):
                     new_time_line = f";TIME_ELAPSED:{running_time:.2f}"
                     lines[tdex] = new_time_line
                     alt_data[index] = "\n".join(lines)
-        return alt_data
+        layer_0_str = "\n".join(layer_0_list)
+        return layer_0_str, alt_data
 
     def _AddTravelLines(self, alt_data):
         # Insert the lateral move line and the vertical move line before the start of each 'lAYER:1'
@@ -396,9 +404,9 @@ class BaseLayersFirst(Script):
     def _SetTemperatures(self, layer_0_str):
         # The temperatures are re-inserted here
         layer_0_list = layer_0_str.split("\n")
-        insertion_string = self._format_string(f"M104 S{round(self.matl_print_temp_0)}; Base Layers First Print Temp\nM140 S{round(self.matl_bed_temp_0)}; Base Layers First Bed Temp")
+        insertion_string = self._FormatString(f"M104 S{round(self.matl_print_temp_0)}; BlF Print Temp\nM140 S{round(self.matl_bed_temp_0)}; BlF Bed Temp")
         layer_0_list.insert(1, insertion_string)
-        layer_0_list.insert(len(layer_0_list)-2, self._format_string(f"M104 S{round(self.matl_print_temp)};Base Layers First Print Temp\nM140 S{round(self.matl_bed_temp)} ; Base Layers First Bed Temp"))
+        layer_0_list.insert(len(layer_0_list)-2, self._FormatString(f"M104 S{round(self.matl_print_temp)}; BlF Print Temp\nM140 S{round(self.matl_bed_temp)}; BlF Bed Temp"))
         layer_0_str = "\n".join(layer_0_list)
         return layer_0_str
 
@@ -415,7 +423,7 @@ class BaseLayersFirst(Script):
         lay_0 = "\n".join(lines)
         return lay_0
 
-    def _format_string(self, any_gcode_str: str):
+    def _FormatString(self, any_gcode_str: str):
         # I like when things are neat and lined up.  Makes things easier to read.
         temp_lines = any_gcode_str.split("\n")
         gap_len = 0
