@@ -745,11 +745,8 @@ class CuraEngineBackend(QObject, Backend):
         if CuraApplication.getInstance().isShuttingDown() or not error:
             return
 
-        Logger.log("w", "Cura Engine gRPC stream ended: %s", str(error))
-        if self._slicing:
-            if self._process is not None:
-                self._terminate()
-            self.setState(BackendState.Error)
+        Logger.error(f"Cura Engine gRPC stream ended with error {type(error)}: {str(error)}")
+        self._onBackendError()
 
     # Check if there's any slicable object in the scene.
     def hasSlicableObject(self) -> bool:
@@ -1103,6 +1100,13 @@ class CuraEngineBackend(QObject, Backend):
             else:
                 self._layer_view_active = False
 
+    def _onBackendError(self) -> None:
+        """Called anytime something wrong happened while slicing."""
+        if self._slicing:
+            self._slicing_error_message.show()
+            self.setState(BackendState.Error)
+            self.stopSlicing()
+
     def _onBackendQuit(self) -> None:
         """Called when the back-end self-terminates.
 
@@ -1113,9 +1117,7 @@ class CuraEngineBackend(QObject, Backend):
                 return_code = self._process.wait()
                 if return_code != 0:
                     Logger.log("e", f"Backend exited abnormally with return code {return_code}!")
-                    self._slicing_error_message.show()
-                    self.setState(BackendState.Error)
-                    self.stopSlicing()
+                    self._onBackendError()
                 else:
                     Logger.log("d", "Backend finished slicing. Resetting process.")
                     self.stopPlugins()
