@@ -93,7 +93,6 @@ pyinstaller:
             binary: "CuraEngine"
     hiddenimports:
         - "pySavitar"
-        - "pyArcus"
         - "pyDulcificum"
         - "pynest2d"
         - "pyUvula"
