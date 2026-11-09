@@ -31,6 +31,7 @@ from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.i18n import i18nCatalog
 from cura.CuraView import CuraView
 from cura.LayerPolygon import LayerPolygon  # To distinguish line types.
+from cura.LayerDataUtils import has_printed_layer
 from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.CuraApplication import CuraApplication
 
@@ -623,6 +624,13 @@ class SimulationView(CuraView):
 
         self._old_max_layers = self._max_layers
         new_max_layers = -1
+        non_printing_types = {
+            LayerPolygon.NoneType,
+            LayerPolygon.MoveUnretractedType,
+            LayerPolygon.MoveRetractedType,
+            LayerPolygon.MoveWhileRetractingType,
+            LayerPolygon.MoveWhileUnretractingType,
+        }
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
@@ -632,9 +640,12 @@ class SimulationView(CuraView):
             min_layer_number = sys.maxsize
             max_layer_number = -sys.maxsize
             for layer_id in layer_data.getLayers():
+                layer = layer_data.getLayer(layer_id)
 
-                # If a layer doesn't contain any polygons, skip it (for infill meshes taller than print objects
-                if len(layer_data.getLayer(layer_id).polygons) < 1:
+                # Travel-only and zero-height layers can be emitted while moving
+                # between objects in one-at-a-time mode. They are not printable
+                # layers and must not extend the layer slider.
+                if not has_printed_layer(layer, non_printing_types):
                     continue
 
                 if max_layer_number < layer_id:
