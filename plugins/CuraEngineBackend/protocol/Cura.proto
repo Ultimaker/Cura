@@ -188,7 +188,7 @@ message StartSlice {
 message SlicingFinished {
 }
 
-// Frontend => engine message indicating that we won't send any more Slice messages and the engine can not exit
+// Frontend => engine message indicating that we won't send any more Slice messages and the engine can now exit
 message ExitEngine {
 }
 
