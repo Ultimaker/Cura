@@ -26,9 +26,7 @@ class InstallMissingPackageDialog(QObject):
 
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._package_manager: CuraPackageManager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
-        self._package_manager.installedPackagesChanged.connect(self.checkIfRestartNeeded)
 
-        self._dialog: Optional[QObject] = None
         self._restart_needed = False
         self._package_metadata: List[Dict[str, str]] = packages_metadata
 
@@ -40,15 +38,14 @@ class InstallMissingPackageDialog(QObject):
         if plugin_path is None:
             plugin_path = os.path.dirname(__file__)
 
+        self._package_manager.installedPackagesChanged.connect(self.checkIfRestartNeeded)
+
         # create a QML component for the license dialog
         license_dialog_component_path = os.path.join(plugin_path, "resources", "qml", "InstallMissingPackagesDialog.qml")
-        self._dialog = CuraApplication.getInstance().createQmlComponent(license_dialog_component_path, {"manager": self})
-        self._dialog.show()
+        dialog = CuraApplication.getInstance().createQmlSubWindow(license_dialog_component_path, {"manager": self})
+        dialog.show()
 
     def checkIfRestartNeeded(self) -> None:
-        if self._dialog is None:
-            return
-
         self._restart_needed = self._package_manager.hasPackagesToRemoveOrInstall
         self.showRestartChanged.emit()
 

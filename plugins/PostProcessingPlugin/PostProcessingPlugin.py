@@ -318,9 +318,10 @@ class PostProcessingPlugin(QObject, Extension):
         for script in self._script_list:
             parser = configparser.ConfigParser(interpolation = None)  # We'll encode the script as a config with one section. The section header is the key and its values are the settings.
             parser.optionxform = str  # type: ignore # Don't transform the setting keys as they are case-sensitive.
-            script_name = script.getSettingData()["key"]
+            settings_data = script.getSettingData()
+            script_name = settings_data["key"]
             parser.add_section(script_name)
-            for key in script.getSettingData()["settings"]:
+            for key in settings_data["settings"]:
                 value = script.getSettingValueByKey(key)
                 parser[script_name][key] = str(value)
             serialized = io.StringIO()  # ConfigParser can only write to streams. Fine.

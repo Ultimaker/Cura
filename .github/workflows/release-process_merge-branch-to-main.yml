@@ -1,0 +1,93 @@
+name: Merge release branches into main
+run-name: Merge ${{ inputs.release_branch }} into main by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_branch:
+        description: 'Release branch to merge, e.g. 5.14'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  merge-release-branch:
+    name: Merge ${{ matrix.repository }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
+
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v7
+        with:
+          repository: Ultimaker/${{ matrix.repository }}
+          ref: ${{ matrix.repository == 'Cura' && github.event.repository.default_branch || '' }}
+          fetch-depth: 0
+          token: ${{ secrets.CURA_AUTORELEASE_PAT }}
+
+      - name: Merge release branch
+        env:
+          RELEASE_BRANCH: ${{ inputs.release_branch }}
+          REPOSITORY: ${{ matrix.repository }}
+        run: |
+          set -euo pipefail
+
+          TARGET_BRANCH="$(git branch --show-current)"
+
+          git fetch origin "refs/heads/$RELEASE_BRANCH:refs/remotes/origin/release-to-merge"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          set +e
+          git merge --no-ff --no-commit origin/release-to-merge
+          merge_status=$?
+          set -e
+
+          if [ "$merge_status" -ne 0 ]; then
+            mapfile -d '' conflicts < <(git diff --name-only --diff-filter=U -z)
+
+            if [ "${#conflicts[@]}" -eq 0 ]; then
+              echo "Merge failed without file conflicts; stopping." >&2
+              git merge --abort || true
+              exit "$merge_status"
+            fi
+
+            for path in "${conflicts[@]}"; do
+              if [ "$path" != "conandata.yml" ] && \
+                 { [ "$REPOSITORY" != "Cura" ] || [ "$path" != "resources/conandata.yml" ]; }; then
+                echo "Merge conflict in $path; only conandata.yml conflicts can be resolved automatically." >&2
+                echo "::error title=Merge conflict::$REPOSITORY has an unresolved conflict in $path"
+                {
+                  echo "### Merge failed for $REPOSITORY"
+                  echo "Conflicting file outside the allowed conandata.yml paths: \`$path\`."
+                } >> "$GITHUB_STEP_SUMMARY"
+                git merge --abort || true
+                exit 1
+              fi
+            done
+
+            echo "Resolving conandata.yml conflicts using the target branch version."
+            for path in "${conflicts[@]}"; do
+              git restore --source=HEAD --staged --worktree -- "$path"
+            done
+          fi
+
+          if git rev-parse -q --verify MERGE_HEAD >/dev/null; then
+            git commit -m "Merge $RELEASE_BRANCH into $TARGET_BRANCH"
+          else
+            echo "Release branch is already up to date with $TARGET_BRANCH."
+          fi
+
+          git push origin "HEAD:$TARGET_BRANCH"
+          {
+            echo "### Merge succeeded for $REPOSITORY"
+            echo "Merged \`$RELEASE_BRANCH\` into \`$TARGET_BRANCH\` and pushed the result."
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -889,6 +889,7 @@ UM.MainWindow
             maximumHeight: Screen.height * 2
             model: AddPrinterPagesModel{}
             progressBarVisible: false
+            selfDestroy: true
 
             onVisibleChanged:
             {
@@ -913,6 +914,7 @@ UM.MainWindow
             model: Cura.WhatsNewPagesModel{}
             progressBarVisible: false
             visible: false
+            selfDestroy: true
         }
     }
 

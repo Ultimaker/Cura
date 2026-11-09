@@ -67,6 +67,7 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
 
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
+
         self.loadWindow()
 
         if self._account.isLoggedIn and self._controller.userAccountHasLibraryAccess():
@@ -84,7 +85,6 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         """
         Create the GUI window for the Digital Library Save dialog. If the window is already open, bring the focus on it.
         """
-
         if self._dialog:  # Dialogue is already open.
             self._dialog.requestActivate()  # Bring the focus on the dialogue.
             return

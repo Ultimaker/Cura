@@ -10,12 +10,11 @@ import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
 
-Window
+UM.Dialog
 {
     id: digitalFactorySaveDialogBase
     title: "Save Cura project to Library"
 
-    modality: Qt.ApplicationModal
     width: 800 * screenScaleFactor
     height: 600 * screenScaleFactor
     minimumWidth: 800 * screenScaleFactor
@@ -40,7 +39,6 @@ Window
         onSavePressed: digitalFactorySaveDialogBase.close()
         onSelectDifferentProjectPressed: manager.clearProjectSelection()
     }
-
 
     BusyIndicator
     {

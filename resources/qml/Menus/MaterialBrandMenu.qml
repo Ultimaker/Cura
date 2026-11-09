@@ -13,7 +13,11 @@ Cura.Menu
     id: materialBrandMenu
 
     property var materialTypesModel
-    title: materialTypesModel.name
+    property string brandName: materialTypesModel.name
+    title: brandName
+
+    // The parent's macOS title suffix replaces the title binding, so reapply the name when the model updates in place.
+    onBrandNameChanged: title = brandName + (Qt.platform.os == "osx" ? " " : "")
 
     Instantiator
     {
