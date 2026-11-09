@@ -351,6 +351,12 @@ class CuraApplication(QtApplication):
         super().initialize(ApplicationMetadata.IsEnterpriseVersion)
 
         self._preferences.addPreference("cura/single_instance", False)
+        self._preferences.addPreference("general/block_windows_accessibility_queries", True)
+        self._windows_accessibility_filter = None
+        if Platform.isWindows():
+            from cura.WindowsAccessibilityFilter import WindowsAccessibilityFilter
+            self._windows_accessibility_filter = WindowsAccessibilityFilter(self._preferences)
+            self.installNativeEventFilter(self._windows_accessibility_filter)
         self._use_single_instance = self._preferences.getValue("cura/single_instance") or self._cli_args.single_instance
 
         self.__sendCommandToSingleInstance()
