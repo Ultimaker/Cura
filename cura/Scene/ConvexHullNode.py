@@ -1,13 +1,17 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional, TYPE_CHECKING
+import numpy
 
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Resources import Resources
 from UM.Math.Color import Color
+from UM.Math.Vector import Vector
+from UM.Math.Matrix import Matrix
 from UM.Mesh.MeshBuilder import MeshBuilder  # To create a mesh to display the convex hull with.
 from UM.View.GL.OpenGL import OpenGL
 
@@ -48,6 +52,12 @@ class ConvexHullNode(SceneNode):
 
         # The node this mesh is "watching"
         self._node = node
+        self._source_mesh = node.getMeshData()
+        self._source_world_transform = node.getWorldTransformation()
+        self._source_descendants = tuple(
+            (child, child.getMeshData(), child.getParent(), child.getLocalTransformation())
+            for child in DepthFirstIterator(node) if child is not node
+        ) if self._source_mesh is None else ()
         # Area of the head + fans for display as a shadow on the buildplate
         self._convex_hull_head_mesh = None  # type: Optional[MeshData]
 
@@ -72,6 +82,40 @@ class ConvexHullNode(SceneNode):
                     hull_mesh_builder.resetNormals()
                     hull_mesh = hull_mesh_builder.build()
                     self.setMeshData(hull_mesh)
+
+    def getTranslationDelta(self) -> Optional[Vector]:
+        """Return planar-compatible movement since the footprint mesh was built."""
+        baseline = getattr(self, "_source_world_transform", None)
+        if baseline is None or self._node.getMeshData() is not self._source_mesh:
+            return None
+        if self._source_mesh is None:
+            descendants = tuple(child for child in DepthFirstIterator(self._node) if child is not self._node)
+            snapshot = self._source_descendants
+            if len(descendants) != len(snapshot) or not any(mesh is not None for _, mesh, _, _ in snapshot):
+                return None
+            for current_node, (old_node, mesh, parent, local_transform) in zip(descendants, snapshot):
+                if current_node is not old_node or current_node.getMeshData() is not mesh or current_node.getParent() is not parent:
+                    return None
+                if not numpy.allclose(current_node.getLocalTransformation(copy = False).getData(), local_transform.getData(), rtol = 0, atol = 1e-10):
+                    return None
+        current = self._node.getWorldTransformation(copy = False)
+        # World-space translation may introduce roundoff through inverse matrix
+        # multiplication. Do not mistake that for a rotation or scale change.
+        if not numpy.allclose(current.getData()[:3, :3], baseline.getData()[:3, :3], rtol = 0, atol = 1e-10):
+            return None
+        return current.getTranslation() - baseline.getTranslation()
+
+    def getWorldTransformation(self, copy = True) -> Matrix:
+        transformation = super().getWorldTransformation(copy = copy)
+        delta = self.getTranslationDelta()
+        if delta is None or (delta.x == 0 and delta.z == 0):
+            return transformation
+        if not copy:
+            transformation = transformation.copy()
+        # Footprint geometry is already in world coordinates. Keep it on the
+        # plate and apply only the planar movement since its construction.
+        transformation.setTranslation(transformation.getTranslation() + Vector(delta.x, 0, delta.z))
+        return transformation
 
     def getHull(self):
         return self._hull
