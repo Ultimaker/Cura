@@ -5,7 +5,7 @@ import glob
 import os
 
 from pathlib import Path
-from typing import Any, cast, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
+from typing import Any, Callable, cast, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
 
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
@@ -71,17 +71,24 @@ class CuraPackageManager(PackageManager):
 
         super().initialize()
 
-    def _cleanUpUninstalledPackage(self, package_id: str) -> None:
+    def _preparePackageRemoval(self, package_id: str) -> Optional[Callable[[], None]]:
+        definition_ids = self._getPackageDefinitionIds(package_id)
+        if not definition_ids:
+            return None
+        return lambda: self._cleanUpUninstalledPackage(package_id, definition_ids)
+
+    def _cleanUpUninstalledPackage(self, package_id: str, definition_ids: Optional[Set[str]] = None) -> None:
         """Remove the printers that use the definitions of a package that is being uninstalled.
 
         The machine stacks, extruder stacks and the user, definition changes and quality changes containers of those
         printers are stored in the configuration folder. If they stay behind, they refer to definitions that no longer
         exist, which corrupts the configuration. This happens before the containers are loaded, so the files are
-        handled directly. The files of the package must still exist, as they tell which definitions it provides.
+        handled directly. Definition IDs are captured before the package files are removed.
 
         :param package_id: The ID of the package that is being uninstalled.
         """
-        definition_ids = self._getPackageDefinitionIds(package_id)
+        if definition_ids is None:
+            definition_ids = self._getPackageDefinitionIds(package_id)
         if not definition_ids:
             return
 

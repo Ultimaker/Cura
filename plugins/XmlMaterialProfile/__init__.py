@@ -13,7 +13,8 @@ def getMetaData():
     return {
         "settings_container": {
             "type": "material",
-            "mimetype": "application/x-ultimaker-material-profile"
+            "mimetype": "application/x-ultimaker-material-profile",
+            "independently_versioned": True,
         },
         "version_upgrade": {
             ("materials", 1000000): ("materials", 1000007, upgrader.upgradeMaterial),
