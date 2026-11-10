@@ -6,5 +6,5 @@ except ModuleNotFoundError:
   print("Unable to load the grpc_tools module, remember to execute this scrit within the Cura build venv, e.g. 'source build/generators/virtual_python_env.sh'")
   exit(1)
 
-os.chdir("plugins/CuraEngineBackend/protocol")
-grpc_tools.protoc.main(["protoc", "-I.", "--python_out=.", "--grpc_python_out=.", "Cura.proto"])
+os.chdir("plugins")
+grpc_tools.protoc.main(["protoc", "-I.", "--python_out=.", "--grpc_python_out=.", "CuraEngineBackend/protocol/Cura.proto"])

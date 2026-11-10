@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import Cura_pb2 as Cura__pb2
+from CuraEngineBackend.protocol import Cura_pb2 as CuraEngineBackend_dot_protocol_dot_Cura__pb2
 
 GRPC_GENERATED_VERSION = '1.78.0'
 GRPC_VERSION = grpc.__version__
@@ -18,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in Cura_pb2_grpc.py depends on'
+        + ' but the generated code in CuraEngineBackend/protocol/Cura_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -38,8 +38,8 @@ class CuraEngineCommunicationStub(object):
         """
         self.Communicate = channel.stream_stream(
                 '/cura.proto.CuraEngineCommunication/Communicate',
-                request_serializer=Cura__pb2.CuraEngineMessage.SerializeToString,
-                response_deserializer=Cura__pb2.CuraClientMessage.FromString,
+                request_serializer=CuraEngineBackend_dot_protocol_dot_Cura__pb2.CuraEngineMessage.SerializeToString,
+                response_deserializer=CuraEngineBackend_dot_protocol_dot_Cura__pb2.CuraClientMessage.FromString,
                 _registered_method=True)
 
 
@@ -59,8 +59,8 @@ def add_CuraEngineCommunicationServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Communicate': grpc.stream_stream_rpc_method_handler(
                     servicer.Communicate,
-                    request_deserializer=Cura__pb2.CuraEngineMessage.FromString,
-                    response_serializer=Cura__pb2.CuraClientMessage.SerializeToString,
+                    request_deserializer=CuraEngineBackend_dot_protocol_dot_Cura__pb2.CuraEngineMessage.FromString,
+                    response_serializer=CuraEngineBackend_dot_protocol_dot_Cura__pb2.CuraClientMessage.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -90,8 +90,8 @@ class CuraEngineCommunication(object):
             request_iterator,
             target,
             '/cura.proto.CuraEngineCommunication/Communicate',
-            Cura__pb2.CuraEngineMessage.SerializeToString,
-            Cura__pb2.CuraClientMessage.FromString,
+            CuraEngineBackend_dot_protocol_dot_Cura__pb2.CuraEngineMessage.SerializeToString,
+            CuraEngineBackend_dot_protocol_dot_Cura__pb2.CuraClientMessage.FromString,
             options,
             channel_credentials,
             insecure,
