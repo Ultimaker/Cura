@@ -107,7 +107,6 @@ pyinstaller:
         - "win32cred"
         - "win32timezone"
         - "pkgutil"
-        - "google"
     hiddenimports_WINDOWS_ONLY:
         - "PyQt6.Qt"
         - "PyQt6.Qt6"
@@ -125,6 +124,7 @@ pyinstaller:
         - "keyrings.alt"
         - "pynavlib"
         - "scipy"
+        - "google"
     collect_all_WINDOWS_ONLY:
         - "PyQt6.Qt"
         - "PyQt6.Qt6"
