@@ -29,6 +29,7 @@ on:
 jobs:
   installers:
     name: Create installers
+    # WARNING Use workflow from  main once CURA-13217_improve-engine-communication branch is merged
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@CURA-13217_improve-engine-communication
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}

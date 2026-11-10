@@ -49,6 +49,7 @@ jobs:
     name: Create installers
     needs: find-packages
     if: ${{ inputs.start_builds == true && needs.find-packages.outputs.discovered_packages != '' }}
+    # WARNING Use workflow from  main once CURA-13217_improve-engine-communication branch is merged
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@CURA-13217_improve-engine-communication
     with:
       cura_conan_version: ${{ inputs.cura_conan_version != '' && inputs.cura_conan_version || needs.find-packages.outputs.cura_package }}
