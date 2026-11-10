@@ -53,10 +53,7 @@ class SendMaterialJob(Job):
         self._send_material_thread.start()
 
     def _sendMissingMaterials(self) -> None:
-        """Determine which materials should be updated and send them to the printer.
-
-        :param remote_materials_by_guid: The remote materials by GUID.
-        """
+        """Determine which materials should be updated and send them to the printer."""
         local_materials_by_guid = self._getLocalMaterials()
         if len(local_materials_by_guid) == 0:
             Logger.log("d", "There are no local materials to synchronize with the printer.")
