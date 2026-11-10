@@ -1232,12 +1232,13 @@
                 "inset_direction":
                 {
                     "label": "Wall Ordering",
-                    "description": "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last.",
+                    "description": "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last. Inner/Outer/Inner prints the walls deeper inside first, from the inside out, then the outer wall, then the second wall. The outer wall is then printed between walls that are already in place, which can give a more consistent outer surface. With two walls or fewer it prints the outer wall first, and it only applies when the outer wall and the inner walls use the same extruder.",
                     "type": "enum",
                     "options":
                     {
                         "inside_out": "Inside To Outside",
-                        "outside_in": "Outside To Inside"
+                        "outside_in": "Outside To Inside",
+                        "inner_outer_inner": "Inner/Outer/Inner"
                     },
                     "default_value": "inside_out",
                     "settable_per_mesh": true
@@ -1250,7 +1251,8 @@
                     "options":
                     {
                         "inside_out": "Inside To Outside",
-                        "outside_in": "Outside To Inside"
+                        "outside_in": "Outside To Inside",
+                        "inner_outer_inner": "Inner/Outer/Inner"
                     },
                     "default_value": "inside_out",
                     "value": "inset_direction",
