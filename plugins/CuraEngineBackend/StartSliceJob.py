@@ -32,7 +32,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.CuraVersion import CuraVersion
 from cura.Settings.GlobalStack import GlobalStack
 
-from plugins.CuraEngineBackend.protocol import Cura_pb2 as CuraProto
+from .protocol import Cura_pb2 as CuraProto
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
 

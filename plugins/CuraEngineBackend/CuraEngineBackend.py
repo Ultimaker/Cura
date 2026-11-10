@@ -14,6 +14,7 @@ from typing import Any, cast, Dict, Iterator, List, Optional, Set, Tuple, Callab
 from PyQt6.QtGui import QDesktopServices, QImage
 
 from UM.Backend.Backend import Backend, BackendState
+from UM.Backend.GrpcBackendServer import GrpcBackendServer
 from UM.Scene.SceneNode import SceneNode
 from UM.Signal import Signal
 from UM.Logger import Logger
@@ -28,12 +29,11 @@ from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
+
 from .ProcessSlicedLayersJob import ProcessSlicedLayersJob
 from .StartSliceJob import StartSliceJob, StartJobResult
-
-from UM.Backend.GrpcBackendServer import GrpcBackendServer
-from plugins.CuraEngineBackend.protocol import Cura_pb2 as CuraProto
-from plugins.CuraEngineBackend.protocol import Cura_pb2_grpc as CuraGrpc
+from .protocol import Cura_pb2 as CuraProto
+from .protocol import Cura_pb2_grpc as CuraGrpc
 
 if TYPE_CHECKING:
     from grpc.framework.interfaces.base.base import Servicer as GrpcServicer
