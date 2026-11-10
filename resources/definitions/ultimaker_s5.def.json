@@ -7,6 +7,7 @@
         "visible": true,
         "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
+        "package_version": "1.0.0",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s5_platform.obj",
         "bom_numbers": [

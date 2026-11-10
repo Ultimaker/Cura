@@ -5,6 +5,7 @@
     "metadata":
     {
         "machine": "ultimaker3",
+        "package_version": "1.0.0",
         "position": "0",
         "quality_definition": "ultimaker3_extruder_left"
     },

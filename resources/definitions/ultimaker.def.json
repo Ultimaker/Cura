@@ -7,6 +7,7 @@
         "visible": false,
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
+        "package_version": "1.0.0",
         "exclude_materials": [
             "structur3d_",
             "generic_hips"

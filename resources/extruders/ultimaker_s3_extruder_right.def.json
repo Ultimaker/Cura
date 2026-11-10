@@ -5,6 +5,7 @@
     "metadata":
     {
         "machine": "ultimaker_s3",
+        "package_version": "1.0.0",
         "position": "1"
     },
     "overrides":
