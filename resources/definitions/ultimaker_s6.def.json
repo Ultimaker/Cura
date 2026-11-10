@@ -7,7 +7,6 @@
         "visible": true,
         "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
-        "package_version": "1.0.0",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s5_platform.obj",
         "bom_numbers": [10700, 10701],
@@ -27,6 +26,7 @@
             "1": "ultimaker_s6_extruder_right"
         },
         "nozzle_offsetting_for_disallowed_areas": false,
+        "package_version": "1.0.0",
         "platform_offset": [
             0,
             -30,

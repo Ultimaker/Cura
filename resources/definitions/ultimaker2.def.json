@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "package_version": "1.0.0",
         "file_formats": "text/x-gcode",
         "platform": "ultimaker2_platform.obj",
         "exclude_materials": [
@@ -35,6 +34,7 @@
         "has_machine_quality": true,
         "has_materials": false,
         "machine_extruder_trains": { "0": "ultimaker2_extruder_0" },
+        "package_version": "1.0.0",
         "platform_offset": [
             9,
             0,

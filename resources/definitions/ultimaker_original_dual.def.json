@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "package_version": "1.0.0",
         "file_formats": "text/x-gcode",
         "platform": "ultimaker_platform.3mf",
         "exclude_materials": [
@@ -41,6 +40,7 @@
             "0": "ultimaker_original_dual_1st",
             "1": "ultimaker_original_dual_2nd"
         },
+        "package_version": "1.0.0",
         "quality_definition": "ultimaker_original",
         "supported_actions": [
             "UMOUpgradeSelection",

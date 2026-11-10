@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "package_version": "1.0.0",
         "file_formats": "application/x-makerbot-replicator_plus",
         "platform": "ultimaker_replicator_plus_platform.obj",
         "exclude_materials": [
@@ -64,6 +63,7 @@
         "has_materials": true,
         "has_variants": true,
         "machine_extruder_trains": { "0": "ultimaker_replicator_extruder" },
+        "package_version": "1.0.0",
         "preferred_material": "ultimaker_pla_175",
         "preferred_quality_type": "draft",
         "preferred_variant_name": "Smart Extruder+",

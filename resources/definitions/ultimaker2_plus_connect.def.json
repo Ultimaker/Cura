@@ -6,7 +6,6 @@
     {
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "package_version": "1.0.0",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker2_plus_connect_platform.obj",
         "exclude_materials": [
@@ -30,6 +29,7 @@
         "has_materials": true,
         "has_variants": true,
         "machine_extruder_trains": { "0": "ultimaker2_plus_connect_extruder_0" },
+        "package_version": "1.0.0",
         "platform_offset": [
             -1,
             -6,

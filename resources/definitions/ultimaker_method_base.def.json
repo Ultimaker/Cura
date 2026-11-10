@@ -7,7 +7,6 @@
         "visible": false,
         "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
-        "package_version": "1.0.0",
         "file_formats": "application/x-makerbot",
         "platform": "ultimaker_method_platform.stl",
         "exclude_materials": [],
@@ -21,6 +20,7 @@
             "1": "ultimaker_method_extruder_right"
         },
         "nozzle_offsetting_for_disallowed_areas": false,
+        "package_version": "1.0.0",
         "preferred_material": "ultimaker_pla_175",
         "preferred_quality_type": "fast",
         "preferred_variant_name": "1A",

@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "package_version": "1.0.0",
         "file_formats": "application/x-makerbot-sketch",
         "platform": "ultimaker_sketch_sprint_platform.obj",
         "exclude_materials": [
@@ -63,6 +62,7 @@
         "has_textured_buildplate": true,
         "has_variants": true,
         "machine_extruder_trains": { "0": "ultimaker_sketch_sprint_extruder" },
+        "package_version": "1.0.0",
         "platform_offset": [
             0,
             0,

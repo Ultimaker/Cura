@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "package_version": "1.0.0",
         "file_formats": "application/gzip;text/x-gcode",
         "platform": "ultimaker3_platform.obj",
         "bom_numbers": [
@@ -28,6 +27,7 @@
             "0": "ultimaker3_extended_extruder_left",
             "1": "ultimaker3_extended_extruder_right"
         },
+        "package_version": "1.0.0",
         "platform_offset": [
             0,
             0,

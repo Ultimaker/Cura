@@ -7,7 +7,6 @@
         "visible": true,
         "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
-        "package_version": "1.0.0",
         "file_formats": "application/x-makerbot",
         "platform": "ultimaker_method_platform.stl",
         "exclude_materials": [
@@ -56,6 +55,7 @@
             "0": "ultimaker_methodx_extruder_left",
             "1": "ultimaker_methodx_extruder_right"
         },
+        "package_version": "1.0.0",
         "platform_offset": [
             0,
             0,
