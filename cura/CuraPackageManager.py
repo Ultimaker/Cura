@@ -3,6 +3,7 @@
 import configparser
 import glob
 import os
+import re
 
 from pathlib import Path
 from typing import Any, Callable, cast, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
@@ -11,6 +12,7 @@ from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication  # To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
+from cura.Settings.CuraContainerStack import _ContainerIndexes
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 from UM.PackageManager import PackageManager  # The class we're extending.
@@ -87,8 +89,19 @@ class CuraPackageManager(PackageManager):
 
         :param package_id: The ID of the package that is being uninstalled.
         """
+        self._replaceMissingContainers(package_id)
+
         if definition_ids is None:
             definition_ids = self._getPackageDefinitionIds(package_id)
+        if not definition_ids:
+            return
+
+        # A definition that is also available from elsewhere, such as the version that ships with the application, is
+        # still there after the package is removed. The printers that use it are kept: they continue with that version.
+        kept_definition_ids = definition_ids & self._getAvailableDefinitionIds(package_id)
+        if kept_definition_ids:
+            Logger.info(f"The definitions {sorted(kept_definition_ids)} of package [{package_id}] are also available without it, so the printers that use them are kept.")
+        definition_ids = definition_ids - kept_definition_ids
         if not definition_ids:
             return
 
@@ -199,6 +212,133 @@ class CuraPackageManager(PackageManager):
                     if file_name.endswith(suffix):
                         definition_ids.add(unquote_plus(file_name[:-len(suffix)]))
         return definition_ids
+
+    def _getAvailableDefinitionIds(self, package_id: str) -> Set[str]:
+        """Get the IDs of the machine and extruder definitions that are available without a package.
+
+        These are the definitions in the resource folders, such as the ones that ship with the application, and the
+        definitions of the other installed packages that stay installed.
+
+        :param package_id: The ID of the package to leave out.
+        """
+        resource_types = CuraApplication.ResourceTypes
+        return self._getAvailableIds(package_id, [Resources.DefinitionContainers, resource_types.ExtruderStack], ["definitions", "extruders"], ".def.json")
+
+    def _getAvailableIds(self, package_id: str, resource_type_list: List[int], plugin_folders: List[str], suffix: str) -> Set[str]:
+        """Get the IDs of the containers of some types that are available without a package.
+
+        :param package_id: The ID of the package to leave out.
+        :param resource_type_list: The resource types of the folders to look in.
+        :param plugin_folders: The names of the folders in the other installed packages to look in.
+        :param suffix: The end of the names of the files of the containers.
+        """
+        package_dirs = [os.path.join(Resources.getStoragePath(resource_type), package_id) for resource_type in resource_type_list]
+        package_dirs.append(os.path.join(self._installation_dirs_dict["plugins"], package_id))
+
+        container_dirs = []  # type: List[str]
+        for resource_type in resource_type_list:
+            container_dirs += Resources.getAllPathsForType(resource_type)
+        plugins_dir = self._installation_dirs_dict["plugins"]
+        try:
+            other_package_ids = os.listdir(plugins_dir)
+        except OSError:
+            other_package_ids = []
+        for other_package_id in other_package_ids:
+            if other_package_id != package_id and other_package_id not in self._to_remove_package_set:
+                container_dirs += [os.path.join(plugins_dir, other_package_id, folder) for folder in plugin_folders]
+
+        container_ids = set()  # type: Set[str]
+        for container_dir in container_dirs:
+            if any(self._isInside(container_dir, package_dir) for package_dir in package_dirs):
+                continue
+            for root, dir_names, file_names in os.walk(container_dir):
+                # The folder of the package can be inside of one of the resource folders.
+                dir_names[:] = [name for name in dir_names if not any(self._isInside(os.path.join(root, name), package_dir) for package_dir in package_dirs)]
+                for file_name in file_names:
+                    if file_name.endswith(suffix):
+                        container_ids.add(unquote_plus(file_name[:-len(suffix)]))
+        return container_ids
+
+    def _getPackageIds(self, package_id: str, resource_type_list: List[int], plugin_folders: List[str], suffix: str) -> Set[str]:
+        """Get the IDs of the containers of some types that an installed package provides, in the folders of the
+        package in the configuration folder and in the folders of the plugin of the package."""
+
+        container_dirs = [os.path.join(Resources.getStoragePath(resource_type), package_id) for resource_type in resource_type_list]
+        plugin_dir = os.path.join(self._installation_dirs_dict["plugins"], package_id)
+        container_dirs += [os.path.join(plugin_dir, folder) for folder in plugin_folders]
+
+        container_ids = set()  # type: Set[str]
+        for container_dir in container_dirs:
+            for _, _, file_names in os.walk(container_dir):
+                for file_name in file_names:
+                    if file_name.endswith(suffix):
+                        container_ids.add(unquote_plus(file_name[:-len(suffix)]))
+        return container_ids
+
+    def _replaceMissingContainers(self, package_id: str) -> None:
+        """Replace the variants, quality profiles and intents of a package that is uninstalled by empty containers.
+
+        The printers that remain can still use these, for instance a nozzle that is only in the package. A container
+        stack that refers to a container that doesn't exist is considered corrupt and is not loaded. With an empty
+        container in its place, the printer is loaded and Cura selects another variant or profile by itself.
+
+        This happens before the containers are loaded, so the files of the stacks are handled directly.
+        """
+        resource_types = CuraApplication.ResourceTypes
+        # The position of the container in the stack, the resource type and the name of the folder in a plugin.
+        kinds = {
+            _ContainerIndexes.Intent: (resource_types.IntentInstanceContainer, "intent", "empty_intent"),
+            _ContainerIndexes.Quality: (resource_types.QualityInstanceContainer, "quality", "empty_quality"),
+            _ContainerIndexes.Variant: (resource_types.VariantInstanceContainer, "variants", "empty_variant"),
+        }
+        replacements = {}  # type: Dict[str, Tuple[Set[str], str]]  # Position -> the container IDs that disappear and what replaces them.
+        for index, (resource_type, plugin_folder, empty_id) in kinds.items():
+            disappearing = self._getPackageIds(package_id, [resource_type], [plugin_folder], ".inst.cfg") - \
+                self._getAvailableIds(package_id, [resource_type], [plugin_folder], ".inst.cfg")
+            if disappearing:
+                replacements[str(index)] = (disappearing, empty_id)
+        if not replacements:
+            return
+
+        for stack_type, suffix in ((resource_types.MachineStack, ".global.cfg"), (resource_types.ExtruderStack, ".extruder.cfg")):
+            stack_dir = Resources.getStoragePath(stack_type)
+            try:
+                file_names = [name for name in os.listdir(stack_dir) if name.endswith(suffix)]
+            except OSError:
+                continue
+            for file_name in file_names:
+                path = os.path.join(stack_dir, file_name)
+                try:
+                    with open(path, "rb") as f:
+                        lines = f.read().decode("utf-8").splitlines(keepends = True)
+                except (OSError, UnicodeDecodeError):
+                    Logger.warning(f"Unable to read '{path}' to check if it refers to containers of uninstalled package [{package_id}].")
+                    continue
+
+                changed = False
+                in_containers = False
+                for line_number, line in enumerate(lines):
+                    stripped = line.strip()
+                    if stripped.startswith("["):
+                        in_containers = stripped == "[containers]"
+                        continue
+                    match = re.match(r"^(\d+)(\s*=\s*)(.*?)(\r?\n?)$", line) if in_containers else None
+                    if match and match.group(1) in replacements and match.group(3) in replacements[match.group(1)][0]:
+                        Logger.info(f"'{path}' refers to container [{match.group(3)}] of uninstalled package [{package_id}], replacing it by an empty container.")
+                        lines[line_number] = match.group(1) + match.group(2) + replacements[match.group(1)][1] + match.group(4)
+                        changed = True
+                if changed:
+                    try:
+                        with open(path, "wb") as f:
+                            f.write("".join(lines).encode("utf-8"))
+                    except OSError as e:
+                        Logger.warning(f"Unable to update '{path}' for the uninstalled package [{package_id}]: {e}")
+
+    @staticmethod
+    def _isInside(path: str, folder: str) -> bool:
+        """Whether a path is the folder or inside of it."""
+        path, folder = os.path.normcase(os.path.abspath(path)), os.path.normcase(os.path.abspath(folder))
+        return path == folder or path.startswith(folder + os.sep)
 
     @staticmethod
     def _usesDefinition(stack: configparser.ConfigParser, definition_ids: Set[str]) -> bool:
