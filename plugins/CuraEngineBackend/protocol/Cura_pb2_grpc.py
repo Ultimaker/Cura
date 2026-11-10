@@ -5,7 +5,7 @@ import warnings
 
 from plugins.CuraEngineBackend.protocol import Cura_pb2 as plugins_dot_CuraEngineBackend_dot_protocol_dot_Cura__pb2
 
-GRPC_GENERATED_VERSION = '1.85.0'
+GRPC_GENERATED_VERSION = '1.78.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -25,7 +25,7 @@ if _version_not_supported:
     )
 
 
-class CuraEngineCommunicationStub:
+class CuraEngineCommunicationStub(object):
     """Create a service with a single method that acts as a long-term communication channel. Because the attributes are
     tagged as "stream", calling the method creates two channels, one for each direction, and keeps them alive.
     """
@@ -43,7 +43,7 @@ class CuraEngineCommunicationStub:
                 _registered_method=True)
 
 
-class CuraEngineCommunicationServicer:
+class CuraEngineCommunicationServicer(object):
     """Create a service with a single method that acts as a long-term communication channel. Because the attributes are
     tagged as "stream", calling the method creates two channels, one for each direction, and keeps them alive.
     """
@@ -70,7 +70,7 @@ def add_CuraEngineCommunicationServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class CuraEngineCommunication:
+class CuraEngineCommunication(object):
     """Create a service with a single method that acts as a long-term communication channel. Because the attributes are
     tagged as "stream", calling the method creates two channels, one for each direction, and keeps them alive.
     """
