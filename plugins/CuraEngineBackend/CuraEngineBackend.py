@@ -3,23 +3,23 @@
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
 from cmath import isnan
-from collections import defaultdict
+from collections import defaultdict, deque
 import os
 from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSlot
 import sys
+import grpc
 from time import time
-from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
+from typing import Any, cast, Dict, Iterator, List, Optional, Set, Tuple, Callable, TYPE_CHECKING
 
 from PyQt6.QtGui import QDesktopServices, QImage
 
 from UM.Backend.Backend import Backend, BackendState
+from UM.Backend.GrpcBackendServer import GrpcBackendServer
 from UM.Scene.SceneNode import SceneNode
 from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.PluginRegistry import PluginRegistry
 from UM.Platform import Platform
-from UM.Qt.Duration import DurationFormat
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.SettingInstance import SettingInstance #For typing.
@@ -29,12 +29,14 @@ from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
+
 from .ProcessSlicedLayersJob import ProcessSlicedLayersJob
 from .StartSliceJob import StartSliceJob, StartJobResult
-
-import pyArcus as Arcus
+from .protocol import Cura_pb2 as CuraProto
+from .protocol import Cura_pb2_grpc as CuraGrpc
 
 if TYPE_CHECKING:
+    from grpc.framework.interfaces.base.base import Servicer as GrpcServicer
     from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
     from cura.Machines.MachineErrorChecker import MachineErrorChecker
     from UM.Scene.Scene import Scene
@@ -44,9 +46,19 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 
-class CuraEngineBackend(QObject, Backend):
-    backendError = Signal()
+class _CuraEngineService(CuraGrpc.CuraEngineCommunicationServicer):
+    def __init__(self, server: GrpcBackendServer) -> None:
+        self._grpc_server = server
 
+    def Communicate(
+        self,
+        request_iterator: Iterator[CuraProto.CuraEngineMessage],
+        context: grpc.ServicerContext,
+    ) -> Iterator[CuraProto.CuraClientMessage]:
+        yield from self._grpc_server.run_stream(request_iterator, context)
+
+
+class CuraEngineBackend(QObject, Backend):
     printDurationMessage = Signal()
     """Emitted when we get a message containing print duration and material amount.
 
@@ -131,10 +143,10 @@ class CuraEngineBackend(QObject, Backend):
         self._layer_view_active: bool = False
         self._onActiveViewChanged()
 
-        self._stored_layer_data: List[Arcus.PythonMessage] = []
+        self._stored_layer_data: List[CuraProto.Layer] = []
 
         # key is build plate number, then arrays are stored until they go to the ProcessSlicesLayersJob
-        self._stored_optimized_layer_data: Dict[int, List[Arcus.PythonMessage]] = {}
+        self._stored_optimized_layer_data: Dict[int, List[CuraProto.LayerOptimized]] = {}
 
         self._scene: Scene = application.getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
@@ -150,17 +162,20 @@ class CuraEngineBackend(QObject, Backend):
         self._global_container_stack: Optional[ContainerStack] = None
 
         # Listeners for receiving messages from the back-end.
-        self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
-        self._message_handlers["cura.proto.LayerOptimized"] = self._onOptimizedLayerMessage
-        self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
-        self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
-        self._message_handlers["cura.proto.SliceUUID"] = self._onSliceUUIDMessage
-        self._message_handlers["cura.proto.PrintTimeMaterialEstimates"] = self._onPrintTimeMaterialEstimates
-        self._message_handlers["cura.proto.InitialExtruder"] = self._onInitialExtruder
-        self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
+        self._message_handlers = {
+            "layer": self._onLayerMessage,
+            "layer_optimized": self._onOptimizedLayerMessage,
+            "progress": self._onProgressMessage,
+            "gcode_layer": self._onGCodeLayerMessage,
+            "slice_uuid": self._onSliceUUIDMessage,
+            "print_time_material_estimates": self._onPrintTimeMaterialEstimates,
+            "initial_extruder": self._onInitialExtruder,
+            "slicing_finished": self._onSlicingFinishedMessage,
+        }
 
         self._start_slice_job: Optional[StartSliceJob] = None
         self._start_slice_job_build_plate: Optional[int] = None
+        self._pending_messages: deque[CuraProto.CuraClientMessage] = deque()
         self._slicing: bool = False  # Are we currently slicing?
         self._restart: bool = False  # Back-end is currently restarting?
         self._tool_active: bool = False  # If a tool is active, some tasks do not have to do anything
@@ -216,7 +231,6 @@ class CuraEngineBackend(QObject, Backend):
 
         self._resetLastSliceTimeStats()
         self._snapshot: Optional[QImage] = None
-        self._last_socket_error: Optional[Arcus.Error] = None
 
         application.initializationFinished.connect(self.initialize)
 
@@ -299,6 +313,7 @@ class CuraEngineBackend(QObject, Backend):
 
         # Terminate CuraEngine if it is still running at this point
         self._terminate()
+        super().close()
 
     def getEngineCommand(self) -> List[str]:
         """Get the command that is used to call the engine.
@@ -311,7 +326,7 @@ class CuraEngineBackend(QObject, Backend):
             command = [self._default_engine_location]
         else:
             command = [CuraApplication.getInstance().getPreferences().getValue("backend/location")]
-        command += ["connect", "127.0.0.1:{0}".format(self._port), ""]
+        command += ["connect", "127.0.0.1:{0}".format(self._port)]
 
         parser = argparse.ArgumentParser(prog = "cura", add_help = False)
         parser.add_argument("--debug", action = "store_true", default = False,
@@ -327,7 +342,6 @@ class CuraEngineBackend(QObject, Backend):
         self.setState(BackendState.NotStarted)
         if self._slicing:  # We were already slicing. Stop the old job.
             self._terminate()
-            self._createSocket()
 
         if self._process_layers_job is not None:
             # We were processing layers. Stop that, the layers are going to change soon.
@@ -409,9 +423,9 @@ class CuraEngineBackend(QObject, Backend):
         if application.getPrintInformation() and build_plate_to_be_sliced == active_build_plate:
             application.getPrintInformation().setToZeroPrintInformation(build_plate_to_be_sliced)
 
-        if self._process is None:  # type: ignore
-            self._createSocket()
         self.stopSlicing()
+        if self._process is None:  # type: ignore
+            self.startEngine()
         self._engine_is_fresh = False  # Yes we're going to use the engine
 
         self.processingProgress.emit(0.0)
@@ -423,19 +437,22 @@ class CuraEngineBackend(QObject, Backend):
 
         self.determineAutoSlicing()  # Switch timer on or off if appropriate
 
-        slice_message = self._socket.createMessage("cura.proto.Slice")
-        self._start_slice_job = StartSliceJob(slice_message)
+        self._pending_messages.clear()
+
+        self._start_slice_job = StartSliceJob()
         self._start_slice_job_build_plate = build_plate_to_be_sliced
         self._start_slice_job.setBuildPlate(self._start_slice_job_build_plate)
-        self._start_slice_job.start()
+        self._start_slice_job.messageReady.connect(self._sendMessage)
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
+        self._start_slice_job.start()
 
     def _terminate(self) -> None:
         """Terminate the engine process.
 
-        Start the engine process by calling _createSocket()
+        Start the engine process after preparing its gRPC endpoint.
         """
         self._slicing = False
+        self._pending_messages.clear()
         self._stored_layer_data = []
         if self._start_slice_job_build_plate in self._stored_optimized_layer_data:
             del self._stored_optimized_layer_data[self._start_slice_job_build_plate]
@@ -462,6 +479,11 @@ class CuraEngineBackend(QObject, Backend):
                 # Terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
 
+    def _sendMessage(self, message: CuraProto.CuraClientMessage) -> None:
+        # Keep the prepared slice on the backend until an engine stream is connected.
+        self._pending_messages.append(message)
+        self.sendPendingMessages()
+
     def _onStartSliceCompleted(self, job: StartSliceJob) -> None:
         """Event handler to call when the job to initiate the slicing process is
         completed.
@@ -481,7 +503,6 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.isCancelled() or job.getError() or job.getResult() == StartJobResult.Error:
             self.setState(BackendState.Error)
-            self.backendError.emit(job)
             return
 
         application = CuraApplication.getInstance()
@@ -493,7 +514,6 @@ class CuraEngineBackend(QObject, Backend):
                                               message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
-                self.backendError.emit(job)
             else:
                 self.setState(BackendState.NotStarted)
             return
@@ -527,7 +547,6 @@ class CuraEngineBackend(QObject, Backend):
                 Logger.warning(f"Unable to slice with the current settings. The following settings have errors: {', '.join(error_labels)}")
                 self._error_message.show()
                 self.setState(BackendState.Error)
-                self.backendError.emit(job)
             else:
                 self.setState(BackendState.NotStarted)
             return
@@ -554,7 +573,6 @@ class CuraEngineBackend(QObject, Backend):
             Logger.warning(f"Unable to slice due to per-object settings. The following settings have errors on one or more models: {', '.join(errors.values())}")
             self._error_message.show()
             self.setState(BackendState.Error)
-            self.backendError.emit(job)
             return
 
         if job.getResult() == StartJobResult.BuildPlateError:
@@ -565,7 +583,6 @@ class CuraEngineBackend(QObject, Backend):
                                               message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
-                self.backendError.emit(job)
                 return
             else:
                 self.setState(BackendState.NotStarted)
@@ -591,7 +608,6 @@ class CuraEngineBackend(QObject, Backend):
             self._error_message.show()
 
             self.setState(BackendState.Error)
-            self.backendError.emit(job)
             return
 
         if job.getResult() == StartJobResult.NothingToSlice:
@@ -603,35 +619,28 @@ class CuraEngineBackend(QObject, Backend):
                                               message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
-                self.backendError.emit(job)
             else:
                 self.setState(BackendState.NotStarted)
             self._invokeSlice()
             return
 
-        # Preparation completed, send it to the backend.
-        immediate_success = self._socket.sendMessage(job.getSliceMessage())
-        if (not CuraApplication.getInstance().getUseExternalBackend()) and (not immediate_success):
-            if self._last_socket_error is not None and self._last_socket_error.getErrorCode() == Arcus.ErrorCode.MessageTooBigError:
-                error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances.")
-            else:
-                error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try again, or contact support.")
+        self._sendMessage(CuraProto.CuraClientMessage(start_slice=CuraProto.StartSlice()))
 
-            self._error_message = Message(error_txt,
-                                          title=catalog.i18nc("@info:title", "Unable to slice"),
-                                          message_type=Message.MessageType.WARNING)
-            self._error_message.show()
-            self.setState(BackendState.Error)
-            self.backendError.emit(job)
-            return
-
-        # Notify the user that it's now up to the backend to do its job
         self.setState(BackendState.Processing)
-
-        # Handle time reporting.
         self._time_send_message = time()
         if self._time_start_process:
             Logger.log("d", "Sending slice message took %s seconds", self._time_send_message - self._time_start_process)
+
+    def sendPendingMessages(self) -> None:
+        while len(self._pending_messages) != 0 and self._grpc_server is not None and self._grpc_server.connected:
+            if not self._grpc_server.send_message(self._pending_messages.popleft()):
+                error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try again, or contact support.")
+                self._error_message = Message(error_txt,
+                                              title=catalog.i18nc("@info:title", "Unable to slice"),
+                                              message_type=Message.MessageType.WARNING)
+                self._error_message.show()
+                self.setState(BackendState.Error)
+                return
 
     def determineAutoSlicing(self) -> bool:
         """Determine enable or disable auto slicing. Return True for enable timer and False otherwise.
@@ -732,32 +741,12 @@ class CuraEngineBackend(QObject, Backend):
 
         self._invokeSlice()
 
-    def _onSocketError(self, error: Arcus.Error) -> None:
-        """Called when an error occurs in the socket connection towards the engine.
-
-        :param error: The exception that occurred.
-        """
-
-        if CuraApplication.getInstance().isShuttingDown():
+    def _onGrpcStreamEnded(self, error: Optional[BaseException]) -> None:
+        if CuraApplication.getInstance().isShuttingDown() or not error:
             return
 
-        super()._onSocketError(error)
-        if error.getErrorCode() == Arcus.ErrorCode.Debug:
-            return
-
-        self._last_socket_error = error
-        self._terminate()
-        self._createSocket()
-
-        if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError,
-                                        Arcus.ErrorCode.ConnectionResetError,
-                                        Arcus.ErrorCode.Debug]:
-            Logger.log("w", "A socket error caused the connection to be reset")
-
-        # _terminate()' function sets the job status to 'cancel', after reconnecting to another Port the job status
-        # needs to be updated. Otherwise, backendState is "Unable To Slice"
-        if error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
-            self._start_slice_job.setIsCancelled(False)
+        Logger.error(f"Cura Engine gRPC stream ended with error {type(error)}: {str(error)}")
+        self._onBackendError()
 
     # Check if there's any slicable object in the scene.
     def hasSlicableObject(self) -> bool:
@@ -823,7 +812,7 @@ class CuraEngineBackend(QObject, Backend):
             self.needsSlicing()
             self._onChanged()
 
-    def _onLayerMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onLayerMessage(self, message: CuraProto.Layer) -> None:
         """Called when a sliced layer data message is received from the engine.
 
         :param message: The protobuf message containing sliced layer data.
@@ -831,7 +820,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self._stored_layer_data.append(message)
 
-    def _onOptimizedLayerMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onOptimizedLayerMessage(self, message: CuraProto.LayerOptimized) -> None:
         """Called when an optimized sliced layer data message is received from the engine.
 
         :param message: The protobuf message containing sliced layer data.
@@ -842,7 +831,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
             self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
 
-    def _onProgressMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onProgressMessage(self, message: CuraProto.Progress) -> None:
         """Called when a progress message is received from the engine.
 
         :param message: The protobuf message containing the slicing progress.
@@ -864,7 +853,7 @@ class CuraEngineBackend(QObject, Backend):
             else:
                 self._change_timer.start()
 
-    def _onSlicingFinishedMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onSlicingFinishedMessage(self, message: CuraProto.SlicingFinished) -> None:
         """Called when the engine sends a message that slicing is finished.
 
         :param message: The protobuf message signalling that slicing is finished.
@@ -891,17 +880,17 @@ class CuraEngineBackend(QObject, Backend):
 
             self._startProcessSlicedLayersJob(active_build_plate)
         # self._onActiveViewChanged()
-        self._start_slice_job_build_plate = None
-
         Logger.log("d", "See if there is more to slice...")
-        # Somehow this results in an Arcus Error
-        # self.slice()
+
         # Call slice again using the timer, allowing the backend to restart
         if self._build_plates_to_be_sliced:
             self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
             self._invokeSlice()
+        elif self._grpc_server is not None:
+            self._grpc_server.streamEnded.disconnect(self._onGrpcStreamEnded)
+            self._sendMessage(CuraProto.CuraClientMessage(exit_engine=CuraProto.ExitEngine()))
 
-    def _onGCodeLayerMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onGCodeLayerMessage(self, message: CuraProto.GCodeLayer) -> None:
         """Called when a g-code message is received from the engine.
 
         :param message: The protobuf message containing g-code, encoded as UTF-8.
@@ -913,24 +902,27 @@ class CuraEngineBackend(QObject, Backend):
             # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
             pass  # Throw the message away.
 
-    def _onSliceUUIDMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onSliceUUIDMessage(self, message: CuraProto.SliceUUID) -> None:
         application = CuraApplication.getInstance()
         application.getPrintInformation().slice_uuid = message.slice_uuid
 
-    def _createSocket(self, protocol_file: str = None) -> None:
-        """Creates a new socket connection."""
+    def _makeGrpcServicerAndAdder(self) -> Tuple["GrpcServicer", Callable[["GrpcServicer", grpc.Server], None]]:
+        return _CuraEngineService(self._grpc_server), CuraGrpc.add_CuraEngineCommunicationServicer_to_server
 
-        if not protocol_file:
-            if not self.getPluginId():
-                Logger.error("Can't create socket before CuraEngineBackend plug-in is registered.")
-                return
-            plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
-            if not plugin_path:
-                Logger.error("Could not get plugin path!", self.getPluginId())
-                return
-            protocol_file = os.path.abspath(os.path.join(plugin_path, "Cura.proto"))
-        super()._createSocket(protocol_file)
-        self._engine_is_fresh = True
+    def _onEngineConnected(self) -> None:
+        super()._onEngineConnected()
+        self._grpc_server.streamEnded.connect(self._onGrpcStreamEnded)
+        self.sendPendingMessages()
+
+    def _onEngineMessage(self, envelope: CuraProto.CuraEngineMessage) -> None:
+        message_case = envelope.WhichOneof("message")
+        handler = self._message_handlers.get(message_case)
+
+        if handler is None:
+            Logger.error(f"Unhandled CuraEngine gRPC message: {message_case}")
+            return
+
+        handler(getattr(envelope, message_case))
 
     def _onChanged(self, *args: Any, **kwargs: Any) -> None:
         """Called when anything has changed to the stuff that needs to be sliced.
@@ -951,7 +943,7 @@ class CuraEngineBackend(QObject, Backend):
             else:
                 self._change_timer.start()
 
-    def _onPrintTimeMaterialEstimates(self, message: Arcus.PythonMessage) -> None:
+    def _onPrintTimeMaterialEstimates(self, message: CuraProto.PrintTimeMaterialEstimates) -> None:
         """Called when a print time message is received from the engine.
 
         :param message: The protobuf message containing the print time per feature and
@@ -964,8 +956,7 @@ class CuraEngineBackend(QObject, Backend):
         material_costs = []
         material_names = []
         self._unused_extruders = []
-        for index in range(message.repeatedMessageCount("materialEstimates")):
-            extruder_info = message.getRepeatedMessage("materialEstimates", index)
+        for index, extruder_info in enumerate(message.materialEstimates):
             material_use_for_tool = extruder_info.material_amount
             if isnan(material_use_for_tool):
                 material_amounts.append(0.0)
@@ -1004,7 +995,7 @@ class CuraEngineBackend(QObject, Backend):
         times = self._parseMessagePrintTimes(message)
         self.printDurationMessage.emit(self._start_slice_job_build_plate, times, material_amounts, material_lengths, material_weights, material_costs, material_names)
 
-    def _onInitialExtruder(self, message: Arcus.PythonMessage) -> None:
+    def _onInitialExtruder(self, message: CuraProto.InitialExtruder) -> None:
         """Called when an initial extruder message is received from the engine.
 
         :param message: The protobuf message containing the extruder number
@@ -1021,7 +1012,7 @@ class CuraEngineBackend(QObject, Backend):
             for required_extruder in self._required_extruders:
                 CuraApplication.getInstance().getMachineManager().setExtruderEnabled(required_extruder, True)
 
-    def _parseMessagePrintTimes(self, message: Arcus.PythonMessage) -> Dict[str, float]:
+    def _parseMessagePrintTimes(self, message: CuraProto.PrintTimeMaterialEstimates) -> Dict[str, float]:
         """Called for parsing message to retrieve estimated time per feature
 
         :param message: The protobuf message containing the print time per feature
@@ -1064,7 +1055,8 @@ class CuraEngineBackend(QObject, Backend):
         # Restart engine as soon as possible, we know we want to slice afterwards
         if not self._engine_is_fresh:
             self._terminate()
-            self._createSocket()
+            self.startEngine()
+            self._engine_is_fresh = True
 
     def _onToolOperationStopped(self, tool: Tool) -> None:
         """Called when the user stops using some tool.
@@ -1108,6 +1100,13 @@ class CuraEngineBackend(QObject, Backend):
             else:
                 self._layer_view_active = False
 
+    def _onBackendError(self) -> None:
+        """Called anytime something wrong happened while slicing."""
+        if self._slicing:
+            self._slicing_error_message.show()
+            self.setState(BackendState.Error)
+            self.stopSlicing()
+
     def _onBackendQuit(self) -> None:
         """Called when the back-end self-terminates.
 
@@ -1118,11 +1117,9 @@ class CuraEngineBackend(QObject, Backend):
                 return_code = self._process.wait()
                 if return_code != 0:
                     Logger.log("e", f"Backend exited abnormally with return code {return_code}!")
-                    self._slicing_error_message.show()
-                    self.setState(BackendState.Error)
-                    self.stopSlicing()
+                    self._onBackendError()
                 else:
-                    Logger.log("d", "Backend finished slicing. Resetting process and socket.")
+                    Logger.log("d", "Backend finished slicing. Resetting process.")
                     self.stopPlugins()
                 self._process = None # type: ignore
 

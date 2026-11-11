@@ -1,0 +1,224 @@
+syntax = "proto3";
+
+package cura.proto;
+
+message MeshGroup
+{
+  repeated Setting settings = 1;
+}
+
+// Resevered IDs:
+// 0 ... 99: Broadcasts
+// 100 ... 199: Modify
+// 200 ... 299: Generate
+// IMPORTANT: If you add a slot ID also update the SlotID enum in include/plugins/slots.h
+enum SlotID {
+  SETTINGS_BROADCAST = 0;
+  SIMPLIFY_MODIFY = 100;
+  POSTPROCESS_MODIFY = 101;
+  INFILL_MODIFY = 102;
+  GCODE_PATHS_MODIFY = 103;
+  INFILL_GENERATE = 200;
+}
+
+message EnginePlugin
+{
+  SlotID id = 1;
+  string address = 2;
+  uint32 port = 3;
+  string plugin_name = 4;
+  string plugin_version = 5;
+}
+
+message Slice
+{
+  SettingList global_settings = 1; // The global settings used for the whole print job
+  repeated Extruder extruders = 2; // The settings sent to each extruder object
+  repeated SettingExtruder limit_to_extruder = 3; // From which stack the setting would inherit if not defined per object
+  repeated EnginePlugin engine_plugins = 4;
+  string sentry_id = 5; // The anonymized Sentry user id that requested the slice
+  string cura_version = 6; // The version of Cura that requested the slice
+  optional string project_name = 7; // The name of the project that requested the slice
+  optional string user_name = 8; // The Digital Factory account name of the user that requested the slice
+}
+
+message Extruder
+{
+  int32 id = 1;
+  SettingList settings = 2;
+}
+
+message Object
+{
+  int64 id = 1;
+  bytes vertices = 2; //An array of 3 floats.
+  bytes normals = 3; //An array of 3 floats.
+  bytes indices = 4; //An array of ints.
+  repeated Setting settings = 5; // Setting override per object, overruling the global settings.
+  string name = 6; //Mesh name
+  bytes uv_coordinates = 7; //An array of 2 floats.
+  bytes texture = 8; //PNG-encoded texture data
+}
+
+message Progress
+{
+  float amount = 1;
+}
+
+message Layer {
+  int32 id = 1;
+  float height = 2; // Z position
+  float thickness = 3; // height of a single layer
+
+  repeated Polygon polygons = 4; // layer data
+}
+
+message Polygon {
+  enum Type {
+    NoneType = 0;
+    Inset0Type = 1;
+    InsetXType = 2;
+    SkinType = 3;
+    SupportType = 4;
+    SkirtType = 5;
+    InfillType = 6;
+    SupportInfillType = 7;
+    MoveUnretracted = 8;
+    MoveRetracted = 9;
+    SupportInterfaceType = 10;
+    PrimeTowerType = 11;
+    MoveWhileRetracting = 12;
+    MoveWhileUnretracting = 13;
+    StationaryRetractUnretract = 14;
+    NumPrintFeatureTypes = 15;
+  }
+  Type type = 1; // Type of move
+  bytes points = 2; // The points of the polygon, or two points if only a line segment (Currently only line segments are used)
+  float line_width = 3; // The width of the line being laid down
+  float line_thickness = 4; // The thickness of the line being laid down
+  float line_feedrate = 5; // The feedrate of the line being laid down
+}
+
+message LayerOptimized {
+  int32 id = 1;
+  float height = 2; // Z position
+  float thickness = 3; // height of a single layer
+
+  repeated PathSegment path_segment = 4; // layer data
+}
+
+
+message PathSegment {
+  int32 extruder = 1; // The extruder used for this path segment
+  enum PointType {
+    Point2D = 0;
+    Point3D = 1;
+  }
+  PointType point_type = 2;
+  bytes points = 3; // The points defining the line segments, bytes of float[2/3] array of length N+1
+  bytes line_type = 4; // Type of line segment as an unsigned char array of length 1 or N, where N is the number of line segments in this path
+  bytes line_width = 5; // The widths of the line segments as bytes of a float array of length 1 or N
+  bytes line_thickness = 6; // The thickness of the line segments as bytes of a float array of length 1 or N
+  bytes line_feedrate = 7; // The feedrate of the line segments as bytes of a float array of length 1 or N
+  repeated uint32 attributes = 8; // Print attributes of each segment, e.g. overhanging or bridging
+}
+
+
+message GCodeLayer {
+  bytes data = 2;
+}
+
+
+message PrintTimeMaterialEstimates {// The print time for each feature and material estimates for the extruder
+  // Time estimate in each feature
+  float time_none = 1;
+  float time_inset_0 = 2;
+  float time_inset_x = 3;
+  float time_skin = 4;
+  float time_support = 5;
+  float time_skirt = 6;
+  float time_infill = 7;
+  float time_support_infill = 8;
+  float time_travel = 9;
+  float time_retract = 10;
+  float time_support_interface = 11;
+  float time_prime_tower = 12;
+
+  repeated MaterialEstimates materialEstimates = 13; // materialEstimates data
+}
+
+message MaterialEstimates {
+  int64 id = 1;
+  float material_amount = 2; // material used in the extruder
+  float material_length = 3; // Length if used filaments, in meters
+  float material_weight = 4; // Weight of used filament, in grams
+  float material_cost = 5;
+  string material_name = 6;
+}
+
+message InitialExtruder {
+  uint32 extruder_nr = 1;
+}
+
+message SettingList {
+  repeated Setting settings = 1;
+}
+
+message Setting {
+  string name = 1; // Internal key to signify a setting
+
+  bytes value = 2; // The value of the setting
+}
+
+message SettingExtruder {
+  string name = 1; //The setting key.
+
+  int32 extruder = 2; //From which extruder stack the setting should inherit.
+}
+
+message SliceUUID {
+  string slice_uuid = 1; //An ID to link the slice in the printer to a statistical data point in the anonymous slice data.
+}
+
+// Frontend => engine message indicating that we are done sending slicing data and it should start slicing.
+message StartSlice {
+}
+
+// Engine => frontend message indicating that we are done sending slicing data and it should start slicing.
+message SlicingFinished {
+}
+
+// Frontend => engine message indicating that we won't send any more Slice messages and the engine can now exit
+message ExitEngine {
+}
+
+// Top-level message send from the frontend to the engine
+message CuraClientMessage {
+  oneof message {
+    Slice slice = 1;
+    MeshGroup mesh_group = 2;
+    Object object = 3;
+    StartSlice start_slice = 4;
+    ExitEngine exit_engine = 5;
+  }
+}
+
+// Top-level message send from the engine to the frontend
+message CuraEngineMessage {
+  oneof message {
+    Progress progress = 1;
+    Layer layer = 2;
+    LayerOptimized layer_optimized = 3;
+    GCodeLayer gcode_layer = 4;
+    SliceUUID slice_uuid = 5;
+    PrintTimeMaterialEstimates print_time_material_estimates = 6;
+    InitialExtruder initial_extruder = 7;
+    SlicingFinished slicing_finished = 8;
+  }
+}
+
+// Create a service with a single method that acts as a long-term communication channel. Because the attributes are
+// tagged as "stream", calling the method creates two channels, one for each direction, and keeps them alive.
+service CuraEngineCommunication {
+  rpc Communicate(stream CuraEngineMessage) returns (stream CuraClientMessage);
+}

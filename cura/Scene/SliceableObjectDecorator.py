@@ -163,7 +163,7 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         image_writer.setText("Description", json.dumps(self._texture_data_mapping))
         image_writer.write(texture_image)
 
-        return texture_buffer.data()
+        return texture_buffer.data().data() # First call retrieves the QByteArray, second retrieves it as a Python bytearray
 
     def isAssignedToDisabledExtruder(self) -> bool:
         return self._is_assigned_to_disabled_extruder
