@@ -159,7 +159,7 @@ UM.Dialog
 
             UM.Label
             {
-                text: catalog.i18nc("@info:credit", "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:")
+                text: catalog.i18nc("@info:credit", "Cura is developed by UltiMaker in cooperation with the community.<br/>Cura proudly uses the following open source projects:")
                 font: UM.Theme.getFont("system")
                 wrapMode: Text.WordWrap
             }

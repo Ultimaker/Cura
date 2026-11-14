@@ -26,13 +26,13 @@ Cura.Menu
             NozzleMenu
             {
                 title: Cura.MachineManager.activeDefinitionVariantsName
-                shouldBeVisible: activeMachine.hasVariants
+                shouldBeVisible: !!Cura.MachineManager.activeMachine && Cura.MachineManager.activeMachine.hasVariants
                 extruderIndex: index
             }
             MaterialMenu
             {
                 title: catalog.i18nc("@title:menu", "&Material")
-                shouldBeVisible: activeMachine.hasMaterials
+                shouldBeVisible: !!Cura.MachineManager.activeMachine && Cura.MachineManager.activeMachine.hasMaterials
                 extruderIndex: index
                 updateModels: false
                 onAboutToShow: updateModels = true
@@ -41,7 +41,7 @@ Cura.Menu
 
             Cura.MenuSeparator
             {
-                visible: Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasMaterials
+                visible: !!Cura.MachineManager.activeMachine && (Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasMaterials)
             }
 
             Cura.MenuItem
@@ -55,6 +55,7 @@ Cura.Menu
                 text: catalog.i18nc("@action:inmenu", "Enable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
                 visible: (extruder === null || extruder === undefined) ? false : !extruder.isEnabled
+                enabled: (extruder === null || extruder === undefined) ? false : !extruder.isEnabled
                 height: visible ? implicitHeight: 0
             }
 
@@ -63,7 +64,7 @@ Cura.Menu
                 text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(index, false)
                 visible: (extruder === null || extruder === undefined) ? false : extruder.isEnabled
-                enabled: Cura.MachineManager.numberExtrudersEnabled > 1
+                enabled: Cura.MachineManager.numberExtrudersEnabled > 1 && (extruder !== null && extruder !== undefined) && extruder.isEnabled
                 height: visible ? implicitHeight: 0
             }
         }

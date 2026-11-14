@@ -208,89 +208,79 @@ Item
             }
         }
 
-        UM.TooltipArea
+        Column
         {
-            width: childrenRect.width
-            height: childrenRect.height
-            text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@tooltip", "Select neighboring faces whose angle differs by no more than this value.") : catalog.i18nc("@tooltip", "Select the size of the brush for painting.")
-
-            UM.Label
-            {
-                text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@label", "Angle Threshold") : catalog.i18nc("@label", "Brush Size")
-            }
-        }
-
-        UM.Slider
-        {
-            id: shapeSizeSlider
             width: parent.width
-            stepSize: 1
-            indicatorVisible: isFaceAngle
-            tooltipUnit: isFaceAngle ? "°" : ""
+            spacing: shapeSizeSlider.isFaceAngle ? UM.Theme.getSize("thick_margin").height : UM.Theme.getSize("default_margin").height
 
-            readonly property bool isFaceAngle: UM.Controller.properties.getValue("BrushShape") === Cura.PaintToolBrush.FACE
-
-            from: isFaceAngle ? 0 : 1
-            to: isFaceAngle ? 90 : 100
-            value: UM.Controller.properties.getValue(isFaceAngle ? "FaceAngle" : "BrushSize")
-
-            onPressedChanged: function(pressed)
+            UM.TooltipArea
             {
-                if(! pressed)
+                width: childrenRect.width
+                height: childrenRect.height
+                text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@tooltip", "Select neighboring faces whose angle differs by no more than this value.") : catalog.i18nc("@tooltip", "Select the size of the brush for painting.")
+
+                UM.Label
                 {
-                    UM.Controller.setProperty(isFaceAngle ? "FaceAngle" : "BrushSize", shapeSizeSlider.value);
+                    text: shapeSizeSlider.isFaceAngle ? catalog.i18nc("@label", "Angle Threshold") : catalog.i18nc("@label", "Brush Size")
                 }
             }
-        }
 
-        UM.Label
-        {
-            id: supportAngleLabel
-            text: catalog.i18nc("@label", "Auto-Support Overhang")
-            visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "True"
+            UM.Slider
+            {
+                id: shapeSizeSlider
+                width: parent.width
+                height: UM.Theme.getSize("combobox").height
+                stepSize: 1
+                largeStepSize: 5
+                indicatorVisible: isFaceAngle
+                tooltipUnit: isFaceAngle ? "°" : ""
+
+                readonly property bool isFaceAngle: UM.Controller.properties.getValue("BrushShape") === Cura.PaintToolBrush.FACE
+
+                from: isFaceAngle ? 0 : 1
+                to: isFaceAngle ? 90 : 100
+                value: UM.Controller.properties.getValue(isFaceAngle ? "FaceAngle" : "BrushSize")
+
+                onMoved: UM.Controller.setProperty(isFaceAngle ? "FaceAngle" : "BrushSize", shapeSizeSlider.value);
+            }
         }
 
         Cura.TertiaryButton
         {
+            id: buttonEnableAutoSupport
             text: catalog.i18nc("@label", "<b>Enable auto-support</b>")
             visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "False"
             onClicked: supportEnabled.setPropertyValue("value", true)
-            height: supportAngleLabel.height + supportAngleSlider.height + UM.Theme.getSize("default_margin").height
+            width: parent.width
+            height: columnAngle.height
         }
 
-        RowLayout
+        Column
         {
-            id: supportAngleSlider
+            id: columnAngle
             width: parent.width
+            spacing: UM.Theme.getSize("thick_margin").height
             visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "True"
-            height: childrenRect.height
+
+            UM.Label
+            {
+                id: supportAngleLabel
+                text: catalog.i18nc("@label", "Auto-Support Overhang")
+            }
 
             Cura.SingleSettingSlider
             {
-                Layout.minimumHeight: parent.visible ? UM.Theme.getSize("combobox").height : 0.0
-                Layout.fillHeight: true
-                Layout.minimumWidth: parent.width / 2.0
-                Layout.fillWidth: true
+                id: supportAngleSlider
+                width: parent.width
+                height: UM.Theme.getSize("combobox").height
 
                 from: 0
                 to: 90
-                stepSize: 5
+                stepSize: 1
+                largeStepSize: 5
                 tooltipUnit: "°"
                 settingName: "support_angle"
                 updateAllExtruders: true
-            }
-
-            Cura.SingleSettingTextField
-            {
-                Layout.minimumHeight: parent.visible ? UM.Theme.getSize("combobox").height : 0.0
-                Layout.fillHeight: true
-                Layout.minimumWidth: UM.Theme.getSize("large_button").width
-                Layout.fillWidth: false
-
-                settingName: "support_angle"
-                updateAllExtruders: true
-                validator: UM.FloatValidator {}
-                unitText: "°"
             }
         }
 

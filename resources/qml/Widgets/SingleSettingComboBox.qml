@@ -90,7 +90,7 @@ Cura.ComboBox
     property UM.SettingPropertyProvider propertyProvider: UM.SettingPropertyProvider
     {
         id: propertyProvider
-        containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
+        containerStackId: updateAllExtruders ? (Cura.ExtruderManager.extruderIds[defaultExtruderIndex] || "") : (Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.id : "")
         removeUnusedValue: false
         watchedProperties: ["value", "validationState",  "resolve", "options"]
     }

@@ -51,7 +51,7 @@ UM.Dialog
 
         UM.Label
         {
-            text: base.explanation + "\n" //Newline to make some space using system theming.
+            text: base.explanation + "<br/>" //Newline to make some space using system theming.
             width: parent.width
             wrapMode: Text.WordWrap
         }

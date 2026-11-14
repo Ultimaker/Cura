@@ -10,12 +10,11 @@ import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
 
-Window
+UM.Dialog
 {
     id: digitalFactoryOpenDialogBase
     title: "Open file from Library"
 
-    modality: Qt.ApplicationModal
     width: 800 * screenScaleFactor
     height: 600 * screenScaleFactor
     minimumWidth: 800 * screenScaleFactor
@@ -39,7 +38,6 @@ Window
         visible: manager.selectedProjectIndex >= 0
         onOpenFilePressed: digitalFactoryOpenDialogBase.close()
     }
-
 
     BusyIndicator
     {

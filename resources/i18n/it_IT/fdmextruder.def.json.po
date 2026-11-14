@@ -178,7 +178,7 @@ msgstr "La coordinata x della posizione di fine allo spegnimento dell’estrusor
 
 msgctxt "machine_nozzle_offset_x description"
 msgid "The x-coordinate of the offset of the nozzle."
-msgstr "La coordinata y dell’offset dell’ugello."
+msgstr "La coordinata x dell’offset dell’ugello."
 
 msgctxt "machine_extruder_start_pos_x description"
 msgid "The x-coordinate of the starting position when turning the extruder on."
@@ -219,3 +219,75 @@ msgstr "Codice G della fase preparatoria da eseguire prima di passare a questo e
 msgctxt "machine_extruder_change_duration description"
 msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
 msgstr "Quando si utilizza una configurazione multi-utensile, questo valore rappresenta il tempo di cambio utensile in secondi. Questo valore verrà aggiunto al tempo stimato in base al numero di cambi che si verificano."
+
+msgctxt "command_line_settings label"
+msgid "Command Line Settings"
+msgstr "Impostazioni della riga di comando"
+
+msgctxt "material_id label"
+msgid "Cura Material ID"
+msgstr "ID materiale Cura"
+
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr "Marca del materiale"
+
+msgctxt "material_guid label"
+msgid "Material GUID"
+msgstr "GUID del materiale"
+
+msgctxt "material_name label"
+msgid "Material Name"
+msgstr "Nome del materiale"
+
+msgctxt "material_spool_cost label"
+msgid "Material Spool Cost"
+msgstr "Costo della bobina di materiale"
+
+msgctxt "material_spool_weight label"
+msgid "Material Spool Weight"
+msgstr "Peso della bobina di materiale"
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr "Tipo di materiale"
+
+msgctxt "material_density label"
+msgid "Material density"
+msgstr "Densità del materiale"
+
+msgctxt "command_line_settings description"
+msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
+msgstr "Impostazioni utilizzate solo se CuraEngine non viene richiamato dall'interfaccia grafica di Cura."
+
+msgctxt "material_id description"
+msgid "The ID of the material that is used internally."
+msgstr "L'ID del materiale utilizzato internamente."
+
+msgctxt "material_type description"
+msgid "The base type of printed material, e.g. PLA or ABS."
+msgstr "Il tipo base del materiale stampato (ad es. PLA o ABS)."
+
+msgctxt "material_spool_cost description"
+msgid "The cost of a full spool of material."
+msgstr "Il costo di una bobina piena di materiale."
+
+msgctxt "material_name description"
+msgid "The fully qualified material name, e.g. 'UltiMaker PLA White'."
+msgstr "Il nome completo del materiale (ad es. \"UltiMaker PLA White\")."
+
+msgctxt "material_brand description"
+msgid "The material brand, e.g. 'UltiMaker'."
+msgstr "La marca del materiale (ad es. \"UltiMaker\")."
+
+msgctxt "material_density description"
+msgid "The printed material density, in g/cm3."
+msgstr "La densità del materiale stampato, in g/cm³."
+
+msgctxt "material_guid description"
+msgid "The unique ID of the material."
+msgstr "L'ID univoco del materiale."
+
+msgctxt "material_spool_weight description"
+msgid "The weight of a full spool of material, in grams."
+msgstr "Il peso di una bobina piena di materiale, in grammi."

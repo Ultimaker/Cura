@@ -106,7 +106,7 @@ Item
                 height: parent.height
                 anchors.left: parent.left
                 anchors.right: parent.right
-                topPadding: height / 4
+                topPadding: UM.Theme.getSize("print_setup_big_item").height / 4  // Not based on height, as that causes an implicitHeight binding loop
                 leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
                 placeholderText: catalog.i18nc("@label:textbox", "Search settings")
                 font: UM.Theme.getFont("default_italic")
@@ -148,7 +148,8 @@ Item
                         expandedCategories = definitionsModel.expanded.slice()
                         definitionsModel.expanded = [""]  // keep closed while building the list
                         definitionsModel.showAncestors = true
-                        definitionsModel.showAll = false  // respect current tab's visibility handler
+                        // In the Overview tab, reveal settings hidden by the visibility preference when searching.
+                        definitionsModel.showAll = (selectedKey === "_overview")
                         definitionsModel.expanded = ["*"]
                     }
                     else

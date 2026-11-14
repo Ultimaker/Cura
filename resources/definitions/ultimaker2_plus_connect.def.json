@@ -39,7 +39,7 @@
         "supported_actions": [],
         "supports_network_connection": true,
         "supports_usb_connection": false,
-        "weight": 1
+        "weight": 0
     },
     "overrides":
     {

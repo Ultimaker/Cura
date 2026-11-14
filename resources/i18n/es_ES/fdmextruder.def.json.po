@@ -219,3 +219,75 @@ msgstr "Prearrancar g-code para ejecutar antes de cambiar a este extrusor."
 msgctxt "machine_extruder_change_duration description"
 msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
 msgstr "Cuando se use una configuración multiherramienta, este valor es el tiempo de cambio de herramienta en segundos. Se añadirá este valor al tiempo estimado en base al número de cambios que ocurran."
+
+msgctxt "command_line_settings label"
+msgid "Command Line Settings"
+msgstr "Ajustes de la línea de comandos"
+
+msgctxt "material_id label"
+msgid "Cura Material ID"
+msgstr "ID de material de Cura"
+
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr "Marca del material"
+
+msgctxt "material_guid label"
+msgid "Material GUID"
+msgstr "GUID del material"
+
+msgctxt "material_name label"
+msgid "Material Name"
+msgstr "Nombre del material"
+
+msgctxt "material_spool_cost label"
+msgid "Material Spool Cost"
+msgstr "Coste de la bobina de material"
+
+msgctxt "material_spool_weight label"
+msgid "Material Spool Weight"
+msgstr "Peso de la bobina de material"
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr "Tipo de material"
+
+msgctxt "material_density label"
+msgid "Material density"
+msgstr "Densidad del material"
+
+msgctxt "command_line_settings description"
+msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
+msgstr "Ajustes que solo se utilizan si CuraEngine no se llama desde la interfaz de Cura."
+
+msgctxt "material_id description"
+msgid "The ID of the material that is used internally."
+msgstr "ID del material utilizado internamente."
+
+msgctxt "material_type description"
+msgid "The base type of printed material, e.g. PLA or ABS."
+msgstr "El tipo base del material impreso; por ejemplo, PLA o ABS."
+
+msgctxt "material_spool_cost description"
+msgid "The cost of a full spool of material."
+msgstr "El coste de una bobina completa de material."
+
+msgctxt "material_name description"
+msgid "The fully qualified material name, e.g. 'UltiMaker PLA White'."
+msgstr "El nombre completo del material; por ejemplo, 'UltiMaker PLA White'."
+
+msgctxt "material_brand description"
+msgid "The material brand, e.g. 'UltiMaker'."
+msgstr "La marca del material; por ejemplo, 'UltiMaker'."
+
+msgctxt "material_density description"
+msgid "The printed material density, in g/cm3."
+msgstr "La densidad del material impreso, en g/cm3."
+
+msgctxt "material_guid description"
+msgid "The unique ID of the material."
+msgstr "El ID único del material."
+
+msgctxt "material_spool_weight description"
+msgid "The weight of a full spool of material, in grams."
+msgstr "El peso de una bobina completa de material, en gramos."
