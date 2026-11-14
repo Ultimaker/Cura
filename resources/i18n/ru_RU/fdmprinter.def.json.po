@@ -18,11 +18,11 @@ msgstr "<html>Как создать основную башню:<ul><li><b>Но�
 
 msgctxt "travel_retract_before_outer_wall description"
 msgid "<html>Retraction behavior when moving to the start of an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>From infill unretracted:</b> The travel move from an infill area to an outer wall will be unretracted, others will use automatic</li></ul></html>"
-msgstr ""
+msgstr "<html>Поведение отката при перемещении к началу внешней стенки:<ul><li><b>Автоматически:</b> откат будет рассчитан в соответствии с другими настройками</li><li><b>Всегда:</b> все перемещения к внешним стенкам будут с откатом</li><li><b>Никогда:</b> все перемещения к внешним стенкам <b>не</b> будут с откатом</li><li><b>От заполнения без отката:</b> перемещение от области заполнения к внешней стенке будет без отката, другие будут использовать автоматический режим</li></ul></html>"
 
 msgctxt "infill_pattern description"
 msgid "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>⚠ Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>"
-msgstr ""
+msgstr "<html>Паттерн заполнения материала при печати.<ul><li>Заполнение линиями и зигзагом меняет направление на каждом втором слое, что снижает расход материала.</li><li>Паттерны сетки, треугольника, тригексагона, куба, октета, четверти куба, креста и концентрического полностью печатаются на каждом слое.</li><li>Заполнение гироидом, сотами, октогоном, кубом, четвертью куба и октетом меняется с каждым слоем для более равномерного распределения прочности по каждому направлению.</li><li>Заполнение молнией пытается минимизировать заполнение, поддерживая только потолок объекта.</li></ul>⚠ Паттерны заполнения сеткой, треугольниками и кубом содержат пересекающиеся линии, которые могут привести к столкновению сопла с напечатанными линиями и вибрации принтера. Используйте с осторожностью.<br/></html>"
 
 msgctxt "prime_during_travel_ratio description"
 msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
@@ -38,7 +38,7 @@ msgstr "<html>Следует ли включать охлаждающие вен
 
 msgctxt "infill_start_end_preference description"
 msgid "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>ℹ️ Note that this will be applied only when walls are printed just after infill.</li></ul>"
-msgstr ""
+msgstr "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>ℹ️ Note that this will be applied only when walls are printed just after infill.</li></ul>"
 
 msgctxt "brim_inside_margin description"
 msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
@@ -98,7 +98,7 @@ msgstr "Рекомендация относительно того, как да�
 
 msgctxt "material_delta_temperature_roofing description"
 msgid "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low."
-msgstr ""
+msgstr "Разница температуры, которая будет применяться при печати верхних слоев. Это может помочь достичь более гладкой поверхности при печати на очень высокой скорости. Обратите внимание, что она будет применяться без ожидания достижения температуры, поэтому она должна оставаться низкой."
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -216,7 +216,7 @@ msgstr "Алюминий"
 
 msgctxt "travel_retract_before_outer_wall option force_retracted"
 msgid "Always"
-msgstr ""
+msgstr "Всегда"
 
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
@@ -276,7 +276,7 @@ msgstr "Создать взаимосвязанную структуру бал�
 
 msgctxt "travel_retract_before_outer_wall option automatic"
 msgid "Automatic"
-msgstr ""
+msgstr "Автоматически"
 
 msgctxt "travel_avoid_other_parts label"
 msgid "Avoid Printed Parts When Traveling"
@@ -416,7 +416,7 @@ msgstr "Угол диаметра ответвления"
 
 msgctxt "support_tree_smooth_layers label"
 msgid "Branch Smoothing Layers"
-msgstr ""
+msgstr "Слой сглаживания ответвлений"
 
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
@@ -516,7 +516,7 @@ msgstr "Скорость печати стенки мостика"
 
 msgctxt "bridge_wall_max_deviation description"
 msgid "Bridge-walls shouldn't deviate from straight lines more than this, anything that falls outside of the area of maximum allowed deviation (defined by the aligned bounding box around the anchor points) isn't considered a bridging wall. Skin lines are already straight."
-msgstr ""
+msgstr "Мостики не должны отклоняться от прямых линий более чем на это значение, все, что выходит за пределы области максимально допустимого отклонения (определяемой выровненной ограничивающей рамкой вокруг точек крепления), не считается стенкой мостика. Линии оболочки уже являются прямыми."
 
 msgctxt "adhesion_type option brim"
 msgid "Brim"
@@ -740,7 +740,7 @@ msgstr "Преобразовывать каждую линию заполнен�
 
 msgctxt "support_infill_multiplier description"
 msgid "Convert each support infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
-msgstr ""
+msgstr "Преобразовать каждую линию заполнения поддержки во множество линий. Дополнительные линии не пересекаются, а уклоняются от столкновения друг с другом. Благодаря этому заполнение становится более плотным, но время печати и расход материалов увеличиваются."
 
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
@@ -848,7 +848,7 @@ msgstr "Обнаружение мостиков и изменение скоро
 
 msgctxt "roofing_expansion description"
 msgid "Determines how much the top surfaces are expanded beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces."
-msgstr ""
+msgstr "Определяет, насколько верхние поверхности расширяются под перекрывающимися поверхностями. Настройка этого значения позволяет гарантировать, что внешние края верхних поверхностей скрыты слоями сверху, что улучшает визуальное качество, особенно для моделей с изогнутыми поверхностями."
 
 msgctxt "scarf_split_distance description"
 msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
@@ -860,7 +860,7 @@ msgstr "Определяет длину косого шва, типа шва, к
 
 msgctxt "initial_layer_inset_direction description"
 msgid "Determines the order in which walls are printed on the initial layer. This allows different wall ordering specifically for the first layer to improve bed adhesion. When not changed by user, the Wall Ordering setting value is used."
-msgstr ""
+msgstr "Определяет порядок печати стенок на первом слое. Это позволяет использовать разный порядок печати стенок специально для первого слоя, чтобы улучшить адгезию к столу. Если значение не изменено пользователем, используется значение настройки 'Порядок стенок'."
 
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
@@ -876,11 +876,11 @@ msgstr "Определяет, когда слой шаблона заполне�
 
 msgctxt "support_lightning_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "Определяет, когда слой шаблона заполнения «молния» должен поддерживать что-либо над ним. Измеряется под углом с учетом толщины слоя."
 
 msgctxt "support_lightning_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the lines above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Определяет, когда слой шаблона заполнения «молния» должен поддерживать линии над ним. Измеряется под углом с учетом толщины."
 
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
@@ -1028,7 +1028,7 @@ msgstr "Включить плавное движение"
 
 msgctxt "support_brim_enable label"
 msgid "Enable Inner Support Base"
-msgstr ""
+msgstr "Разрешить внутреннюю базу поддержек"
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -1048,7 +1048,7 @@ msgstr "Печатать защиту от капель"
 
 msgctxt "support_outer_brim_enable label"
 msgid "Enable Outer Support Base"
-msgstr ""
+msgstr "Разрешить внешнюю базу поддержек"
 
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
@@ -1124,7 +1124,7 @@ msgstr "Завершающий G-код"
 
 msgctxt "infill_start_end_preference option end_close_to_seam"
 msgid "End close to seam"
-msgstr ""
+msgstr "Заканчивать рядом с швом"
 
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
@@ -1388,7 +1388,7 @@ msgstr "Для тонких структур, шириной не более о�
 
 msgctxt "travel_retract_before_outer_wall option force_not_retracted_from_infill"
 msgid "From infill unretracted"
-msgstr ""
+msgstr "Из заполнения, не откатывается"
 
 msgctxt "z_seam_position option front"
 msgid "Front"
@@ -1460,11 +1460,11 @@ msgstr "Генерация поддержек"
 
 msgctxt "support_outer_brim_enable description"
 msgid "Generate a base around the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "Генерирует базу вокруг областей заполнения поддержек первых слоев. Включение этой настройки увеличивает адгезию поддержек к печатной платформе."
 
 msgctxt "support_brim_enable description"
 msgid "Generate a base within the support infill regions of the first layers. Enabling this setting increases the adhesion of support to the build plate."
-msgstr ""
+msgstr "Генерирует базу внутри областей заполнения поддержек первых слоев. Включение этой настройки увеличивает адгезию поддержек к печатной платформе."
 
 msgctxt "support_interface_enable description"
 msgid "Generate a dense interface between the model and the support. This will create a skin at the top of the support on which the model is printed and at the bottom of the support, where it rests on the model."
@@ -1604,15 +1604,15 @@ msgstr "Отверстия и контуры деталей с диаметро�
 
 msgctxt "support_brim_minimum_hole_area description"
 msgid "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim"
-msgstr ""
+msgstr "Отверстия в кайме поддержек, площадь которых меньше этого значения, будут отфильтрованы, что приведет к более однородной кайме. Установите значение 0, чтобы получить полностью сгенерированную кайму поддержек."
 
 msgctxt "infill_pattern option honeycomb"
 msgid "Honeycomb"
-msgstr ""
+msgstr "Медная сетка"
 
 msgctxt "support_pattern option honeycomb"
 msgid "Honeycomb"
-msgstr ""
+msgstr "Медная сетка"
 
 msgctxt "xy_offset label"
 msgid "Horizontal Expansion"
@@ -1764,7 +1764,7 @@ msgstr "Плотность заполнения"
 
 msgctxt "infill_end_move_inwards_length label"
 msgid "Infill End Move Inwards Length"
-msgstr ""
+msgstr "Длина движения внутрь при завершении заполнения"
 
 msgctxt "infill_extruder_nr label"
 msgid "Infill Extruder"
@@ -1820,7 +1820,7 @@ msgstr "Шаблон заполнения"
 
 msgctxt "skin_support label"
 msgid "Infill Skin Support"
-msgstr ""
+msgstr "Заполнение поддержки оболочки"
 
 msgctxt "speed_infill label"
 msgid "Infill Speed"
@@ -1828,15 +1828,15 @@ msgstr "Скорость заполнения"
 
 msgctxt "infill_start_move_inwards_length label"
 msgid "Infill Start Move Inwards Length"
-msgstr ""
+msgstr "Заполнение: длина движения внутрь при начале заполнения"
 
 msgctxt "infill_move_inwards_length label"
 msgid "Infill Start/End Move Inwards Length"
-msgstr ""
+msgstr "Заполнение: длина движения внутрь при начале/завершении заполнения"
 
 msgctxt "infill_start_end_preference label"
 msgid "Infill Start/End Preference"
-msgstr ""
+msgstr "Предпочтение начала/конца заполнения"
 
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
@@ -1940,7 +1940,7 @@ msgstr "Скорость перемещений на первом слое"
 
 msgctxt "initial_layer_inset_direction label"
 msgid "Initial Layer Wall Ordering"
-msgstr ""
+msgstr "Порядок стен первого слоя"
 
 msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
@@ -1968,7 +1968,7 @@ msgstr "Экструдер внутренней стенки"
 
 msgctxt "wall_x_inset label"
 msgid "Inner Wall Inset"
-msgstr ""
+msgstr "Вставка внутренней стенки"
 
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
@@ -1988,7 +1988,7 @@ msgstr "Ширина линии внутренней стенки"
 
 msgctxt "wall_x_inset description"
 msgid "Inset applied to the path of the inner wall(s). The infill will move along with the new boundary set by the innermost inner wall"
-msgstr ""
+msgstr "Вставка применяется для внутренних стенок. Если внутренняя стенка меньше диаметра сопла и печатается после внешних стенок, то используйте это смещение для захода соплом на внутренние стенки, вместо выхода за модель."
 
 msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
@@ -2000,7 +2000,7 @@ msgstr "Только внутри"
 
 msgctxt "initial_layer_inset_direction option inside_out"
 msgid "Inside To Outside"
-msgstr ""
+msgstr "От внутренних к внешним"
 
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
@@ -2020,11 +2020,11 @@ msgstr "Предпочитать интерфейс"
 
 msgctxt "bridge_interlace_lines label"
 msgid "Interlace Bridge Lines"
-msgstr ""
+msgstr "Переплетение линий моста"
 
 msgctxt "skin_support_interlace_lines label"
 msgid "Interlace Skin Support Lines"
-msgstr ""
+msgstr "Переплетение линий поддержки кожура"
 
 msgctxt "prime_tower_mode option interleaved"
 msgid "Interleaved"
@@ -2124,7 +2124,7 @@ msgstr "Y координата начала"
 
 msgctxt "layer_start_at_z_seam label"
 msgid "Layer Start at Z Seam"
-msgstr ""
+msgstr "Начало слоя на шве по оси Z"
 
 msgctxt "raft_base_thickness description"
 msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
@@ -2156,7 +2156,7 @@ msgstr "Молния"
 
 msgctxt "support_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "Молния"
 
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
@@ -2514,7 +2514,7 @@ msgstr "Середина"
 
 msgctxt "z_seam_position option middle"
 msgid "Middle"
-msgstr ""
+msgstr "Середина"
 
 msgctxt "support_z_seam_min_distance label"
 msgid "Min Z Seam Distance from Model"
@@ -2558,7 +2558,7 @@ msgstr "Минимальная область заполнения"
 
 msgctxt "minimum_infill_line_length label"
 msgid "Minimum Infill Line Length"
-msgstr ""
+msgstr "Минимальная длина линии заполнения"
 
 msgctxt "cool_min_layer_time label"
 msgid "Minimum Layer Time"
@@ -2638,7 +2638,7 @@ msgstr "Минимальная площадь зоны для верхних ч�
 
 msgctxt "support_brim_minimum_hole_area label"
 msgid "Minimum hole area in brim support"
-msgstr ""
+msgstr "Минимальная площадь отверстия в поддержке фундамента"
 
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
@@ -2698,7 +2698,7 @@ msgstr "Несколько линий юбки помогают лучше на�
 
 msgctxt "machine_time_estimation_factor description"
 msgid "Multiplier for adjusting print time estimates. 100% shows original estimate. Higher values indicate longer actual print times."
-msgstr ""
+msgstr "Множитель для корректировки оценок времени печати. 100% показывает оригинальную оценку. Более высокие значения указывают на более длительное фактическое время печати."
 
 msgctxt "support_infill_density_multiplier_initial_layer description"
 msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
@@ -2710,7 +2710,7 @@ msgstr "Множитель для ширины линии первого сло�
 
 msgctxt "travel_retract_before_outer_wall option force_not_retracted"
 msgid "Never"
-msgstr ""
+msgstr "Никогда"
 
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
@@ -2810,15 +2810,15 @@ msgstr "Количество экструдеров. Экструдер - это
 
 msgctxt "support_wall_thickness_layer_smooth description"
 msgid "Number of layers where the support wall line width transition is smoothed out over. (This may still create jumps when one area splits off from the other though.)"
-msgstr ""
+msgstr "Количество слоёв, на которых сглаживается переход ширины линии стенки поддержки. (Тем не менее, это может создавать скачки, когда одна область отделяется от другой.)"
 
 msgctxt "support_wall_thickness_bottom_layers description"
 msgid "Number of layers, counted from the build-plate, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
-msgstr ""
+msgstr "Количество слоёв, считая от печатной платформы, на которых стенки поддержек будут использовать неувеличенную толщину стенки поддержки (не учитывая сглаживание ширины линии)."
 
 msgctxt "support_wall_thickness_top_layers description"
 msgid "Number of layers, counted from the closest tip of the branches downwards, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing)."
-msgstr ""
+msgstr "Количество слоёв, считая от ближайшей точки ответвлений вниз, на которых стенки поддержек будут использовать неувеличенную толщину стенки поддержки (не учитывая сглаживание ширины линии)."
 
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
@@ -2834,11 +2834,11 @@ msgstr "Количество раз, на которое на половину �
 
 msgctxt "infill_pattern option octagon"
 msgid "Octagon"
-msgstr ""
+msgstr "Восьмиугольник"
 
 msgctxt "support_pattern option octagon"
 msgid "Octagon"
-msgstr ""
+msgstr "Восьмиугольник"
 
 msgctxt "infill_pattern option tetrahedral"
 msgid "Octet"
@@ -2874,7 +2874,7 @@ msgstr "На модели, если требуется"
 
 msgctxt "top_bottom_skin_merge_distance description"
 msgid "On sloped areas especially, top/bottom can become very small or narrow, while skin is nearby. This will sometimes cause walls not to print well. Merge top/bottom into skin when areas become too thin, where 'too thin' is defined by the merge distance (any thinner is merged into a neighbouring area if present)."
-msgstr ""
+msgstr "В наклоненных областях, особенно, верх/низ могут становиться очень маленькими или узкими, в то время как кожа находится рядом. Это иногда приводит к тому, что стенки не печатаются хорошо. Объединяйте верх/низ с кожей, когда области становятся слишком тонкими, где 'слишком тонкий' определяется по расстоянию объединения (любой более тонкий объединяется с соседней областью, если она присутствует)."
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -2978,7 +2978,7 @@ msgstr "Только снаружи"
 
 msgctxt "initial_layer_inset_direction option outside_in"
 msgid "Outside To Inside"
-msgstr ""
+msgstr "От внешних к внутренним"
 
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
@@ -3006,7 +3006,7 @@ msgstr "Скорость вентилятора в процентах, кото�
 
 msgctxt "skin_support_fan_speed description"
 msgid "Percentage fan speed to use when printing skin support."
-msgstr ""
+msgstr "Скорость вентилятора в процентах, которую необходимо использовать при печати поддержки оболочки."
 
 msgctxt "bridge_fan_speed_2 description"
 msgid "Percentage fan speed to use when printing the second bridge skin layer."
@@ -3142,7 +3142,7 @@ msgstr "Печать тонких стенок"
 
 msgctxt "machine_time_estimation_factor label"
 msgid "Print Time Estimation Factor"
-msgstr ""
+msgstr "Множитель для корректировки оценок времени печати"
 
 msgctxt "brim_location description"
 msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
@@ -3150,7 +3150,7 @@ msgstr "Напечата поля снаружи, внутри или на об�
 
 msgctxt "skin_support description"
 msgid "Print a solid infill pattern just below skin to avoid printing the skin over air."
-msgstr ""
+msgstr "Печатает сплошной шаблон заполнения прямо под оболочкой, чтобы избежать печати оболочки над воздухом."
 
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
@@ -3714,19 +3714,19 @@ msgstr "Ширина удаляемой оболочки"
 
 msgctxt "skin_support_density label"
 msgid "Skin Support Density"
-msgstr ""
+msgstr "Плотность поддержки оболочки"
 
 msgctxt "skin_support_fan_speed label"
 msgid "Skin Support Fan Speed"
-msgstr ""
+msgstr "Скорость вентилятора для поддержки оболочек"
 
 msgctxt "skin_support_material_flow label"
 msgid "Skin Support Flow"
-msgstr ""
+msgstr "Поток поддержки оболочек"
 
 msgctxt "skin_support_speed label"
 msgid "Skin Support Speed"
-msgstr ""
+msgstr "Скорость поддержки оболочек"
 
 msgctxt "min_skin_width_for_expansion description"
 msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
@@ -3890,15 +3890,15 @@ msgstr "Первым должен быть стартовый GCode"
 
 msgctxt "infill_start_end_preference option start_closest"
 msgid "Start at closest"
-msgstr ""
+msgstr "Начать ближайшей"
 
 msgctxt "infill_start_end_preference option start_random"
 msgid "Start at random"
-msgstr ""
+msgstr "Начать случайно"
 
 msgctxt "layer_start_at_z_seam description"
 msgid "Start printing at the Z seam position."
-msgstr ""
+msgstr "Начать печать в позиции Z шва."
 
 msgctxt "z_seam_type description"
 msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
@@ -3934,23 +3934,23 @@ msgstr "Ускорение поддержек"
 
 msgctxt "support_base_height label"
 msgid "Support Base Height"
-msgstr ""
+msgstr "Высота основания поддержки"
 
 msgctxt "support_base_inside_width label"
 msgid "Support Base Inside Width"
-msgstr ""
+msgstr "Внутренняя ширина основания поддержки"
 
 msgctxt "support_base_outside_width label"
 msgid "Support Base Outside Width"
-msgstr ""
+msgstr "Внешняя ширина основания поддержки"
 
 msgctxt "support_base_curve_magnitude label"
 msgid "Support Base Slope"
-msgstr ""
+msgstr "Уклон основания поддержки"
 
 msgctxt "support_base_width label"
 msgid "Support Base Width"
-msgstr ""
+msgstr "Ширина основания поддержки"
 
 msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
@@ -3978,7 +3978,7 @@ msgstr "Приоритет зазоров поддержки"
 
 msgctxt "support_enlarged_wall_thickness label"
 msgid "Support Enlarged Wall Thickness"
-msgstr ""
+msgstr "Увеличенная толщина стенки поддержки"
 
 msgctxt "support_extruder_nr label"
 msgid "Support Extruder"
@@ -4066,7 +4066,7 @@ msgstr "Направление линии заполнения поддерже�
 
 msgctxt "support_infill_multiplier label"
 msgid "Support Infill Line Multiplier"
-msgstr ""
+msgstr "Множитель линии заполнения поддержек"
 
 msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
@@ -4074,19 +4074,19 @@ msgstr "Скорость заполнения поддержек"
 
 msgctxt "support_brim_line_count label"
 msgid "Support Inner Brim Line Count"
-msgstr ""
+msgstr "Количество линий внутренней каймы поддержек"
 
 msgctxt "support_brim_width label"
 msgid "Support Inner Brim Width"
-msgstr ""
+msgstr "Ширина внутренней каймы поддержек"
 
 msgctxt "support_inside_base_height label"
 msgid "Support Inside Base Height"
-msgstr ""
+msgstr "Высота внутреннего основания поддержек"
 
 msgctxt "support_inside_base_curve_magnitude label"
 msgid "Support Inside Base Slope"
-msgstr ""
+msgstr "Уклон внутреннего основания поддержек"
 
 msgctxt "acceleration_support_interface label"
 msgid "Support Interface Acceleration"
@@ -4150,19 +4150,19 @@ msgstr "Расстояние объединения поддержки"
 
 msgctxt "support_lightning_angle label"
 msgid "Support Lightning Angle"
-msgstr ""
+msgstr "Угол молнии поддержки"
 
 msgctxt "support_lightning_overhang_angle label"
 msgid "Support Lightning Overhang Angle"
-msgstr ""
+msgstr "Угол свеса молнии поддержки"
 
 msgctxt "support_lightning_prune_angle label"
 msgid "Support Lightning Prune Angle"
-msgstr ""
+msgstr "Угол обрезки молнии поддержки"
 
 msgctxt "support_lightning_straightening_angle label"
 msgid "Support Lightning Straightening Angle"
-msgstr ""
+msgstr "Угол выравнивания молнии поддержки"
 
 msgctxt "support_line_distance label"
 msgid "Support Line Distance"
@@ -4178,11 +4178,11 @@ msgstr "Поддерживающий объект"
 
 msgctxt "support_outside_base_height label"
 msgid "Support Outside Base Height"
-msgstr ""
+msgstr "Высота внешнего основания поддержки"
 
 msgctxt "support_outside_base_curve_magnitude label"
 msgid "Support Outside Base Slope"
-msgstr ""
+msgstr "Уклон внешнего основания поддержки"
 
 msgctxt "support_angle label"
 msgid "Support Overhang Angle"
@@ -4190,7 +4190,7 @@ msgstr "Угол нависания поддержки"
 
 msgctxt "support_paint_resolution label"
 msgid "Support Painting Precision"
-msgstr ""
+msgstr "Поддержка точности рисования"
 
 msgctxt "support_pattern label"
 msgid "Support Pattern"
@@ -4282,19 +4282,19 @@ msgstr "Количество линий стенки поддержки"
 
 msgctxt "support_wall_thickness_layer_smooth label"
 msgid "Support Wall Smooth Layer Width"
-msgstr ""
+msgstr "Ширина гладкого слоя стенки поддержки"
 
 msgctxt "support_wall_thickness label"
 msgid "Support Wall Thickness"
-msgstr ""
+msgstr "Толщина стенки поддержки"
 
 msgctxt "support_wall_thickness_bottom_layers label"
 msgid "Support Wall Unenlarged Bottom Layers"
-msgstr ""
+msgstr "Нижние слои стенки поддержки без увеличения толщины"
 
 msgctxt "support_wall_thickness_top_layers label"
 msgid "Support Wall Unenlarged Top Layers"
-msgstr ""
+msgstr "Верхние слои стенки поддержки без увеличения толщины"
 
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
@@ -4354,7 +4354,7 @@ msgstr "Целевое расстояние по горизонтали межд
 
 msgctxt "material_delta_temperature_roofing label"
 msgid "Temperature Delta Top Surface"
-msgstr ""
+msgstr "Разница температур для верхней поверхности"
 
 msgctxt "layer_start_x description"
 msgid "The X coordinate of the position near where to find the part to start printing each layer."
@@ -4362,7 +4362,7 @@ msgstr "X координата позиции, вблизи которой сл�
 
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
-msgstr ""
+msgstr "X координата позиции, вблизи которой следует начинать печать каждой части слоя. Когда Z Seam Relative отключен, это абсолютная позиция на платформе. Когда включен, это относительно центра каждого объекта."
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
@@ -4374,7 +4374,7 @@ msgstr "Y координата позиции, вблизи которой сл�
 
 msgctxt "z_seam_y description"
 msgid "The Y coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
-msgstr ""
+msgstr "Y координата позиции, вблизи которой следует начинать печать каждой части слоя. Когда Z Seam Relative отключен, это абсолютная позиция на платформе. Когда включен, это относительно центра каждого объекта."
 
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
@@ -4618,7 +4618,7 @@ msgstr "Плотность слоя второй оболочки мостика
 
 msgctxt "skin_support_density description"
 msgid "The density of the skin support layer. Values less than 100 will increase the gaps between the lines."
-msgstr ""
+msgstr "Плотность слоя поддержки оболочки. Значения менее 100 увеличат зазоры между линиями."
 
 msgctxt "bridge_skin_density_3 description"
 msgid "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
@@ -4674,7 +4674,7 @@ msgstr "Дистанция между соплом и уже напечатан�
 
 msgctxt "retraction_combing_avoid_distance description"
 msgid "The distance between the nozzle and outer walls when travelling inside a model."
-msgstr ""
+msgstr "Расстояние между соплом и внешними стенками при перемещении внутри модели."
 
 msgctxt "raft_base_line_spacing description"
 msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
@@ -4730,7 +4730,7 @@ msgstr "Конечные точки линий заполнения укорач
 
 msgctxt "support_lightning_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "Концевые участки линий заполнения укорачиваются для экономии материала. Данный параметр определяет угол нависания концов этих линий."
 
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
@@ -4906,11 +4906,11 @@ msgstr "Высота первого слоя в миллиметрах. Боле
 
 msgctxt "support_inside_base_height description"
 msgid "The height of the inside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "Высота внутреннего основания поддержек. Увеличение этого значения приведет к созданию более устойчивой поддержки, так как основание будет толще. Если это значение слишком низкое, поддержка не будет иметь прочного основания."
 
 msgctxt "support_outside_base_height description"
 msgid "The height of the outside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "Высота внешнего основания поддержек. Увеличение этого значения приведет к созданию более устойчивой поддержки, так как основание будет толще. Если это значение слишком низкое, поддержка не будет иметь прочного основания."
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
@@ -4922,7 +4922,7 @@ msgstr "Высота в шагах низа лестничной поддерж�
 
 msgctxt "support_base_height description"
 msgid "The height of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "Высота основания поддержки. Увеличение этого значения приведет к созданию более устойчивой поддержки, так как основание будет шире. Если это значение слишком низкое, поддержка не будет иметь прочного основания."
 
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
@@ -4940,7 +4940,7 @@ msgstr "Линии заполнения выравниваются для сок
 
 msgctxt "support_lightning_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr ""
+msgstr "Линии заполнения выравниваются для сокращения время печати. Это максимально допустимый угол нависания по всей длине линии заполнения."
 
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
@@ -5000,11 +5000,11 @@ msgstr "Длина нити материала, которая будет изв
 
 msgctxt "support_inside_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the inside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "Множитель, используемый для наклона внутреннего основания поддержки. Если увеличить это значение, основание станет более узким. Если уменьшить - основание станет толще."
 
 msgctxt "support_outside_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the outside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "Множитель, используемый для наклона внешнего основания поддержки. Если увеличить это значение, основание станет более узким. Если уменьшить - основание станет толще."
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
@@ -5012,7 +5012,7 @@ msgstr "Множитель, используемый для наклона ос�
 
 msgctxt "support_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "Множитель, используемый для наклона основания поддержки. Если увеличить это значение, основание станет более узким. Если уменьшить - основание станет толще."
 
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
@@ -5292,7 +5292,7 @@ msgstr "Количество линий, используемых для печ�
 
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support inside brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "Количество линий, используемых для поддержки внутри каймы. Большее количество линий каймы улучшает прилипание к столу, но увеличивает расход материала."
 
 msgctxt "build_volume_fan_nr description"
 msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
@@ -5376,11 +5376,11 @@ msgstr "Шаблон, который будет использоваться д�
 
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements."
-msgstr ""
+msgstr "Позиция, где начинать печать каждой части в слое. Примечание: Для опции 'Центр' точка отсчета критически зависит от настройки Z Seam Relative - это будет центр платформы (абсолютно) или центр каждого объекта (относительно), что приведет к совершенно другим местам шва."
 
 msgctxt "support_tree_smooth_layers description"
 msgid "The positions of the tree support branches will be adjusted to smooth them over the specified number of layers using a rolling window average. This improves inter-layer adhesion and sturdiness, but an excessively high value may cause the structure to bend too close to the model or compromise its integrity."
-msgstr ""
+msgstr "Позиции ветвей поддержки дерева будут скорректированы для их сглаживания на указанное количество слоев с использованием скользящего среднего. Это улучшает адгезию между слоями и прочность, но чрезмерно высокое значение может привести к изгибу структуры слишком близко к модели или нарушению её целостности."
 
 msgctxt "multi_material_paint_resolution description"
 msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
@@ -5388,7 +5388,7 @@ msgstr "Точность деталей при создании мультима
 
 msgctxt "support_paint_resolution description"
 msgid "The precision of the details when generating support based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
-msgstr ""
+msgstr "Точность деталей при создании поддержки на основе данных покраски. Более низкая точность позволяет получить больше деталей, но увеличивает время нарезки и объем памяти."
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
@@ -5448,7 +5448,7 @@ msgstr "Скорость, на которой происходит печать.
 
 msgctxt "skin_support_speed description"
 msgid "The speed at which skin support regions are printed."
-msgstr ""
+msgstr "Скорость, с которой печатаются области оболочки поддержек."
 
 msgctxt "raft_base_speed description"
 msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
@@ -5680,7 +5680,7 @@ msgstr "Толщина внешних стенок в горизонтально
 
 msgctxt "support_enlarged_wall_thickness description"
 msgid "The thickness of the walls with which to surround the support infill, when adhesion with the above/below layer is very low. Using larger or extra walls in this case will improve adhesion and make the branch sturdier."
-msgstr ""
+msgstr "Толщина стенок, которыми можно окружить заполнение поддержек, когда адгезия с верхним/нижним слоем очень низкая. Использование больших или дополнительных стенок в этом случае улучшит адгезию и сделает ветку более прочной."
 
 msgctxt "infill_sparse_thickness description"
 msgid "The thickness per layer of infill material. This value should always be a multiple of the layer height and is otherwise rounded."
@@ -5692,7 +5692,7 @@ msgstr "Толщина слоя для материала заполнения �
 
 msgctxt "support_wall_thickness description"
 msgid "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr ""
+msgstr "Толщина стенок, которыми можно окружить заполнение поддержек. Добавление стенки может сделать печать поддержек более надежной и улучшить поддержку свесов, но увеличивает время печати и расход материала."
 
 msgctxt "machine_buildplate_type description"
 msgid "The type of build plate installed on the printer."
@@ -5716,11 +5716,11 @@ msgstr "Ширина (по оси X) области печати."
 
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print inside the support, on the first layer. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
-msgstr ""
+msgstr "Ширина бортика, который будет напечатан внутри поддержки на первом слое. Более широкий бортик улучшает адгезию к платформе для печати, но увеличивает расход материала."
 
 msgctxt "support_base_inside_width description"
 msgid "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base."
-msgstr ""
+msgstr "Ширина внутреннего основания поддержки. Увеличение этого значения приведет к более прочной поддержке. Если это значение слишком низкое, поддержки не будут иметь прочного внутреннего основания."
 
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
@@ -5728,7 +5728,7 @@ msgstr "Ширина балок взаимосвязанной конструк�
 
 msgctxt "support_base_outside_width description"
 msgid "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "Ширина внешнего основания поддержки. Увеличение этого значения приведет к более прочной поддержке, поскольку основание будет шире. Если это значение слишком низкое, поддержки не будут иметь прочного внешнего основания."
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
@@ -5740,7 +5740,7 @@ msgstr "Ширина черновой башни."
 
 msgctxt "support_base_width description"
 msgid "The width of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base."
-msgstr ""
+msgstr "Ширина основания поддержки. Увеличение этого значения приведет к более прочной поддержке, поскольку основание будет шире. Если это значение слишком низкое, поддержки не будут иметь прочного основания."
 
 msgctxt "magic_fuzzy_skin_thickness description"
 msgid "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered."
@@ -5844,7 +5844,7 @@ msgstr "Ширина удаляемой оболочки сверху"
 
 msgctxt "roofing_expansion label"
 msgid "Top Surface Expansion"
-msgstr ""
+msgstr "Расширение верхней поверхности"
 
 msgctxt "acceleration_wall_x_roofing label"
 msgid "Top Surface Inner Wall Acceleration"
@@ -5968,7 +5968,7 @@ msgstr "Толщина дна/крышки"
 
 msgctxt "top_bottom_skin_merge_distance label"
 msgid "Top/Bottom/Skin Merge Distance"
-msgstr ""
+msgstr "Расстояние слияния верхней/нижней оболочки"
 
 msgctxt "support_type option buildplate"
 msgid "Touching Buildplate"
@@ -6188,7 +6188,7 @@ msgstr "Стены, которые нависают больше, чем на э
 
 msgctxt "minimum_infill_line_length description"
 msgid "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions."
-msgstr ""
+msgstr "Когда область заполнения генерирует линии с общей длиной, меньшей этого значения, они будут отброшены для избежания печати множества маленьких бесполезных линий. Это может помочь сократить перемещения, откаты и повторные запуски."
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -6196,11 +6196,11 @@ msgstr "При включении траектории инструмента к
 
 msgctxt "bridge_interlace_lines description"
 msgid "When enabled, bridging lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
-msgstr ""
+msgstr "Когда включено, линии мостика будут печататься чередующимися, то есть в 2 монотонных прохода, так что соседние линии не будут печататься сразу друг за другом. Линии первого прохода затем имеют больше времени для охлаждения и становятся прочнее, когда добавляется второй проход."
 
 msgctxt "skin_support_interlace_lines description"
 msgid "When enabled, skin support lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
-msgstr ""
+msgstr "Когда включено, линии поддержки оболочки будут печататься чередующимися, то есть в 2 монотонных прохода, так что соседние линии не будут печататься сразу друг за другом. Линии первого прохода затем имеют больше времени для охлаждения и становятся прочнее, когда добавляется второй проход."
 
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
@@ -6212,7 +6212,7 @@ msgstr "Если включено, скорость охлаждающего в�
 
 msgctxt "z_seam_relative description"
 msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate. This setting is critical for the 'Middle' Z Seam Position option: relative positioning places the seam at the middle of each object, while absolute positioning places it at the middle of the buildplate, resulting in completely different seam placements."
-msgstr ""
+msgstr "Когда включено, координаты шва по оси Z относительны центру каждой части. Когда отключено, координаты определяют абсолютное положение на платформе печати. Этот параметр критичен для опции 'Среднее' положение шва по оси Z: относительное позиционирование размещает шов в середине каждой части, в то время как абсолютное позиционирование размещает его в середине платформы печати, что приводит к совершенно другим местоположениям швов."
 
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
@@ -6236,7 +6236,7 @@ msgstr "Во время печати стенок мостика объем вы
 
 msgctxt "skin_support_material_flow description"
 msgid "When printing skin support regions, the amount of material extruded is multiplied by this value."
-msgstr ""
+msgstr "Во время печати областей поддержки оболочки объем выдавленного материала умножается на указанное значение."
 
 msgctxt "raft_interface_z_offset description"
 msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
@@ -6260,15 +6260,15 @@ msgstr "Если включено втягивание во время пере�
 
 msgctxt "infill_start_move_inwards_length description"
 msgid "When starting infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
-msgstr ""
+msgstr "При начале печати заполнения добавьте движение выдавливания внутрь, чтобы концы заполнения не влияли на внешнюю стенку. Это может быть полезно при печати заполнения на очень высокой скорости."
 
 msgctxt "infill_end_move_inwards_length description"
 msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
-msgstr ""
+msgstr "При начале или завершении печати заполнения добавьте движение выдавливания внутрь, чтобы концы заполнения не влияли на внешнюю стенку. Это может быть полезно при печати заполнения на очень высокой скорости."
 
 msgctxt "infill_move_inwards_length description"
 msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
-msgstr ""
+msgstr "При начале или завершении печати заполнения добавьте движение выдавливания внутрь, чтобы концы заполнения не влияли на внешнюю стенку. Это может быть полезно при печати заполнения на очень высокой скорости."
 
 msgctxt "cool_lift_head description"
 msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."

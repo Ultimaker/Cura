@@ -26,11 +26,11 @@ msgstr "Прилипание к столу"
 
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
-msgstr ""
+msgstr "Параметры командной строки"
 
 msgctxt "material_id label"
 msgid "Cura Material ID"
-msgstr ""
+msgstr "Идентификатор материала Cura"
 
 msgctxt "material_diameter label"
 msgid "Diameter"
@@ -134,31 +134,31 @@ msgstr "Материал"
 
 msgctxt "material_brand label"
 msgid "Material Brand"
-msgstr ""
+msgstr "Марка материала"
 
 msgctxt "material_guid label"
 msgid "Material GUID"
-msgstr ""
+msgstr "Идентификатор материала (GUID)"
 
 msgctxt "material_name label"
 msgid "Material Name"
-msgstr ""
+msgstr "Имя материала"
 
 msgctxt "material_spool_cost label"
 msgid "Material Spool Cost"
-msgstr ""
+msgstr "Стоимость катушки материала"
 
 msgctxt "material_spool_weight label"
 msgid "Material Spool Weight"
-msgstr ""
+msgstr "Вес катушки материала"
 
 msgctxt "material_type label"
 msgid "Material Type"
-msgstr ""
+msgstr "Тип материала"
 
 msgctxt "material_density label"
 msgid "Material density"
-msgstr ""
+msgstr "Плотность материала"
 
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
@@ -186,7 +186,7 @@ msgstr "G-код для выполнения до переключения на 
 
 msgctxt "command_line_settings description"
 msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
-msgstr ""
+msgstr "Параметры, которые используются только в том случае, если CuraEngine не вызывается из интерфейса Cura."
 
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
@@ -194,7 +194,7 @@ msgstr "Стартовый G-код, запускающийся при пере�
 
 msgctxt "material_id description"
 msgid "The ID of the material that is used internally."
-msgstr ""
+msgstr "Идентификатор материала, используемый внутри программы."
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
@@ -210,11 +210,11 @@ msgstr "Позиция кончика сопла на оси Z при старт
 
 msgctxt "material_type description"
 msgid "The base type of printed material, e.g. PLA or ABS."
-msgstr ""
+msgstr "Базовый тип печатного материала, например PLA или ABS."
 
 msgctxt "material_spool_cost description"
 msgid "The cost of a full spool of material."
-msgstr ""
+msgstr "Стоимость полной катушки материала."
 
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
@@ -222,7 +222,7 @@ msgstr "Экструдер, который используется для пе�
 
 msgctxt "material_name description"
 msgid "The fully qualified material name, e.g. 'UltiMaker PLA White'."
-msgstr ""
+msgstr "Полное имя материала, например 'UltiMaker PLA White'."
 
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
@@ -234,7 +234,7 @@ msgstr "Внутренний диаметр сопла. Измените это�
 
 msgctxt "material_brand description"
 msgid "The material brand, e.g. 'UltiMaker'."
-msgstr ""
+msgstr "Марка материала, например 'UltiMaker'."
 
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
@@ -246,7 +246,7 @@ msgstr "Номер охлаждающего вентилятора, исполь
 
 msgctxt "material_density description"
 msgid "The printed material density, in g/cm3."
-msgstr ""
+msgstr "Плотность печатного материала, в г/см3."
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
@@ -258,11 +258,11 @@ msgstr "Время, необходимое для выполнения стар�
 
 msgctxt "material_guid description"
 msgid "The unique ID of the material."
-msgstr ""
+msgstr "Уникальный идентификатор материала."
 
 msgctxt "material_spool_weight description"
 msgid "The weight of a full spool of material, in grams."
-msgstr ""
+msgstr "Вес полной катушки материала, в граммах."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
