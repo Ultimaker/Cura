@@ -146,4 +146,3 @@ def test_removeAlreadyRemovedConfiguration():
     model.removeAvailableConfiguration(configuration)
     assert model.availableConfigurationsChanged.emit.call_count == 0
     assert model.availableConfigurations == []
-

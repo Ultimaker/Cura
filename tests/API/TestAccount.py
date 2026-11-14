@@ -133,9 +133,3 @@ def test_sync_update_action():
         mockUpdateCallback.assert_called_once_with()  # No additional calls
         assert account.updatePackagesEnabled is False
         account.setSyncState(service1, SyncState.SUCCESS)
-
-
-
-
-
-
