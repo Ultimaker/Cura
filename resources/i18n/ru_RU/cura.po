@@ -15,7 +15,7 @@ msgstr ""
 
 msgctxt "@label"
 msgid "%"
-msgstr ""
+msgstr "метка"
 
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
@@ -151,7 +151,7 @@ msgstr "*) Вам потребуется перезапустить прилож
 
 msgctxt "@label"
 msgid "*User Adjusted"
-msgstr ""
+msgstr "Изменено пользователем"
 
 msgctxt "@text"
 msgid ""
@@ -214,7 +214,7 @@ msgstr "Собственный профиль <b>%1</b> переопределя
 
 msgctxt "@label"
 msgid "<b>Enable auto-support</b>"
-msgstr ""
+msgstr "<b>Активировать авто поддержку</b>"
 
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
@@ -226,11 +226,11 @@ msgstr "<html>При этой печати как минимум один экс
 
 msgctxt "@label"
 msgid "<html>The pattern of the infill material of the print:<ul><li>For quick prints of non-functional models, choose Line, Zig Zag or Lightning infill.</li><li>For functional parts not subjected to a lot of stress we recommend Grid, Triangle, or Tri-Hexagon.</li><li>For functional 3D prints requiring high strength in multiple directions use Honeycomb, Cubic, Cubic Subdivision, Quarter Cubic, Octet, Gyroid, and Octagon.</li></ul>⚠ Grid, Triangle, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.</html>"
-msgstr ""
+msgstr "<html>Шаблон заполнения печати:<ul><li>Для быстрой печати нефункциональных моделей выберите линейное, зигзагообразное или молниеносное заполнение.</li><li>Для функциональных деталей, не подверженных большому количеству напряжений, мы рекомендуем использовать сетку, треугольник или три-гексагон.</li><li>Для функциональной 3D-печати, требующей высокой прочности в нескольких направлениях, используйте соты, кубики, подразделение кубиков, четверть кубиков, октет, гриоид и октагон.</li></ul>⚠ Шаблоны заполнения сетка, треугольник и кубики содержат пересекающиеся линии, которые могут вызвать столкновение сопла с напечатанными линиями и вибрацию принтера. Используйте с осторожностью.</html>"
 
 msgctxt "@message"
 msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
-msgstr ""
+msgstr "<html>Невозможно выполнить нарезку, потому что существуют объекты, связанные хотя бы с одним отключенным экструдером:"
 
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
@@ -262,11 +262,11 @@ msgstr "<p><b>В ПО UltiMaker Cura обнаружена ошибка.</p></b>\
 
 msgctxt "@info:status"
 msgid "<p>One or more 3D models may not print optimally due to the model shape and missing support:</p><p>{model_names}</p><p>Enable auto-support or paint on support for better print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667417606331\">View support settings guide</a></p>"
-msgstr ""
+msgstr "<p>Один или несколько 3D-моделей могут быть напечатаны неоптимально из-за формы модели и отсутствия поддержки:</p><p>{model_names}</p><p>Включите автоматическую поддержку или рисование на поддержке для лучшего качества печати и надежности.</p><p><a href=\"https://support.ultimaker.com/s/article/1667417606331\">Просмотреть руководство по настройке поддержки</a></p>"
 
 msgctxt "@info:status"
 msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p><p>{model_names}</p><p>Find out how to ensure the best possible print quality and reliability.</p><p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
-msgstr ""
+msgstr "<p>Один или несколько 3D-моделей могут быть напечатаны неоптимально из-за размера модели и конфигурации материала:</p><p>{model_names}</p><p>Узнайте, как обеспечить наилучшее качество печати и надежность.</p><p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">Просмотреть руководство по качеству печати</a></p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
@@ -522,7 +522,7 @@ msgstr "Всегда передавать измененные настройк�
 
 msgctxt "@option:check"
 msgid "Always use the same default locations for opening and saving files"
-msgstr ""
+msgstr "Всегда использовать одни и те же стандартные расположения для открытия и сохранения файлов"
 
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
@@ -530,7 +530,7 @@ msgstr "Модель может показаться очень маленько
 
 msgctxt "@label"
 msgid "Angle Threshold"
-msgstr ""
+msgstr "Порог угла"
 
 msgctxt "annealing intent label"
 msgid "Annealing"
@@ -614,7 +614,7 @@ msgstr "Задать вопрос"
 
 msgctxt "@menuitem"
 msgid "Auto"
-msgstr ""
+msgstr "Автоматически"
 
 msgctxt "@checkbox:description"
 msgid "Auto Backup"
@@ -622,11 +622,11 @@ msgstr "Автоматическое резервное копирование"
 
 msgctxt "@label"
 msgid "Auto-Support"
-msgstr ""
+msgstr "Авто поддержка"
 
 msgctxt "@label"
 msgid "Auto-Support Overhang"
-msgstr ""
+msgstr "Авто поддержка свесов"
 
 msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
@@ -642,7 +642,7 @@ msgstr "Автоматически опускать модели на стол"
 
 msgctxt "@label"
 msgid "Automatically enable the required extruder(s)"
-msgstr ""
+msgstr "Автоматически включать необходимые экструдер(ы)"
 
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
@@ -714,7 +714,7 @@ msgstr "Брэнд"
 
 msgctxt "@action:button"
 msgid "Browse"
-msgstr ""
+msgstr "Обзор"
 
 msgctxt "@label"
 msgid "Brush Shape"
@@ -842,7 +842,7 @@ msgstr "Изменить экструдер %1 с %2 на %3."
 
 msgctxt "@label:category menu label"
 msgid "Changed settings"
-msgstr ""
+msgstr "Измененные настройки"
 
 msgctxt "@info:title"
 msgid "Changes detected from your UltiMaker account"
@@ -1011,7 +1011,7 @@ msgstr "Видимость параметров..."
 
 msgctxt "@action:menu"
 msgid "Configure visible settings..."
-msgstr ""
+msgstr "Настроить параметры видимости..."
 
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
@@ -1355,11 +1355,11 @@ msgstr "Стандартное поведение при открытии фай
 
 msgctxt "@window:text"
 msgid "Default file load location:"
-msgstr ""
+msgstr "Расположение файлов по умолчанию:"
 
 msgctxt "@window:text"
 msgid "Default file save location:"
-msgstr ""
+msgstr "Расположение сохраняемых файлов по умолчанию:"
 
 msgctxt "@action:button"
 msgid "Defaults"
@@ -1539,7 +1539,7 @@ msgstr "Включить"
 
 msgctxt "@button"
 msgid "Enable Auto-Support"
-msgstr ""
+msgstr "Включить автоматическую поддержку"
 
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
@@ -1555,7 +1555,7 @@ msgstr "Включите печать полей и плота. Это доба�
 
 msgctxt "@button"
 msgid "Enable required extruder(s)"
-msgstr ""
+msgstr "Включить необходимые экструдер(ы)"
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1707,7 +1707,7 @@ msgstr "Экструдер (-ы) отключен (-ы)"
 
 msgctxt "@action:button"
 msgid "Face"
-msgstr ""
+msgstr "Грань"
 
 msgctxt "@label:status"
 msgid "Failed"
@@ -1795,7 +1795,7 @@ msgstr "Файл уже существует"
 
 msgctxt "@info:title"
 msgid "File Not Found"
-msgstr ""
+msgstr "Файл не найден"
 
 msgctxt "@info:title"
 msgid "File Saved"
@@ -2178,15 +2178,15 @@ msgstr "Внутренние стенки"
 
 msgctxt "@label"
 msgid "Inner wall"
-msgstr ""
+msgstr "Внутренняя стенка"
 
 msgctxt "@label"
 msgid "Inner wall - Bridging"
-msgstr ""
+msgstr "Внутренняя стенка - Мостик"
 
 msgctxt "@label"
 msgid "Inner wall - Overhanging"
-msgstr ""
+msgstr "Внутренняя стенка - Свес"
 
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
@@ -2842,7 +2842,7 @@ msgstr "Поиск с текущим фильтром не дал результ
 
 msgctxt "@info:status"
 msgid "No settings have been changed from the active profile defaults."
-msgstr ""
+msgstr "Ни одна настройка не была изменена по сравнению с настройками профиля по умолчанию."
 
 msgctxt "@label"
 msgid "No specific value has been set"
@@ -2970,7 +2970,7 @@ msgstr "Open Compressed Triangle Mesh"
 
 msgctxt "@action:inmenu menubar:help"
 msgid "Open Cura Log File"
-msgstr ""
+msgstr "Открыть файл журнала Cura"
 
 msgctxt "@title:window"
 msgid "Open File(s)"
@@ -3061,15 +3061,15 @@ msgstr "Внешняя стенка"
 
 msgctxt "@label"
 msgid "Outer wall"
-msgstr ""
+msgstr "Внешняя стенка"
 
 msgctxt "@label"
 msgid "Outer wall - Bridging"
-msgstr ""
+msgstr "Внешняя стенка - Мостик"
 
 msgctxt "@label"
 msgid "Outer wall - Overhanging"
-msgstr ""
+msgstr "Внешняя стенка - Свес"
 
 msgctxt "@label"
 msgid "Overlaps with this model are not supported."
@@ -3093,7 +3093,7 @@ msgstr[3] ""
 
 msgctxt "@label:category menu label"
 msgid "Overview"
-msgstr ""
+msgstr "Обзор"
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
@@ -3129,7 +3129,7 @@ msgstr "Вид покраски"
 
 msgctxt "@label"
 msgid "Painting is not available on this device. Your graphics card or drivers do not fully support it. Updating your graphics drivers may enable this feature."
-msgstr ""
+msgstr "Покраска недоступна на этом устройстве. Ваша видеокарта или драйверы не поддерживают ее полностью. Обновление драйверов видеокарты может включить эту функцию."
 
 msgctxt "@info:status"
 msgid "Parsing G-code"
@@ -3351,7 +3351,7 @@ msgstr "Черновая башня"
 
 msgctxt "@label"
 msgid "Prime tower"
-msgstr ""
+msgstr "Черновая башня"
 
 msgctxt "@label"
 msgid "Priming"
@@ -3387,7 +3387,7 @@ msgstr[3] ""
 
 msgctxt "@label"
 msgid "Print Time Estimation Factor"
-msgstr ""
+msgstr "Фактор оценки времени печати"
 
 msgctxt "@label"
 msgid "Print as support"
@@ -3759,7 +3759,7 @@ msgstr "Рекомендуемые настройки (для <b>%1</b>) был�
 
 msgctxt "@action:button"
 msgid "Redo Stroke (Ctrl+Shift+L)"
-msgstr ""
+msgstr "Повторить штрих (Ctrl+Shift+L)"
 
 msgctxt "@tooltip"
 msgid "Refine seam placement by defining preferred/avoidance areas"
@@ -3815,7 +3815,7 @@ msgstr "Удалить"
 
 msgctxt "@action:menu"
 msgid "Remove from visible settings"
-msgstr ""
+msgstr "Удалить из видимых параметров"
 
 msgctxt "@action:button"
 msgid "Remove printers"
@@ -4031,11 +4031,11 @@ msgstr "Выбрать все модели"
 
 msgctxt "@title:window"
 msgid "Select Default Load Folder"
-msgstr ""
+msgstr "Выбрать папку загрузки по умолчанию"
 
 msgctxt "@title:window"
 msgid "Select Default Save Folder"
-msgstr ""
+msgstr "Выбрать папку сохранения по умолчанию"
 
 msgctxt "@title:window"
 msgid "Select Printer"
@@ -4047,7 +4047,7 @@ msgstr "Выберите параметр для изменения этой м�
 
 msgctxt "@label"
 msgid "Select a single ungrouped model to start painting"
-msgstr ""
+msgstr "Выберите одну негруппированную модель для начала рисования"
 
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
@@ -4067,7 +4067,7 @@ msgstr "Выбрать модели при загрузке"
 
 msgctxt "@tooltip"
 msgid "Select neighboring faces whose angle differs by no more than this value."
-msgstr ""
+msgstr "Выбрать соседние грани, угол которых отличается не более чем на это значение."
 
 msgctxt "@action:button"
 msgid "Select settings"
@@ -4075,7 +4075,7 @@ msgstr "Выберите параметры"
 
 msgctxt "@tooltip"
 msgid "Select the size of the brush for painting."
-msgstr ""
+msgstr "Выберите размер кисти для рисования."
 
 msgctxt "@action"
 msgid "Select upgrades"
@@ -4267,7 +4267,7 @@ msgstr "Показать свое"
 
 msgctxt "@action:inmenu"
 msgid "Show File Location"
-msgstr ""
+msgstr "Показать местоположение файла"
 
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
@@ -4359,7 +4359,7 @@ msgstr "Юбка"
 
 msgctxt "@label"
 msgid "Skirt / Brim"
-msgstr ""
+msgstr "Юбка / Кромка"
 
 msgctxt "@button"
 msgid "Slice"
@@ -4445,7 +4445,7 @@ msgstr "Что-то пошло не так..."
 
 msgctxt "@option:check"
 msgid "Sort by installed"
-msgstr ""
+msgstr "Сортировать по установленным"
 
 msgctxt "@label:listbox"
 msgid "Speed"
@@ -4577,11 +4577,11 @@ msgstr "Опорная структура"
 
 msgctxt "@label"
 msgid "Support for the model is currently off, turn auto-support on."
-msgstr ""
+msgstr "Поддержка для модели в данный момент отключена, включите автоматическую поддержку."
 
 msgctxt "@label"
 msgid "Support interface"
-msgstr ""
+msgstr "Связующий слой поддержек"
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4697,11 +4697,11 @@ msgstr "Текущая температура данного сопла."
 
 msgctxt "@info:tooltip"
 msgid "The default folder to open when loading files."
-msgstr ""
+msgstr "Папка по умолчанию для открытия файлов при загрузке."
 
 msgctxt "@info:tooltip"
 msgid "The default folder to open when saving files."
-msgstr ""
+msgstr "Папка по умолчанию для открытия файлов при сохранении."
 
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
@@ -4837,11 +4837,11 @@ msgstr "В ответе от Digital Factory отсутствует важная
 
 msgctxt "@info:message"
 msgid "The send-print-job process was aborted. Please try again."
-msgstr ""
+msgstr "Процесс отправки задания на печать был прерван. Пожалуйста, попробуйте еще раз."
 
 msgctxt "@info:status"
 msgid "The source file could not be found. It may have been moved or deleted."
-msgstr ""
+msgstr "Исходный файл не найден. Он мог быть перемещен или удален."
 
 msgctxt "@tooltip"
 msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
@@ -5059,7 +5059,7 @@ msgstr "Дно / крышка"
 
 msgctxt "@label"
 msgid "Top / Bottom - Bridging"
-msgstr ""
+msgstr "Верх / низ - мосты"
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
@@ -5261,7 +5261,7 @@ msgstr "Недоступный принтер"
 
 msgctxt "@action:button"
 msgid "Undo Stroke (Ctrl+L)"
-msgstr ""
+msgstr "Отменить штрих (Ctrl+L)"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
@@ -5341,19 +5341,19 @@ msgstr "Обновить прошивку"
 
 msgctxt "@button"
 msgid "Update all"
-msgstr ""
+msgstr "Обновить все"
 
 msgctxt "@label"
 msgid "Update all the Materials: %1 materials have a new version available."
-msgstr ""
+msgstr "Обновить все материалы: %1 материалов имеют новую версию."
 
 msgctxt "@label"
 msgid "Update all the Plugins: %1 plugins have a new version available."
-msgstr ""
+msgstr "Обновить все плагины: %1 плагинов имеют новую версию."
 
 msgctxt "@label"
 msgid "Update all the packages: %1 packages have a new version available."
-msgstr ""
+msgstr "Обновить все пакеты: %1 пакетов имеют новую версию."
 
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
@@ -5477,11 +5477,11 @@ msgstr "Обновляет конфигурации Cura 4.9 до Cura 4.10."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.11 to Cura 5.12"
-msgstr ""
+msgstr "Обновляет конфигурации Cura 5.11 до Cura 5.12"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.12 to Cura 5.13"
-msgstr ""
+msgstr "Обновляет конфигурации Cura 5.12 до Cura 5.13"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
@@ -5629,11 +5629,11 @@ msgstr "Обновление версии 4.9 до 4.10"
 
 msgctxt "name"
 msgid "Version Upgrade 5.11 to 5.12"
-msgstr ""
+msgstr "Обновление версии 5.11 до 5.12"
 
 msgctxt "name"
 msgid "Version Upgrade 5.12 to 5.13"
-msgstr ""
+msgstr "Обновление версии 5.12 до 5.13"
 
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
@@ -5765,7 +5765,7 @@ msgstr "При проверке обновлений проверяйте тол
 
 msgctxt "@info:tooltip"
 msgid "When enabled, file open and save dialogs will always start at the specified locations below. When disabled, dialogs remember the last folder you navigated to."
-msgstr ""
+msgstr "Когда включено, диалоги открытия и сохранения файлов всегда будут открываться в указанных ниже местах. Когда отключено, диалоги помнят последнюю папку, в которую вы переходили."
 
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
