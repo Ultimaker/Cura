@@ -1,0 +1,54 @@
+{
+    "version": 2,
+    "name": "Comgrow T300",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "JoGrob",
+        "manufacturer": "Comgrow",
+        "file_formats": "text/x-gcode",
+        "has_variants": false,
+        "has_machine_quality": false,
+        "machine_extruder_trains": { "0": "comgrow_t300_extruder_0" }
+    },
+	
+    "overrides": {
+        "machine_name": { "default_value": "Comgrow T300" },
+        "machine_width": { "default_value": 300 },
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 350 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_start_gcode": { "default_value": "START_PRINT\n; G28 Z ;Homeing Z\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\n\nG1 X095 Y-5.5 Z0.28 F5000.0 ;Move to start position\n\nG1 X205 Y-5.5 Z0.28 F1500.0 E10 ;Draw the first line\nG1 X205 Y-4.5 Z0.28 F5000.0 ;Move to side a little\nG1 X095 Y-4.5 Z0.28 F1500.0 E20 ;Draw the second line\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\n" },
+
+        "machine_end_gcode": { "default_value": "END_PRINT\n" },
+
+        "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_initial_print_temperature": { "value": "material_print_temperature" },
+
+        "speed_print": { "value": 300.0 },
+        "speed_wall": { "value": "speed_print" },
+        "speed_wall_0": { "value": "speed_wall * 2 / 3" },
+        "speed_wall_x": { "value": "speed_wall" },
+        "speed_topbottom": { "value": "speed_print * 3 / 5" },
+        "speed_travel": { "value": "speed_print * 5 / 3" },
+        "speed_layer_0": { "value": "speed_print * 3 / 20" },
+        "speed_travel_layer_0": { "value": "speed_layer_0 * 10 / 3" },
+
+	"acceleration_enabled": { "value": true },
+        "acceleration_print": { "value": 8000 },
+        "acceleration_wall": { "value": "acceleration_print * 3 / 4" },
+        "acceleration_wall_0": { "value": "acceleration_wall * 2 / 3" },
+        "acceleration_topbottom": { "value": "acceleration_print / 2" },
+        "acceleration_travel": { "value": "acceleration_print" },
+        "acceleration_layer_0": { "value": "acceleration_print / 16" },
+
+	"jerk_print": { "value": 5 },
+	"jerk_travel": { "value": 10 },
+
+        "retraction_hop": { "value": 0.2 },
+        "retraction_hop_enabled": { "value": true },
+        "retraction_amount": { "value":0.5 },
+        "retraction_speed": { "value": 30 }
+    }
+}
+
