@@ -59,8 +59,8 @@ class BaseLayersFirst(Script):
 
         # Define the stack and extruder.
         self.global_stack = Application.getInstance().getGlobalContainerStack()
-        self.extruder = self.global_stack.extruderList
-
+        #self.extruder = self.global_stack.extruderList
+        self.extruder = [extruder for extruder in self.global_stack.extruderList if extruder.isEnabled]
         # Get the Print Sequence from Cura
         if self.global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
             one_at_a_time = True
@@ -113,11 +113,10 @@ class BaseLayersFirst(Script):
             data = self._AdjustELocations(data)
 
         # If adaptive layers are enabled the Layer:1 Height must be checked implicitly to get it right
-        layer_1_height = self._RealLayer1Height(data)
-        self.init_layer_height_line = self._FormatString(f"G1 F{self.speed_z_hop} Z{layer_1_height}; BLF Move Z")
+        data = self._AdjustLayer1Height(data)
 
         # Adjust the height line in raft layers as the previous value is now invalid.
-        data = self._FixHeightOfRaft(data, layer_1_height)
+        data = self._FixHeightOfRaft(data)
 
         # Add the "extrude from" location to each portion of the new layer:0 to insure continuity
         data = self._ExtrudeFromLocation(data)
@@ -200,18 +199,16 @@ class BaseLayersFirst(Script):
     def _AdjustELocations(self, alt_data):
         # This accounts for the shuffling of the Initial Layer E values when in Absolute Extrusion mode.
         # Pad the list so the e_list indices match the layers in data
-        e_list = ["G92 E0", "G92 E0", "G92 E0"] # pad with 3 so the initial layer gets handled.
+        e_list = ["G92 E0", "G92 E0"] # pad with 3 so the initial layer gets handled.
         cur_e_string = "G92 E0"
         for index, layer in enumerate(alt_data):
-            if index < 2:
-                continue
-            lines = layer.split("\n")
-            for line in lines:
-                if line.startswith("G1 ") and " E" in line:
-                    if self.getValue(line, "E") is not None:
-                        cur_e_value = self.getValue(line, "E")
+            if index >= 2:
+                e_list.append(cur_e_string)
+            for line in layer.split("\n"):
+                if line.startswith(("G0 ", "G1 ", "G92 ")) and " E" in line:
+                    cur_e_value = self.getValue(line, "E")
+                    if cur_e_value is not None:
                         cur_e_string = self._FormatString(f"G92 E{cur_e_value}; BLF Sync E")
-            e_list.append(cur_e_string)
         # Make the insertions
         for index, layer in enumerate(alt_data):
             if index < 2:
@@ -224,24 +221,20 @@ class BaseLayersFirst(Script):
                 alt_data[index] = "\n".join(lines)
         return alt_data
 
-    def _RealLayer1Height(self, alt_data):
-        # This gets the actual Layer:1 height whether or not Adaptive Layers is enabled
-        layer_1_height = self.global_stack.getProperty("layer_height", "value") + self.global_stack.getProperty("layer_height_0", "value")
+    def _AdjustLayer1Height(self, alt_data):
+        # This gets the actual Layer:1 height from the move at the end of Layer:0 and copies it to the start of layer:1 to sync the Z.
         for index, layer in enumerate(alt_data):
-            if not self.z_hops_enabled:
-                if ";LAYER:0" in layer:
-                    lines = layer.split("\n")
-                    for line in lines:
-                        if " Z" in line:
-                            layer_1_height = self.getValue(line, "Z")
-            else:
-                if ";LAYER:1\n" in layer:
-                        lines = layer.split("\n")
-                        for line in lines:
-                            if " Z" in line:
-                                layer_1_height = self.getValue(line, "Z")
-                                break
-        return layer_1_height
+            if ";LAYER:1\n" in alt_data[index]:
+                prev_lines = alt_data[index-1].split("\n")
+                prev_lines.reverse()
+                for line in prev_lines:
+                    if " Z" in line:
+                        cur_line_list = alt_data[index].split("\n")
+                        cur_line_list.insert(1, self._FormatString(f"{line}; BLF Sync Z"))
+                        alt_data[index] = "\n".join(cur_line_list)
+                        Logger.info(f"\n\n line: {cur_line_list[0:3]}\n")
+                        break
+        return alt_data
 
     def _ExtrudeFromLocation(self, alt_data):
         # The 'extrude from' line of the first-extrusion-of-a-layer is before the layer change and must be copied to the beginning of the next layer so it still relates to the 'extrude to' line after the layers are shuffled.
@@ -249,7 +242,7 @@ class BaseLayersFirst(Script):
         prev_y = 0.0
         new_travel_line = ""
         for index, layer in enumerate(alt_data):
-            if ";LAYER:0" in layer:
+            if ";LAYER:0" in layer and index + 1 < len(alt_data) and ";LAYER:1\n" in alt_data[index + 1]:
                 lines = layer.split("\n")
                 lines.reverse()
                 for line in lines:
@@ -271,7 +264,7 @@ class BaseLayersFirst(Script):
                 if line.startswith("G0 ") and " X" in line and " Y" in line and " Z" in line:
                     xy_move = line.split(" Z")[0]
                     z_move = line.split(" Z")[1].split()[0]
-                    lines[ddex] = self._FormatString(f"{xy_move}; BLF 'XY' move\nG0 F{self.speed_z_hop} Z{z_move}; BLF 'Z' move")
+                    lines[ddex] = self._FormatString(f"{xy_move}; BLF XY move\nG0 F{self.speed_z_hop} Z{z_move}; BLF Z move")
                     break
             alt_data[index] = "\n".join(lines)
         return alt_data
@@ -399,7 +392,7 @@ class BaseLayersFirst(Script):
         for num, layer in enumerate(alt_data):
             if ";LAYER:1\n" in layer:
                 lines = alt_data[num-1].split("\n")
-                lines.insert(len(lines)-2, f"{self.new_travel_list[count]}\n{self.init_layer_height_line}")
+                lines.insert(len(lines)-2, f"{self.new_travel_list[count]}")
                 count += 1
                 alt_data[num-1] = "\n".join(lines)
         return alt_data
@@ -442,7 +435,7 @@ class BaseLayersFirst(Script):
         lay_0 = "\n".join(lines)
         return lay_0
 
-    def _FixHeightOfRaft(self, alt_data, layer_1_height):
+    def _FixHeightOfRaft(self, alt_data):
         # When Raft is enabled the top can vary and consequently each LAYER:1 Z height must be adjusted prior to shuffling layers
         for index, layer in enumerate(alt_data):
             if index < 2:
