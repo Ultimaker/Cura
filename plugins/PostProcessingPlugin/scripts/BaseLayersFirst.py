@@ -232,6 +232,7 @@ class BaseLayersFirst(Script):
                         cur_line_list = alt_data[index].split("\n")
                         cur_line_list.insert(1, self._FormatString(f"{line}; BLF Sync Z"))
                         alt_data[index] = "\n".join(cur_line_list)
+                        Logger.info(f"\n\n line: {cur_line_list[0:3]}\n")
                         break
         return alt_data
 
@@ -361,18 +362,15 @@ class BaseLayersFirst(Script):
     def _FixInitLayerTimes(self, alt_data, layer_0_str, raft_enabled):
         # Go through the new Initial Layer and fix all the other Time Elapsed lines
         start_now = False
-        add_z_move = False
         layer_0_list = layer_0_str.split("\n")
         for ldex, line in enumerate(layer_0_list):
             if (";LAYER:0" in line or ";LAYER:-" in line) and start_now:
                 if raft_enabled:
                     layer_0_list.pop(ldex)
-            if ";TYPE:" in line and add_z_move:
-                layer_0_list[ldex-1] += "\n" + self._FormatString(f"G1 F{self.speed_z_hop} Z{self.layer_height_0}; BLF Adjust Z to initial layer height")
-                add_z_move = False
+                else:
+                    layer_0_list[ldex] = self._FormatString(f"G1 F{self.speed_z_hop} Z{self.layer_height_0}; BLF Adjust Z to initial layer height")
             if ";LAYER:0" in line or ";LAYER:-" in line:
                 start_now = True
-                add_z_move = True
         running_time = self.layer_0_total_time
         for index, layer in enumerate(alt_data):
             if index < 3:
