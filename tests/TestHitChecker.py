@@ -139,3 +139,37 @@ def test_canPrintNodesInProvidedOrder():
         assert not hit_checker.canPrintNodesInProvidedOrder([node2, node3, node1])
         assert not hit_checker.canPrintNodesInProvidedOrder([node3, node1, node2])
         assert not hit_checker.canPrintNodesInProvidedOrder([node3, node2, node1])
+
+
+def test_getNodesOrderedAutomatically_lastNode():
+    node1 = CuraSceneNode(no_setting_override=True)
+    node2 = CuraSceneNode(no_setting_override=True)
+    node3 = CuraSceneNode(no_setting_override=True)
+    # nodes don't block each other, so any order is possible
+    hit_map = {
+        node1: {node1: 0, node2: 0, node3: 0},
+        node2: {node1: 0, node2: 0, node3: 0},
+        node3: {node1: 0, node2: 0, node3: 0},
+    }
+
+    with patch.object(HitChecker, "_buildHitMap", return_value=hit_map):
+        hit_checker = HitChecker([node1, node2, node3])
+        for last_node in [node1, node2, node3]:
+            nodes = OneAtATimeIterator._getNodesOrderedAutomatically(hit_checker, [node1, node2, node3], last_node)
+            assert len(nodes) == 3
+            assert nodes[-1] is last_node
+
+
+def test_getNodesOrderedAutomatically_lastNodeImpossible():
+    node1 = CuraSceneNode(no_setting_override=True)
+    node2 = CuraSceneNode(no_setting_override=True)
+    # node2 can only be printed before node1
+    hit_map = {
+        node1: {node1: 0, node2: 1},
+        node2: {node1: 0, node2: 0},
+    }
+
+    with patch.object(HitChecker, "_buildHitMap", return_value=hit_map):
+        hit_checker = HitChecker([node1, node2])
+        assert OneAtATimeIterator._getNodesOrderedAutomatically(hit_checker, [node1, node2], node1) == [node2, node1]
+        assert OneAtATimeIterator._getNodesOrderedAutomatically(hit_checker, [node1, node2], node2) == []

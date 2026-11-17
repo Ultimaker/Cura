@@ -1,8 +1,9 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import List
+from typing import List, Optional
 
+from UM.Application import Application
 from UM.Scene.Iterator import Iterator
 from UM.Scene.SceneNode import SceneNode
 from functools import cmp_to_key
@@ -49,7 +50,9 @@ class OneAtATimeIterator(Iterator.Iterator):
         if PrintOrderManager.isUserDefinedPrintOrderEnabled():
             self._node_stack = self._getNodesOrderedByUser(hit_checker, node_list)
         else:
-            self._node_stack = self._getNodesOrderedAutomatically(hit_checker, node_list)
+            build_volume = Application.getInstance().getBuildVolume()
+            last_node = next((node for node in node_list if build_volume.isGantryHeightExempt(node)), None)
+            self._node_stack = self._getNodesOrderedAutomatically(hit_checker, node_list, last_node)
 
             # update print orders so that user can try to arrange the nodes automatically first
             # and if result is not satisfactory he/she can switch to manual mode and change it
@@ -64,7 +67,8 @@ class OneAtATimeIterator(Iterator.Iterator):
         return []  # No solution
 
     @staticmethod
-    def _getNodesOrderedAutomatically(hit_checker: HitChecker, node_list: List[CuraSceneNode]) -> List[CuraSceneNode]:
+    def _getNodesOrderedAutomatically(hit_checker: HitChecker, node_list: List[CuraSceneNode],
+                                      last_node: Optional[CuraSceneNode] = None) -> List[CuraSceneNode]:
         # Check if we have two files that block each other. If this is the case, there is no solution!
         if hit_checker.anyTwoNodesBlockEachOther(node_list):
             return []  # No solution
@@ -77,6 +81,8 @@ class OneAtATimeIterator(Iterator.Iterator):
         while len(todo_node_list) > 0:
             current = todo_node_list.pop()
             for node in current.todo:
+                if node is last_node and len(current.todo) > 1:
+                    continue  # The last node can only be placed after all the other nodes.
                 # Check if the object can be placed with what we have and still allows for a solution in the future
                 if hit_checker.canPrintAfter(node, current.order) and hit_checker.canPrintBefore(node, current.todo):
                     # We found a possible result. Create new todo & order list.

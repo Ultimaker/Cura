@@ -27,6 +27,7 @@ from UM.Signal import Signal
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 
+from cura.PrintOrderManager import PrintOrderManager
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -99,7 +100,7 @@ class BuildVolume(SceneNode):
         self._build_volume_message = Message(catalog.i18nc("@info:status",
                 "The build volume height has been reduced due to the value of the"
                 " \"Print Sequence\" setting to prevent the gantry from colliding"
-                " with printed models."),
+                " with printed models. The last model in the print sequence is not affected."),
             title = catalog.i18nc("@info:title", "Build Volume"),
             message_type = Message.MessageType.WARNING)
 
@@ -311,7 +312,10 @@ class BuildVolume(SceneNode):
                 if not isinstance(node, CuraSceneNode):
                     continue
 
-                if node.collidesWithBbox(build_volume_bounding_box):
+                bounds = build_volume_bounding_box
+                if self.isGantryHeightExempt(node):
+                    bounds = bounds.set(top = self._getUsableHeight())
+                if node.collidesWithBbox(bounds):
                     node.setOutsideBuildArea(True)
                     continue
 
@@ -362,6 +366,9 @@ class BuildVolume(SceneNode):
         else:
             build_volume_bounding_box = bounds
 
+        if self.isGantryHeightExempt(node):
+            build_volume_bounding_box = build_volume_bounding_box.set(top = self._getUsableHeight())
+
         if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
             if node.collidesWithBbox(build_volume_bounding_box):
                 node.setOutsideBuildArea(True)
@@ -383,6 +390,40 @@ class BuildVolume(SceneNode):
                 return
 
             node.setOutsideBuildArea(False)
+
+    def isGantryHeightExempt(self, node: SceneNode) -> bool:
+        """In One at a Time mode the gantry height limit shouldn't apply to the last object being printed.
+
+        :param node: The node to check. Children of a group are exempt if the group is.
+        :return: Whether the node should be allowed to exceed the reduced build volume height.
+        That's the last node in the user-defined print order, otherwise the tallest one.
+        """
+
+        if not self._global_container_stack or not self._volume_aabb or \
+                self._global_container_stack.getProperty("print_sequence", "value") != "one_at_a_time":
+            return False
+        root = self._application.getController().getScene().getRoot()
+        nodes = [n for n in root.getChildren() if isinstance(n, CuraSceneNode) and n.getBoundingBox() and
+                 (n.callDecoration("isSliceable") or n.callDecoration("isGroup")) and
+                 not n.callDecoration("isNonPrintingMesh")]
+        if not nodes:
+            return False
+        if PrintOrderManager.isUserDefinedPrintOrderEnabled():
+            last_node = max(nodes, key = lambda n: n.printOrder)
+        else:
+            last_node = max(nodes, key = lambda n: n.getBoundingBox().top)
+        return last_node.getBoundingBox().top > self._volume_aabb.top and \
+            (node is last_node or node in last_node.getAllChildren())
+
+    def _getUsableHeight(self, height: Optional[float] = None) -> float:
+        """The height that a model can use: the build volume height minus the raft and extra z clearance.
+
+        :param height: The build volume height. The full machine height if not given.
+        """
+
+        if height is None:
+            height = self._global_container_stack.getProperty("machine_height", "value") * self._scale_vector.z
+        return height - self._raft_thickness - self._extra_z_clearance
 
     def _buildGridMesh(self, min_w: float, max_w: float, min_h: float, max_h: float, min_d: float, max_d:float, z_fight_distance: float) -> MeshData:
         mb = MeshBuilder()
@@ -591,7 +632,7 @@ class BuildVolume(SceneNode):
 
         self._volume_aabb = AxisAlignedBox(
             minimum = Vector(min_w, min_h - 1.0, min_d),
-            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d)
+            maximum = Vector(max_w, self._getUsableHeight(max_h), max_d)
         )
 
         bed_adhesion_size = self.getEdgeDisallowedSize()
@@ -601,7 +642,7 @@ class BuildVolume(SceneNode):
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
             minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1)
+            maximum = Vector(max_w - bed_adhesion_size - 1, self._getUsableHeight(max_h), max_d - self._disallowed_area_size + bed_adhesion_size - 1)
         )
 
         self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds  # type: ignore
