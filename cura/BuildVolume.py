@@ -100,7 +100,7 @@ class BuildVolume(SceneNode):
         self._build_volume_message = Message(catalog.i18nc("@info:status",
                 "The build volume height has been reduced due to the value of the"
                 " \"Print Sequence\" setting to prevent the gantry from colliding"
-                " with printed models."),
+                " with printed models. The last model in the print sequence is not affected."),
             title = catalog.i18nc("@info:title", "Build Volume"),
             message_type = Message.MessageType.WARNING)
 
