@@ -4,9 +4,11 @@
 from unittest.mock import MagicMock, patch
 import pytest
 
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
 from cura.BuildVolume import BuildVolume, PRIME_CLEARANCE
+from cura.Scene.CuraSceneNode import CuraSceneNode
 import numpy
 
 @pytest.fixture
@@ -424,3 +426,66 @@ class TestGetEdgeDisallowedSize:
         with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
             with patch.dict(self.setting_property_dict, {"print_sequence": {"value": "one_at_a_time"}}):
                 assert build_volume.getEdgeDisallowedSize() == 0.1
+
+
+class TestIsGantryHeightExempt:
+    setting_property_dict = {"print_sequence": {"value": "one_at_a_time"}}
+
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestIsGantryHeightExempt.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
+    @pytest.fixture()
+    def build_volume(self, build_volume):
+        build_volume._global_container_stack = MagicMock(name = "mocked_global_stack")
+        build_volume._global_container_stack.getProperty = MagicMock(side_effect = self.getPropertySideEffect)
+        # Build volume height that has been reduced to the gantry height.
+        build_volume._volume_aabb = AxisAlignedBox(minimum = Vector(-100, -1, -100), maximum = Vector(100, 20, 100))
+        return build_volume
+
+    @staticmethod
+    def createNode(height, print_order = 0, children = ()):
+        node = MagicMock(spec = CuraSceneNode)
+        node.getBoundingBox.return_value = AxisAlignedBox(minimum = Vector(0, 0, 0), maximum = Vector(10, height, 10))
+        node.callDecoration.side_effect = lambda name: name == "isSliceable"
+        node.printOrder = print_order
+        node.getAllChildren.return_value = list(children)
+        return node
+
+    @staticmethod
+    def setSceneNodes(build_volume, nodes):
+        build_volume._application.getController().getScene().getRoot().getChildren.return_value = nodes
+
+    def test_notOneAtATime(self, build_volume: BuildVolume):
+        tall = self.createNode(100)
+        self.setSceneNodes(build_volume, [self.createNode(10), tall])
+        with patch.dict(self.setting_property_dict, {"print_sequence": {"value": "all_at_once"}}):
+            assert not build_volume.isGantryHeightExempt(tall)
+
+    def test_noNodeExceedsGantryHeight(self, build_volume: BuildVolume):
+        nodes = [self.createNode(10), self.createNode(15)]
+        self.setSceneNodes(build_volume, nodes)
+        with patch("cura.PrintOrderManager.PrintOrderManager.isUserDefinedPrintOrderEnabled", return_value = False):
+            assert not any(build_volume.isGantryHeightExempt(node) for node in nodes)
+
+    def test_tallestNodeIsExempt(self, build_volume: BuildVolume):
+        child = MagicMock(spec = CuraSceneNode)
+        small, tall, tallest = self.createNode(10), self.createNode(100), self.createNode(120, children = [child])
+        self.setSceneNodes(build_volume, [small, tall, tallest])
+        with patch("cura.PrintOrderManager.PrintOrderManager.isUserDefinedPrintOrderEnabled", return_value = False):
+            assert not build_volume.isGantryHeightExempt(small)
+            assert not build_volume.isGantryHeightExempt(tall)
+            assert build_volume.isGantryHeightExempt(tallest)
+            assert build_volume.isGantryHeightExempt(child)
+
+    def test_lastNodeInUserDefinedOrderIsExempt(self, build_volume: BuildVolume):
+        small, tall = self.createNode(10, print_order = 1), self.createNode(100, print_order = 2)
+        self.setSceneNodes(build_volume, [tall, small])
+        with patch("cura.PrintOrderManager.PrintOrderManager.isUserDefinedPrintOrderEnabled", return_value = True):
+            assert build_volume.isGantryHeightExempt(tall)
+            assert not build_volume.isGantryHeightExempt(small)
+
+            tall.printOrder, small.printOrder = 1, 2  # The tall node isn't the last one anymore.
+            assert not build_volume.isGantryHeightExempt(tall)
+            assert not build_volume.isGantryHeightExempt(small)
