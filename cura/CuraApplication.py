@@ -1833,6 +1833,8 @@ class CuraApplication(QtApplication):
         # update object list
         scene = self.getController().getScene()
         scene.sceneChanged.emit(scene.getRoot())
+        # the last node may exceed the gantry height, so re-check which nodes fit
+        self.getBuildVolume().updateNodeBoundaryCheck()
 
         # reset if already was sliced
         Application.getInstance().getBackend().needsSlicing()
