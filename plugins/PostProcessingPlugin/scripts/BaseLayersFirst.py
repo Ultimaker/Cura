@@ -3,6 +3,7 @@
                                             a post processor for UltiMaker Cura
                                         by GregValiant (Greg Foresi) November 2026
                                                (original concept by 'EdoFro')
+                                     released under the terms of the LGPLv3 or higher.
 -----------------------------------------------------------------------------------------------------------------------------------
     Authored By: GregValiant (Greg Foresi) September of 2026
     ~ This script will take the ';LAYER:0's' (and any raft layers) of each model and group them into a single layer.  That group will be the new ";LAYER:0" and will print completely before each separate print in the normal "One-at-a-Time" mode.
@@ -13,7 +14,7 @@
     * This script requires 'Print Sequence' == 'One at a Time'
     * You are advised to run this script before 'DisplayInfoOnLCD'.
     * If both 'Raft' and 'Pause at Height' are enabled - the script exits as the layer numbers just don't work out.
-    * There might be conflicts with other post processors.  I did what I could to debug, but there are a lot of options within Cura and you will need to experiment to make sure things work as you expect.
+    * There might be conflicts with other post processors.  I did what I could to debug, but there are a lot of options within Cura and you will need to look closely to make sure things work as you expect.
 """
 
 from UM.Application import Application
@@ -59,8 +60,8 @@ class BaseLayersFirst(Script):
 
         # Define the stack and extruder.
         self.global_stack = Application.getInstance().getGlobalContainerStack()
-        #self.extruder = self.global_stack.extruderList
         self.extruder = [extruder for extruder in self.global_stack.extruderList if extruder.isEnabled]
+
         # Get the Print Sequence from Cura
         if self.global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
             one_at_a_time = True
@@ -76,6 +77,7 @@ class BaseLayersFirst(Script):
 
         # Define additional variables.
         self.speed_z_hop = int(self.extruder[0].getProperty("speed_z_hop", "value") * 60)
+        self.layer_height = str(self.global_stack.getProperty("layer_height", "value"))
         self.layer_height_0 = str(self.global_stack.getProperty("layer_height_0", "value"))
         self.z_hops_enabled = bool(self.extruder[0].getProperty("retraction_hop_enabled", "value"))
         self.speed_travel = int(self.extruder[0].getProperty("speed_travel", "value")) * 60
@@ -90,13 +92,13 @@ class BaseLayersFirst(Script):
 
         # Find out if the bed adhesion is 'raft'.
         if self.global_stack.getProperty("adhesion_type", "value") == "raft":
-            raft_enabled = True
+            self.raft_enabled = True
         else:
-            raft_enabled = False
+            self.raft_enabled = False
 
         # A check to insure the user knows that 'Raft' combined with 'PauseAtHeight' doesn't work.  The script will exit.
         criteria = "pause_at_height"
-        if raft_enabled:
+        if self.raft_enabled:
             if self._PostProcessorOrderWarning(criteria):
                 Logger.info("\n[Base Layers First] Did NOT run. Both 'Raft' AND 'PauseAtHeight' are enabled.\n")
                 Message(title = "⚠️[Base Layers First]", text = "Cannot be used when both 'Raft' and 'PauseAtHeight' are enabled. The script did not run.").show()
@@ -112,11 +114,12 @@ class BaseLayersFirst(Script):
         if absolute_extrusion:
             data = self._AdjustELocations(data)
 
-        # If adaptive layers are enabled the Layer:1 Height must be checked implicitly to get it right
+        # If adaptive layers are enabled the Layer:1 Height must be checked implicitly (for each model) to get it right
         data = self._AdjustLayer1Height(data)
 
         # Adjust the height line in raft layers as the previous value is now invalid.
-        data = self._FixHeightOfRaft(data)
+        if self.raft_enabled:
+            data = self._FixHeightOfRaft(data)
 
         # Add the "extrude from" location to each portion of the new layer:0 to insure continuity
         data = self._ExtrudeFromLocation(data)
@@ -137,14 +140,20 @@ class BaseLayersFirst(Script):
         layer_0_result = self._AssembleLayer0String(data)
         layer_0_str = layer_0_result[0]
         data = layer_0_result[1]
+        # This goes here because it has to run after the layer_0_str is defined.
+        if not self.raft_enabled:
+            new_code = self._FixHeightWithoutRaft(layer_0_str, data)
+            layer_0_str = new_code[0]
+            data = new_code[1]
 
         # Go through the new combined LAYER:0 and remove any extraneous Layer:0 lines.
-        new_code = self._FixInitLayerTimes(data, layer_0_str, raft_enabled)
+        new_code = self._FixLayer0String(data, layer_0_str)
         layer_0_str = new_code[0]
         data = new_code[1]
+        data = self._FixInitLayerTimes(data, layer_0_str)
 
         # 1. Set the temperatures for Layer:0 to 'Initial Layer Print Temperature' and 'Initial Layer Bed Temperature' and then reset to 'Print/Bed Temps' for Layer:1.
-        # 2. Replace the original LAYER:0 with the new 'layer_0_str'.
+        # 2. The original LAYER:0 is replaced with the new 'layer_0_str' in this function.
         data[2] = self._SetTemperatures(layer_0_str)
 
         # Remove the temporary delta time from the layer:0 elapsed time line
@@ -232,7 +241,6 @@ class BaseLayersFirst(Script):
                         cur_line_list = alt_data[index].split("\n")
                         cur_line_list.insert(1, self._FormatString(f"{line}; BLF Sync Z"))
                         alt_data[index] = "\n".join(cur_line_list)
-                        Logger.info(f"\n\n line: {cur_line_list[0:3]}\n")
                         break
         return alt_data
 
@@ -359,19 +367,26 @@ class BaseLayersFirst(Script):
         alt_data.insert(2, layer_0_str)
         return layer_0_str, alt_data
 
-    def _FixInitLayerTimes(self, alt_data, layer_0_str, raft_enabled):
+    def _FixLayer0String(self, alt_data, layer_0_str):
         # Go through the new Initial Layer and fix all the other Time Elapsed lines
         start_now = False
+        add_z_move = False
         layer_0_list = layer_0_str.split("\n")
         for ldex, line in enumerate(layer_0_list):
             if (";LAYER:0" in line or ";LAYER:-" in line) and start_now:
-                if raft_enabled:
+                if self.raft_enabled:
                     layer_0_list.pop(ldex)
-                else:
-                    layer_0_list[ldex] = self._FormatString(f"G1 F{self.speed_z_hop} Z{self.layer_height_0}; BLF Adjust Z to initial layer height")
+            if ";TYPE:" in line and add_z_move:
+                layer_0_list[ldex-1] += "\n" + self._FormatString(f"G1 F{self.speed_z_hop} Z{self.layer_height_0}; BLF Adjust Z to initial layer height")
+                add_z_move = False
             if ";LAYER:0" in line or ";LAYER:-" in line:
                 start_now = True
+                add_z_move = True
+        return layer_0_str, alt_data
+
+    def _FixInitLayerTimes(self, alt_data, layer_0_str):
         running_time = self.layer_0_total_time
+        layer_0_list = layer_0_str.split("\n")
         for index, layer in enumerate(alt_data):
             if index < 3:
                 continue
@@ -383,8 +398,7 @@ class BaseLayersFirst(Script):
                     new_time_line = f";TIME_ELAPSED:{running_time:.2f}"
                     lines[tdex] = new_time_line
                     alt_data[index] = "\n".join(lines)
-        layer_0_str = "\n".join(layer_0_list)
-        return layer_0_str, alt_data
+        return alt_data
 
     def _AddTravelLines(self, alt_data):
         # Insert the lateral move line and the vertical move line before the start of each 'lAYER:1'
@@ -407,6 +421,14 @@ class BaseLayersFirst(Script):
                     lines[index] = f";LAYER:{consecutive_lay_num}"
                     consecutive_lay_num += 1
             alt_data[num] = "\n".join(lines)
+
+        # Add a comment to the Layer:0 line
+        replacement_str = ";LAYER:0 ; BLF Combined layer (all LAYER:0's"
+        if self.raft_enabled:
+            replacement_str += " and raft layers)\n"
+        else:
+            replacement_str += ")\n"
+        alt_data[2] = alt_data[2].replace(";LAYER:0\n", self._FormatString(replacement_str))
         return alt_data
 
     def _SetTemperatures(self, layer_0_str):
@@ -442,13 +464,13 @@ class BaseLayersFirst(Script):
                 continue
             if index >= len(alt_data)-2:
                 break
-            # The layer-of-interest is always the one containing "Layer Count"
+            # When raft is enabled, the layer-of-interest is always the one containing "Layer Count"
             if re.search(";LAYER_COUNT:", layer) is not None:
                 lines = layer.split("\n")
                 for lineindex, line in enumerate(lines):
                     if ";TIME_ELAPSED:" in line:
                         # Search from the end of the layer back to the Time Elapsed line
-                        for num in range(len(lines)-1, lineindex, -1):
+                        for num in range(lineindex + 1, len(lines) - 1):
                             if re.search(f"G0 F{self.speed_z_hop} Z{self.layer_height_0}", lines[num]) is not None:
                                 lines[num] = self._FormatString(f";{lines[num]}; BLF comment out")
                                 if lines[num-1] == "M204 S100":
@@ -456,6 +478,41 @@ class BaseLayersFirst(Script):
                                 alt_data[index] = "\n".join(lines)
                                 break
         return alt_data
+
+    def _FixHeightWithoutRaft(self, layer_0_str, alt_data):
+        # When Raft is NOT enabled.
+        counter = layer_0_str.count("MESH:NONMESH") - 1
+        lines = layer_0_str.split("\n")
+        # The posted_hgt is discarded in favor of layer_height except for the last one in the layer_0_str.
+        posted_hgt = round(float(self.layer_height_0) + float(self.layer_height),2)
+        for lineindex, line in enumerate(lines):
+            if "MESH:NONMESH" in line:
+                # Search for the Z move to the next layer.
+                for num in range(lineindex + 1, len(lines) - 1):
+                    if re.search(f"G0 F{self.speed_z_hop} Z{posted_hgt}", lines[num]) is not None and counter > 0:
+                        lines[num] = self._FormatString(f"G0 F{self.speed_z_hop} Z{self.layer_height_0}; BLF Adjust Z")
+                        layer_0_str = "\n".join(lines)
+                        counter -= 1
+                        break
+        # The rest of the model changeovers
+        for index, layer in enumerate(alt_data):
+            start_here = False
+            if not ";LAYER_COUNT" in layer:
+                continue
+            else:
+                lines = layer.split("\n")
+                lines.reverse()
+                for lineindex, line in enumerate(lines):
+                    if ";MESH:NONMESH" in line:
+                        break
+                    if f"G0 F{self.speed_z_hop} Z{self.layer_height_0}" in line:
+                        lines[lineindex] = self._FormatString(f";{line}; BLF comment out")
+                    if "M204 S100" in line:
+                        lines[lineindex] = self._FormatString(f";{line}; BLF comment out")
+                        break
+                lines.reverse()
+                alt_data[index] = "\n".join(lines)
+        return layer_0_str, alt_data
 
     def _FormatString(self, any_gcode_str: str):
         # I like when things are neat and lined up.  Makes the Gcode easier to read.
