@@ -112,7 +112,6 @@ class SoftFilamentRunout(Script):
                 return data
             if ";LAYER:" in layer:
                 break
-
         # Define some variables.
         self.global_stack = Application.getInstance().getGlobalContainerStack()
         self.extruder = self.global_stack.extruderList
@@ -162,10 +161,6 @@ class SoftFilamentRunout(Script):
         else:
             data = self._RelativeFilamentUse(data)
 
-        # Pad the per and delta lists to account for the 'ending gcode' section to avoid IndexErrors.
-        self.filament_countdown_list.append(0.0)
-        self.filament_delta_list.append("0.0")
-
         # Everything has been:  collected, calculated, collated, and configured, and is now ready for combining.
         data = self._AlterGcode(data)
 
@@ -176,10 +171,6 @@ class SoftFilamentRunout(Script):
         # If the user opted for an M300 line message regarding the runout layer and the runout time elapsed.
         if self.beep_at_runout:
             Message(title = "[Software Filament Runout]", text = f"'Filament Minimum' of {round(self.runout_min_filament/1000)} meters will be reached at the start of preview layer #{self.runout_layer + 1} about {self.runout_str} into the print.").show()
-        total_num = 0
-        for item in self.filament_delta_list:
-            num = float(item.split()[0])
-            total_num += num
         return data
 
     def _AlterGcode(self, alt_data):
@@ -195,7 +186,7 @@ class SoftFilamentRunout(Script):
                     except TypeError as e:
                         Logger.error(f"\nError while calculating the filament weight: {e}\n")
                         weight = "error"
-                    lines[lineindex] += f"\n{self.m118_text}Filament Reqd= {float(self.filament_countdown_list[index])/1000:.2f}m | Wt= {weight:.2f}gr | This layer will use: {self.filament_delta_list[index]}"
+                    lines[lineindex] += f"\n{self.m118_text}Filament Reqd= {float(self.filament_countdown_list[index])/1000:.2f}m | Wt= {weight:.2f}gr | This layer will use {self.filament_delta_list[index]}"
                     if self.beep_at_runout and self.beep_layer_count > 0:
                         if float(self.filament_countdown_list[index])/1000 <= float(self.runout_min_filament)/1000:
                             lines[lineindex] += f"\nM300 P{self.beep_tone_duration} ; Beep at Runout"
@@ -215,6 +206,7 @@ class SoftFilamentRunout(Script):
 
         # running_total_e is the 'countdown from' amount
         running_total_e = float(self.total_filament_reqd)
+        # Add this to the start to accout for the countdown list being before start, and the delta list being end of layer
         self.filament_countdown_list.append(round(self.total_filament_reqd,2))
 
         for layindex, layer in enumerate(alt_data):
@@ -236,31 +228,25 @@ class SoftFilamentRunout(Script):
             if running_total_e < 0:
                 running_total_e = 0.0
             weight = layer_total_e * self.filament_x_section * self.material_density
-            # Add the message to print server line for layer to the list
-            self.filament_delta_list.append(f"{layer_total_e:.1f} millimeters")
+            # Add the Delta message to the list
+            self.filament_delta_list.append(f"{layer_total_e:.1f} mm")
+            # Add the Filament Remaining message to the list
             self.filament_countdown_list.append(round(running_total_e,2))
             layer_total_e = 0.0
         return alt_data
 
     def _AbsoluteFilamentUse(self, alt_data):
         # Track the E values when in Absolute Mode.  (This function really sucked to write.)
-        self.filament_countdown_list = [0.0, 0.0]
-        # The amount of filament to be used in the upcoming layer
-        self.filament_delta_list = ["0.0", "0.0"]
         running_total_e = float(self.total_filament_reqd)
         starting_e = 0.0
         ending_e = 0.0
         layer_total_e = 0.0
-        # Pad the countdown list so the indexes match
-        self.filament_countdown_list.append(round(self.total_filament_reqd,2))
+        # Add this to the start to account for the countdown list being before start, and the delta list being end of layer
+        self.filament_countdown_list.append(round(running_total_e, 2))
         for index, layer in enumerate(alt_data):
-            if index < 2:
-                continue
-            if index > len(alt_data)-1:
-                break
             if not ";LAYER:" in layer:
                 self.filament_delta_list.append("0.0")
-                self.filament_countdown_list.append(running_total_e)
+                self.filament_countdown_list.append(round(running_total_e, 2))
                 layer_total_e = 0.0
                 continue
             layer_total_e = 0.0
@@ -268,38 +254,46 @@ class SoftFilamentRunout(Script):
             ending_e = 0.0
             lines = layer.split("\n")
             # Get the starting_e
-            for line in lines:
-                if (line[0:3] in ["G1 ", "G2 ", "G3 ", "G92"] and " E" in line):
-                    the_e_value = "E" + line.split("E")[1].split()[0]
-                    starting_e = self.getValue(the_e_value, "E")
-                    break
-            lines.reverse()
+            starting_e = self._GetStartingE(lines)
             # Get the ending_e
-            for line in lines:
-                if (line[0:3] in ["G1 ", "G2 ", "G3 ", "G92"] and " E" in line):
-                    the_e_value = "E" + line.split("E")[1].split()[0]
-                    ending_e = self.getValue(the_e_value, "E")
-                    if ending_e > 0:
-                        break
-            lines.reverse()
+            ending_e = self._GetEndingE(lines)
 
-            # Get the starting_e and ending_e in layers with a reset and adjust
-            if "G92 E" in layer or starting_e > ending_e:
+            # Get the starting_e and ending_e in layers with a reset and adjust for the resets
+            if "G92 E" in layer:
                 layer_total_e = self._CalculateG92values(layer, starting_e, ending_e)
                 running_total_e -= layer_total_e
-                self.filament_delta_list.append(f"{layer_total_e:.2f} millimeters")
+                self.filament_delta_list.append(f"{layer_total_e:.2f} mm")
                 self.filament_countdown_list.append(round(running_total_e, 2))
                 layer_total_e = 0.0
             elif not "G92 E" in layer:
                 layer_total_e = ending_e - starting_e
                 # This one was really hard to figure out
-                if self.one_at_a_time:
+                if self.retraction_enabled:
                     layer_total_e += self.retraction_amount
                 running_total_e -= layer_total_e
-                self.filament_delta_list.append(f"{layer_total_e:.2f} millimeters")
+                self.filament_delta_list.append(f"{layer_total_e:.2f} mm")
                 self.filament_countdown_list.append(round(running_total_e, 2))
                 layer_total_e = 0.0
         return alt_data
+
+    def _GetStartingE(self, lines):
+        for line in lines:
+            if (line[0:3] in ["G1 ", "G2 ", "G3 ", "G92"] and " E" in line):
+                the_e_value = "E" + line.split("E")[1].split()[0]
+                starting_e = self.getValue(the_e_value, "E")
+                break
+        return starting_e
+
+    def _GetEndingE(self, lines):
+        lines.reverse()
+        ending_e = 0.0
+        for line in lines:
+            if (line[0:3] in ["G1 ", "G2 ", "G3 ", "G92"] and " E" in line):
+                the_e_value = "E" + line.split("E")[1].split()[0]
+                ending_e = self.getValue(the_e_value, "E")
+                if ending_e > 0:
+                    break
+        return ending_e
 
     def _PauseAtRunout(self, alt_data):
         # Adds a generic pause code
@@ -362,7 +356,6 @@ class SoftFilamentRunout(Script):
         return alt_data
 
     def _CalculateG92values(self, layer, starting_e, ending_e):
-        #Logger.info(f" 0000 Starting_E {starting_e}  Ending E {ending_e}")
         starting_e = 0
         ending_e = 0
         layer_total_e = 0
