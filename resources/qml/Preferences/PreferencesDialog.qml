@@ -22,7 +22,7 @@ UM.Dialog
     backgroundColor: UM.Theme.getColor("background_2")
 
     property alias currentPage: pagesList.currentIndex
-    property alias currentItem: pagesList.currentItem
+    property alias currentItem: stackView.currentItem
 
     Item
     {
