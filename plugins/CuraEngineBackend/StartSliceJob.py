@@ -107,6 +107,9 @@ class StartSliceJob(Job):
         return False
 
     def _prepareGroupMessage(self, group: List[SceneNode]) -> None:
+        if len(group) == 0:
+            return
+
         group_message = CuraProto.MeshGroup()
         parent = group[0].getParent()
         if parent is not None and parent.callDecoration("isGroup"):
