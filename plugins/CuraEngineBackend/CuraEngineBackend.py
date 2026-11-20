@@ -909,6 +909,18 @@ class CuraEngineBackend(QObject, Backend):
     def _makeGrpcServicerAndAdder(self) -> Tuple["GrpcServicer", Callable[["GrpcServicer", grpc.Server], None]]:
         return _CuraEngineService(self._grpc_server), CuraGrpc.add_CuraEngineCommunicationServicer_to_server
 
+    def _prepareBackendServer(self) -> None:
+        try:
+            super()._prepareBackendServer()
+        except RuntimeError as error:
+            Logger.logException("e", f"Error while preparing backend server: {error}")
+            Message(catalog.i18nc("@info:status",
+                                  "Error when starting the communication layer with the slicing engine, please check that Cura has permissions to open a communication port."),
+                    title=catalog.i18nc("@info:title", "Unable to slice"),
+                    message_type=Message.MessageType.ERROR).show()
+            self.setState(BackendState.Error)
+
+
     def _onEngineConnected(self) -> None:
         super()._onEngineConnected()
         self._grpc_server.streamEnded.connect(self._onGrpcStreamEnded)
