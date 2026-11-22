@@ -15,6 +15,9 @@
     },
     "overrides":
     {
+        "acceleration_enabled": { "default_value": true },
+        "acceleration_print": { "default_value": 500 },
+        "acceleration_travel": { "default_value": 1000 },
         "machine_acceleration": { "default_value": 500 },
         "machine_buildplate_type": { "default_value": "PEI Spring Steel" },
         "machine_depth": { "default_value": 220 },
