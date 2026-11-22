@@ -15,6 +15,7 @@
     },
     "overrides":
     {
+        "machine_acceleration": { "default_value": 500 },
         "machine_buildplate_type": { "default_value": "PEI Spring Steel" },
         "machine_depth": { "default_value": 220 },
         "machine_end_gcode": { "default_value": "M400 ; Wait for moves to finish\nG92 E0 ; Reset extruder position\nG1 E-1 F1800 ; Retract filament\nG91 ; Use relative positioning\nG1 Z2 F1200 ; Lift nozzle\nG90 ; Return to absolute positioning\nG1 X0 Y220 F5000 ; Move bed forward for print removal\nM104 S0 ; Turn off nozzle heater\nM140 S0 ; Turn off bed heater\nM107 ; Turn off print cooling fan\nM84 ; Disable steppers" },
