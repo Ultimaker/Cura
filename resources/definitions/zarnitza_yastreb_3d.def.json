@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "ZARNITZA YASTREB 3D",
+    "inherits": "zarnitza_near",
+    "metadata": { "visible": true,
+                  "author": "ZARNITZA",
+                  "manufacturer": "ZARNITZA"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "ZARNITZA YASTREB 3D" },
+        "machine_width": { "default_value": 200 }
+    }
+}
