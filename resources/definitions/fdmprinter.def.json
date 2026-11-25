@@ -1487,7 +1487,7 @@
                     "description": "How strongly the seam is pulled towards a location that aligns it vertically with the seam of the previous layer.<br/>Higher values produce a straighter vertical seam, but may override the main seam positioning strategy, for example by moving the seam away from the preferred corner or position.<br/>Lower values keep the seam closer to what the selected Z Seam Alignment type would choose on its own.",
                     "type": "float",
                     "default_value": 0.05,
-                    "minimum_value": "0.01",
+                    "minimum_value": "0.0",
                     "maximum_value": "1.0",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
