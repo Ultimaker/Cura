@@ -11,7 +11,7 @@ from pathlib import Path
 from jinja2 import Template
 
 
-def prepare_workspace(dist_path, appimage_filename):
+def prepare_workspace(dist_path, appimage_filename, version):
     """
     Prepare the workspace for building the AppImage.
     :param dist_path: Path to the distribution of Cura created with pyinstaller.
@@ -29,7 +29,7 @@ def prepare_workspace(dist_path, appimage_filename):
     else:
         print(f"AppDir already exists, assuming it is already prepared.")
 
-    copy_files("AppDir")
+    copy_files("AppDir", version)
 
 
 def build_appimage(dist_path, version, appimage_filename):
@@ -56,7 +56,7 @@ def generate_appimage_builder_config(dist_path, version, appimage_filename):
         appimage_builder_file.write(appimage_builder)
 
 
-def copy_files(dist_path):
+def copy_files(dist_path, version):
     """
     Copy metadata files for the metadata of the AppImage.
     """
@@ -75,6 +75,21 @@ def copy_files(dist_path):
         dest_file_path = os.path.join(dist_path, dest)
         os.makedirs(os.path.dirname(dest_file_path), exist_ok = True)
         shutil.copyfile(os.path.join(packaging_dir, source), dest_file_path)
+
+    desktop_template_path = os.path.join(packaging_dir, "..", "AppImage", "cura.desktop.jinja")
+    with open(desktop_template_path, "r") as desktop_template_file:
+        desktop_template = Template(desktop_template_file.read())
+    rendered_desktop = desktop_template.render(cura_version = version)
+
+    desktop_targets = [
+        os.path.join(dist_path, "com.ultimaker.cura.desktop"),
+        os.path.join(dist_path, "usr", "share", "applications", "com.ultimaker.cura.desktop")
+    ]
+
+    for desktop_path in desktop_targets:
+        os.makedirs(os.path.dirname(desktop_path), exist_ok = True)
+        with open(desktop_path, "w") as desktop_file:
+            desktop_file.write(rendered_desktop)
 
 
 def create_appimage():
@@ -98,5 +113,5 @@ if __name__ == "__main__":
     parser.add_argument("version", type = str, help = "Full version number of Cura (e.g. '5.1.0-beta')")
     parser.add_argument("filename", type = str, help = "Filename of the AppImage (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
     args = parser.parse_args()
-    prepare_workspace(args.dist_path, args.filename)
+    prepare_workspace(args.dist_path, args.filename, args.version)
     build_appimage(args.dist_path, args.version, args.filename)
