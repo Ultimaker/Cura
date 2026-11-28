@@ -52,7 +52,10 @@ class X3DReader(MeshReader):
             self.defs = {}
             self.shapes = []
 
-            tree = ET.parse(file_name)
+            # Secure XML parsing: disable entity expansion to prevent XXE attacks
+            parser = ET.XMLParser()
+            parser.entity = {} # Disable entity resolution
+            tree = ET.parse(file_name, parser=parser)
             xml_root = tree.getroot()
 
             if xml_root.tag != "X3D":

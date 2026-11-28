@@ -59,7 +59,10 @@ class AMFReader(MeshReader):
             raw_file.close()
 
         try:
-            amf_document = ET.fromstring(xml_document)
+            # Secure XML parsing: disable entity expansion to prevent XXE attacks
+            parser = ET.XMLParser()
+            parser.entity = {} # Disable entity resolution
+            amf_document = ET.fromstring(xml_document, parser=parser)
         except ET.ParseError:
             Logger.log("e", "Could not parse XML in file %s" % base_name)
             return None
