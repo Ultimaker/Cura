@@ -69,6 +69,9 @@ fragment =
         {
             gl_FragColor = mix(result, u_outline_color, abs(sum.a));
         }
+        // Blending transparent objects lowers alpha. Keep the output opaque: the window is marked opaque
+        // (e.g. the Wayland opaque region), so lower alpha causes repaint artifacts.
+        gl_FragColor.a = gl_FragColor.a > 0.5 ? 1.0 : 0.0;
     }
 
 vertex41core =
@@ -138,6 +141,9 @@ fragment41core =
         {
             frag_color = mix(result, u_outline_color, abs(sum.a));
         }
+        // Blending transparent objects lowers alpha. Keep the output opaque: the window is marked opaque
+        // (e.g. the Wayland opaque region), so lower alpha causes repaint artifacts.
+        frag_color.a = frag_color.a > 0.5 ? 1.0 : 0.0;
     }
 
 [defaults]
