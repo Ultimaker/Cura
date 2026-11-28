@@ -1,0 +1,25 @@
+{
+    "name": "Makerbot Reader",
+    "author": "UltiMaker",
+    "version": "1.0.0",
+    "description": "Reads .makerbot files.",
+    "api": 8,
+    "i18n-catalog": "cura",
+    "plugin": {
+        "file_types": [
+            {
+                "id": "makerbot",
+                "mime_type": "application/x-makerbot",
+                "extension": ".makerbot",
+                "description": "Makerbot File",
+                "mode": "binary"
+            }
+        ],
+        "reader":{
+            "id": "MakerbotReader",
+            "class": "MakerbotReader.MakerbotReader",
+            "mime_types": ["application/x-makerbot"],
+            "empty_intent_categories_excluded": ["fine", "draft", "extra_fast", "fast", "normal", "extra_fine"]
+        }
+    }
+}
