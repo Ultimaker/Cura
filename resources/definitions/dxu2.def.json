@@ -1,0 +1,90 @@
+{
+    "version": 2,
+    "name": "UM2+ DXUv2 Single",
+    "inherits": "ultimaker2_plus",
+    "metadata":
+    {
+        "visible": true,
+        "author": "TheUltimakerCommunity",
+        "manufacturer": "DXU",
+        "file_formats": "text/x-gcode",
+        "platform": "ultimaker2_platform.obj",
+        "has_machine_materials": false,
+        "has_machine_quality": false,
+        "has_materials": true,
+        "has_variant_materials": false,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "dxu2_extruder1",
+            "1": "dxu2_extruder2"
+        },
+        "platform_offset": [
+            1.5,
+            0,
+            0
+        ],
+        "platform_texture": "dxu_backplate.png",
+        "supported_actions": [
+            "MachineSettingsAction",
+            "UpgradeFirmware"
+        ],
+        "weight": 0
+    },
+    "overrides":
+    {
+        "line_width": { "value": "machine_nozzle_size" },
+        "machine_depth": { "default_value": 216 },
+        "machine_disallowed_areas":
+        {
+            "default_value": [
+                [
+                    [100, -102.5],
+                    [110, -102.5],
+                    [110, -62.5],
+                    [100, -62.5]
+                ]
+            ]
+        },
+        "machine_end_gcode": { "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G91 ;Relative movement\\nG0 X-8.0 Y-8.0 Z3.5 E-4.5 F18000 ;Wiping+material retraction ;increase bed lower 0.5>5.0 and add Y movement\\nG0 F10000 Z1.5 E4.5 ;Compensation for the retraction\\nG90 ;Disable relative movement\\nM400 ;wait for all moves in planner to complete\\nG90 ;absolute positioning\\nM104 S0 T0 ;extruder heater off\\nM104 S0 T1\\nM140 S0 ;turn off bed\\nT0 ; move to the first head\\nG27; park toolhead\\nM107 ;fan off\\nM355 S0;turn off case light\"" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-46, 30],
+                [-46, -34],
+                [66, 30],
+                [66, -34]
+            ]
+        },
+        "machine_heat_zone_length": { "default_value": 20 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 208 },
+        "machine_max_feedrate_x": { "default_value": 300 },
+        "machine_max_feedrate_y": { "default_value": 300 },
+        "machine_max_feedrate_z": { "default_value": 40 },
+        "machine_min_cool_heat_time_window": { "default_value": 15.0 },
+        "machine_name": { "default_value": "dxu2" },
+        "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
+        "machine_nozzle_expansion_angle": { "default_value": 45 },
+        "machine_nozzle_head_distance": { "default_value": 3 },
+        "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "machine_start_gcode": { "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"; DXUv2 improved start priming Gcode for dual nozzles for single material print by ansonl\\nM355 S1 P25 ; Turn on case light dim\\nM190 S{material_bed_temperature_layer_0}\\nG28 ; Home all\\nG29 ; Run automatic bed leveling. Comment this line out if auto bed leveling is not desired.\\nM104 T0 S{material_standby_temperature, 0} ; Preheat T0 to standby temp\\nG21 ; Metric values\\nG90 ; Absolute positioning\\nM82 ; Set extruder to absolute mode\\nM107 ; Start with the fan off\\nM200 D0 T{initial_extruder_nr} ; Reset filament diameter\\nG0 X200 F7200 ; move to safe X and Y location from right side after ending ABL homing\\nG1 Y150 F7200\\nM104 T{initial_extruder_nr} S{material_print_temperature_layer_0, initial_extruder_nr}\\nT{initial_extruder_nr} ;switch to the first nozzle used for print\\nM400 ;finish all moves\\nG0 Z20 F2400\\nG0 X214 F18000\\nG0 Y2 F18000\\nM109 T{initial_extruder_nr} S{material_print_temperature_layer_0, initial_extruder_nr}\\n;Final wipe sequence for initial extruder\\nG0 X212 Z0.3 F600\\nG92 E05\\nG1 Y45 E6.5 F1000\\nG92 E0\\nG1 E-0.5 F1500 ; retract\\nG92 E0\\nG1 Y100 F18000\\n;end of startup sequence\\n\\nM355 S1 P50;turn on case light\"" },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": false },
+        "machine_width": { "default_value": 221 },
+        "material_adhesion_tendency": { "enabled": true },
+        "material_diameter": { "default_value": 1.75 },
+        "prime_tower_position_x": { "value": "180" },
+        "prime_tower_position_y": { "value": "160" },
+        "retraction_amount": { "default_value": 3 },
+        "retraction_min_travel": { "value": "line_width * 2" },
+        "retraction_speed": { "default_value": 25 },
+        "switch_extruder_prime_speed": { "value": "retraction_prime_speed" },
+        "switch_extruder_retraction_amount": { "value": "retraction_amount" },
+        "switch_extruder_retraction_speed": { "value": "retraction_retract_speed" },
+        "switch_extruder_retraction_speeds": { "value": "retraction_speed" },
+        "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5" }
+    }
+}
