@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Z9 with HighFlow Hotend",
+    "inherits": "zonestar_hf_base",
+    "metadata":
+    {
+        "visible": true,
+        "preferred_material": "generic_pla"
+    },
+    "overrides":
+    {
+        "machine_acceleration": { "default_value": 1000 },
+        "machine_depth": { "default_value": 310 },
+        "machine_end_gcode": { "default_value": "G92 E0\nG1 E-3 F2100\nG28 XY\nG90\nM104 S0\nG92 E0\nM140 S0\nM107\nM84\n" },
+        "machine_height": { "default_value": 400 },
+        "machine_max_acceleration_z": { "default_value": 100 },
+        "machine_max_feedrate_e": { "default_value": 60 },
+        "machine_max_feedrate_x": { "default_value": 800 },
+        "machine_max_feedrate_y": { "default_value": 800 },
+        "machine_max_feedrate_z": { "default_value": 16 },
+        "machine_max_jerk_e": { "default_value": 5.0 },
+        "machine_max_jerk_xy": { "default_value": 18 },
+        "machine_max_jerk_z": { "default_value": 0.4 },
+        "machine_name": { "default_value": "Z9 with HighFlow Hotend" },
+        "machine_start_gcode": { "default_value": "G28\nG1 Z15 F300\nM107\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0\nG1 X10 Y10 F1500 ; move to prime\nG1 Z0.2 F3000 ; get ready to prime\nG92 E0 ; reset extrusion distance\nG1 Y200 E15 F600 ; prime nozzle\nG1 Y100 F5000 ; quick wipe\n" },
+        "machine_width": { "default_value": 310 },
+        "speed_print": { "value": 80.0 }
+    }
+}

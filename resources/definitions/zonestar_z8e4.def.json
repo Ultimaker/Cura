@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "name": "Z8 with E4 Hotend",
+    "inherits": "zonestar_e4_base",
+    "metadata":
+    {
+        "visible": true,
+        "preferred_material": "generic_pla"
+    },
+    "overrides":
+    {
+        "machine_acceleration": { "default_value": 1000 },
+        "machine_depth": { "default_value": 310 },
+        "machine_height": { "default_value": 400 },
+        "machine_max_acceleration_z": { "default_value": 100 },
+        "machine_max_feedrate_e": { "default_value": 60 },
+        "machine_max_feedrate_z": { "default_value": 16 },
+        "machine_max_jerk_e": { "default_value": 5.0 },
+        "machine_max_jerk_xy": { "default_value": 10 },
+        "machine_max_jerk_z": { "default_value": 0.4 },
+        "machine_name": { "default_value": "Z8 with E4 Hotend" },
+        "machine_start_gcode": { "default_value": "G28\nG1 Z15 F300\n;Preload filaments Start\n;Preload E1\nG92 E0\nT0\nG1 E20 F120\nG0 X5 Y50 F3000\nG1 Y250 E35 F1200\nG0 X5.5 F3000\nG1 Y50 E50 F1200\nG0 X6 F3000\nG1 Y250 E65 F1200\nG0 X6.5 F3000\nG1 Y50 E80 F1200\nG0 X7 F3000\nG1 Y250 E95 F1200\nG0 X7.5 F3000\nG1 Y50 E110 F1200\nG0 X8 F3000\nG92 E0\nG1 E-80 F2400\n;Preload E2\nG92 E0\nT1\nG1 E20 F120\nG0 X8 Y50 F3000\nG1 Y250 E35 F1200\nG0 X8.5 F3000\nG1 Y50 E50 F1200\nG0 X9 F3000\nG1 Y250 E65 F1200\nG0 X9.5 F3000\nG1 Y50 E80 F1200\nG0 X10 F3000\nG1 Y250 E95 F1200\nG0 X10.5 F3000\nG1 Y50 E110 F1200\nG0 X11 F3000\nG92 E0\nG1 E-80 F2400\n;Preload E3\nG92 E0\nT2\nG1 E20 F120\nG0 X11 Y50 F3000\nG1 Y250 E35 F1200\nG0 X11.5 F3000\nG1 Y50 E50 F1200\nG0 X12 F3000\nG1 Y250 E65 F1200\nG0 X12.5 F3000\nG1 Y50 E80 F600\nG0 X13 F3000\nG1 Y250 E95 F1200\nG0 X13.5 F3000\nG1 Y50 E110 F1200\nG0 X14 F3000\nG92 E0\nG1 E-80 F2400\n;Preload E4\nG92 E0\nT3\nG1 E20 F120\nG0 X14 Y50 F3000\nG1 Y250 E35 F1200\nG0 X14.5 F3000\nG1 Y50 E50 F1200\nG0 X15 F3000\nG1 Y250 E65 F1200\nG0 X15.5 F3000\nG1 Y50 E80 F1200\nG0 X16 F3000\nG1 Y250 E95 F1200\nG0 X16.5 F3000\nG1 Y50 E110 F1200\nG0 X17 F3000\nG0 Y155 F4800\nG92 E0\n;Preload filaments End\n" },
+        "machine_width": { "default_value": 310 },
+        "speed_print": { "value": 50.0 }
+    }
+}

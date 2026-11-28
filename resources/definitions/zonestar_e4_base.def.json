@@ -1,0 +1,59 @@
+{
+    "version": 2,
+    "name": "ZONESTAR E4 Base",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": false,
+        "author": "ZONESTAR",
+        "manufacturer": "ZONESTAR",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "zonestar_e4_extruder_1",
+            "1": "zonestar_e4_extruder_2",
+            "2": "zonestar_e4_extruder_3",
+            "3": "zonestar_e4_extruder_4"
+        },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ]
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 35 },
+        "layer_height": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 220 },
+        "machine_end_gcode": { "default_value": "G28 XY\nM140 S0 ; cool bed\nG92 E0 ; retract filament 35mm\nG1 E-5 F1800\nG1 E-35 F900\nM104 S0 ; cool hotend\nM84 ; disable steppers" },
+        "machine_extruder_count": { "default_value": 4 },
+        "machine_extruders_share_heater": { "default_value": true },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-30, 35],
+                [-30, -42],
+                [30, -42],
+                [30, 35]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 220 },
+        "machine_name": { "default_value": "ZONESTAR E4 Base" },
+        "machine_start_gcode": { "default_value": "" },
+        "machine_width": { "default_value": 220 },
+        "prime_tower_enable": { "value": "extruders_enabled_count > 1" },
+        "retraction_combing": { "value": "'no_outer_surfaces'" },
+        "retraction_hop": { "value": "2" },
+        "retraction_hop_enabled": { "value": "extruders_enabled_count > 1" },
+        "retraction_hop_only_when_collides": { "value": "True" },
+        "retraction_min_travel": { "value": "5" },
+        "retraction_prime_speed": { "value": "15" },
+        "retraction_speed": { "value": "45" },
+        "speed_z_hop": { "default_value": 4 },
+        "switch_extruder_retraction_amount": { "value": "0" }
+    }
+}
