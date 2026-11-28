@@ -1,0 +1,54 @@
+{
+    "version": 2,
+    "name": "CoLiDo Metal",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "CoLiDo",
+        "manufacturer": "CoLiDo",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "preferred_material": "generic_abs",
+        "preferred_quality_type": "fast",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "machine_extruder_trains": { "0": "colido_metal_extruder_0" },
+        "quality_definition": "colido_metal",
+        "variants_name": "Nozzle Size"
+    },
+    "overrides":
+    {
+        "acceleration_print": { "value": "800" },
+        "acceleration_travel": { "value": "800" },
+        "cool_fan_enabled": { "default_value": false },
+        "default_material_print_temperature": { "value": "200" },
+        "gantry_height": { "value": "48" },
+        "machine_acceleration": { "default_value": 800 },
+        "machine_name": { "default_value": "CoLiDo Metal" },
+        "machine_width": { "default_value": 250 },
+        "machine_depth": { "default_value": 250 },
+        "machine_height": { "default_value": 450 },
+        "machine_shape": { "default_value": "rectangular" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_heated_bed": { "default_value": true },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [-65, -35],
+                [-65, 52],
+                [32, 52],
+                [32, -35]
+            ]
+        },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
+        "machine_start_gcode": { "default_value": "START_PRINT BED_TEMP={material_bed_temperature_layer_0} EXTRUDER_TEMP={material_print_temperature_layer_0} SPEED_WALL={speed_wall_0} LAYER={layer_height_0}\nM82" },
+        "machine_end_gcode": { "default_value": "END_PRINT" },
+        "material_final_print_temperature": { "value": "max(-273.15, material_print_temperature - 5)" },
+        "material_initial_print_temperature": { "value": "max(-273.15, material_print_temperature - 5)" },
+        "retraction_count_max": { "value": 50 }
+    }
+}

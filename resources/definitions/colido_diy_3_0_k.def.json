@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "name": "CoLiDo DIY 3.0 K",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "CoLiDo",
+        "manufacturer": "CoLiDo",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": false,
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "fine",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "machine_extruder_trains": { "0": "colido_diy_3_0_k_extruder_0" },
+        "quality_definition": "colido_diy_3_0_k",
+        "variants_name": "Nozzle Size"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": "300" },
+        "machine_name": { "default_value": "CoLiDo DIY 3.0 K" },
+        "machine_width": { "default_value": 235 },
+        "machine_depth": { "default_value": 235 },
+        "machine_height": { "default_value": 280 },
+        "machine_shape": { "default_value": "rectangular" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_heated_bed": { "default_value": true },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
+        "machine_start_gcode": { "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG28; home all without mesh bed level\nG4 F500\nG1 X3\nG1 Z1\nG92 E0.0 ; reset extruder distance position\nG1 Y60.0 E9.0 F1000.0 ; intro line\nG1 Y120.0 E21.5 F1000.0 ; intro line\nG92 E0.0 ; reset extruder distance position\nM150 R200 U255 B200" },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG91\nG1 E-2 F300\nG1 Z+0.5 E-5 X-20 Y-20 F9000.00\nG28 X0 Y0\nM84\nG90" }
+    }
+}
